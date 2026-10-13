@@ -18,7 +18,7 @@
 | 대시보드 | https://careermap-web.oroloov.workers.dev (초대한 사람만 로그인) |
 | 운영 설정: Supabase, Cloudflare, 키 넣는 곳 | `docs/setup.md` |
 | 개발 흐름(다른 프로젝트에도 쓰는 진행 방식) | `docs/dev-workflow.md` |
-| 실제 값: 수집 범위, 개인 필터, 직무 유형, AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
+| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수, AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
 | 수집 데이터 | `data` 브랜치(형식은 그 브랜치 README) |
 
 ## 지금 단계
@@ -60,6 +60,7 @@ src/jobpost/
   store.py         data 폴더 형식
   pipeline.py      하루 수집 한 번의 순서
   jobtypes.py      직무 유형 분류(목록은 config/job_types.yaml, AI가 고름)
+  matching.py      매칭 점수(규칙, config/matching.yaml + 스킬 사전 config/skills.yaml)
   ai.py            AI 호출(Gemini). 외부 AI는 여기서만 부른다
   screen.py        화면용 파일 만들기(형식은 web/src/lib/types.ts와 같게)
   publish.py       화면용 파일을 Supabase 저장소에 올리기

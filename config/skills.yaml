@@ -1,0 +1,98 @@
+# 스킬 사전: 공고 본문과 프로필에서 같은 스킬을 같은 이름으로 세기 위한 목록.
+# 고정 기준이라 버전으로 관리한다. 바꾸면 version을 올리고 점수를 다시 계산한다.
+# aliases: 본문에서 찾을 표기. 영문은 단어 경계로 찾고, 3글자 이하 영문은 대소문자까지 맞아야 한다.
+# 한글은 그대로 찾는다. name도 찾는다.
+
+version: 1
+
+# 서로 바꿔 쓸 수 있는 스킬 묶음. 공고가 이 중 여러 개를 적어도 하나로 세고, 내가 하나라도 있으면 맞는 것으로 본다
+# (예: "AWS, GCP, Azure 중 하나" 경험)
+interchangeable:
+  - [AWS, GCP, Azure]
+  - [Tableau, Power BI, Looker, Superset]
+  - [Databricks, Snowflake, BigQuery, Redshift]
+  - [PostgreSQL, MySQL, Oracle]
+  - [PyTorch, TensorFlow]
+  - [Java, Scala, Golang, TypeScript]
+
+groups:
+  언어:
+    - {name: Python, aliases: [파이썬]}
+    - {name: SQL, aliases: [쿼리 작성]}
+    - {name: Java, aliases: [자바]}
+    - {name: Scala, aliases: [스칼라]}
+    - {name: Golang, aliases: [Go 언어]}
+    - {name: TypeScript, aliases: [JavaScript, Node.js]}
+    - {name: C++, aliases: [C/C++]}
+  데이터 처리:
+    - {name: Spark, aliases: [PySpark, 스파크]}
+    - {name: Kafka, aliases: [카프카]}
+    - {name: Flink, aliases: [플링크]}
+    - {name: Airflow, aliases: [에어플로우]}
+    - {name: dbt, aliases: []}
+    - {name: Hadoop, aliases: [하둡, Hive, HDFS]}
+    - {name: ETL, aliases: [ELT, 데이터 파이프라인, Data Pipeline]}
+    - {name: 실시간 처리, aliases: [스트리밍, Streaming, 실시간 데이터]}
+    - {name: Pandas, aliases: []}
+  데이터 저장:
+    - {name: Databricks, aliases: [데이터브릭스, Unity Catalog, Delta Lake]}
+    - {name: Snowflake, aliases: [스노우플레이크]}
+    - {name: BigQuery, aliases: [빅쿼리]}
+    - {name: Redshift, aliases: []}
+    - {name: 데이터 웨어하우스, aliases: [DW, DWH, Data Warehouse, 데이터웨어하우스]}
+    - {name: 데이터 레이크, aliases: [Data Lake, 레이크하우스, Lakehouse, Iceberg]}
+    - {name: PostgreSQL, aliases: [Postgres]}
+    - {name: MySQL, aliases: [MariaDB]}
+    - {name: Oracle, aliases: [오라클]}
+    - {name: NoSQL, aliases: [MongoDB, Cassandra, DynamoDB]}
+    - {name: Elasticsearch, aliases: [OpenSearch, 엘라스틱서치]}
+    - {name: Trino, aliases: [Presto]}
+    - {name: ClickHouse, aliases: []}
+    - {name: 벡터 DB, aliases: [Vector DB, Vector Database, 벡터 데이터베이스, Milvus, Pinecone, Qdrant, pgvector]}
+  클라우드·인프라:
+    - {name: AWS, aliases: [S3, EMR, Glue, Athena, Kinesis, SageMaker]}
+    - {name: GCP, aliases: [Google Cloud, Dataflow, Dataproc, Vertex AI]}
+    - {name: Azure, aliases: [Synapse, Microsoft Fabric]}
+    - {name: Kubernetes, aliases: [K8s, 쿠버네티스]}
+    - {name: Docker, aliases: [도커, 컨테이너]}
+    - {name: Terraform, aliases: [IaC]}
+    - {name: CI/CD, aliases: [GitHub Actions, Jenkins, ArgoCD]}
+    - {name: Linux, aliases: [리눅스]}
+    - {name: GPU, aliases: [CUDA, TensorRT, NVIDIA]}
+  BI·분석:
+    - {name: Tableau, aliases: [태블로]}
+    - {name: Power BI, aliases: [PowerBI, 파워BI]}
+    - {name: Looker, aliases: [Looker Studio]}
+    - {name: Superset, aliases: [Redash, Metabase]}
+    - {name: Excel, aliases: [엑셀]}
+    - {name: 통계 분석, aliases: [통계, Statistics, 회귀분석]}
+    - {name: A/B 테스트, aliases: [A/B Test, AB 테스트, 실험 설계]}
+    - {name: 데이터 시각화, aliases: [대시보드, Dashboard, 시각화]}
+    - {name: 로그 분석, aliases: [GA4, Google Analytics, Amplitude, Mixpanel]}
+  거버넌스·모델링:
+    - {name: 데이터 모델링, aliases: [Data Modeling, 데이터모델링, ERD, 논리 모델, 물리 모델]}
+    - {name: 데이터 거버넌스, aliases: [Data Governance, 데이터거버넌스]}
+    - {name: 메타데이터, aliases: [Metadata, 데이터 카탈로그, Data Catalog, DataHub, OpenMetadata, Collibra]}
+    - {name: 데이터 품질, aliases: [Data Quality, 데이터품질, DQ]}
+    - {name: 데이터 표준, aliases: [표준화, MDM, 마스터 데이터]}
+    - {name: 온톨로지, aliases: [Ontology, 지식 그래프, Knowledge Graph]}
+  ML·AI:
+    - {name: 머신러닝, aliases: [Machine Learning, ML, 기계학습]}
+    - {name: 딥러닝, aliases: [Deep Learning]}
+    - {name: PyTorch, aliases: [파이토치]}
+    - {name: TensorFlow, aliases: [텐서플로우, Keras]}
+    - {name: MLOps, aliases: [MLflow, Kubeflow, 모델 서빙, Model Serving, Triton]}
+    - {name: LLM, aliases: [대규모 언어 모델, 거대 언어 모델, GPT, Claude, Gemini, ChatGPT]}
+    - {name: RAG, aliases: [검색 증강]}
+    - {name: AI 에이전트, aliases: [Agent, Agentic, 에이전트, MCP, Multi-Agent]}
+    - {name: LangChain, aliases: [LangGraph, LlamaIndex]}
+    - {name: 파인튜닝, aliases: [Fine-tuning, Fine tuning, LoRA, SFT, RLHF]}
+    - {name: 프롬프트 엔지니어링, aliases: [Prompt Engineering, 프롬프트]}
+    - {name: NLP, aliases: [자연어 처리, 자연어처리]}
+    - {name: 컴퓨터 비전, aliases: [Computer Vision, Vision AI, OpenCV, 비전 AI, 영상 처리, 이미지 처리]}
+    - {name: 추천 시스템, aliases: [Recommendation, Recommender, 추천 모델, 개인화 추천]}
+    - {name: 검색, aliases: [Search, 검색 엔진, 랭킹]}
+    - {name: 시계열, aliases: [Time Series, 시계열 예측, 수요 예측]}
+  협업:
+    - {name: Git, aliases: [GitHub, GitLab]}
+    - {name: Jira, aliases: [Confluence]}
