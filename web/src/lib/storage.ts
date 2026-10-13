@@ -1,4 +1,4 @@
-// 이 기기에서만 기억하는 값. 필터는 관리 화면이 생기면 사람별 설정(Supabase)으로 옮긴다.
+// 이 기기에서만 기억하는 값. 필터는 계정(Supabase settings)에 저장하고 여기는 빠른 표시용 사본이다.
 export function readLocal<T>(key: string): T | null {
   try {
     const raw = window.localStorage.getItem(key)

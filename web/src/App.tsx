@@ -6,6 +6,7 @@ import { passes } from './lib/filter'
 import { todayISO } from './lib/format'
 import { loadScreen } from './lib/load'
 import { useRoute } from './lib/route'
+import { loadFilters, saveFilters as saveRemoteFilters } from './lib/settings'
 import { readLocal, writeLocal } from './lib/storage'
 import { supabase } from './lib/supabase'
 import type { Filters, Screen } from './lib/types'
@@ -85,9 +86,28 @@ function Main({ screen }: { screen: Screen }) {
     return [...top, '원격']
   }, [screen])
 
+  // 계정에 저장된 필터가 있으면 그걸 쓰고, 없으면 이 기기에 있던 필터를 계정으로 옮긴다
+  useEffect(() => {
+    let alive = true
+    loadFilters().then((remote) => {
+      if (!alive) return
+      if (remote) {
+        const merged = { ...defaults, ...remote }
+        setFilters(merged)
+        writeLocal(FILTER_KEY, merged)
+      } else {
+        saveRemoteFilters({ ...defaults, ...(readLocal<Filters>(FILTER_KEY) ?? {}) })
+      }
+    })
+    return () => {
+      alive = false
+    }
+  }, [defaults])
+
   function saveFilters(f: Filters) {
     setFilters(f)
     writeLocal(FILTER_KEY, f)
+    saveRemoteFilters(f)
     setUi({ ...ui, limit: PAGE })
   }
 

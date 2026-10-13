@@ -17,6 +17,8 @@
    using (bucket_id = 'screen');
    ```
 
+   이어서 `supabase/migrations/` 폴더의 SQL 파일을 번호 순서대로 SQL Editor에서 실행한다(사람별 설정 표와 권한). 새 파일이 생기면 그것만 실행한다.
+
 3. **Authentication**
    - 이메일 로그인을 켜 두고, 새 사용자 가입(Allow new users to sign up)은 **반드시** 끈다. publishable 키는 공개되는 값이라, 가입이 열려 있으면 누구나 가입해서 "로그인한 사람"이 될 수 있다.
    - Users에서 본인 이메일을 초대한다(지인도 여기서 초대). 초대 메일 링크는 보내는 순간의 Site URL로 돌아가므로, 아래 Site URL을 먼저 저장하고 초대한다.
