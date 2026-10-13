@@ -5,32 +5,37 @@
 ## 1. Supabase (저장소, 로그인)
 
 1. supabase.com에서 새 프로젝트를 만든다. 지역은 Northeast Asia (Seoul), 무료 등급.
-2. **Storage**에서 저장소(bucket)를 만든다. 이름 `screen`, Public은 끈다(비공개).
-3. **SQL Editor**에서 아래를 실행한다. 로그인한 사람만 화면용 파일을 읽을 수 있게 한다.
+2. **SQL Editor**에서 아래를 한 번 실행한다. 비공개 저장소 `screen`을 만들고, 로그인한 사람만 읽게 한다.
 
    ```sql
+   insert into storage.buckets (id, name, public)
+   values ('screen', 'screen', false)
+   on conflict (id) do nothing;
+
    create policy "로그인한 사람은 화면용 파일을 읽는다"
    on storage.objects for select to authenticated
    using (bucket_id = 'screen');
    ```
 
-4. **Authentication**
-   - 이메일 로그인을 켜 두고, 새 사용자 가입(Allow new users to sign up)은 끈다. 허용한 사람만 들어온다.
+3. **Authentication**
+   - 이메일 로그인을 켜 두고, 새 사용자 가입(Allow new users to sign up)은 **반드시** 끈다. publishable 키는 공개되는 값이라, 가입이 열려 있으면 누구나 가입해서 "로그인한 사람"이 될 수 있다.
    - Users에서 본인 이메일을 초대한다(지인도 여기서 초대).
-   - URL Configuration의 Site URL에 대시보드 주소(Cloudflare Pages, 아래 2번)를, Redirect URLs에 같은 주소와 `http://localhost:5173`을 넣는다.
-5. **Project Settings > API Keys**에서 두 값을 확인한다.
+   - URL Configuration의 Site URL에 대시보드 주소(Cloudflare Pages, 아래 2)를, Redirect URLs에 같은 주소와 `http://localhost:5173`을 넣는다.
+4. **Project Settings > API Keys**에서 두 값을 확인한다.
    - Project URL과 publishable key(`sb_publishable_…`): 화면에서 쓴다. 공개돼도 되는 키다.
    - secret key(`sb_secret_…`): 매일 수집 작업만 쓴다. 절대 화면이나 채팅에 붙이지 않는다.
 
 ## 2. Cloudflare Pages (화면)
+
+Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 때마다 Cloudflare가 가져가 빌드하고 배포한다. 처음에는 Cloudflare Access(로그인 문)도 쓰려고 골랐는데, 로그인을 Supabase로 바꾼 뒤로는 화면 코드 호스팅만 한다. 화면에 Workers만 보이면 Create에서 Pages 쪽("Import an existing Git repository")을 고른다.
 
 1. Workers & Pages > Create > Pages > Connect to Git에서 이 레포를 고른다.
 2. 빌드 설정
    - Root directory: `web`
    - Build command: `npm run build`
    - Build output directory: `dist`
-   - 환경 변수: `NODE_VERSION`=`22`, `VITE_SUPABASE_URL`=Project URL, `VITE_SUPABASE_ANON_KEY`=publishable key
-3. 배포된 주소(`*.pages.dev`)를 Supabase의 Site URL과 Redirect URLs에 넣는다(1-4).
+   - 환경 변수: `NODE_VERSION`=`22`, `VITE_SUPABASE_URL`=Project URL, `VITE_SUPABASE_PUBLISHABLE_KEY`=publishable key
+3. 배포된 주소(`*.pages.dev`)를 Supabase의 Site URL과 Redirect URLs에 넣는다(1의 3).
 
 화면 코드에는 공고 데이터가 들어가지 않는다. 공고는 로그인한 뒤 Supabase 비공개 저장소에서 받는다.
 
