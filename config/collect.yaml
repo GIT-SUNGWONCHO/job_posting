@@ -55,6 +55,10 @@ sources:
 
   saramin:
     enabled: true
+    # 본문(상세)은 다른 수집처에 없는 공고만, 하루 최대 이만큼
+    detail_budget: 500
+    detail_min_interval: 1.0
+    detail_max_minutes: 12
     # 사람인 직무 분류 번호(데이터·AI 관련)
     categories:
       82: 데이터분석가

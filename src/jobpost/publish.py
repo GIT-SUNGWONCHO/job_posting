@@ -12,14 +12,14 @@ from pathlib import Path
 import requests
 
 BUCKET = "screen"
-OBJECT = "screen.json.gz"
+OBJECT = "screen.json.gz"  # 본문은 bodies/00.json.gz … (screen.write_bodies)
 
 
 def configured() -> bool:
     return bool(os.environ.get("SUPABASE_URL") and os.environ.get("SUPABASE_SECRET_KEY"))
 
 
-def upload(path: Path, session: requests.Session | None = None) -> None:
+def upload(path: Path, session: requests.Session | None = None, name: str = OBJECT) -> None:
     url = os.environ["SUPABASE_URL"].rstrip("/")
     key = os.environ["SUPABASE_SECRET_KEY"]
     headers = {
@@ -32,7 +32,7 @@ def upload(path: Path, session: requests.Session | None = None) -> None:
     if key.count(".") == 2:
         headers["Authorization"] = f"Bearer {key}"
     http = session or requests.Session()
-    resp = http.post(f"{url}/storage/v1/object/{BUCKET}/{OBJECT}", data=path.read_bytes(),
+    resp = http.post(f"{url}/storage/v1/object/{BUCKET}/{name}", data=path.read_bytes(),
                      headers=headers, timeout=60)
     if resp.status_code >= 300:
         # 응답 본문에는 키가 들어 있지 않지만 길이는 줄여서 남긴다

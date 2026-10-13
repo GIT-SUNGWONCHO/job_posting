@@ -24,7 +24,15 @@ export interface Posting {
   firstSeen: string
   /** 직무 유형 id. 오늘 들어와 아직 분류 전이면 null */
   jobType: string | null
+  /** 본문 파일(bodies/xx.json.gz)에 본문이 있나 */
+  hasBody: boolean
   sources: SourceLink[]
+}
+
+export interface Body {
+  text: string
+  /** 본문을 가져온 수집처: remember(원문), zighang(직행이 정리한 요약), saramin(원문) */
+  source: string
 }
 
 export interface JobType {

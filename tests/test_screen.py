@@ -14,7 +14,7 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
         Posting(source=Source.ZIGHANG, source_id="a", url="https://z/a", company="(주)회사",
                 title="데이터 엔지니어", career_min=5, career_max=None, regions=["서울"]),
         Posting(source=Source.REMEMBER, source_id="1", url="https://r/1", company="회사",
-                title="데이터 엔지니어"),
+                title="데이터 엔지니어", description="[주요업무] " + "데이터 파이프라인 구축 " * 5),
         Posting(source=Source.ZIGHANG, source_id="b", url="https://z/b", company="외국회사",
                 title="Data Engineer", regions=["해외"]),
         Posting(source=Source.SARAMIN, source_id="9", url="https://s/9", company="다른회사",
@@ -31,11 +31,12 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
     s.state["remember:1"]["job_type"] = {"id": "data_eng"}  # 대표에 없으면 묶인 공고의 유형을 쓴다
     s.save()
 
-    built = screen.build(tmp_path, today=day)
+    built, bodies = screen.build(tmp_path, today=day)
     assert [p["id"] for p in built["postings"]] == ["zighang:a"]
     p = built["postings"][0]
     assert p["career"] == "경력 5년 이상"
     assert p["jobType"] == "data_eng"
+    assert p["hasBody"] and bodies["bodies"]["zighang:a"]["source"] == "remember"
     assert {"id": "data_eng", "name": "데이터 엔지니어"} in built["jobTypes"]
     assert [x["name"] for x in p["sources"]] == ["직행", "리멤버"]
     assert p["sources"][1]["url"] == "https://r/1"
@@ -71,3 +72,14 @@ def test_upload_sends_gzip_with_upsert(tmp_path, monkeypatch):
     assert url == "https://x.supabase.co/storage/v1/object/screen/screen.json.gz"
     assert data == b"\x1f\x8b" and headers["x-upsert"] == "true"
     assert headers["apikey"] == "k" and "Authorization" not in headers
+
+
+def test_body_shard_matches_the_web_hash(tmp_path):
+    # web/src/lib/load.test.ts와 같은 값이어야 한다
+    assert screen.body_shard("zighang:a") == "04"
+    assert screen.body_shard("saramin:55277376") == "08"
+    paths = screen.write_bodies({"version": 3, "date": "2026-10-13",
+                                 "bodies": {"zighang:a": {"text": "x", "source": "zighang"}}}, tmp_path)
+    assert len(paths) == screen.BODY_SHARDS
+    with gzip.open(tmp_path / "bodies" / "04.json.gz", "rt", encoding="utf-8") as f:
+        assert json.load(f)["bodies"] == {"zighang:a": {"text": "x", "source": "zighang"}}

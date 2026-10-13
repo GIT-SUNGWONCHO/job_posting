@@ -5,7 +5,7 @@ import type { Company, Filters, Posting } from './types'
 const base: Posting = {
   id: 'zighang:a', company: 'k', title: '데이터 엔지니어', careerMin: 5, careerMax: 10, career: '경력 5~10년',
   deadlineType: 'always', deadline: null, regions: ['서울'], employment: [], headhunter: false, noise: null,
-  firstSeen: '2026-10-13', jobType: 'data_eng', sources: [],
+  firstSeen: '2026-10-13', jobType: 'data_eng', hasBody: false, sources: [],
 }
 const large: Company = { name: '삼성전자', type: '대기업', group: '삼성' }
 const f: Filters = {

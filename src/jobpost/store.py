@@ -121,6 +121,14 @@ class Store:
         path.write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
         return path
 
+    def load_details(self) -> dict[str, dict[str, Any]]:
+        """저장된 모든 상세(본문). 같은 공고를 다시 받았으면 나중 것."""
+        out: dict[str, dict[str, Any]] = {}
+        for path in sorted((self.base / "details").rglob("*.jsonl.gz")):
+            for r in _read_gz(path):
+                out[r["uid"]] = r
+        return out
+
     def load_postings(self) -> dict[str, dict[str, Any]]:
         """저장된 모든 공고 원본(처음 본 날 기준 파일들)을 읽는다."""
         out: dict[str, dict[str, Any]] = {}

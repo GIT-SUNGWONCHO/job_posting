@@ -6,6 +6,7 @@ import { defineConfig, type Plugin } from 'vite'
 // 개발할 때만 로컬 화면용 파일을 내준다. 빌드 결과(공개되는 화면 코드)에는 공고 데이터가 들어가지 않는다.
 function devScreenFile(): Plugin {
   const file = resolve(process.env.DEV_SCREEN_FILE ?? '../.dev-data/screen.json.gz')
+  const dir = resolve(file, '..')
   return {
     name: 'dev-screen-file',
     apply: 'serve',
@@ -18,6 +19,17 @@ function devScreenFile(): Plugin {
         }
         res.setHeader('Content-Type', 'application/octet-stream')
         res.end(readFileSync(file))
+      })
+      server.middlewares.use('/__dev/bodies', (req, res) => {
+        const name = (req.url ?? '').replace(/^\//, '')
+        const path = resolve(dir, 'bodies', name)
+        if (!/^[0-9a-f]{2}\.json\.gz$/.test(name) || !existsSync(path)) {
+          res.statusCode = 404
+          res.end()
+          return
+        }
+        res.setHeader('Content-Type', 'application/octet-stream')
+        res.end(readFileSync(path))
       })
     },
   }

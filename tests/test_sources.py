@@ -132,3 +132,16 @@ def test_saramin_pages_until_short_page():
     assert done and len(postings) == 207
     postings, done = collector._pages(2)
     assert not done and len(postings) == 200
+
+
+def test_saramin_detail_text():
+    from datetime import datetime
+
+    from jobpost.sources.saramin import parse_detail
+
+    html = ("<html><body><h1>채용공고 상세</h1><script>x=1</script><div>📋 주요업무</div>"
+            "<p>데이터  파이프라인 구축</p><img src='a.png'></body></html>")
+    d = parse_detail(html, "123", datetime(2026, 10, 13))
+    assert d.uid == "saramin:123"
+    assert d.description == "📋 주요업무\n데이터 파이프라인 구축"
+    assert d.raw == {"images": 1}

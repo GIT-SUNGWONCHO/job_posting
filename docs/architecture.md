@@ -58,7 +58,7 @@ flowchart LR
 | --- | --- | --- | --- | --- |
 | 수집 | 열린 공고를 매일 다시 훑고 바뀐 것만 저장 | Python, GitHub Actions | 하루 약 15분. 비공개 레포 무료 월 2,000분 | 구현됨 |
 | 원본 보관함 | 공고 원본, 상세, 상태, 회사 구분, 지난 기록 | `data` 브랜치 파일 | 무료 | 구현됨 |
-| 화면용 파일 | 매일 수집 뒤 오늘 열린 국내 공고와 회사 기본정보를 파일 하나로 묶음(압축 약 400KB) | Python, GitHub Actions | 매일 덮어씀 | 구현됨 |
+| 화면용 파일 | 매일 수집 뒤 오늘 열린 국내 공고와 회사 기본정보를 파일 하나로 묶음(압축 약 400KB). 본문은 공고 id로 나눈 16개 파일(묶음당 약 100~250KB)에 따로 담고, 상세를 열 때 그 공고가 든 묶음만 받는다 | Python, GitHub Actions | 매일 덮어씀 | 구현됨 |
 | 비공개 저장소 | 화면용 파일을 로그인한 사람에게만 내줌 | Supabase Storage | 무료 1GB | 운영 중 |
 | DB | 개인 데이터, 리서치 결과, 요청 대기열 | Supabase(Postgres), 행 단위 권한 | 무료 500MB. 1주 동안 접속이 없으면 일시 정지(매일 작업이 접속하므로 괜찮음) | 2단계부터 |
 | 로그인 | 허용한 사람만, 구글 계정으로(이메일 링크는 예비). 기기마다 한 번 | Supabase Auth + Google | 무료 | 운영 중(가입 막음, 초대한 사람만) |
@@ -102,7 +102,7 @@ flowchart LR
 ## 경계
 
 - **수집 → 나머지**: `data` 브랜치 파일. 형식은 `src/jobpost/store.py`와 `data` 브랜치 README. 수집은 이 형식만 지키면 따로 바꿀 수 있다.
-- **화면용 파일**: 매일 수집 뒤 하나를 만들어 Supabase 저장소 `screen/screen.json.gz`에 덮어쓴다. 형식은 만드는 쪽 `src/jobpost/screen.py`와 읽는 쪽 `web/src/lib/types.ts`가 같아야 하고, 바꾸면 `version`을 올린다. 마감 D-숫자는 보는 날에 따라 바뀌어서 브라우저가 계산한다.
+- **화면용 파일**: 매일 수집 뒤 하나를 만들어 Supabase 저장소 `screen/screen.json.gz`와 `screen/bodies/00~0f.json.gz`에 덮어쓴다. 본문 묶음 번호는 공고 id의 FNV-1a 해시로 정하고 Python(`screen.body_shard`)과 화면(`load.ts bodyShard`)이 같아야 한다. 형식은 만드는 쪽 `src/jobpost/screen.py`와 읽는 쪽 `web/src/lib/types.ts`가 같아야 하고, 바꾸면 `version`을 올린다. 마감 D-숫자는 보는 날에 따라 바뀌어서 브라우저가 계산한다.
 - **브라우저 ↔ DB**: 로그인한 본인 행만 읽고 쓴다(행 단위 권한). 공용 리서치는 로그인한 사람 모두 읽기만 한다.
 - **긴 작업**: 브라우저가 요청 대기열에 한 줄 넣으면 서버 함수가 GitHub Actions를 깨우고, Actions가 처리해 결과를 DB에 쓴다. 화면은 "조사 중 → 완료"를 보여준다.
 - **외부 서비스**: Gemini, DART, 카카오는 각각 한 모듈에서만 부른다. 모델이나 서비스를 바꿀 때 그 모듈만 고친다.

@@ -12,8 +12,8 @@ from typing import Any
 
 from bs4 import BeautifulSoup
 
-from ..http import Client
-from ..models import DeadlineType, Posting, Source
+from ..http import Client, TimeBudgetExceeded
+from ..models import DeadlineType, Detail, Posting, Source
 from ..normalize import company_key
 from . import CollectResult
 
@@ -21,6 +21,8 @@ log = logging.getLogger(__name__)
 
 LIST_URL = "https://www.saramin.co.kr/zf_user/jobs/list/job-category"
 VIEW_URL = "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx={}"
+# 공고 페이지 안에 iframe으로 들어가는 본문. 글로 된 공고가 많고, 이미지 한 장인 공고도 있다(2026.10.13 확인)
+DETAIL_URL = "https://www.saramin.co.kr/zf_user/jobs/relay/view-detail?rec_idx={}&rec_seq=0"
 PAGE_COUNT = 100
 EMPLOYMENT = ("정규직", "계약직", "인턴직", "파견직", "프리랜서", "아르바이트", "위촉직", "병역특례")
 
@@ -139,6 +141,20 @@ def parse_list(html: str, today: date, now: datetime) -> tuple[list[Posting], in
     return postings, max(pages, default=1)
 
 
+def parse_detail(html: str, rid: str, now: datetime) -> Detail:
+    """본문 iframe HTML → 글. 이미지뿐인 공고는 글이 거의 없다."""
+    soup = BeautifulSoup(html, "lxml")
+    for t in soup(["script", "style", "noscript"]):
+        t.decompose()
+    lines = [" ".join(ln.split()) for ln in soup.get_text("\n").splitlines()]
+    lines = [ln for ln in lines if ln]
+    if lines and lines[0] == "채용공고 상세":
+        lines = lines[1:]
+    text = "\n".join(lines)
+    return Detail(uid=f"{Source.SARAMIN.value}:{rid}", fetched_at=now, description=text or None,
+                  raw={"images": len(soup.find_all("img"))})
+
+
 class SaraminCollector:
     def __init__(self, client: Client, cfg: dict[str, Any]):
         self.client = client
@@ -193,3 +209,19 @@ class SaraminCollector:
             result.postings.append(p)
         result.requests = self.client.requests - start
         return result
+
+    def fetch_details(self, source_ids: list[str]) -> tuple[list[Detail], list[str]]:
+        details: list[Detail] = []
+        errors: list[str] = []
+        for n, rid in enumerate(source_ids, 1):
+            try:
+                resp = self.client.get(DETAIL_URL.format(rid))
+                details.append(parse_detail(resp.text, rid, datetime.now()))
+            except TimeBudgetExceeded:
+                errors.append(f"시간 한도 초과: {n - 1}/{len(source_ids)}건에서 멈춤")
+                break
+            except Exception as e:
+                errors.append(f"상세 {rid}: {e}")
+            if n % 100 == 0:
+                log.info("사람인 상세 %d/%d건", n, len(source_ids))
+        return details, errors

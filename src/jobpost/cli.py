@@ -39,15 +39,19 @@ def main(argv: list[str] | None = None) -> int:
         failed = [n for n, s in summary["sources"].items() if s["error_count"] and not s["fetched"]]
         return 1 if failed and len(failed) == len(summary["sources"]) else 0
     if args.cmd == "screen":
-        built = screen.build(args.data_dir)
+        built, bodies = screen.build(args.data_dir)
         path = screen.write(built, args.out)
-        logging.info("화면용 파일: 공고 %d건, 회사 %d곳, %s KB",
-                     built["counts"]["open"], built["counts"]["companies"], path.stat().st_size // 1024)
+        body_paths = screen.write_bodies(bodies, args.out.parent)
+        logging.info("화면용 파일: 공고 %d건, 회사 %d곳, %s KB / 본문 %d건, %d개 파일 %s KB",
+                     built["counts"]["open"], built["counts"]["companies"], path.stat().st_size // 1024,
+                     len(bodies["bodies"]), len(body_paths), sum(p.stat().st_size for p in body_paths) // 1024)
         if args.upload:
             if not publish.configured():
                 logging.info("Supabase 설정이 없어 올리지 않음")
             else:
                 publish.upload(path)
+                for bp in body_paths:
+                    publish.upload(bp, name=f"bodies/{bp.name}")
                 logging.info("Supabase 저장소에 올림")
     return 0
 

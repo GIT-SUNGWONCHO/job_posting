@@ -1,4 +1,4 @@
-"""매일 수집 한 번: 수집 → 범위 고르기 → 저장 → 상세 받기 → 중복 묶기 → 요약."""
+"""매일 수집 한 번: 수집 → 범위 고르기 → 저장 → 중복 묶기 → 상세(본문) 받기 → 직무 유형 → 요약."""
 
 from __future__ import annotations
 
@@ -97,27 +97,6 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         s["new"] = new_by_source.get(name, 0)
         s["closed"] = closed_by_source.get(name, 0)
 
-    # 직행 상세(본문): 대기업·공공·외국계부터, 새로 본 공고부터 하루 한도만큼
-    zcfg = (cfg.get("sources") or {}).get("zighang") or {}
-    budget = zcfg.get("detail_budget", 0) if detail_budget is None else detail_budget
-    if budget and "zighang" in collectors:
-        wanted = [r for r in store.open_records()
-                  if r["source"] == "zighang" and not r.get("detail") and not r.get("overseas")]
-
-        wanted.sort(key=lambda r: r.get("first_seen", ""), reverse=True)
-        wanted.sort(key=lambda r: registry.company_type(
-            r.get("company_key", ""), r.get("company", "")) is CompanyType.OTHER)
-        ids = [r["uid"].split(":", 1)[1] for r in wanted[:budget]]
-        t0 = time.monotonic()
-        collector = collectors["zighang"]
-        collector.client = Client(min_interval=zcfg.get("min_interval", 0.5),
-                                  max_minutes=zcfg.get("detail_max_minutes"))
-        details, errors = collector.fetch_details(ids)
-        store.add_details(today, details)
-        summary["details"] = {"requested": len(ids), "fetched": len(details),
-                              "remaining": max(len(wanted) - len(details), 0),
-                              "errors": errors[:20], "seconds": round(time.monotonic() - t0, 1)}
-
     # 중복 묶기(지금 열려 있는 국내 공고끼리). 요약 숫자도 국내 공고 기준이다
     all_open = store.open_records()
     open_recs = [r for r in all_open if not r.get("overseas")]
@@ -129,6 +108,32 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
     for r in store.state.values():
         rep = rep_of.get(r["uid"])
         r["dup_of"] = rep if rep and rep != r["uid"] else None
+
+    # 상세(본문): 직행·사람인. 리멤버는 목록에 본문이 같이 온다.
+    # 묶인 공고는 대표만 받는다(대표 순서가 리멤버 > 직행 > 사람인이라 본문이 있는 쪽이 대표다).
+    # 대기업·공공·외국계부터, 새로 본 공고부터 하루 한도만큼
+    summary["details"] = {}
+    for name in ("zighang", "saramin"):
+        scfg = (cfg.get("sources") or {}).get(name) or {}
+        budget = scfg.get("detail_budget", 0) if detail_budget is None else detail_budget
+        if not budget or name not in collectors:
+            continue
+        wanted = [r for r in store.open_records()
+                  if r["source"] == name and not r.get("detail") and not r.get("overseas")
+                  and not r.get("dup_of") and not r.get("noise")]
+        wanted.sort(key=lambda r: r.get("first_seen", ""), reverse=True)
+        wanted.sort(key=lambda r: registry.company_type(
+            r.get("company_key", ""), r.get("company", "")) is CompanyType.OTHER)
+        ids = [r["uid"].split(":", 1)[1] for r in wanted[:budget]]
+        t0 = time.monotonic()
+        collector = collectors[name]
+        collector.client = Client(min_interval=scfg.get("detail_min_interval", scfg.get("min_interval", 0.5)),
+                                  max_minutes=scfg.get("detail_max_minutes"))
+        details, errors = collector.fetch_details(ids)
+        store.add_details(today, details)
+        summary["details"][name] = {"requested": len(ids), "fetched": len(details),
+                                    "remaining": max(len(wanted) - len(details), 0),
+                                    "errors": errors[:20], "seconds": round(time.monotonic() - t0, 1)}
 
     # 직무 유형(AI). 키가 없거나 실패해도 수집 결과는 그대로 저장한다
     summary["job_types"] = jobtypes.run(store.state, store.load_postings(), today.isoformat())
