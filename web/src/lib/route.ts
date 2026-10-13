@@ -9,6 +9,7 @@ export type Route =
   | { name: 'career' }
   | { name: 'apply' }
   | { name: 'admin' }
+  | { name: 'profile' }
 
 export function parse(hash: string): Route {
   const [, a = '', b = ''] = hash.replace(/^#/, '').split('/')
@@ -23,6 +24,7 @@ export function parse(hash: string): Route {
     case 'career':
     case 'apply':
     case 'admin':
+    case 'profile':
       return { name: a }
     default:
       return { name: 'report' }
@@ -36,6 +38,7 @@ export const href = {
   career: '#/career',
   apply: '#/apply',
   admin: '#/admin',
+  profile: '#/profile',
   job: (id: string) => `#/job/${encodeURIComponent(id)}`,
   company: (key: string) => `#/company/${encodeURIComponent(key)}`,
 }

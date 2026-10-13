@@ -17,6 +17,7 @@ import { JobDetail } from './screens/JobDetail'
 import { Jobs, PAGE, type JobsUi } from './screens/Jobs'
 import { Later } from './screens/Later'
 import { Login } from './screens/Login'
+import { Profile } from './screens/Profile'
 import { Report } from './screens/Report'
 
 const FILTER_KEY = 'jobpost.filters.v1'
@@ -151,6 +152,10 @@ function Main({ screen }: { screen: Screen }) {
       break
     case 'admin':
       body = <Admin />
+      break
+    case 'profile':
+      detail = !wide
+      body = <Profile jobTypes={screen.jobTypes ?? []} />
       break
   }
 

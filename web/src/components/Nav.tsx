@@ -11,6 +11,7 @@ const TABS = [
 
 function activeTab(route: Route): string {
   if (route.name === 'job' || route.name === 'company') return 'jobs'
+  if (route.name === 'profile') return 'admin'
   return route.name
 }
 
