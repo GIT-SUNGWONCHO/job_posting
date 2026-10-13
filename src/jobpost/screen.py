@@ -44,6 +44,8 @@ def write_bodies(bodies: dict[str, Any], out_dir: Path) -> list[Path]:
         shards[body_shard(pid)][pid] = body
     return [write({"version": bodies["version"], "date": bodies["date"], "bodies": part}, out_dir / "bodies" / f"{k}.json.gz")
             for k, part in shards.items()]
+
+
 SOURCE_NAMES = {"zighang": "직행", "remember": "리멤버", "saramin": "사람인"}
 
 

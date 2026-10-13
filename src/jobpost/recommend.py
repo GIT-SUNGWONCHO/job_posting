@@ -83,10 +83,15 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         return skills_cache[pid]
 
     settings = {r["user_id"]: r.get("filters") or {} for r in db.select("settings", "select=user_id,filters")}
-    summary: dict[str, Any] = {"users": 0, "rows": 0, "reasons_new": 0, "reasons_reused": 0, "calls": 0, "errors": []}
-    for prof in db.select("profiles", "select=user_id,data,version"):
+    summary: dict[str, Any] = {"profiles": 0, "users": 0, "rows": 0, "reasons_new": 0, "reasons_reused": 0,
+                               "calls": 0, "errors": []}
+    profiles = db.select("profiles", "select=user_id,data,version")
+    summary["profiles"] = len(profiles)
+    for prof in profiles:
         user, data, pv = prof["user_id"], prof.get("data") or {}, prof.get("version", 1)
-        if not data.get("skills") and not data.get("currentRole"):
+        if not data.get("skills") and not data.get("currentRole") and not data.get("targetRoles"):
+            summary.setdefault("skipped_empty", 0)
+            summary["skipped_empty"] += 1
             continue  # 프로필이 비어 있으면 건너뛴다
         summary["users"] += 1
         user_filters = {**defaults, **settings.get(user, {})}
