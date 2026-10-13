@@ -1,59 +1,98 @@
 {
  "date": "2026-10-13",
- "started": "2026-10-13T17:58:53",
+ "started": "2026-10-13T18:40:59",
  "sources": {
   "zighang": {
    "fetched": 8954,
    "in_scope": 8953,
    "complete": true,
    "requests": 223,
-   "seconds": 89.8,
+   "seconds": 89.7,
    "errors": [],
    "error_count": 0,
-   "new": 92,
-   "closed": 62
+   "new": 15,
+   "closed": 59
   },
   "remember": {
-   "fetched": 1499,
-   "in_scope": 1329,
+   "fetched": 1492,
+   "in_scope": 1322,
    "complete": true,
    "requests": 56,
    "seconds": 165.4,
    "errors": [],
    "error_count": 0,
-   "new": 7,
-   "closed": 6
+   "new": 0,
+   "closed": 7
   },
   "saramin": {
-   "fetched": 3825,
-   "in_scope": 1415,
+   "fetched": 3832,
+   "in_scope": 1421,
    "complete": true,
    "requests": 44,
-   "seconds": 61.5,
+   "seconds": 60.9,
    "errors": [],
    "error_count": 0,
-   "new": 14,
-   "closed": 11
+   "new": 4,
+   "closed": 3
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 2618,
+   "fetched": 2598,
+   "remaining": 20,
+   "errors": [
+    "상세 0bb11680-d0df-4c1f-aca2-a413b9cb8487: 빈 응답",
+    "상세 1ae39661-eeb5-4d31-b1cb-978eda166c9f: 빈 응답",
+    "상세 3b6098fb-1e6f-4c7c-bf2c-51739a269d93: 빈 응답",
+    "상세 460dcdfa-d7fe-4c57-952f-509551d813c8: 빈 응답",
+    "상세 514c7a20-d65c-412e-9e5e-41dbcdfd2ba9: 빈 응답",
+    "상세 7a0e3670-44c9-4f35-aab5-78d066c81354: 빈 응답",
+    "상세 909617f1-0d17-49f1-8e38-d748baddfe63: 빈 응답",
+    "상세 9d5a2cac-9163-4c32-a920-3f728d0ae28c: 빈 응답",
+    "상세 ad03ed53-f3f1-467f-b15a-e8d33974833a: 빈 응답",
+    "상세 b01085a8-e65d-4310-a154-565fa1776d12: 빈 응답",
+    "상세 b638e58a-914c-48f0-a994-431df7c32429: 빈 응답",
+    "상세 b719b116-1fbc-4593-b169-1c263af9e685: 빈 응답",
+    "상세 ceec7491-3d25-4d41-bf8b-c9c40aab1f5b: 빈 응답",
+    "상세 d8646570-fe23-41c3-81b3-4bddeacde77c: 빈 응답",
+    "상세 dca902eb-0f8f-4454-be73-46982efc6601: 빈 응답",
+    "상세 e3bed6f6-47a2-488a-a632-36997f289f45: 빈 응답",
+    "상세 eb5aefab-c119-4593-bee3-ffbf3c8fbb8b: 빈 응답",
+    "상세 f077bba6-e48d-4916-9113-57246ce1edc9: 빈 응답",
+    "상세 f2611a00-1323-4708-a552-e1362d9c6558: 빈 응답",
+    "상세 f4888946-a1a6-4357-b2c1-fa7deed8e564: 빈 응답"
+   ],
+   "seconds": 1049.3
+  },
+  "saramin": {
+   "requested": 937,
+   "fetched": 721,
+   "remaining": 216,
+   "errors": [
+    "시간 한도 초과: 721/937건에서 멈춤"
+   ],
+   "seconds": 722.3
   }
  },
  "job_types": {
   "pending": 0,
-  "classified": 6901,
-  "calls": 87
+  "classified": 60,
+  "calls": 1
  },
- "open": 6901,
- "overseas_open": 4796,
- "open_unique": 5875,
- "duplicates": 1026,
+ "open": 6897,
+ "overseas_open": 4799,
+ "open_unique": 5880,
+ "duplicates": 1017,
  "noise": 249,
  "company_types": {
-  "그 외": 4973,
+  "그 외": 4978,
   "대기업": 674,
-  "외국계": 190,
-  "공기업·공공기관": 38
+  "외국계": 191,
+  "공기업·공공기관": 37
  },
- "personal_filter_pass": 288,
- "new": 113,
- "closed": 79,
- "finished": "2026-10-13T18:12:16"
+ "personal_filter_pass": 287,
+ "new": 19,
+ "closed": 69,
+ "finished": "2026-10-13T19:16:02"
 }
