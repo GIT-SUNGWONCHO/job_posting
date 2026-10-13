@@ -79,7 +79,7 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 
 /* 목록 한 줄: 회사 / 제목 / 마감 · 경력 (최대 4줄) */
 .rows { display: flex; flex-direction: column; }
-.list { padding: 0 var(--gutter); border-top: 1px solid var(--line); margin: 0 var(--gutter); padding: 0; }
+.list { margin: 0 var(--gutter); border-top: 1px solid var(--line); }
 .row { display: flex; gap: 14px; padding: 14px 0; }
 .row + .row { border-top: 1px solid var(--line); }
 .row:hover .row-title { color: var(--accent); }
