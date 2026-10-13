@@ -13,7 +13,7 @@ export function Login() {
     setState('sending')
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { shouldCreateUser: false, emailRedirectTo: window.location.origin },
+      options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/` },
     })
     setState(error ? 'failed' : 'sent')
   }
