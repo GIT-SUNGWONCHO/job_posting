@@ -8,7 +8,7 @@ from __future__ import annotations
 import logging
 import re
 import time
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Any
 
 from ..http import Client, TimeBudgetExceeded
@@ -26,6 +26,7 @@ HEADERS = {
 }
 PAGE_SIZE = 100
 NO_UPPER = 50  # 이 값 이상이면 상한 없음으로 본다(직행은 100을 쓴다)
+FAR_DEADLINE_DAYS = 730  # 마감일이 2년 넘게 남았으면 상시로 본다
 
 
 def _date(value: str | None) -> date | None:
@@ -35,7 +36,8 @@ def _date(value: str | None) -> date | None:
         d = datetime.fromisoformat(value[:19]).date()
     except ValueError:
         return None
-    return None if d.year >= 9000 else d
+    # 9999-12-31, 2999-12-31처럼 먼 날짜는 "마감일 없음"을 뜻한다
+    return None if d > date.today() + timedelta(days=FAR_DEADLINE_DAYS) else d
 
 
 def _datetime(value: str | None) -> datetime | None:

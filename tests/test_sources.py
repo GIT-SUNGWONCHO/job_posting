@@ -29,6 +29,13 @@ def test_zighang_list_item():
     assert career_text(open_ended.career_min, open_ended.career_max) == "경력 10년 이상"
 
 
+def test_zighang_far_deadline_is_always():
+    item = dict(load("zighang_list.json")["data"]["content"][0])
+    item.update({"deadlineType": "마감일", "endDate": "2999-12-31T23:59:59"})
+    p = zighang.parse_item(item)
+    assert p.deadline_type is DeadlineType.ALWAYS and p.deadline is None
+
+
 def test_zighang_detail_text():
     data = load("zighang_detail.json")["data"]
     d = zighang.parse_detail(data, datetime(2026, 10, 13))
