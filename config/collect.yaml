@@ -48,7 +48,9 @@ sources:
       - {keywords: [Data]}
     per: 50  # 한 번에 50건까지만 된다
     max_pages_per_search: 40
-    min_interval: 1.0
+    # 1초 간격으로 25번쯤 요청하면 429(요청 과다)가 온다(2026.10). 천천히 받고, 429면 오래 기다린다
+    min_interval: 3.0
+    backoff: 10
     max_minutes: 15
 
   saramin:
@@ -105,6 +107,15 @@ scope:
     - "(?<![A-Za-z])AX(?![A-Za-z])"
     - "(?i)data"
     - "(?i)machine\\s*learning"
+  # 근무지가 이 지역뿐이면 저장하지 않는다(국내 시장만 본다). 직행 데이터·AI 분류의 절반 이상이 해외 공고다
+  exclude_regions:
+    - 해외
+    - 아시아·중동
+    - 북·중미
+    - 남미
+    - 유럽
+    - 오세아니아
+    - 아프리카
   # 저장은 하되 명백한 잡음으로 표시한다(분석·추천에서 뺀다)
   noise:
     - "데이터\\s*센터"

@@ -21,7 +21,7 @@ class TimeBudgetExceeded(RuntimeError):
 
 class Client:
     def __init__(self, min_interval: float = 0.5, timeout: tuple[float, float] = (10.0, 30.0),
-                 max_minutes: float | None = None):
+                 max_minutes: float | None = None, backoff: float = 1.0):
         self.min_interval = min_interval
         self.timeout = timeout
         self.deadline = time.monotonic() + max_minutes * 60 if max_minutes else None
@@ -31,8 +31,8 @@ class Client:
         # 응답이 멈추는 경우(2026.10 리멤버)가 있어 재시도는 짧게 한다
         retry = Retry(
             total=3,
-            backoff_factor=1,
-            backoff_max=20,
+            backoff_factor=backoff,
+            backoff_max=60,
             status_forcelist=(429, 500, 502, 503, 504),
             allowed_methods=("GET", "POST"),
             respect_retry_after_header=False,

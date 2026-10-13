@@ -40,6 +40,11 @@ def test_scope_and_noise():
     assert noise_reason(_p("데이터센터 설비 엔지니어"))
     assert noise_reason(_p("AI 솔루션 영업 담당"))
     assert noise_reason(_p("데이터 엔지니어")) is None
+    abroad = _p("Data Engineer", source=Source.ZIGHANG, categories=["AI_데이터"])
+    abroad.regions = ["해외"]
+    assert not in_scope(abroad)
+    abroad.regions = ["해외", "서울"]
+    assert in_scope(abroad)
 
 
 def _item(uid, source, company, title, deadline=None):

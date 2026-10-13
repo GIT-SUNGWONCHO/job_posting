@@ -31,7 +31,8 @@ COLLECTORS = {
 
 
 def _collect(name: str, cfg: dict[str, Any], max_pages: int | None) -> tuple[CollectResult, Any]:
-    client = Client(min_interval=cfg.get("min_interval", 0.5), max_minutes=cfg.get("max_minutes"))
+    client = Client(min_interval=cfg.get("min_interval", 0.5), max_minutes=cfg.get("max_minutes"),
+                    backoff=cfg.get("backoff", 1.0))
     collector = COLLECTORS[name](client, cfg)
     try:
         result = collector.collect(max_pages=max_pages)
