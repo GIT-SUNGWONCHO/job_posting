@@ -33,7 +33,8 @@
 1. console.cloud.google.com에서 새 프로젝트를 만든다(예: `careermap`).
 2. **Google Auth Platform**(예전 이름 OAuth 동의 화면)을 시작한다.
    - 앱 이름 `careermap`, 지원 이메일은 본인, 대상(Audience)은 External.
-   - 이메일·프로필만 쓰므로 구글 심사가 필요 없다. Audience에서 앱을 게시(Publish app)해 둔다. 들어올 사람은 Supabase 초대 명단으로 막는다.
+   - 게시(Publish app)하지 않고 "테스트 중"으로 둔다. 게시하려면 홈페이지·개인정보처리방침 페이지가 필요해서다. 대신 대상(Audience) > 테스트 사용자에 쓸 사람의 구글 이메일을 넣는다(최대 100명).
+   - 그래서 사람을 추가할 때는 **Supabase 초대**와 **구글 테스트 사용자** 두 곳에 같은 이메일을 넣는다. 처음 로그인할 때 "확인되지 않은 앱" 안내가 뜨면 계속을 누른다.
 3. **Clients > Create client**: 종류는 Web application.
    - Authorized JavaScript origins: 대시보드 주소(`https://careermap-web.<계정>.workers.dev`)
    - Authorized redirect URIs: `https://<Supabase 프로젝트>.supabase.co/auth/v1/callback`
@@ -58,7 +59,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
    - Advanced settings > Path(root directory): `web`
    - Advanced settings > Build variables: `NODE_VERSION`=`22`, `VITE_SUPABASE_URL`=Project URL, `VITE_SUPABASE_PUBLISHABLE_KEY`=publishable key. 화면 코드에 빌드할 때 들어가는 값이라 런타임 변수가 아니라 **빌드 변수**에 넣는다
 4. Deploy. 1~2분 뒤 주소가 나온다.
-5. 배포 뒤 Settings > Build에서 Build watch paths의 Include를 `web/*`로 둔다(화면 코드가 바뀔 때만 빌드).
+5. 배포 뒤 Settings > Build에서 Build watch paths의 Include를 `web/**`로 둔다(화면 코드가 바뀔 때만 빌드). `web/*`로 두면 `web/src` 안쪽 변경에 빌드가 돌지 않았다(2026.10.13).
 6. 배포된 주소를 Supabase의 Site URL과 Redirect URLs에 넣는다(1의 3).
 
 빌드 변수를 나중에 바꾸면 Deployments에서 다시 배포해야 반영된다.
