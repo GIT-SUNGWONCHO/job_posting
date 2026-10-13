@@ -29,13 +29,22 @@
 
 Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 때마다 Cloudflare가 가져가 빌드하고 배포한다. 처음에는 Cloudflare Access(로그인 문)도 쓰려고 골랐는데, 로그인을 Supabase로 바꾼 뒤로는 화면 코드 호스팅만 한다. 화면에 Workers만 보이면 Create에서 Pages 쪽("Import an existing Git repository")을 고른다.
 
-1. Workers & Pages > Create > Pages > Connect to Git에서 이 레포를 고른다.
-2. 빌드 설정
-   - Root directory: `web`
+1. dash.cloudflare.com > Workers & Pages > Create > **Pages** 탭 > Connect to Git(Import an existing Git repository).
+   - GitHub 연결 창에서 "Only select repositories"로 이 레포만 허용한다.
+2. 프로젝트 이름: 주소가 `이름.pages.dev`가 된다(예: `jobpost`). Production branch는 `main`.
+3. 빌드 설정
+   - Framework preset: `React (Vite)` 또는 None
    - Build command: `npm run build`
    - Build output directory: `dist`
-   - 환경 변수: `NODE_VERSION`=`22`, `VITE_SUPABASE_URL`=Project URL, `VITE_SUPABASE_PUBLISHABLE_KEY`=publishable key
-3. 배포된 주소(`*.pages.dev`)를 Supabase의 Site URL과 Redirect URLs에 넣는다(1의 3).
+   - Root directory(Advanced): `web`
+   - 환경 변수(Production): `NODE_VERSION`=`22`, `VITE_SUPABASE_URL`=Project URL, `VITE_SUPABASE_PUBLISHABLE_KEY`=publishable key
+4. Save and Deploy. 1~2분 뒤 주소가 나온다.
+5. 배포 뒤 프로젝트 Settings > Build에서 두 가지를 바꾼다. 매일 커밋되는 `data` 브랜치 때문에 쓸데없는 빌드가 돌지 않게 하려는 것이다(무료는 월 500번).
+   - Branch control: Preview 배포를 None으로
+   - Build watch paths: Include에 `web/*`만
+6. 배포된 주소를 Supabase의 Site URL과 Redirect URLs에 넣는다(1의 3).
+
+환경 변수를 나중에 바꾸면 Deployments에서 다시 배포해야 반영된다.
 
 화면 코드에는 공고 데이터가 들어가지 않는다. 공고는 로그인한 뒤 Supabase 비공개 저장소에서 받는다.
 
