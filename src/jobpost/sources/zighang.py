@@ -1,10 +1,6 @@
 """직행(zighang.com) 수집기. 사이트가 쓰는 내부 API를 호출한다.
 
-확인된 사실(2026.10):
-- 목록: GET /api/recruitments/v4 (page는 0부터, size는 최대 100)
-- keyword 검색은 본문까지 찾지만 결과가 제목 일치 순이다
-- careerMax 100은 상한 없음, endDate 9999-12-31은 사실상 상시
-- sort, startDate, endDate를 넣으면 data가 null로 온다
+확인된 API 동작(엔드포인트, 파라미터, 값의 뜻)은 docs/collection.md "수집처에서 확인된 사실"에 있다.
 """
 
 from __future__ import annotations

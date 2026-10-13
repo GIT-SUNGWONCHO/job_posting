@@ -1,9 +1,6 @@
 """사람인(saramin.co.kr) 수집기. 직무 분류 목록 페이지(HTML)를 읽는다.
 
-확인된 사실(2026.10):
-- 목록: /zf_user/jobs/list/job-category?cat_kewd=번호,번호&page=1&page_count=100
-- company_type=scale001(대기업), public(공사·공기업), foreign(외국계)으로 거를 수 있다
-- 목록에는 본문이 없다. 경력은 "경력 3년↑", "3 ~ 10년", "경력무관", "신입 · 경력" 같은 글로 온다
+확인된 페이지 구조(주소, 필터, 경력 표기)는 docs/collection.md "수집처에서 확인된 사실"에 있다.
 """
 
 from __future__ import annotations

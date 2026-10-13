@@ -1,12 +1,6 @@
 """리멤버(career.rememberapp.co.kr) 수집기. 데이터·AI 분류와 키워드 검색으로 받는다.
 
-확인된 사실(2026.10):
-- 목록: POST https://career-api.rememberapp.co.kr/job_postings/search
-- body {"search": {...}, "page": 1부터, "per": 최대 50}. 51 이상이면 "최대 요청 수 초과"
-- 공고 본문(주요업무, 자격요건, 우대사항)이 목록에 같이 온다
-- 헤드헌터 공고는 job_posting_type이 internal_headhunter, organization.headhunter가 true
-- 전체(약 1만 4천 건)를 계속 받으면 중간에 응답이 멈추거나 빈 응답이 온다. 그래서 필요한 검색만 한다
-- 키워드 "AI"와 "인공지능"은 같은 결과(동의어 처리)
+확인된 API 동작(엔드포인트, 요청 제한, 분류 id)은 docs/collection.md "수집처에서 확인된 사실"에 있다.
 """
 
 from __future__ import annotations
