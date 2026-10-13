@@ -4,7 +4,7 @@ from jobpost import dedup
 from jobpost.filters import passes
 from jobpost.models import CompanyType, DeadlineType, Posting, Source
 from jobpost.normalize import career_text, clean_company, company_key, deadline_text
-from jobpost.scope import in_scope, noise_reason
+from jobpost.scope import in_scope, is_overseas, noise_reason
 
 
 def test_company_names():
@@ -42,9 +42,9 @@ def test_scope_and_noise():
     assert noise_reason(_p("데이터 엔지니어")) is None
     abroad = _p("Data Engineer", source=Source.ZIGHANG, categories=["AI_데이터"])
     abroad.regions = ["해외"]
-    assert not in_scope(abroad)
+    assert in_scope(abroad) and is_overseas(abroad)  # 저장은 하되 해외로 표시
     abroad.regions = ["해외", "서울"]
-    assert in_scope(abroad)
+    assert not is_overseas(abroad)
 
 
 def _item(uid, source, company, title, deadline=None):

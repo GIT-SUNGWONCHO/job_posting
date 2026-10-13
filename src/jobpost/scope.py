@@ -19,19 +19,18 @@ def _rules() -> tuple[set[str], list[re.Pattern], list[re.Pattern]]:
 
 
 @cache
-def _excluded_regions() -> frozenset[str]:
-    return frozenset(config.load("collect")["scope"].get("exclude_regions", []))
+def _overseas_regions() -> frozenset[str]:
+    return frozenset(config.load("collect")["scope"].get("overseas_regions", []))
 
 
-def overseas_only(p: Posting) -> bool:
-    excluded = _excluded_regions()
-    return bool(p.regions) and all(r in excluded for r in p.regions)
+def is_overseas(p: Posting) -> bool:
+    """근무지가 해외뿐인 공고. 저장은 하되 국내 목록·분석에서는 뺀다."""
+    regions = _overseas_regions()
+    return bool(p.regions) and all(r in regions for r in p.regions)
 
 
 def in_scope(p: Posting) -> bool:
-    """국내 근무이고, 데이터·AI 직무 분류에 있거나 제목에 관련 말이 있으면 저장 대상."""
-    if overseas_only(p):
-        return False
+    """데이터·AI 직무 분류에 있거나 제목에 관련 말이 있으면 저장 대상."""
     cats, include, _ = _rules()
     for c in p.categories:
         if c in cats or c.split("/")[0] in cats:

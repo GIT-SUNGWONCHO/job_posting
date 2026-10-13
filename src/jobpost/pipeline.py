@@ -14,7 +14,7 @@ from .companies import CompanyRegistry
 from .http import Client
 from .models import CompanyType, Posting, Source
 from .normalize import company_key
-from .scope import in_scope, noise_reason
+from .scope import in_scope, is_overseas, noise_reason
 from .sources import CollectResult
 from .sources.remember import RememberCollector
 from .sources.saramin import SaraminCollector
@@ -84,6 +84,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         p.uid: {
             "company_key": company_key(p.company),
             "noise": noise_reason(p),
+            "overseas": is_overseas(p),
             "headhunter": p.headhunter,
             "via": p.via,
         }
@@ -100,7 +101,8 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
     zcfg = (cfg.get("sources") or {}).get("zighang") or {}
     budget = zcfg.get("detail_budget", 0) if detail_budget is None else detail_budget
     if budget and "zighang" in collectors:
-        wanted = [r for r in store.open_records() if r["source"] == "zighang" and not r.get("detail")]
+        wanted = [r for r in store.open_records()
+                  if r["source"] == "zighang" and not r.get("detail") and not r.get("overseas")]
 
         wanted.sort(key=lambda r: r.get("first_seen", ""), reverse=True)
         wanted.sort(key=lambda r: registry.company_type(
@@ -116,8 +118,9 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
                               "remaining": max(len(wanted) - len(details), 0),
                               "errors": errors[:20], "seconds": round(time.monotonic() - t0, 1)}
 
-    # 중복 묶기(지금 열려 있는 공고끼리)
-    open_recs = store.open_records()
+    # 중복 묶기(지금 열려 있는 국내 공고끼리). 요약 숫자도 국내 공고 기준이다
+    all_open = store.open_records()
+    open_recs = [r for r in all_open if not r.get("overseas")]
     items = [dedup.Item(uid=r["uid"], source=r["source"], company=r.get("company", ""),
                         title=r.get("title", ""), via=r.get("via"),
                         deadline=date.fromisoformat(r["deadline"]) if r.get("deadline") else None)
@@ -132,7 +135,8 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
     types = Counter(registry.company_type(r.get("company_key", ""), r.get("company", "")).value
                     for r in reps)
     personal = config.load("filters")
-    today_reps = [p for p in collected if not store.state[p.uid].get("dup_of")]
+    today_reps = [p for p in collected
+                  if not store.state[p.uid].get("dup_of") and not store.state[p.uid].get("overseas")]
     passed = 0
     for p in today_reps:
         if store.state[p.uid].get("noise"):
@@ -145,6 +149,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         passed += ok
     summary.update({
         "open": len(open_recs),
+        "overseas_open": len(all_open) - len(open_recs),
         "open_unique": len(reps),
         "duplicates": len(open_recs) - len(reps),
         "noise": sum(1 for r in reps if r.get("noise")),
