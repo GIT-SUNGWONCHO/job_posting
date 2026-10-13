@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 from pathlib import Path
 
@@ -21,6 +22,8 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--detail-budget", type=int, help="직행 상세를 받을 최대 건수")
 
     args = parser.parse_args(argv)
+    logging.basicConfig(level=logging.INFO, stream=sys.stderr,
+                        format="%(asctime)s %(message)s", datefmt="%H:%M:%S")
     if args.cmd == "collect":
         sources = args.sources.split(",") if args.sources else None
         summary = pipeline.run(args.data_dir, sources=sources, max_pages=args.max_pages,

@@ -1,20 +1,26 @@
-"""리멤버(career.rememberapp.co.kr) 수집기. 전체 공고를 받아 범위 규칙으로 고른다.
+"""리멤버(career.rememberapp.co.kr) 수집기. 데이터·AI 분류와 키워드 검색으로 받는다.
 
 확인된 사실(2026.10):
 - 목록: POST https://career-api.rememberapp.co.kr/job_postings/search
 - body {"search": {...}, "page": 1부터, "per": 최대 50}. 51 이상이면 "최대 요청 수 초과"
 - 공고 본문(주요업무, 자격요건, 우대사항)이 목록에 같이 온다
 - 헤드헌터 공고는 job_posting_type이 internal_headhunter, organization.headhunter가 true
+- 전체(약 1만 4천 건)를 계속 받으면 중간에 응답이 멈추거나 빈 응답이 온다. 그래서 필요한 검색만 한다
+- 키워드 "AI"와 "인공지능"은 같은 결과(동의어 처리)
 """
 
 from __future__ import annotations
 
+import logging
+import time
 from datetime import datetime
 from typing import Any
 
 from ..http import Client
 from ..models import DeadlineType, Posting, Source
 from . import CollectResult
+
+log = logging.getLogger(__name__)
 
 API = "https://career-api.rememberapp.co.kr/job_postings/search"
 HEADERS = {
@@ -82,36 +88,42 @@ class RememberCollector:
         self.client = client
         self.cfg = cfg
 
-    def _page(self, page: int) -> dict[str, Any]:
-        body = {"search": {}, "page": page, "per": self.cfg.get("per", 50)}
+    def _page(self, search: dict[str, Any], page: int) -> dict[str, Any]:
+        body = {"search": search, "page": page, "per": self.cfg.get("per", 50)}
         return self.client.post(API, json=body, headers=HEADERS).json()
+
+    def _search(self, search: dict[str, Any], max_pages: int) -> list[dict[str, Any]]:
+        items: list[dict[str, Any]] = []
+        for page in range(1, max_pages + 1):
+            data = self._page(search, page)
+            batch = data.get("data")
+            if not isinstance(batch, list):
+                raise RuntimeError(f"응답 오류: {(data.get('meta') or {}).get('message')}")
+            items += batch
+            total_pages = (data.get("meta") or {}).get("total_pages") or 0
+            if not batch or page >= total_pages:
+                return items
+        raise RuntimeError(f"최대 {max_pages}페이지에서 멈춤")
 
     def collect(self, max_pages: int | None = None) -> CollectResult:
         result = CollectResult(source=Source.REMEMBER.value)
         start = self.client.requests
         found: dict[str, dict[str, Any]] = {}
-        page, total_pages = 1, None
-        while True:
+        limit = self.cfg.get("max_pages_per_search", 40)
+        if max_pages is not None:
+            limit = min(limit, max_pages)
+        for search in self.cfg.get("searches") or [{}]:
+            t0 = time.monotonic()
             try:
-                data = self._page(page)
+                items = self._search(search, limit)
             except Exception as e:
                 result.complete = False
-                result.errors.append(f"페이지 {page}: {e}")
-                break
-            items = data.get("data") or []
-            if not isinstance(items, list):
-                result.complete = False
-                result.errors.append(f"페이지 {page}: {data.get('meta')}")
-                break
+                result.errors.append(f"{search}: {e}")
+                log.warning("리멤버 %s 실패: %s", search, e)
+                continue
             for x in items:
                 found[str(x["id"])] = x
-            total_pages = (data.get("meta") or {}).get("total_pages") or total_pages
-            page += 1
-            if not items or (total_pages and page > total_pages):
-                break
-            if max_pages is not None and page > max_pages:
-                result.complete = False  # 일부만 받았으니 마감 판단에 쓰지 않는다
-                break
+            log.info("리멤버 %s: %d건 (%.0f초)", search, len(items), time.monotonic() - t0)
         for item in found.values():
             try:
                 result.postings.append(parse_item(item))

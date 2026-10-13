@@ -43,7 +43,7 @@
 2026.10 수집 테스트에서 직접 확인한 내용이다. 바뀌면 고친다.
 
 - **직행**: `GET https://api.zighang.com/api/recruitments/v4` (page는 0부터, size 최대 100, keyword, depthOnes, depthTwos, careerMin, careerMax, companyTypes, affiliates 등). 상세는 `/api/recruitments/{id}`(요약·본문, redirectUrl, 같은 공고의 다른 플랫폼 id). `Origin`·`Referer` 헤더는 `https://zighang.com`. 열린 공고만 주고 기간 조회는 안 된다. `sort`나 `startDate`·`endDate`를 넣으면 `data=null`이 온다. 직무 대분류 `AI_데이터`가 약 7,800건이고 데이터·AI 소분류는 모두 이 안에 있다. keyword 검색은 본문까지 찾지만 제목 일치 순으로 나온다. companyTypes 값: 대기업, 유니콘, 스타트업, 중견기업, 중소기업, 공공기관, 외국계. careerMax 100은 상한 없음. 회사 정보 API는 없다.
-- **리멤버**: `POST https://career-api.rememberapp.co.kr/job_postings/search` (+ `.count`), body `{"search":{},"page":1,"per":50}`. per는 50까지, 51 이상은 "최대 요청 수 초과". 전체 공고 약 1만 4천 건이라 전부 받아서 고른다. 본문(주요업무·자격요건·우대사항)이 목록에 같이 온다. 헤드헌터 공고는 `job_posting_type`이 `internal_headhunter`. 데이터·AI 분류 id: 339, 340, 343, 344, 345, 500. 공고 주소는 `https://career.rememberapp.co.kr/job/posting/{id}`.
+- **리멤버**: `POST https://career-api.rememberapp.co.kr/job_postings/search` (+ `.count`), body `{"search":{},"page":1,"per":50}`. per는 50까지, 51 이상은 "최대 요청 수 초과". 전체 공고는 약 1만 4천 건인데, 전부 훑으면 140페이지쯤에서 응답이 멈춰서 데이터·AI 분류와 키워드 검색으로만 받는다. 키워드 "AI"와 "인공지능"은 같은 결과가 나온다. 본문(주요업무·자격요건·우대사항)이 목록에 같이 온다. 헤드헌터 공고는 `job_posting_type`이 `internal_headhunter`. 데이터·AI 분류 id: 339, 340, 343, 344, 345, 500. 공고 주소는 `https://career.rememberapp.co.kr/job/posting/{id}`.
 - **사람인**: 직무 분류 목록 `/zf_user/jobs/list/job-category?cat_kewd=번호,번호&page_count=100`(HTML, `.list_item`). `company_type=scale001`(대기업)·`public`·`foreign`으로 거를 수 있다. 회사가 분류를 넓게 달아서 분류 목록의 약 3분의 1만 실제 데이터·AI 공고다. 목록에 본문은 없다.
 - **공정위 기업집단포털**(egroup.go.kr)은 해외 IP에서 연결이 끊긴다. 2026년 공시대상기업집단은 102개.
 - 나중에: 잡코리아 헤드헌팅, 원티드 `/api/v4/jobs`, LinkedIn guest API, 피플앤잡, 알리오, 빠진 그룹 채용 포털.
@@ -146,4 +146,5 @@ tests/             파서·규칙 테스트, fixtures/에 실제 응답 일부
 - 매일 실행: `.github/workflows/collect.yml`이 04:17 KST에 돌고 결과를 `data` 브랜치에 커밋한다
 - 수집 데이터는 `data` 브랜치에 있다(레이아웃은 그 브랜치 README와 `store.py` 참고). main에는 넣지 않는다
 - 수집처 하나가 실패하거나 일부만 받으면 그 수집처 공고는 "내려간 공고"로 처리하지 않는다
+- 수집처마다 시간 한도(`max_minutes`)가 있어서, 넘으면 받은 데까지만 저장하고 "일부만 받음"으로 남긴다. 진행 기록은 표준 오류로 나온다
 - 사람인은 회사가 직무 분류를 넓게 달아서 분류는 믿지 않고 제목 규칙으로만 저장 범위를 정한다

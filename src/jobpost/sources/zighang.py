@@ -9,14 +9,18 @@
 
 from __future__ import annotations
 
+import logging
 import re
+import time
 from datetime import date, datetime
 from typing import Any
 
-from ..http import Client
+from ..http import Client, TimeBudgetExceeded
 from ..models import DeadlineType, Detail, Posting, Source
 from ..normalize import company_key
 from . import CollectResult
+
+log = logging.getLogger(__name__)
 
 API = "https://api.zighang.com/api"
 HEADERS = {
@@ -191,13 +195,27 @@ class ZighangCollector:
         if max_pages is not None:
             kw_pages = min(kw_pages, max_pages)
 
+        typed_kw_pages = self.cfg.get("max_typed_keyword_pages", 3)
+        if max_pages is not None:
+            typed_kw_pages = min(typed_kw_pages, max_pages)
+
         def run(label: str, fn, *args, **kwargs) -> list[dict[str, Any]]:
+            t0 = time.monotonic()
             try:
-                return fn(*args, **kwargs)
+                items = fn(*args, **kwargs)
+            except TimeBudgetExceeded as e:
+                result.complete = False
+                if not any("시간 한도" in x for x in result.errors):
+                    result.errors.append(f"{label}: {e}")
+                    log.warning("직행 시간 한도 초과: %s부터 건너뜀", label)
+                return []
             except Exception as e:  # 한 조회가 실패해도 나머지는 계속 받는다
                 result.complete = False
                 result.errors.append(f"{label}: {e}")
+                log.warning("직행 %s 실패: %s", label, e)
                 return []
+            log.info("직행 %s: %d건 (%.0f초)", label, len(items), time.monotonic() - t0)
+            return items
 
         for cat in self.cfg.get("categories", []):
             for x in run(f"분류 {cat}", self._all_pages, max_pages, depthOnes=cat):
@@ -213,7 +231,8 @@ class ZighangCollector:
                 typed += run(f"{ctype} {cat}", self._all_pages, max_pages,
                              depthOnes=cat, companyTypes=ctype)
             for kw in self.cfg.get("title_keywords", []):
-                typed += run(f"{ctype} {kw}", self._title_pages, kw, kw_pages, companyTypes=ctype)
+                typed += run(f"{ctype} {kw}", self._title_pages, kw, typed_kw_pages,
+                             companyTypes=ctype)
             for x in typed:
                 found.setdefault(x["id"], x)
                 name = (x.get("company") or {}).get("name") or ""
@@ -235,7 +254,7 @@ class ZighangCollector:
     def fetch_details(self, source_ids: list[str]) -> tuple[list[Detail], list[str]]:
         details: list[Detail] = []
         errors: list[str] = []
-        for sid in source_ids:
+        for n, sid in enumerate(source_ids, 1):
             try:
                 resp = self.client.get(f"{API}/recruitments/{sid}", headers=HEADERS)
                 data = resp.json().get("data")
@@ -243,6 +262,11 @@ class ZighangCollector:
                     errors.append(f"상세 {sid}: 빈 응답")
                     continue
                 details.append(parse_detail(data, datetime.now()))
+            except TimeBudgetExceeded:
+                errors.append(f"시간 한도 초과: {n - 1}/{len(source_ids)}건에서 멈춤")
+                break
             except Exception as e:
                 errors.append(f"상세 {sid}: {e}")
+            if n % 200 == 0:
+                log.info("직행 상세 %d/%d건", n, len(source_ids))
         return details, errors

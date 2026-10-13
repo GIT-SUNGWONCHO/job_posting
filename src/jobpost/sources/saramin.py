@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+import logging
 import re
 from datetime import date, datetime, timedelta
 from typing import Any
@@ -18,6 +19,8 @@ from ..http import Client
 from ..models import DeadlineType, Posting, Source
 from ..normalize import company_key
 from . import CollectResult
+
+log = logging.getLogger(__name__)
 
 LIST_URL = "https://www.saramin.co.kr/zf_user/jobs/list/job-category"
 VIEW_URL = "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx={}"
@@ -171,15 +174,18 @@ class SaraminCollector:
                 result.errors.append(f"최대 {limit}페이지에서 멈춤")
             for p in postings:
                 found[p.source_id] = p
+            log.info("사람인 분류 목록: %d건", len(postings))
         except Exception as e:
             result.complete = False
             result.errors.append(f"목록: {e}")
+            log.warning("사람인 목록 실패: %s", e)
         for code, label in (self.cfg.get("company_types") or {}).items():
             try:
                 typed, _ = self._pages(limit, company_type=code)
             except Exception as e:
                 result.errors.append(f"{label}: {e}")
                 continue
+            log.info("사람인 %s: %d건", label, len(typed))
             for p in typed:
                 found.setdefault(p.source_id, p)
                 result.company_types.setdefault(company_key(p.company), set()).add(label)

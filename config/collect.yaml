@@ -21,18 +21,35 @@ sources:
       - AX
       - 데이터 아키텍트
       - 데이터 거버넌스
-    max_keyword_pages: 30
-    # 직행이 붙인 기업 구분으로 회사를 표시한다
+    max_keyword_pages: 10
+    # 직행이 붙인 기업 구분으로 회사를 표시한다(분류 전체 + 키워드는 앞 몇 페이지만)
     company_types: [대기업, 공공기관, 외국계]
+    max_typed_keyword_pages: 3
     # 하루에 상세(본문)를 받는 최대 건수. 첫날은 다 못 받고 며칠에 걸쳐 채운다
-    detail_budget: 1500
+    detail_budget: 1000
     min_interval: 0.4
+    max_minutes: 25
+    detail_max_minutes: 25
 
   remember:
     enabled: true
-    # 리멤버는 전체 공고(약 1만 4천 건)를 받아 아래 범위 규칙으로 고른다
+    # 데이터·AI 분류 전체 + 키워드 검색. 받은 뒤 아래 범위 규칙으로 고른다
+    # (전체 1만 4천 건을 매일 훑으면 중간에 응답이 멈춘다)
+    searches:
+      - {job_category_ids: [339, 340, 343, 344, 345, 500]}
+      - {keywords: [데이터]}
+      - {keywords: [AI]}
+      - {keywords: [LLM]}
+      - {keywords: [MLOps]}
+      - {keywords: [빅데이터]}
+      - {keywords: [머신러닝]}
+      - {keywords: [BI]}
+      - {keywords: [AX]}
+      - {keywords: [Data]}
     per: 50  # 한 번에 50건까지만 된다
-    min_interval: 0.6
+    max_pages_per_search: 40
+    min_interval: 1.0
+    max_minutes: 15
 
   saramin:
     enabled: true
@@ -64,6 +81,7 @@ sources:
       foreign: 외국계
     max_pages: 80
     min_interval: 1.0
+    max_minutes: 15
 
 # 저장 범위: 아래 중 하나에 걸리면 저장한다
 scope:

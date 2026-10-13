@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import time
 from collections import Counter
 from datetime import date, datetime
@@ -20,6 +21,8 @@ from .sources.saramin import SaraminCollector
 from .sources.zighang import ZighangCollector
 from .store import Store
 
+log = logging.getLogger(__name__)
+
 COLLECTORS = {
     Source.ZIGHANG.value: ZighangCollector,
     Source.REMEMBER.value: RememberCollector,
@@ -28,7 +31,7 @@ COLLECTORS = {
 
 
 def _collect(name: str, cfg: dict[str, Any], max_pages: int | None) -> tuple[CollectResult, Any]:
-    client = Client(min_interval=cfg.get("min_interval", 0.5))
+    client = Client(min_interval=cfg.get("min_interval", 0.5), max_minutes=cfg.get("max_minutes"))
     collector = COLLECTORS[name](client, cfg)
     try:
         result = collector.collect(max_pages=max_pages)
@@ -57,6 +60,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         if not scfg.get("enabled", True):
             continue
         t0 = time.monotonic()
+        log.info("%s 수집 시작", name)
         result, collector = _collect(name, scfg, max_pages)
         collectors[name] = collector
         names = {company_key(p.company): p.company for p in result.postings}
@@ -102,7 +106,10 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
             r.get("company_key", ""), r.get("company", "")) is CompanyType.OTHER)
         ids = [r["uid"].split(":", 1)[1] for r in wanted[:budget]]
         t0 = time.monotonic()
-        details, errors = collectors["zighang"].fetch_details(ids)
+        collector = collectors["zighang"]
+        collector.client = Client(min_interval=zcfg.get("min_interval", 0.5),
+                                  max_minutes=zcfg.get("detail_max_minutes"))
+        details, errors = collector.fetch_details(ids)
         store.add_details(today, details)
         summary["details"] = {"requested": len(ids), "fetched": len(details),
                               "remaining": max(len(wanted) - len(details), 0),
