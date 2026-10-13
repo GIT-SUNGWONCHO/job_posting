@@ -63,7 +63,9 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         built, bodies = screen.build(args.data_dir)
         client = ai.Gemini() if ai.configured() else None
-        summary = recommend.run(built, bodies, db.DB(), client, date.today())
+        store = db.DB()
+        store.check_server_key()
+        summary = recommend.run(built, bodies, store, client, date.today())
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
     return 0

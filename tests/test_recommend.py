@@ -56,7 +56,7 @@ def test_run_scores_filtered_postings_and_writes_reasons():
     db, ai = FakeDB(), FakeAI()
     s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
     # 공고마다 한 번씩, 긴 답이 온 공고는 한 번 더 물음
-    assert s == {"profiles": 1, "users": 1, "rows": 2, "reasons_new": 1, "reasons_reused": 0, "calls": 3}
+    assert s == {"settings": 1, "profiles": 1, "users": 1, "rows": 2, "reasons_new": 1, "reasons_reused": 0, "calls": 3}
     assert db.deleted == [("matches", "user_id=eq.u1")]
     by = {r["posting_id"]: r for r in db.inserted}
     assert set(by) == {"z:1", "z:2"}  # z:3은 기업 구분 필터에서 빠짐

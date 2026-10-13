@@ -83,7 +83,7 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         return skills_cache[pid]
 
     settings = {r["user_id"]: r.get("filters") or {} for r in db.select("settings", "select=user_id,filters")}
-    summary: dict[str, Any] = {"profiles": 0, "users": 0, "rows": 0, "reasons_new": 0, "reasons_reused": 0,
+    summary: dict[str, Any] = {"settings": len(settings), "profiles": 0, "users": 0, "rows": 0, "reasons_new": 0, "reasons_reused": 0,
                                "calls": 0, "errors": []}
     profiles = db.select("profiles", "select=user_id,data,version")
     summary["profiles"] = len(profiles)
