@@ -1,0 +1,11 @@
+// Cloudflare Workers 정적 사이트 설정. 화면 코드(dist)만 올라가고 공고 데이터는 들어가지 않는다.
+// name은 Cloudflare 대시보드의 Worker 이름과 같아야 한다.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "careermap",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}

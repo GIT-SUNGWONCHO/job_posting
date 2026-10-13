@@ -27,7 +27,7 @@ flowchart LR
   end
   G[Gemini]
   DART[DART]
-  P[Cloudflare Pages<br/>화면 코드]
+  P[Cloudflare Workers<br/>화면 코드]
   U[휴대폰·PC 브라우저]
   KT[카카오톡]
 
@@ -62,7 +62,7 @@ flowchart LR
 | 비공개 저장소 | 화면용 파일을 로그인한 사람에게만 내줌 | Supabase Storage | 무료 1GB | 코드 준비, 계정 설정 전 |
 | DB | 개인 데이터, 리서치 결과, 요청 대기열 | Supabase(Postgres), 행 단위 권한 | 무료 500MB. 1주 동안 접속이 없으면 일시 정지(매일 작업이 접속하므로 괜찮음) | 2단계부터 |
 | 로그인 | 허용한 사람만, 이메일 링크로 한 번 | Supabase Auth | 무료 | 코드 준비, 계정 설정 전 |
-| 화면 | 휴대폰·PC 반응형 대시보드 | React + Vite + TypeScript, Cloudflare Pages(화면 코드만) | 무료 | 첫 버전(리포트·공고·회사), 배포 전 |
+| 화면 | 휴대폰·PC 반응형 대시보드 | React + Vite + TypeScript, Cloudflare Workers 정적 사이트(화면 코드만) | 무료 | 첫 버전(리포트·공고·회사), 배포 전 |
 | 서버 함수 | 짧은 AI 작업(몇 초)을 바로 처리, 긴 작업이 들어오면 GitHub Actions를 깨움 | Supabase Edge Functions | 무료 등급 | 3·4단계 |
 | 분석·리서치 | 직무 분류, 매칭, 회사 리서치(매일 정기 + 요청 시) | Python, GitHub Actions, Gemini, DART | Actions 시간과 Gemini 무료 한도 안에서 | 3·4단계 |
 | 아침 보고 | 카톡 요약 | 카카오 "나에게 보내기" | 무료, 토큰은 2개월마다 갱신 | 5단계 |
@@ -125,7 +125,7 @@ flowchart LR
 
 - 운영 키와 토큰(DART, 카카오, Supabase 서버 키, GitHub 토큰, 기본 Gemini 키)은 GitHub Secrets와 서버 함수 비밀값에만 둔다. 코드, 커밋, 로그에 남기지 않는다.
 - 브라우저에는 Supabase 공개 키만 둔다. 데이터 보호는 로그인과 행 단위 권한으로 한다.
-- 화면 코드(Cloudflare Pages)에는 데이터를 넣지 않는다. 공고와 리서치는 로그인해야 받을 수 있다. 수집처 내용을 공개 사이트에 다시 올리지 않기 위해서다.
+- 화면 코드(Cloudflare)에는 데이터를 넣지 않는다. 공고와 리서치는 로그인해야 받을 수 있다. 수집처 내용을 공개 사이트에 다시 올리지 않기 위해서다.
 - 각자의 AI 키는 암호화해 보관하고 서버 쪽에서만 꺼내 쓴다.
 
 ## 다시 볼 것
