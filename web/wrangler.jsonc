@@ -2,7 +2,7 @@
 // name은 Cloudflare 대시보드의 Worker 이름과 같아야 한다.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "careermap",
+  "name": "careermap-web",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",

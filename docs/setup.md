@@ -31,7 +31,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 
 1. dash.cloudflare.com > Workers & Pages > Create application > GitHub 레포 가져오기.
    - GitHub 연결 창에서 "Only select repositories"로 이 레포만 허용한다.
-2. 이름: `careermap`(`web/wrangler.jsonc`의 name과 같아야 한다). 주소는 `careermap.<계정>.workers.dev`가 된다.
+2. 이름: `careermap-web`(`web/wrangler.jsonc`의 name과 같아야 한다). 주소는 `careermap-web.<계정>.workers.dev`가 된다.
 3. 빌드 설정
    - Build command: `npm run build`
    - Deploy command: `npx wrangler deploy`(기본값 그대로)
