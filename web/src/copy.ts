@@ -60,6 +60,9 @@ export const copy = {
   },
   login: {
     title: '로그인',
+    google: 'Google로 로그인',
+    useEmail: '이메일 링크로 로그인',
+    notInvited: '초대받은 계정만 들어올 수 있어요',
     email: '이메일',
     send: '로그인 링크 받기',
     sent: '메일함에서 로그인 링크를 눌러 주세요',

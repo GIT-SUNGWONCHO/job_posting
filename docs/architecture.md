@@ -61,7 +61,7 @@ flowchart LR
 | 화면용 파일 | 매일 수집 뒤 오늘 열린 국내 공고와 회사 기본정보를 파일 하나로 묶음(압축 약 400KB) | Python, GitHub Actions | 매일 덮어씀 | 구현됨 |
 | 비공개 저장소 | 화면용 파일을 로그인한 사람에게만 내줌 | Supabase Storage | 무료 1GB | 운영 중 |
 | DB | 개인 데이터, 리서치 결과, 요청 대기열 | Supabase(Postgres), 행 단위 권한 | 무료 500MB. 1주 동안 접속이 없으면 일시 정지(매일 작업이 접속하므로 괜찮음) | 2단계부터 |
-| 로그인 | 허용한 사람만, 이메일 링크로 한 번 | Supabase Auth | 무료 | 운영 중(가입 막음, 초대한 사람만) |
+| 로그인 | 허용한 사람만, 구글 계정으로(이메일 링크는 예비). 기기마다 한 번 | Supabase Auth + Google | 무료 | 운영 중(가입 막음, 초대한 사람만) |
 | 화면 | 휴대폰·PC 반응형 대시보드 | React + Vite + TypeScript, Cloudflare Workers 정적 사이트(화면 코드만) | 무료 | 첫 버전(리포트·공고·회사) 운영 중 |
 | 서버 함수 | 짧은 AI 작업(몇 초)을 바로 처리, 긴 작업이 들어오면 GitHub Actions를 깨움 | Supabase Edge Functions | 무료 등급 | 3·4단계 |
 | 분석·리서치 | 직무 분류, 매칭, 회사 리서치(매일 정기 + 요청 시) | Python, GitHub Actions, Gemini, DART | Actions 시간과 Gemini 무료 한도 안에서 | 3·4단계 |
