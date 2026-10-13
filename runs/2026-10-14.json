@@ -1,0 +1,118 @@
+{
+ "date": "2026-10-14",
+ "started": "2026-10-14T08:18:37",
+ "sources": {
+  "zighang": {
+   "fetched": 8894,
+   "in_scope": 8893,
+   "complete": true,
+   "requests": 224,
+   "seconds": 90.9,
+   "errors": [],
+   "error_count": 0,
+   "new": 233,
+   "closed": 318
+  },
+  "remember": {
+   "fetched": 1508,
+   "in_scope": 1338,
+   "complete": true,
+   "requests": 58,
+   "seconds": 171.3,
+   "errors": [],
+   "error_count": 0,
+   "new": 24,
+   "closed": 8
+  },
+  "saramin": {
+   "fetched": 0,
+   "in_scope": 0,
+   "complete": false,
+   "requests": 4,
+   "seconds": 191.1,
+   "errors": [
+    "목록: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/list/job-category?cat_kewd=82%2C83%2C106%2C107%2C108%2C109%2C116%2C123%2C125%2C126%2C131%2C133%2C160%2C161%2C181%2C193%2C856%2C1658%2C2246%2C2248&page=1&page_count=100&sort=RD (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea61fc800>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "대기업: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/list/job-category?cat_kewd=82%2C83%2C106%2C107%2C108%2C109%2C116%2C123%2C125%2C126%2C131%2C133%2C160%2C161%2C181%2C193%2C856%2C1658%2C2246%2C2248&page=1&page_count=100&sort=RD&company_type=scale001 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea614cb90>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "공기업·공공기관: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/list/job-category?cat_kewd=82%2C83%2C106%2C107%2C108%2C109%2C116%2C123%2C125%2C126%2C131%2C133%2C160%2C161%2C181%2C193%2C856%2C1658%2C2246%2C2248&page=1&page_count=100&sort=RD&company_type=public (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea763c770>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "외국계: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/list/job-category?cat_kewd=82%2C83%2C106%2C107%2C108%2C109%2C116%2C123%2C125%2C126%2C131%2C133%2C160%2C161%2C181%2C193%2C856%2C1658%2C2246%2C2248&page=1&page_count=100&sort=RD&company_type=foreign (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea76a0b30>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))"
+   ],
+   "error_count": 4,
+   "new": 0,
+   "closed": 0
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 173,
+   "fetched": 153,
+   "remaining": 20,
+   "errors": [
+    "상세 0bb11680-d0df-4c1f-aca2-a413b9cb8487: 빈 응답",
+    "상세 1ae39661-eeb5-4d31-b1cb-978eda166c9f: 빈 응답",
+    "상세 3b6098fb-1e6f-4c7c-bf2c-51739a269d93: 빈 응답",
+    "상세 460dcdfa-d7fe-4c57-952f-509551d813c8: 빈 응답",
+    "상세 514c7a20-d65c-412e-9e5e-41dbcdfd2ba9: 빈 응답",
+    "상세 7a0e3670-44c9-4f35-aab5-78d066c81354: 빈 응답",
+    "상세 909617f1-0d17-49f1-8e38-d748baddfe63: 빈 응답",
+    "상세 9d5a2cac-9163-4c32-a920-3f728d0ae28c: 빈 응답",
+    "상세 ad03ed53-f3f1-467f-b15a-e8d33974833a: 빈 응답",
+    "상세 b01085a8-e65d-4310-a154-565fa1776d12: 빈 응답",
+    "상세 b638e58a-914c-48f0-a994-431df7c32429: 빈 응답",
+    "상세 b719b116-1fbc-4593-b169-1c263af9e685: 빈 응답",
+    "상세 ceec7491-3d25-4d41-bf8b-c9c40aab1f5b: 빈 응답",
+    "상세 d8646570-fe23-41c3-81b3-4bddeacde77c: 빈 응답",
+    "상세 dca902eb-0f8f-4454-be73-46982efc6601: 빈 응답",
+    "상세 e3bed6f6-47a2-488a-a632-36997f289f45: 빈 응답",
+    "상세 eb5aefab-c119-4593-bee3-ffbf3c8fbb8b: 빈 응답",
+    "상세 f077bba6-e48d-4916-9113-57246ce1edc9: 빈 응답",
+    "상세 f2611a00-1323-4708-a552-e1362d9c6558: 빈 응답",
+    "상세 f4888946-a1a6-4357-b2c1-fa7deed8e564: 빈 응답"
+   ],
+   "seconds": 69.4
+  },
+  "saramin": {
+   "requested": 216,
+   "fetched": 0,
+   "remaining": 216,
+   "errors": [
+    "상세 55052011: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55052011&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540f9e0>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55030576: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55030576&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540ea50>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55042738: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55042738&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540f320>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55064757: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55064757&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea4f61820>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55084807: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55084807&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea55cf8c0>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55091998: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55091998&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540ed50>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55176180: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55176180&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540e300>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55178782: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55178782&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540ff50>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55227262: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55227262&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea4f62150>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55227375: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55227375&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea4f62990>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55227526: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55227526&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540fda0>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55227840: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55227840&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540e240>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55228298: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55228298&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea540ecc0>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55228303: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55228303&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea4f62090>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 55228432: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/jobs/relay/view-detail?rec_idx=55228432&rec_seq=0 (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.saramin.co.kr', port=443) at 0x7fcea4f61160>, 'Connection to www.saramin.co.kr timed out. (connect timeout=10.0)'))",
+    "시간 한도 초과: 15/216건에서 멈춤"
+   ],
+   "seconds": 722.5
+  }
+ },
+ "job_types": {
+  "pending": 0,
+  "classified": 181,
+  "calls": 3
+ },
+ "open": 6845,
+ "overseas_open": 4807,
+ "open_unique": 5814,
+ "duplicates": 1031,
+ "noise": 232,
+ "company_types": {
+  "그 외": 4904,
+  "대기업": 680,
+  "외국계": 191,
+  "공기업·공공기관": 39
+ },
+ "personal_filter_pass": 273,
+ "new": 257,
+ "closed": 326,
+ "finished": "2026-10-14T08:39:33"
+}
