@@ -1,0 +1,70 @@
+# 매일 새벽 공고를 수집해 data 브랜치에 쌓는다.
+# 수동 실행: GitHub > Actions > collect > Run workflow
+name: collect
+
+on:
+  schedule:
+    - cron: "17 19 * * *"  # 매일 04:17 KST
+  workflow_dispatch:
+    inputs:
+      detail_budget:
+        description: 직행 상세(본문)를 받을 최대 건수(비우면 설정값)
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      TZ: Asia/Seoul  # 수집 날짜를 한국 날짜로 남긴다
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 수집
+        run: |
+          args=(--data-dir data)
+          if [ -n "${{ github.event.inputs.detail_budget }}" ]; then
+            args+=(--detail-budget "${{ github.event.inputs.detail_budget }}")
+          fi
+          uv run jobpost collect "${args[@]}" | tee run.json
+
+      - name: 실행 요약
+        if: always()
+        run: |
+          echo '### 수집 요약' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat run.json >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: data 브랜치에 커밋
+        if: always()
+        working-directory: data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "바뀐 데이터 없음"
+            exit 0
+          fi
+          git commit -q -m "collect $(date +%F)"
+          for i in 1 2 3; do git push origin data && break; sleep $((i * 10)); done

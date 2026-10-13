@@ -18,8 +18,8 @@
 | 단계 | 내용 | 상태 |
 | --- | --- | --- |
 | 0 | 기획, 수집처 검증, 화면 구성, 화면·콘텐츠 원칙 | 완료 |
-| 1 | 개발 기반: 이 파일, 용어집, 데이터 형식, 기준 샘플 | 진행 중 |
-| 2 | 수집 + 디자인 스타일(E·F·G 중 실제 공고로 선택) | 다음 |
+| 1 | 개발 기반: 이 파일, 용어집, 데이터 형식, 기준 샘플 | 완료(기준 샘플은 3단계에서) |
+| 2 | 수집 + 디자인 스타일(E·F·G 중 실제 공고로 선택) | 진행 중: 수집 완료, 대시보드·스타일 남음 |
 | 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | |
 | 4 | 분석: 회사 리서치, 커리어 탭 | |
 | 5 | 보고: 오늘의 리포트, 아침 카톡 | |
@@ -42,9 +42,10 @@
 
 2026.10 수집 테스트에서 직접 확인한 내용이다. 바뀌면 고친다.
 
-- **직행**: `GET https://api.zighang.com/api/recruitments/v4` (page, size, keyword, depthOnes, depthTwos, careerMin, careerMax, companyTypes, affiliates 등). 상세는 `/api/recruitments/{id}`(본문, redirectUrl, 중복 판별 필드). `Origin`·`Referer` 헤더는 `https://zighang.com`. 열린 공고만 주고 기간 조회는 안 된다. `sort`나 `startDate`·`endDate`를 넣으면 `data=null`이 온다.
-- **리멤버**: `POST https://career-api.rememberapp.co.kr/job_postings/search` (+ `.count`), body `{"search":{"keywords":[...]},"page":1,"per":30}`. `per=100`은 "최대 요청 수 초과" 오류. 전체 JD를 주고 헤드헌터 유형(`internal_headhunter`)이 있다. 요청 제한이 있다.
-- **사람인**: 검색 결과 HTML(`.item_recruit`, `.corp_name`, `.job_tit`). 직행에 없는 공고를 보강한다.
+- **직행**: `GET https://api.zighang.com/api/recruitments/v4` (page는 0부터, size 최대 100, keyword, depthOnes, depthTwos, careerMin, careerMax, companyTypes, affiliates 등). 상세는 `/api/recruitments/{id}`(요약·본문, redirectUrl, 같은 공고의 다른 플랫폼 id). `Origin`·`Referer` 헤더는 `https://zighang.com`. 열린 공고만 주고 기간 조회는 안 된다. `sort`나 `startDate`·`endDate`를 넣으면 `data=null`이 온다. 직무 대분류 `AI_데이터`가 약 7,800건이고 데이터·AI 소분류는 모두 이 안에 있다. keyword 검색은 본문까지 찾지만 제목 일치 순으로 나온다. companyTypes 값: 대기업, 유니콘, 스타트업, 중견기업, 중소기업, 공공기관, 외국계. careerMax 100은 상한 없음. 회사 정보 API는 없다.
+- **리멤버**: `POST https://career-api.rememberapp.co.kr/job_postings/search` (+ `.count`), body `{"search":{},"page":1,"per":50}`. per는 50까지, 51 이상은 "최대 요청 수 초과". 전체 공고 약 1만 4천 건이라 전부 받아서 고른다. 본문(주요업무·자격요건·우대사항)이 목록에 같이 온다. 헤드헌터 공고는 `job_posting_type`이 `internal_headhunter`. 데이터·AI 분류 id: 339, 340, 343, 344, 345, 500. 공고 주소는 `https://career.rememberapp.co.kr/job/posting/{id}`.
+- **사람인**: 직무 분류 목록 `/zf_user/jobs/list/job-category?cat_kewd=번호,번호&page_count=100`(HTML, `.list_item`). `company_type=scale001`(대기업)·`public`·`foreign`으로 거를 수 있다. 회사가 분류를 넓게 달아서 분류 목록의 약 3분의 1만 실제 데이터·AI 공고다. 목록에 본문은 없다.
+- **공정위 기업집단포털**(egroup.go.kr)은 해외 IP에서 연결이 끊긴다. 2026년 공시대상기업집단은 102개.
 - 나중에: 잡코리아 헤드헌팅, 원티드 `/api/v4/jobs`, LinkedIn guest API, 피플앤잡, 알리오, 빠진 그룹 채용 포털.
 
 ## 내용 원칙
@@ -120,4 +121,29 @@
 - 사용자와는 한국어로, 결론부터 짧게 보고한다.
 - 결정이 필요한 것은 선택지 2~4개와 추천을 함께 낸다. 정할 수 있는 것은 정하고 알린다.
 - 분량, 문장 길이, 지표 계산법처럼 실제 데이터가 있어야 정할 수 있는 것은 미뤄 두고 기획 문서 목록에 남긴다.
-- 언어, 폴더 구조, 테스트 방법은 2단계에서 정하고 이 파일에 적는다.
+
+## 코드 구조와 실행
+
+Python 3.12, 패키지 관리는 uv. 수집·분석은 Python, 대시보드는 3단계 이후에 정한다.
+
+```
+src/jobpost/
+  models.py        공통 공고 형식(Posting, Detail)
+  sources/         수집처별 수집기(zighang, remember, saramin). 사이트 구조에서 확인한 사실은 각 파일 맨 위에 적는다
+  normalize.py     회사 이름, 경력·마감 표기(용어집 형식)
+  scope.py         저장 범위(데이터·AI)와 잡음 판단
+  companies.py     기업 구분, 그룹 이름
+  dedup.py         수집처가 다른 같은 공고 묶기
+  filters.py       개인 필터(보는 목록에서만 거름)
+  store.py         data 폴더 형식(아래)
+  pipeline.py      하루 수집 한 번의 순서
+config/            수집 범위, 개인 필터, 그룹 규칙, 회사 별칭(yaml)
+tests/             파서·규칙 테스트, fixtures/에 실제 응답 일부
+```
+
+- 실행: `uv run jobpost collect --data-dir data` (시험은 `--max-pages 2 --detail-budget 5`)
+- 검사: `uv run ruff check src tests` 와 `uv run pytest -q`
+- 매일 실행: `.github/workflows/collect.yml`이 04:17 KST에 돌고 결과를 `data` 브랜치에 커밋한다
+- 수집 데이터는 `data` 브랜치에 있다(레이아웃은 그 브랜치 README와 `store.py` 참고). main에는 넣지 않는다
+- 수집처 하나가 실패하거나 일부만 받으면 그 수집처 공고는 "내려간 공고"로 처리하지 않는다
+- 사람인은 회사가 직무 분류를 넓게 달아서 분류는 믿지 않고 제목 규칙으로만 저장 범위를 정한다

@@ -1,0 +1,746 @@
+{
+ "timestamp": "2026-10-13T11:41:28.703294341",
+ "success": true,
+ "data": {
+  "id": "45d75a04-87b3-47dd-8f07-351c70306350",
+  "createdAt": "2026-04-20T17:26:03.319302",
+  "affiliate": "직행",
+  "company": {
+   "id": "159cf413-011f-4060-9adf-c6a38fbf60f8",
+   "name": "한화비전",
+   "image": "https://d2juy7qzamcf56.cloudfront.net/2024-10-25/6a5736dc-db10-4eee-8a8c-fa028a4b0033.png",
+   "hasDetailInfo": true
+  },
+  "title": "한화비전 Senior Data Pipeline and DB Engineer 채용",
+  "summary": {
+   "type": "doc",
+   "content": [
+    {
+     "type": "heading",
+     "attrs": {
+      "level": 3
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "담당업무"
+      }
+     ]
+    },
+    {
+     "type": "bulletList",
+     "content": [
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "AWS MSK(Kafka), Logstash 기반 엔드 투 엔드 데이터 스트리밍 아키텍처 설계 및 운영"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "OpenSearch 인덱스 설계, 샤딩 및 수명 주기(ISM) 관리를 통한 대용량 검색 성능 최적화"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "PostgreSQL/MySQL 테이블 파티셔닝 및 데이터 모델링"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "효율적인 쿼리 수행을 위한 아키텍처 가이드 수립"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "서비스 전반의 SQL 최적화 주도 및 백엔드 개발팀 기술 베스트 프랙티스 전파"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "DB 스키마 버전닝(Flyway 등) 및 배포 프로세스 자동화 시스템 구축"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "paragraph"
+    },
+    {
+     "type": "heading",
+     "attrs": {
+      "level": 3
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "지원자격"
+      }
+     ]
+    },
+    {
+     "type": "bulletList",
+     "content": [
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "5년 이상의 데이터 엔지니어링 또는 관련 백엔드 개발 경력"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "AWS 클라우드 환경 대규모 트래픽 처리 인프라 운영 경험"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "Kafka 활용 실시간 데이터 파이프라인 구축 및 트러블 슈팅 역량"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "OpenSearch(Elasticsearch) 클러스터 설계 및 샤딩 최적화 경험"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "RDBMS(PostgreSQL/MySQL) 내부 구조 이해 및 복잡한 쿼리 튜닝 능력"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "해외 여행 결격 사유가 없는 분(남성의 경우 군필 또는 면제)"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "paragraph"
+    },
+    {
+     "type": "heading",
+     "attrs": {
+      "level": 3
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "우대사항"
+      }
+     ]
+    },
+    {
+     "type": "bulletList",
+     "content": [
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "외국인 엔지니어와 기술 문서 공유 및 영어 화상 회의 가능자"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "DevOps 및 백엔드 개발자와의 원활한 기술 커뮤니케이션 역량"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "IoT 도메인 대규모 디바이스 메시지 처리 및 데이터 파이프라인 구축 경험"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "장애 상황 데이터 유실 방지(Reliability) 및 정합성 검증 로직 설계 경험"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "IaC(Terraform, Ansible 등) 활용 데이터 인프라 코드화 및 자동화 운영 경험"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "국가 등록 장애인 및 국가 보훈 대상자"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "paragraph"
+    },
+    {
+     "type": "heading",
+     "attrs": {
+      "level": 3
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "복리후생"
+      }
+     ]
+    },
+    {
+     "type": "bulletList",
+     "content": [
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "가족 초청 행사 및 자녀 학자금 지원"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "아빠 휴가, 자녀 의료비 지원, 난임 시술 지원"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "상조 서비스 및 경조금/경조 휴가 지원"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "본인 및 배우자 건강 검진, 실비 보험 제공"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "복지 포인트 지원"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "하계 휴가, 안식 월 휴가, 자기 개발 휴직"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "직무 및 어학 교육 지원"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "동호회 및 사내 스터디 지원"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "장기 근속 포상 및 멘토-멘티 제도 운영"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "paragraph"
+    },
+    {
+     "type": "heading",
+     "attrs": {
+      "level": 3
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "전형절차"
+      }
+     ]
+    },
+    {
+     "type": "orderedList",
+     "content": [
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "서류 전형"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "실무 면접"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "임원 면접"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "채용 검진"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "최종 결과 발표"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "paragraph"
+    },
+    {
+     "type": "heading",
+     "attrs": {
+      "level": 3
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "기타사항"
+      }
+     ]
+    },
+    {
+     "type": "bulletList",
+     "content": [
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "깃헙, 노션 등 프로젝트 정리 포트폴리오 제출 필수"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "자신을 나타낼 수 있는 모든 기술 자료 제출 가능"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "type": "text",
+           "text": "입사 지원서 허위 기재 시 채용 취소 가능"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "paragraph"
+    },
+    {
+     "type": "heading",
+     "attrs": {
+      "level": 3
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "마감기한"
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "type": "text",
+       "text": "채용시 마감"
+      }
+     ]
+    }
+   ]
+  },
+  "content": {
+   "type": "doc",
+   "content": [
+    {
+     "type": "image",
+     "attrs": {
+      "src": "https://d6hz931zw9by2.cloudfront.net/45d75a04-87b3-47dd-8f07-351c70306350"
+     }
+    }
+   ]
+  },
+  "applyMethod": "URL",
+  "redirectUrl": "https://hanwhavision.ninehire.site/job_posting/FeGED6pv",
+  "applicationEmail": null,
+  "endDate": null,
+  "deadlineType": "채용시마감",
+  "status": "ACTIVE",
+  "careerMin": 5,
+  "careerMax": 12,
+  "regions": [
+   "경기"
+  ],
+  "employeeTypes": [
+   "정규직"
+  ],
+  "educations": [
+   "학사"
+  ],
+  "depthOnes": [
+   "AI_데이터",
+   "IT_개발"
+  ],
+  "depthTwos": [
+   "데이터엔지니어",
+   "DBA"
+  ],
+  "depthThrees": [],
+  "keywords": [
+   "보안솔루션",
+   "안식월휴가",
+   "데이터엔지니어"
+  ],
+  "views": 167,
+  "backgroundImage": null,
+  "badges": [],
+  "bookmarked": false,
+  "pinned": false,
+  "app": {
+   "id": "121f6c08-c957-415d-b6d6-5fc3aff18d8f"
+  },
+  "dedup": {
+   "representativeId": "45d75a04-87b3-47dd-8f07-351c70306350",
+   "isRepresentative": true,
+   "applyOptions": [
+    {
+     "recruitmentId": "45d75a04-87b3-47dd-8f07-351c70306350",
+     "affiliate": "직행",
+     "affiliateType": "직행수집",
+     "redirectUrl": "https://hanwhavision.ninehire.site/job_posting/FeGED6pv",
+     "startDate": "2026-04-19T16:00:52",
+     "endDate": null,
+     "isRepresentative": true,
+     "isCurrent": true,
+     "applyMethod": "URL",
+     "applicationEmail": null
+    },
+    {
+     "recruitmentId": "b34a2787-db3a-44a3-971b-ca8c2987c6f5",
+     "affiliate": "링커리어",
+     "affiliateType": "종합플랫폼",
+     "redirectUrl": "https://linkareer.com/activity/335919",
+     "startDate": null,
+     "endDate": null,
+     "isRepresentative": false,
+     "isCurrent": false,
+     "applyMethod": "URL",
+     "applicationEmail": null
+    },
+    {
+     "recruitmentId": "61c2a81e-4cfc-43bc-8075-42565d32134c",
+     "affiliate": "캐치",
+     "affiliateType": "종합플랫폼",
+     "redirectUrl": "https://www.catch.co.kr/NCS/RecruitInfoDetails/571591",
+     "startDate": "2026-09-15T00:00:00",
+     "endDate": null,
+     "isRepresentative": false,
+     "isCurrent": false,
+     "applyMethod": "URL",
+     "applicationEmail": null
+    }
+   ]
+  }
+ },
+ "code": "SUCCESS",
+ "message": null
+}

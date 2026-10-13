@@ -1,0 +1,154 @@
+{
+ "timestamp": "fixture",
+ "success": true,
+ "data": {
+  "content": [
+   {
+    "id": "45d75a04-87b3-47dd-8f07-351c70306350",
+    "affiliate": "직행",
+    "company": {
+     "id": "159cf413-011f-4060-9adf-c6a38fbf60f8",
+     "name": "한화비전",
+     "image": "https://d2juy7qzamcf56.cloudfront.net/2024-10-25/6a5736dc-db10-4eee-8a8c-fa028a4b0033.png"
+    },
+    "title": "한화비전 Senior Data Pipeline and DB Engineer 채용",
+    "createdAt": "2026-04-20T17:26:03.319302",
+    "endDate": null,
+    "deadlineType": "채용시마감",
+    "careerMin": 5,
+    "careerMax": 12,
+    "regions": [
+     "경기"
+    ],
+    "employeeTypes": [
+     "정규직"
+    ],
+    "educations": [
+     "학사"
+    ],
+    "depthOnes": [
+     "IT_개발",
+     "AI_데이터"
+    ],
+    "depthTwos": [
+     "데이터엔지니어",
+     "DBA"
+    ],
+    "depthThrees": [],
+    "views": 167,
+    "highlightedTitle": null,
+    "highlightedCompanyName": null,
+    "bookmarked": false,
+    "tags": [],
+    "keywords": [
+     "데이터엔지니어",
+     "보안솔루션",
+     "안식월휴가"
+    ],
+    "badges": [],
+    "displayRecruitmentId": null,
+    "displayAffiliate": null
+   },
+   {
+    "id": "01c5cfff-f885-40c7-84f4-affecb2fc211",
+    "affiliate": "직행",
+    "company": {
+     "id": "2f34f74f-b447-46ad-83a8-2db489941323",
+     "name": "네오위즈",
+     "image": "https://static.wanted.co.kr/images/wdes/0_5.43af79c5.jpg"
+    },
+    "title": "Al Research 연구원 (경력)",
+    "createdAt": "2025-06-26T23:46:55.555",
+    "endDate": null,
+    "deadlineType": "채용시마감",
+    "careerMin": 3,
+    "careerMax": 10,
+    "regions": [
+     "경기"
+    ],
+    "employeeTypes": [
+     "정규직"
+    ],
+    "educations": [
+     "무관"
+    ],
+    "depthOnes": [
+     "AI_데이터"
+    ],
+    "depthTwos": [
+     "AI리서치",
+     "NLP",
+     "멀티모달엔지니어",
+     "생성형AI",
+     "MLOps"
+    ],
+    "depthThrees": [],
+    "views": 15532,
+    "highlightedTitle": null,
+    "highlightedCompanyName": null,
+    "bookmarked": false,
+    "tags": [],
+    "keywords": [
+     "유연근무",
+     "프로토타입구현",
+     "게임AI"
+    ],
+    "badges": [],
+    "displayRecruitmentId": null,
+    "displayAffiliate": null
+   },
+   {
+    "id": "b21524b9-7b43-4ba7-976e-48646be6de96",
+    "affiliate": "직행",
+    "company": {
+     "id": "b5dc36c9-63a8-4c30-9c26-d8f338d59896",
+     "name": "카카오헬스케어",
+     "image": "https://static.wanted.co.kr/images/wdes/0_5.2f7ac875.jpg"
+    },
+    "title": "[카카오헬스케어] AI Native EHR 개발 (BA팀) 경력 채용",
+    "createdAt": "2026-03-24T17:19:43.416024",
+    "endDate": null,
+    "deadlineType": "채용시마감",
+    "careerMin": 10,
+    "careerMax": 100,
+    "regions": [
+     "경기"
+    ],
+    "employeeTypes": [
+     "정규직"
+    ],
+    "educations": [
+     "무관"
+    ],
+    "depthOnes": [
+     "IT_개발",
+     "AI_데이터"
+    ],
+    "depthTwos": [
+     "서버_백엔드",
+     "LLM"
+    ],
+    "depthThrees": [],
+    "views": 377,
+    "highlightedTitle": null,
+    "highlightedCompanyName": null,
+    "bookmarked": false,
+    "tags": [],
+    "keywords": [
+     "비포괄임금제",
+     "EHR개발",
+     "헬스케어"
+    ],
+    "badges": [],
+    "displayRecruitmentId": null,
+    "displayAffiliate": null
+   }
+  ],
+  "page": 0,
+  "size": 3,
+  "totalElements": 636,
+  "totalPages": 212,
+  "last": false,
+  "didYouMean": null
+ }
+}

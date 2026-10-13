@@ -1,0 +1,389 @@
+{
+ "data": [
+  {
+   "id": 346665,
+   "title": "Research Engineer(석사 이상)",
+   "application_type": "apply",
+   "job_posting_type": "general",
+   "status": "published",
+   "job_description": "1. AI Agent Research\n• 오픈소스 모델 기반 AI Agent 및 Coding Agent 시스템 연구·개발\n• Agent Workflow 설계 및 성능 평가 체계 구축\n• 최신 Agent 기술 및 오픈소스 프로젝트 분석·적용\n• Agent Serving 및 Multi-Agent System 연구\n\n2. AI Inference Systems Research\n• KV Cache Compression, Speculative Decoding, Semantic Routing, Prefix Caching 등 최신 추론 최적화 기술 연구\n• LLM 추론 워크로드 분석 및 성능 모델링\n• 최신 추론 프레임워크(vLLM, SGLang 등) 분석 및 개선\n• 추론 품질(Quality), 비용(Cost), 지연시간(Latency) 간 Trade-off 분석\n• 대규모 GPU/NPU 클러스터 환경에서의 추론 시스템 설계 및 최적화\n• 최신 AI 시스템 논문 구현, 검증 및 성능 평가",
+   "job_rank_category": "",
+   "job_role": "",
+   "min_salary": null,
+   "max_salary": null,
+   "total_compensation": null,
+   "qualifications": "• 컴퓨터공학 또는 관련 분야 석사 또는 박사 학위 소지자로서 우수한 연구 성과를 보유한 분\n• Python 기반 소프트웨어 개발 경험\n• AI 시스템 소프트웨어 또는 분산 시스템에 대한 이해\n• LLM 및 생성형 AI 기술에 대한 이해\n• 새로운 기술을 빠르게 학습하고 실험할 수 있는 역량\n• 문제를 정의하고 가설 수립, 실험 설계, 결과 분석을 주도적으로 수행할 수 있는 역량\n• 팀워크를 중시하고, 긍정적인 태도로 동료들과 적극적으로 협력할 수 있으신 분",
+   "introduction": "Moreh는 ​AMD/NVIDIA ​GPU ​및 다양한 ​AI 가속기로 구성된 대규모 ​이기종(Heterogeneous) ​클러스터에서 고성능·고효율 ​AI 추론 서비스를 ​제공하기 위한 ​시스템 ​소프트웨어를 개발하고 ​있습니다.\n\nResearch ​Engineer는 ​최신 LLM 및 ​AI ​Agent 기술을 분석하고, ​대규모 ​추론 ​워크로드를 효율적으로 처리하기 ​위한 시스템 ​아키텍처와 ​최적화 기법을 ​연구·개발합니다. 또한 ​최신 ​논문 및 오픈소스 ​프로젝트를 기반으로 ​새로운 추론 기술을 검증하고 실제 서비스 환경에 적용 가능한 형태로 발전시키는 역할을 수행합니다.",
+   "min_experience": null,
+   "max_experience": 4,
+   "education_requirement": "master",
+   "recruiting_process": "• 서류 전형 -＞ 1차 면접 -＞ 최종 면접 -＞ 처우 협의 -＞ 최종 합격\n• 포지션에 따라 전형이 변경 또는 추가될 수 있는 점 참고 부탁드립니다.",
+   "additional_information": "• 복지포인트 연간 200만 원\n• 입사 시 장비지원금 지원\n• 유연출근제&재택근무\n• 연 1회 종합건강검진 (본인 및 직계가족 1인)\n• 생일 반차 휴가\n• 장기근속 휴가\n• 사내 동호회 지원 (보드게임, 클라이밍 등)\n• 오피스 간식 제공 (과자, 음료수 등)\n• 연말 오피스 클로징 (매년 12/28-12/31 유급휴가 제공)\n• 중소기업 청년 소득세 감면 (연간 최대 200만 원)",
+   "preferred_qualifications": "1. 연구 경험\n• ML Systems, Computer Architecture, Distributed Systems, Operating Systems, Compiler, Database 등 관련 분야 연구 경험\n• AI 추론 최적화 기술(KV Cache Compression, Speculative Decoding, Routing, Quantization, Parallelism 등) 연구 경험\n• 주요 학술대회(NSDI, OSDI, SOSP, EuroSys, ASPLOS, ISCA, MICRO, HPCA, MLSys, NeurIPS, ICML, ICLR 등) 논문 게재 또는 이에 준하는 연구 성과\n\n2. 시스템 및 GPU 프로그래밍\n• CUDA, ROCm, Triton, OpenCL, TileLang 등 GPU 프로그래밍 경험\n• GPU/NPU 기반 성능 최적화 경험\n• 컴퓨터 아키텍처 또는 가속기 시스템 관련 연구 경험\n• GPU Kernel 개발 또는 성능 분석 경험\n• 대규모 분산 추론 시스템 구축 및 운영 경험\n\n3. AI 및 오픈소스\n• LLM Agent 또는 AI Application 개발 경험\n• LLM Evaluation Framework 및 Benchmark 구축 경험\n• vLLM, SGLang, TensorRT-LLM 등 추론 프레임워크 개발 경험\n• AI 관련 오픈소스 프로젝트 기여 경험",
+   "link": "",
+   "starts_at": "2026-10-13T00:00:00.000+09:00",
+   "ends_at": null,
+   "explicit_due": false,
+   "highend": false,
+   "leader_position": false,
+   "company_description": "",
+   "matching_reward": 500000,
+   "image_url": "https://career-cdn.rememberapp.co.kr/upload/attachments/image/9my7yyedyrfkgcxk9dqpckbiwzfd",
+   "thumbnail_url": "https://career-api.rememberapp.co.kr/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MjMwNjMzOCwicHVyIjoiYmxvYl9pZCJ9fQ==--9f834811c569fe1a9e92d29ece2542cf8d79f4f6/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJyZXNpemVfdG9fbGltaXQiOlsyNzAsbnVsbF0sInNhdmVyIjp7InF1YWxpdHkiOjkwfX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--97793e309d24446f7f1c809115752c09fa820c67/7c3a4c7fad69f4ce06e86bfec4a637fa",
+   "recruiter": {
+    "name": "장혜미"
+   },
+   "organization": {
+    "id": 49054,
+    "name": "(주)모레",
+    "company_id": 2516707,
+    "account_type": "team",
+    "headhunter": false,
+    "logo": "https://career-cdn.rememberapp.co.kr/upload/attachments/logo/96frmt6gybyt4oowhdzhyojq7hcr",
+    "url": "https://www.moreh.io/",
+    "registration_no": "5418601839",
+    "application_response_metrics": {
+     "response_rate": 100,
+     "response_duration_days": 6
+    }
+   },
+   "job_category_ids": [
+    339,
+    340,
+    343,
+    310
+   ],
+   "job_categories": [
+    {
+     "id": 310,
+     "level1": "SW개발",
+     "level2": "백엔드"
+    },
+    {
+     "id": 339,
+     "level1": "AI·데이터",
+     "level2": "AI·ML·DL"
+    },
+    {
+     "id": 340,
+     "level1": "AI·데이터",
+     "level2": "MLOps"
+    },
+    {
+     "id": 343,
+     "level1": "AI·데이터",
+     "level2": "데이터 엔지니어"
+    }
+   ],
+   "industries": [],
+   "addresses": [
+    {
+     "address_level1": "서울특별시",
+     "address_level2": "서초구"
+    }
+   ],
+   "application_requirements": {
+    "language": false,
+    "eligibility_for_veterans_compensation": false,
+    "impairment_type": false,
+    "military_service_status": false,
+    "current_salary": true,
+    "certificate": false,
+    "portfolio": false,
+    "birth_year": true,
+    "gender": true
+   },
+   "normalized_address": {
+    "level1": "서울",
+    "level2": "서초구"
+   },
+   "job_rank": null,
+   "matching_reward_request": null,
+   "starred_job_posting": null,
+   "application": null,
+   "matching_gift": {
+    "type": "cash",
+    "amount": 500000
+   },
+   "viewed_at": null,
+   "chips": [
+    {
+     "category": "certification",
+     "value": "벤처 인증"
+    },
+    {
+     "category": "investment",
+     "value": "누적 투자 400억↑"
+    }
+   ],
+   "company": {
+    "id": 2516707,
+    "investment": {
+     "value": 450.0,
+     "companies": [
+      "어드밴스드마이크로디바이시스",
+      "포레스트파트너스",
+      "스마일게이트인베스트먼트",
+      "케이티",
+      "케이티클라우드"
+     ]
+    }
+   },
+   "lead_times": [
+    {
+     "id": null,
+     "from": "applied",
+     "to": "resume_accepted",
+     "lead_time_type": "default",
+     "period": null,
+     "ends_at": null
+    }
+   ],
+   "applicant_manager": null,
+   "ad_types": null,
+   "spotlight": false
+  },
+  {
+   "id": 346224,
+   "title": "[세방(주)] IT개발(AI·데이터)(서울)",
+   "application_type": "apply",
+   "job_posting_type": "general",
+   "status": "published",
+   "job_description": "· AI 에이전트 기획/개발/배포",
+   "job_rank_category": "",
+   "job_role": "",
+   "min_salary": null,
+   "max_salary": null,
+   "total_compensation": null,
+   "qualifications": "· 학사 학위 보유자\n· LLM API 기반 서비스 및 에이전트 개발 경험(포트폴리오 제출)",
+   "introduction": "세방은 1965년 설립된 대한민국의 대표 종합 물류기업으로,\n수출입 화물의 항만하역, 창고 보관, 육해상 운송, 중량 화물 운송 및 설치, \n3자 물류(3PL)의 서비스를 제공하고 있습니다.\n\n전국 12개의 지사를 운영하며, 국내 물류 법인 인수 및 해외 법인 설립을 통해 \n사업 영역을 확장해나가고 있습니다.\n\n또한, 첨단 물류 기술 도입과 환경 친화적 물류 솔루션을 개발해 \n지속적인 혁신을 추구하고 있습니다.",
+   "min_experience": null,
+   "max_experience": null,
+   "education_requirement": "bachelor",
+   "recruiting_process": "서류전형 ＞ AI 역량검사 ＞ 1차면접 ＞ 2차면접 ＞ 채용검진/처우협의 ＞ 최종합격\n\n☑️ 세방(주) 지원 시 유의사항!\n- 세방(주) 채용 지원시 그룹사간 중복지원이 불가능해요.\n- 전형 일정은 개별적으로 조율할 수 없어요.\n- 이력서 및 제출 서류에 허위 사실이 발견 혹은 결격사유 해당자로 확인되면 합격이 취소될 수 있어요.\n\n☑️ 수습기간 \n- 입사일 기준 3개월의 수습기간이 적용됩니다. \n- 경력 입사자의 경우, 수습기간 급여는 100% 지급합니다.",
+   "additional_information": "■ Work\n• E-Learning 교육 지원\n• 외국어 교육 지원\n• 온/오프라인 교육 지원\n• 리텐션 교육 지원\n\n■ Wellbeing\n• Refresh 휴가 및 휴가비 지원\n• 휴양/리조트 제휴 \n\n■ Life\n• 복지포인트 지급 (상/하반기 2회)\n• 건강검진 지원 (연 1회)\n• 자녀 학자금 지원\n• 경조금 및 경조휴가 지원\n• 장기 근속자 포상\n• 사내 동호회 운영",
+   "preferred_qualifications": "· AI 에이전트 서비스 개발 및 운영 경험자\n· MCP 구축 경험자\n· RAG 구축 경험자",
+   "link": "",
+   "starts_at": "2026-10-12T15:30:00.000+09:00",
+   "ends_at": "2026-10-18T23:30:00.000+09:00",
+   "explicit_due": true,
+   "highend": false,
+   "leader_position": false,
+   "company_description": "",
+   "matching_reward": 500000,
+   "image_url": "https://career-cdn.rememberapp.co.kr/upload/attachments/image/5y9pw4u5y0i2cjxza8f0vfbllzo5",
+   "thumbnail_url": "https://career-api.rememberapp.co.kr/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MjcxODUzMywicHVyIjoiYmxvYl9pZCJ9fQ==--6f9c2868569cf198800e4ff8ed774cfaa6a8ceb5/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJ3ZWJwIiwicmVzaXplX3RvX2xpbWl0IjpbMjcwLG51bGxdLCJzYXZlciI6eyJxdWFsaXR5Ijo5MH19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--7415ce8e5629e86e157d4752f126c17db4e67840/fb3e6c9d0b1d04b66ff46934e3591fe3",
+   "recruiter": {
+    "name": "장재민"
+   },
+   "organization": {
+    "id": 40375,
+    "name": "세방그룹",
+    "company_id": 274460,
+    "account_type": "team",
+    "headhunter": false,
+    "logo": "https://career-cdn.rememberapp.co.kr/upload/attachments/logo/k5kcreb01bbahur410fl6320kwih",
+    "url": "https://www.sebanggroup.com/client/ko",
+    "registration_no": "6178103842",
+    "application_response_metrics": {
+     "response_rate": 95,
+     "response_duration_days": 14
+    }
+   },
+   "job_category_ids": [
+    339
+   ],
+   "job_categories": [
+    {
+     "id": 339,
+     "level1": "AI·데이터",
+     "level2": "AI·ML·DL"
+    }
+   ],
+   "industries": [],
+   "addresses": [
+    {
+     "address_level1": "서울특별시",
+     "address_level2": "강남구"
+    }
+   ],
+   "application_requirements": {
+    "language": true,
+    "eligibility_for_veterans_compensation": true,
+    "impairment_type": true,
+    "military_service_status": true,
+    "current_salary": true,
+    "certificate": true,
+    "portfolio": true,
+    "birth_year": true,
+    "gender": true
+   },
+   "normalized_address": {
+    "level1": "서울",
+    "level2": "강남구"
+   },
+   "job_rank": null,
+   "matching_reward_request": null,
+   "starred_job_posting": null,
+   "application": null,
+   "matching_gift": {
+    "type": "cash",
+    "amount": 500000
+   },
+   "viewed_at": null,
+   "chips": [],
+   "company": null,
+   "lead_times": [
+    {
+     "id": null,
+     "from": "applied",
+     "to": "resume_accepted",
+     "lead_time_type": "default",
+     "period": null,
+     "ends_at": null
+    }
+   ],
+   "applicant_manager": null,
+   "ad_types": null,
+   "spotlight": false
+  },
+  {
+   "id": 346302,
+   "title": "[외국계] AI Full Stack 개발자 (Terraform 경력자)",
+   "application_type": "apply",
+   "job_posting_type": "internal_headhunter",
+   "status": "published",
+   "job_description": "직무특성 :\nAI 솔루션의 요구사항을 충족하는 소프트웨어 제품을 설계하고 구축합니다. 다양한 팀 및 비즈니스 이해관계자들과 협업하여 각 비즈니스 유스케이스를 이해하고, 이를 소프트웨어 기술 설계에 반영한 후 개발 및 테스트를 진행하여 실제로 작동 가능한 제품으로 구현하는 역할을 담당합니다.\n\n주요업무:\n• 시장 내 리더로 성장할 수 있도록 차별화된 가치 제안을 제공하는 최첨단 기술 구축\n• MVP 기능 중심으로 시장 출시 속도를 우선시하여 Proof of Concept 및 프로토타입 개발\n• Agile 및 Lean 방법론을 활용하여 핵심 기능 제공\n• 도입 가능한 신규 기술 역량 및 솔루션 리서치\n• AI 솔루션을 구축, 고도화 및 유지보수\n• 완성된 Product의 기술 설계 및 개발 내용 문서화\n• 플랫폼에 대한 운영 지원을 제공하며, 발생한 인시던트에 대해 트리아지 및 트러블슈팅 수행\n• 플랫폼 및 솔루션에 GenAI 기능을 구축·통합하여 미래 확장성을 갖춘 솔루션 개발\n• 구축된 애플리케이션/플랫폼이 멀티테넌트 및 글로벌 엔터프라이즈 운영 환경에서 확장 및 유지보수",
+   "job_rank_category": "기타",
+   "job_role": "",
+   "min_salary": 10000,
+   "max_salary": 15000,
+   "total_compensation": null,
+   "qualifications": "•필수 자격요건: AWS, Terraform, Langgraph, Langchain 경험자 + 영어 비즈니스 이상\n_______________________________________________________________\n• AWS 기술 스택 및 서비스에 대한 이해를 보유하신 분\n• AWS Connect, S3, SQS, SNS, API Gateway, EC2, AWS Lambda, AppSync, Kinesis, Lex, Polly, Transcribe, ECS, ECR 등 AWS 서비스를 활용한 애플리케이션 구축 경험을 보유하신 분\n• Docker, Lambda, ECS 등을 활용한 서버리스 아키텍처 및 마이크로서비스 아키텍처 구축 경험을 보유하신 분\n• VPC, Ingress, Egress, Security Group, Load Balancer 등 네트워킹 지식에 익숙하신 분\n• Node.js, ReactJS, NextJS, Typescript, MERN 또는 이에 준하는 기술 스택에 대한 깊이 있는 개발 경험을 보유하신 분\n• GenAI 애플리케이션 구축 경험 및 Context, Token, Completions, Temperature, RAG, Hallucination 등 GenAI 관련 개념에 대한 이해를 보유하신 분 LangChain, LangGraph 및 Python 활용 경험을 보유하신 분\n• MongoDB, DynamoDB 등 NoSQL 데이터베이스 활용 경험을 보유하신 분\n• BitBucket Pipeline 등 CI/CD 도구 활용 경험을 보유하신 분\n• Jest, Playwright, Cypress 등 Unit Testing 도구 활용 경험을 보유하신 분\n• Terraform 등 Infrastructure-as-a-Code(IaC) 활용 경험을 보유하신 분 (필수 ★)\n• GitHub, GitLab, BitBucket 등 소스 코드 저장소 및 Git 브랜칭 모델에 대한 이해와 활용 경험을 보유하신 분\n• Confluence, JIRA, SharePoint 등 협업 도구와 Agile 및/또는 Lean 방법론에 대한 실무 이해를 보유하신 분\n• 비즈니스 영어 활용이 가능하신 분\n• 필수 언어:\n  - Front: ReactJS, NextJS, TypeScript\n  - Back: Java\n  - DevOps/Cloud Infra: Terraform (필수 ★)",
+   "introduction": "싱가포르 본사를 둔 글로벌 IT기업\n(본 포지션은 헤드헌팅 채용으로 지원자에 한하여 자세한 소개가 가능합니다.)\n\n문의: jay.lee@unicosearch.com",
+   "min_experience": 4,
+   "max_experience": 15,
+   "education_requirement": "bachelor",
+   "recruiting_process": "서류전형 ＞ 면접전형 (3회) ＞ 최종합격 및 처우 협의\n- 2차 면접 단계에서 Live Test가 진행됩니다.",
+   "additional_information": "",
+   "preferred_qualifications": "• AWS 외 기타 클라우드 제공업체 및 관련 기술에 대한 이해를 보유하신 분\n• EKS 활용 경험을 보유하신 분\n• AWS Solutions Architect 또는 이에 준하는 클라우드 관련 자격증을 보유하신 분\n• WebRTC 관련 지식을 보유하신 분\n• Contact Center 관련 업무 경험을 보유하신 분\n• Google ADK 활용 경험을 보유하신 분\n• Text-to-Speech, Speech-to-Text, Speech-to-Speech 관련 경험을 보유하신 분",
+   "link": "",
+   "starts_at": "2026-10-12T00:00:00.000+09:00",
+   "ends_at": "2026-10-25T23:59:59.000+09:00",
+   "explicit_due": true,
+   "highend": false,
+   "leader_position": false,
+   "company_description": "Global IT/Device care",
+   "matching_reward": null,
+   "image_url": null,
+   "thumbnail_url": null,
+   "recruiter": {
+    "name": "이재훈"
+   },
+   "organization": {
+    "id": 33570,
+    "name": "(주)유니코써치",
+    "company_id": 84190,
+    "account_type": "team",
+    "headhunter": true,
+    "logo": "https://career-cdn.rememberapp.co.kr/upload/attachments/logo/bj3jnxteh1alovxym3z4ncp2ga15",
+    "url": "www.unicosearch.com",
+    "registration_no": "1208110494",
+    "application_response_metrics": {
+     "response_rate": 2,
+     "response_duration_days": 1
+    }
+   },
+   "job_category_ids": [
+    312,
+    327,
+    339
+   ],
+   "job_categories": [
+    {
+     "id": 312,
+     "level1": "SW개발",
+     "level2": "풀스택"
+    },
+    {
+     "id": 327,
+     "level1": "SW개발",
+     "level2": "클라우드 엔지니어"
+    },
+    {
+     "id": 339,
+     "level1": "AI·데이터",
+     "level2": "AI·ML·DL"
+    }
+   ],
+   "industries": [
+    {
+     "id": 2,
+     "level1": "IT·통신",
+     "level2": "IT/통신",
+     "level3": "통신"
+    },
+    {
+     "id": 6,
+     "level1": "IT·통신",
+     "level2": "IT/통신",
+     "level3": "기타"
+    },
+    {
+     "id": 48,
+     "level1": "금융",
+     "level2": "보험",
+     "level3": "기타"
+    }
+   ],
+   "addresses": [
+    {
+     "address_level1": "서울특별시",
+     "address_level2": "전체"
+    }
+   ],
+   "application_requirements": {
+    "language": true,
+    "eligibility_for_veterans_compensation": false,
+    "impairment_type": false,
+    "military_service_status": false,
+    "current_salary": true,
+    "certificate": false,
+    "portfolio": false,
+    "birth_year": true,
+    "gender": true
+   },
+   "normalized_address": {
+    "level1": "서울",
+    "level2": "전체"
+   },
+   "job_rank": null,
+   "matching_reward_request": null,
+   "starred_job_posting": null,
+   "application": null,
+   "matching_gift": null,
+   "viewed_at": null,
+   "chips": null,
+   "company": null,
+   "lead_times": [
+    {
+     "id": null,
+     "from": "applied",
+     "to": "resume_accepted",
+     "lead_time_type": "default",
+     "period": null,
+     "ends_at": null
+    }
+   ],
+   "applicant_manager": null,
+   "ad_types": null,
+   "spotlight": false
+  }
+ ],
+ "meta": {
+  "total_count": 935,
+  "total_pages": 19,
+  "page": 1,
+  "per": 50
+ }
+}
