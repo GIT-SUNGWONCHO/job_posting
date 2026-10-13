@@ -1,0 +1,11 @@
+# AI 호출 설정. 모델은 여기서만 바꾼다(코드에 쓰지 않는다).
+# 무료 등급은 보낸 내용을 구글이 제품 개선에 쓸 수 있다. 공개된 공고만 보내고 이력서 같은 개인정보는 보내지 않는다.
+
+provider: gemini
+model: gemini-3.5-flash-lite
+min_interval: 4.0      # 호출 사이 최소 간격(초)
+
+job_types:
+  batch: 80            # 한 번에 보내는 공고 수
+  max_calls: 120       # 하루 최대 호출 수(약 9,600건)
+  max_minutes: 15

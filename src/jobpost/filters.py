@@ -16,6 +16,7 @@ def passes(
     career_max: int | None,
     regions: list[str],
     filters: dict[str, Any],
+    job_type: str | None = None,
 ) -> tuple[bool, str | None]:
     """(통과 여부, 걸린 이유)."""
     for kw in filters.get("exclude_keywords") or []:
@@ -26,6 +27,11 @@ def passes(
             return False, f"제외 회사: {c}"
     if any(c and c in company for c in filters.get("always_companies") or []):
         return True, None
+
+    # 직무 유형이 아직 분류되지 않은 공고(오늘 새로 들어와 AI가 못 본 것)는 통과시킨다
+    allowed_jobs = filters.get("job_types")
+    if allowed_jobs and job_type and job_type not in allowed_jobs:
+        return False, f"직무 유형: {job_type}"
 
     allowed_types = filters.get("company_types")
     if allowed_types and company_type.value not in allowed_types:

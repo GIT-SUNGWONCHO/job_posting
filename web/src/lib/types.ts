@@ -22,7 +22,14 @@ export interface Posting {
   headhunter: boolean
   noise: string | null
   firstSeen: string
+  /** 직무 유형 id. 오늘 들어와 아직 분류 전이면 null */
+  jobType: string | null
   sources: SourceLink[]
+}
+
+export interface JobType {
+  id: string
+  name: string
 }
 
 export interface Company {
@@ -32,6 +39,7 @@ export interface Company {
 }
 
 export interface Filters {
+  job_types?: string[]
   exclude_keywords?: string[]
   always_companies?: string[]
   exclude_companies?: string[]
@@ -46,6 +54,7 @@ export interface Screen {
   built: string
   counts: { open: number; new: number; companies: number }
   defaultFilters: Filters
+  jobTypes: JobType[]
   companies: Record<string, Company>
   postings: Posting[]
 }

@@ -28,12 +28,15 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
     }
     s.ingest(day, ps, {"zighang", "remember", "saramin"}, extra)
     s.state["saramin:9"]["closed_on"] = "2026-10-13"
+    s.state["remember:1"]["job_type"] = {"id": "data_eng"}  # 대표에 없으면 묶인 공고의 유형을 쓴다
     s.save()
 
     built = screen.build(tmp_path, today=day)
     assert [p["id"] for p in built["postings"]] == ["zighang:a"]
     p = built["postings"][0]
     assert p["career"] == "경력 5년 이상"
+    assert p["jobType"] == "data_eng"
+    assert {"id": "data_eng", "name": "데이터 엔지니어"} in built["jobTypes"]
     assert [x["name"] for x in p["sources"]] == ["직행", "리멤버"]
     assert p["sources"][1]["url"] == "https://r/1"
     assert built["companies"]["회사"] == {"name": "회사", "type": "그 외", "group": None}

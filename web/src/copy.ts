@@ -25,6 +25,9 @@ export const copy = {
     openCount: (n: number) => `열린 공고 ${n}`,
   },
   filter: {
+    jobTypes: '직무',
+    allJobs: '직무 전체',
+    jobCount: (n: number) => `직무 ${n}개`,
     companyTypes: '기업 구분',
     career: '경력',
     regions: '지역',
@@ -40,6 +43,7 @@ export const copy = {
   },
   job: {
     back: '뒤로',
+    jobType: '직무',
     career: '경력',
     deadline: '마감',
     regions: '근무지',

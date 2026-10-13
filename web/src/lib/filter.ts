@@ -13,6 +13,10 @@ export function passes(p: Posting, c: Company | undefined, f: Filters): boolean 
   }
   if ((f.always_companies ?? []).some((x) => x && company.includes(x))) return true
 
+  // 아직 분류 전인 공고(오늘 새로 들어온 것)는 통과
+  const jobs = f.job_types
+  if (jobs && jobs.length && p.jobType && !jobs.includes(p.jobType)) return false
+
   const types = f.company_types
   if (types && types.length && !types.includes(c?.type ?? '그 외')) return false
 

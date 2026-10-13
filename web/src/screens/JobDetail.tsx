@@ -14,7 +14,9 @@ export function JobDetail({ screen, posting, today, panel = false }: {
   if (!posting) return <div className="page"><p className="empty">{copy.jobs.empty}</p></div>
   const p = posting
   const c = screen.companies[p.company]
+  const jobName = screen.jobTypes?.find((j) => j.id === p.jobType)?.name
   const rows: [string, ReactNode][] = [
+    ...(jobName ? [[copy.job.jobType, jobName] as [string, ReactNode]] : []),
     [copy.job.deadline, <><Deadline p={p} today={today} />{p.deadline && <span className="muted"> · {dateText(p.deadline, true)}</span>}</>],
     [copy.job.career, p.career],
     [copy.job.regions, p.regions.join(', ') || '-'],

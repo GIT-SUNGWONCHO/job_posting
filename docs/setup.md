@@ -74,6 +74,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 | --- | --- |
 | `SUPABASE_URL` | Project URL |
 | `SUPABASE_SECRET_KEY` | secret key |
+| `GEMINI_API_KEY` | aistudio.google.com > Get API key. 직무 유형 분류에 쓴다. 없으면 분류만 건너뛴다 |
 
 넣은 뒤 Actions > collect > Run workflow로 한 번 돌려 "Supabase 저장소에 올림" 줄이 나오는지 본다(2026.10.13 확인. 새 secret 키는 `apikey` 헤더만으로 올라간다). 키가 없으면 화면용 파일은 만들기만 하고 올리지 않는다.
 

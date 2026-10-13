@@ -40,6 +40,8 @@ jobs:
         run: uv sync --locked --no-dev
 
       - name: 수집
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           args=(--data-dir data)
           if [ -n "${{ github.event.inputs.detail_budget }}" ]; then

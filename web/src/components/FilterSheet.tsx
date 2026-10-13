@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { copy } from '../copy'
-import type { CompanyType, Filters } from '../lib/types'
+import type { CompanyType, Filters, JobType } from '../lib/types'
 
 const TYPES: CompanyType[] = ['대기업', '공기업·공공기관', '외국계', '그 외']
 
-export type FilterSection = 'types' | 'career' | 'regions'
+export type FilterSection = 'jobs' | 'types' | 'career' | 'regions'
 
 function toggle<T>(list: T[], v: T): T[] {
   return list.includes(v) ? list.filter((x) => x !== v) : [...list, v]
@@ -15,15 +15,17 @@ function num(v: string): number | null {
   return Number.isFinite(n) && n >= 0 ? Math.min(n, 40) : null
 }
 
-export function FilterSheet({ value, defaults, regions, focus, onSave, onClose }: {
+export function FilterSheet({ value, defaults, jobTypes, regions, focus, onSave, onClose }: {
   value: Filters
   defaults: Filters
+  jobTypes: JobType[]
   regions: string[]
   focus: FilterSection
   onSave: (f: Filters) => void
   onClose: () => void
 }) {
   const [draft, setDraft] = useState<Filters>(value)
+  const jobs = draft.job_types ?? []
   const types = draft.company_types ?? []
   const picked = draft.regions ?? []
 
@@ -37,6 +39,17 @@ export function FilterSheet({ value, defaults, regions, focus, onSave, onClose }
   return (
     <div className="sheet-backdrop" onClick={onClose}>
       <div className="sheet" role="dialog" aria-modal="true" aria-label="필터" onClick={(e) => e.stopPropagation()}>
+        <section id="filter-jobs" className="sheet-section">
+          <h2>{copy.filter.jobTypes}</h2>
+          <div className="chips wrap">
+            {jobTypes.map((j) => (
+              <button key={j.id} type="button" className={jobs.includes(j.id) ? 'chip selected' : 'chip'} aria-pressed={jobs.includes(j.id)}
+                onClick={() => setDraft({ ...draft, job_types: toggle(jobs, j.id) })}>
+                {j.name}
+              </button>
+            ))}
+          </div>
+        </section>
         <section id="filter-types" className="sheet-section">
           <h2>{copy.filter.companyTypes}</h2>
           <div className="chips wrap">

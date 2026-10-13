@@ -9,7 +9,7 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-from . import config, dedup, filters
+from . import config, dedup, filters, jobtypes
 from .companies import CompanyRegistry
 from .http import Client
 from .models import CompanyType, Posting, Source
@@ -130,6 +130,9 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         rep = rep_of.get(r["uid"])
         r["dup_of"] = rep if rep and rep != r["uid"] else None
 
+    # 직무 유형(AI). 키가 없거나 실패해도 수집 결과는 그대로 저장한다
+    summary["job_types"] = jobtypes.run(store.state, store.load_postings(), today.isoformat())
+
     # 요약
     reps = [r for r in open_recs if not r.get("dup_of")]
     types = Counter(registry.company_type(r.get("company_key", ""), r.get("company", "")).value
@@ -145,6 +148,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
             title=p.title, company=p.company,
             company_type=registry.company_type(company_key(p.company), p.company),
             career_min=p.career_min, career_max=p.career_max, regions=p.regions, filters=personal,
+            job_type=(store.state[p.uid].get("job_type") or {}).get("id"),
         )
         passed += ok
     summary.update({

@@ -11,6 +11,14 @@ exclude_keywords:
 always_companies: []
 exclude_companies: []
 
+# 보여줄 직무 유형(config/job_types.yaml의 id). 아직 분류 안 된 공고는 통과
+job_types:
+  - data_eng
+  - data_arch
+  - mlops
+  - ai_eng
+  - analyst
+
 # 보여줄 기업 구분(대기업, 공기업·공공기관, 외국계, 그 외)
 company_types:
   - 대기업

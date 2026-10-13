@@ -13,12 +13,12 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-from . import config
+from . import config, jobtypes
 from .companies import CompanyRegistry
 from .normalize import career_text, clean_company
 from .store import Store
 
-VERSION = 1
+VERSION = 2  # 2: 직무 유형(jobType, jobTypes)
 SOURCE_NAMES = {"zighang": "직행", "remember": "리멤버", "saramin": "사람인"}
 
 
@@ -53,6 +53,7 @@ def build(data_dir: Path, today: date | None = None) -> dict[str, Any]:
                 "group": registry.group(key, r.get("company", "")),
             }
         same = sorted(dups.get(r["uid"], []), key=lambda d: d["uid"])
+        job_type = next(((x.get("job_type") or {}).get("id") for x in [r, *same] if x.get("job_type")), None)
         first_seen = min([r.get("first_seen", "")] + [d.get("first_seen", "") for d in same])
         postings.append({
             "id": r["uid"],
@@ -68,6 +69,7 @@ def build(data_dir: Path, today: date | None = None) -> dict[str, Any]:
             "headhunter": bool(r.get("headhunter")),
             "noise": r.get("noise"),
             "firstSeen": first_seen,
+            "jobType": job_type,
             "sources": [link(r)] + [link(d) for d in same],
         })
     postings.sort(key=lambda p: (p["firstSeen"], p["id"]), reverse=True)
@@ -83,6 +85,7 @@ def build(data_dir: Path, today: date | None = None) -> dict[str, Any]:
         "built": datetime.now().isoformat(timespec="seconds"),
         "counts": counts,
         "defaultFilters": config.load("filters"),
+        "jobTypes": [{"id": t["id"], "name": t["name"]} for t in jobtypes.taxonomy()["types"]],
         "companies": companies,
         "postings": postings,
     }

@@ -10,6 +10,10 @@ export const PAGE = 50
 export type Sort = 'latest' | 'deadline'
 export interface JobsUi { query: string; sort: Sort; limit: number }
 
+function jobChip(f: Filters): string {
+  const n = (f.job_types ?? []).length
+  return n === 0 ? copy.filter.allJobs : copy.filter.jobCount(n)
+}
 function typeChip(f: Filters): string {
   const t = f.company_types ?? []
   return t.length === 0 ? copy.filter.allTypes : copy.filter.more(t[0], t.length - 1)
@@ -71,6 +75,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
         <input className="search" type="search" placeholder={copy.jobs.searchPlaceholder} aria-label="검색" value={ui.query}
           onChange={(e) => setUi({ ...ui, query: e.target.value, limit: PAGE })} />
         <div className="chips scroll">
+          <Chip selected={(filters.job_types ?? []).length > 0} onClick={() => setSheet('jobs')}>{jobChip(filters)} ▾</Chip>
           <Chip selected={(filters.company_types ?? []).length > 0} onClick={() => setSheet('types')}>{typeChip(filters)} ▾</Chip>
           <Chip selected={filters.career?.min != null || filters.career?.max != null} onClick={() => setSheet('career')}>{careerChip(filters)} ▾</Chip>
           <Chip selected={(filters.regions ?? []).length > 0} onClick={() => setSheet('regions')}>{regionChip(filters)} ▾</Chip>
@@ -108,7 +113,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
       )}
 
       {sheet && (
-        <FilterSheet value={filters} defaults={defaults} regions={regions} focus={sheet}
+        <FilterSheet value={filters} defaults={defaults} jobTypes={screen.jobTypes ?? []} regions={regions} focus={sheet}
           onClose={() => setSheet(null)} onSave={(f) => { onFilters(f); setSheet(null) }} />
       )}
     </div>

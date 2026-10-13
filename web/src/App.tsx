@@ -70,7 +70,8 @@ function Main({ screen }: { screen: Screen }) {
   const wide = useMedia(WIDE)
   const today = todayISO()
   const defaults = screen.defaultFilters
-  const [filters, setFilters] = useState<Filters>(() => readLocal<Filters>(FILTER_KEY) ?? defaults)
+  // 예전에 저장한 필터에 없는 항목(새로 생긴 직무 유형 등)은 기본값으로 채운다
+  const [filters, setFilters] = useState<Filters>(() => ({ ...defaults, ...(readLocal<Filters>(FILTER_KEY) ?? {}) }))
   const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE })
 
   const passed = useMemo(
