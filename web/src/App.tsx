@@ -6,6 +6,7 @@ import { passes } from './lib/filter'
 import { todayISO } from './lib/format'
 import { loadScreen } from './lib/load'
 import { useRoute } from './lib/route'
+import { loadMatches, type Match } from './lib/matches'
 import { loadFilters, saveFilters as saveRemoteFilters } from './lib/settings'
 import { readLocal, writeLocal } from './lib/storage'
 import { supabase } from './lib/supabase'
@@ -75,6 +76,18 @@ function Main({ screen }: { screen: Screen }) {
   // 예전에 저장한 필터에 없는 항목(새로 생긴 직무 유형 등)은 기본값으로 채운다
   const [filters, setFilters] = useState<Filters>(() => ({ ...defaults, ...(readLocal<Filters>(FILTER_KEY) ?? {}) }))
   const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE })
+  const [matches, setMatches] = useState<Map<string, Match>>(new Map())
+  useEffect(() => {
+    let alive = true
+    loadMatches().then((m) => {
+      if (!alive) return
+      setMatches(m)
+      if (m.size > 0) setUi((u) => (u.sort === 'latest' ? { ...u, sort: 'recommend' } : u))
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
 
   const passed = useMemo(
     () => screen.postings.filter((p) => !p.noise && passes(p, screen.companies[p.company], filters)),
@@ -118,14 +131,14 @@ function Main({ screen }: { screen: Screen }) {
 
   const jobs = (seg: 'jobs' | 'companies', activeId?: string) => (
     <Jobs screen={screen} passed={passed} filters={filters} defaults={defaults} regions={regions} seg={seg}
-      ui={ui} setUi={setUi} onFilters={saveFilters} today={today} activeId={activeId} />
+      ui={ui} setUi={setUi} onFilters={saveFilters} today={today} activeId={activeId} matches={matches} />
   )
 
   let body
   let detail = false
   switch (route.name) {
     case 'report':
-      body = <Report screen={screen} passed={passed} today={today} />
+      body = <Report screen={screen} passed={passed} today={today} matches={matches} />
       break
     case 'jobs':
       body = jobs(route.seg)
@@ -134,8 +147,8 @@ function Main({ screen }: { screen: Screen }) {
       const p = screen.postings.find((x) => x.id === route.id)
       detail = !wide
       body = wide
-        ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} panel /></div>
-        : <JobDetail screen={screen} posting={p} today={today} />
+        ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)} panel /></div>
+        : <JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)} />
       break
     }
     case 'company':

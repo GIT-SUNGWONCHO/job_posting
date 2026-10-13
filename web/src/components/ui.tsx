@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { copy } from '../copy'
 import { companyLine, deadlineText, isUrgent } from '../lib/format'
 import { href } from '../lib/route'
+import type { Match } from '../lib/matches'
 import type { Company, Posting } from '../lib/types'
 
 export function Deadline({ p, today }: { p: Posting; today: string }) {
@@ -9,24 +10,35 @@ export function Deadline({ p, today }: { p: Posting; today: string }) {
   return <span className={urgent ? 'dday urgent' : 'dday'}>{deadlineText(p, today)}</span>
 }
 
-export function JobRow({ p, c, today, showCompany = true, active = false }: {
+export function Score({ value, solid = false, size = 52 }: { value: number; solid?: boolean; size?: number }) {
+  return (
+    <span className={solid ? 'score solid' : 'score'} style={{ width: size, height: size }} aria-label={`점수 ${value}`}>
+      {value}
+    </span>
+  )
+}
+
+export function JobRow({ p, c, today, showCompany = true, active = false, match }: {
   p: Posting
   c: Company | undefined
   today: string
   showCompany?: boolean
   active?: boolean
+  match?: Match
 }) {
   return (
     <a className={active ? 'row active' : 'row'} href={href.job(p.id)} aria-current={active ? 'page' : undefined}>
       <span className="row-main">
         {showCompany && <span className="row-company">{companyLine(c, p.company)}</span>}
         <span className="row-title">{p.title}</span>
+        {match?.reason && <span className="row-reason">{match.reason}</span>}
         <span className="row-meta">
           <Deadline p={p} today={today} />
           <span>{p.career}</span>
           {p.headhunter && <span>{copy.job.headhunter}</span>}
         </span>
       </span>
+      {match && <Score value={match.score} />}
     </a>
   )
 }

@@ -55,6 +55,13 @@ jobs:
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
         run: uv run jobpost screen --data-dir data --out screen.json.gz --upload
 
+      - name: 매칭(사람마다 점수와 매칭 이유)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: uv run jobpost match --data-dir data
+
       - name: 실행 요약
         if: always()
         run: |

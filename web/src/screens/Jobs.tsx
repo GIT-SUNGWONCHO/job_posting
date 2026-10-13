@@ -4,10 +4,11 @@ import { FilterSheet, type FilterSection } from '../components/FilterSheet'
 import { Chip, Empty, JobRow } from '../components/ui'
 import { matchesQuery } from '../lib/filter'
 import { href } from '../lib/route'
+import type { Match } from '../lib/matches'
 import type { Filters, Posting, Screen } from '../lib/types'
 
 export const PAGE = 50
-export type Sort = 'latest' | 'deadline'
+export type Sort = 'recommend' | 'latest' | 'deadline'
 export interface JobsUi { query: string; sort: Sort; limit: number }
 
 function jobChip(f: Filters): string {
@@ -30,13 +31,17 @@ function regionChip(f: Filters): string {
   return r.length === 0 ? copy.filter.allRegions : copy.filter.more(r.slice(0, 2).join('·'), r.length - 2 > 0 ? r.length - 2 : 0)
 }
 
-function sortPostings(list: Posting[], sort: Sort): Posting[] {
+function sortPostings(list: Posting[], sort: Sort, matches: Map<string, Match>): Posting[] {
+  if (sort === 'recommend') {
+    const score = (p: Posting) => matches.get(p.id)?.score ?? -1
+    return [...list].sort((a, b) => score(b) - score(a))
+  }
   if (sort === 'latest') return list // 화면용 파일이 이미 최신순
   const key = (p: Posting) => (p.deadlineType === 'date' && p.deadline ? p.deadline : '9999')
   return [...list].sort((a, b) => key(a).localeCompare(key(b)))
 }
 
-export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setUi, onFilters, today, activeId }: {
+export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setUi, onFilters, today, activeId, matches }: {
   screen: Screen
   passed: Posting[]
   filters: Filters
@@ -48,12 +53,13 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
   onFilters: (f: Filters) => void
   today: string
   activeId?: string
+  matches: Map<string, Match>
 }) {
   const [sheet, setSheet] = useState<FilterSection | null>(null)
   const c = screen.companies
   const shown = useMemo(
-    () => sortPostings(passed.filter((p) => matchesQuery(p, c[p.company], ui.query)), ui.sort),
-    [passed, c, ui.query, ui.sort],
+    () => sortPostings(passed.filter((p) => matchesQuery(p, c[p.company], ui.query)), ui.sort, matches),
+    [passed, c, ui.query, ui.sort, matches],
   )
   const companies = useMemo(() => {
     const by = new Map<string, Posting[]>()
@@ -84,6 +90,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
           <span>{seg === 'jobs' ? copy.jobs.count(shown.length) : copy.jobs.companyCount(companies.length)}</span>
           {seg === 'jobs' && (
             <select aria-label="정렬" value={ui.sort} onChange={(e) => setUi({ ...ui, sort: e.target.value as Sort, limit: PAGE })}>
+              {matches.size > 0 && <option value="recommend">{copy.jobs.sort.recommend}</option>}
               <option value="latest">{copy.jobs.sort.latest}</option>
               <option value="deadline">{copy.jobs.sort.deadline}</option>
             </select>
@@ -94,7 +101,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
       <div className="rows list">
         {total === 0 && <Empty>{copy.jobs.empty}</Empty>}
         {seg === 'jobs' && shown.slice(0, ui.limit).map((p) => (
-          <JobRow key={p.id} p={p} c={c[p.company]} today={today} active={p.id === activeId} />
+          <JobRow key={p.id} p={p} c={c[p.company]} today={today} active={p.id === activeId} match={matches.get(p.id)} />
         ))}
         {seg === 'companies' && companies.slice(0, ui.limit).map(([key, list]) => (
           <a key={key} className="row" href={href.company(key)}>

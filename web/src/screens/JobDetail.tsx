@@ -1,18 +1,22 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { copy } from '../copy'
-import { Deadline, SectionTitle } from '../components/ui'
+import { Deadline, Score, SectionTitle } from '../components/ui'
 import { companyLine, dateText } from '../lib/format'
 import { goBack, href } from '../lib/route'
 import { loadBody } from '../lib/load'
+import type { Match } from '../lib/matches'
 import type { Body, Posting, Screen } from '../lib/types'
 
 // 본문의 소제목(담당업무, 자격요건 등). 수집처마다 [대괄호]나 이모지가 붙기도 한다
 const HEADING = /^(\p{Extended_Pictographic}\s*)?\[?(소개|포지션 소개|회사 소개|담당\s*업무|주요\s*업무|자격\s*요건|필수\s*요건|우대\s*사항|혜택\s*및\s*복지|복지\s*및\s*혜택|채용\s*절차|전형\s*절차|근무\s*조건|근무\s*환경|기타\s*사항|유의\s*사항|보상|접수\s*방법|마감\s*기한|사내\s*문화)\]?$/u
 
-export function JobDetail({ screen, posting, today, panel = false }: {
+const GAP_MAX = 8
+
+export function JobDetail({ screen, posting, today, match, panel = false }: {
   screen: Screen
   posting: Posting | undefined
   today: string
+  match?: Match
   panel?: boolean
 }) {
   const [body, setBody] = useState<{ id: string; body: Body | null; failed?: boolean } | null>(null)
@@ -55,6 +59,32 @@ export function JobDetail({ screen, posting, today, panel = false }: {
         </a>
         <h1>{p.title}</h1>
       </header>
+      {match && (
+        <section className="section">
+          <div className="match-head">
+            <Score value={match.score} solid size={56} />
+            <div className="row-main">
+              <span className="match-parts">{copy.job.parts(match.parts.job, match.parts.career, match.parts.skills)}</span>
+              {match.reason && (
+                <span className="match-reason">{match.reason} <span className="badge-ai">{copy.job.aiOpinion}</span></span>
+              )}
+            </div>
+          </div>
+          {match.matched.length > 0 && (
+            <div className="skill-line"><span>{copy.job.fit}</span>
+              <div className="chips wrap small">{match.matched.map((s) => <span key={s} className="chip">{s}</span>)}</div>
+            </div>
+          )}
+          {match.missing.length > 0 && (
+            <div className="skill-line"><span>{copy.job.gap}</span>
+              <div className="chips wrap small">
+                {match.missing.slice(0, GAP_MAX).map((s) => <span key={s} className="chip gap">{s}</span>)}
+                {match.missing.length > GAP_MAX && <span className="count">{copy.job.more(match.missing.length - GAP_MAX)}</span>}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
       <section className="section">
         <dl className="kv">
           {rows.map(([k, v]) => (

@@ -111,7 +111,7 @@ def score(profile: dict[str, Any], posting: dict[str, Any], posting_skills: set[
                 hit += 1
                 matched += sorted(mine_here & members) or sorted(mine_here)
             else:
-                missing += sorted(members)
+                missing.append("·".join(sorted(members)))  # 바꿔 쓸 수 있는 묶음은 한 칸으로
         matched, missing = sorted(set(matched)), sorted(set(missing))
         denom = max(min(len(units), cfg["skill_denominator"]), cfg.get("skill_min_denominator", 1))
         skills = w["skills"] * min(1.0, hit / denom)

@@ -30,7 +30,7 @@ def test_interchangeable_skills_count_once():
     # Snowflake·Redshift는 Databricks·BigQuery와 같은 묶음, AWS·Azure는 클라우드 묶음(나는 없음)
     s = matching.score(PROFILE, posting, {"Snowflake", "Redshift", "AWS", "Azure"}, TODAY)
     assert s["parts"]["skills"] == 10  # 2개 단위 중 1개, 분모는 최소 4
-    assert s["matched"] == ["BigQuery", "Databricks"] and s["missing"] == ["AWS", "Azure"]
+    assert s["matched"] == ["BigQuery", "Databricks"] and s["missing"] == ["AWS·Azure"]
 
 
 def test_score_related_job_short_career_and_no_body():

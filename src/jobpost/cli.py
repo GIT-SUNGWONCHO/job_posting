@@ -6,9 +6,10 @@ import argparse
 import json
 import logging
 import sys
+from datetime import date
 from pathlib import Path
 
-from . import pipeline, publish, screen
+from . import ai, db, pipeline, publish, recommend, screen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -26,6 +27,9 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--out", type=Path, default=Path("screen.json.gz"))
     s.add_argument("--upload", action="store_true",
                    help="Supabase 저장소에 올린다(환경 변수 SUPABASE_URL, SUPABASE_SECRET_KEY가 있을 때)")
+
+    m = sub.add_parser("match", help="사람마다 매칭 점수와 매칭 이유를 Supabase에 쓴다")
+    m.add_argument("--data-dir", type=Path, default=Path("data"))
 
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
@@ -53,6 +57,15 @@ def main(argv: list[str] | None = None) -> int:
                 for bp in body_paths:
                     publish.upload(bp, name=f"bodies/{bp.name}")
                 logging.info("Supabase 저장소에 올림")
+    if args.cmd == "match":
+        if not db.configured():
+            logging.info("Supabase 설정이 없어 매칭을 건너뜀")
+            return 0
+        built, bodies = screen.build(args.data_dir)
+        client = ai.Gemini() if ai.configured() else None
+        summary = recommend.run(built, bodies, db.DB(), client, date.today())
+        json.dump(summary, sys.stdout, ensure_ascii=False)
+        print()
     return 0
 
 

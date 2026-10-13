@@ -1,0 +1,41 @@
+# 매칭만 다시 계산한다(프로필을 고친 뒤 등). 수집은 하지 않고 data 브랜치의 오늘 공고로 계산한다.
+# 수동 실행: GitHub > Actions > match > Run workflow
+name: match
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collect  # 수집과 겹치지 않게
+  cancel-in-progress: false
+
+jobs:
+  match:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add data origin/data
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 매칭
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: uv run jobpost match --data-dir data

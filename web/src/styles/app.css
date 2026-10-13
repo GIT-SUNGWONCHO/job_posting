@@ -214,3 +214,23 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .body-text p { margin: 0; min-height: 0.8em; }
 .body-text h3 { margin: 16px 0 4px; font-size: var(--fs-item); font-weight: var(--fw-item); }
 .body-note { margin-top: 8px; }
+
+/* 점수: 목록은 연한 블루 상자, 화면의 1등만 블루 상자 */
+.score {
+  flex: none; align-self: flex-start; display: grid; place-items: center; border-radius: var(--r-score);
+  background: var(--accent-soft); color: var(--accent); font-size: 18px; font-weight: var(--fw-title);
+}
+.score.solid { background: var(--accent); color: var(--on-accent); }
+.row-reason { margin-top: 2px; font-size: var(--fs-sub); color: var(--sub); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.badge-ai { display: inline-block; padding: 1px 6px; border: 1px dashed var(--muted); border-radius: 6px; font-size: var(--fs-min); color: var(--sub); font-weight: var(--fw-body); }
+.match-head { display: flex; align-items: center; gap: 14px; }
+.match-parts { font-size: var(--fs-sub); color: var(--sub); }
+.skill-line { display: flex; gap: 12px; align-items: baseline; margin-top: 10px; }
+.skill-line > span:first-child { flex: none; width: 64px; font-size: var(--fs-sub); color: var(--sub); }
+.chips.small .chip { padding: 4px 10px; font-size: var(--fs-min); cursor: default; }
+.chip.gap { color: var(--sub); border-style: dashed; }
+
+.hero-top-pick { display: block; }
+.hero-title { font-size: 18px; font-weight: var(--fw-title); line-height: 1.4; margin-top: 2px; }
+.hero-top-pick .row-reason { white-space: normal; }
+.match-reason { margin-top: 4px; font-size: var(--fs-body); line-height: 1.5; }

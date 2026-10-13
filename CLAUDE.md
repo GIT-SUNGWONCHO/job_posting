@@ -28,7 +28,7 @@
 | 0 | 기획, 수집처 검증, 화면 구성, 화면·콘텐츠 원칙 | 완료 |
 | 1 | 개발 기반: 이 파일, 용어집, 데이터 형식 | 완료(기준 샘플은 3단계에서) |
 | 2 | 수집, 아키텍처, 디자인 스타일, 대시보드 | 진행 중: 수집(매일 04:17 자동), 아키텍처·디자인 스타일 확정, 대시보드 첫 버전 배포. 남은 것: 실제로 써 보며 다듬기 |
-| 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | 진행 중: 직무 유형 분류(3-1)·필터 계정 저장(3-2)·프로필 입력(3-3) 완료, 매칭 점수(3-4) 다음 |
+| 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | 진행 중: 직무 유형 분류·필터 계정 저장·프로필 입력·매칭 점수와 이유(3-1~3-4) 구현, 실제 프로필로 조정과 기준 샘플(3-5) 남음 |
 | 4 | 분석: 회사 리서치, 커리어 탭 | |
 | 5 | 보고: 오늘의 리포트, 아침 카톡 | |
 | 6 | 확장: 지원 상태, 지인 계정, 나머지 수집처 | |
@@ -61,6 +61,8 @@ src/jobpost/
   pipeline.py      하루 수집 한 번의 순서
   jobtypes.py      직무 유형 분류(목록은 config/job_types.yaml, AI가 고름)
   matching.py      매칭 점수(규칙, config/matching.yaml + 스킬 사전 config/skills.yaml)
+  recommend.py     사람마다 매칭: 점수 + 상위 공고 매칭 이유(AI), Supabase matches에 씀
+  db.py            Supabase DB 읽기·쓰기(서버 키)
   ai.py            AI 호출(Gemini). 외부 AI는 여기서만 부른다
   screen.py        화면용 파일 만들기(형식은 web/src/lib/types.ts와 같게)
   publish.py       화면용 파일을 Supabase 저장소에 올리기
@@ -77,4 +79,4 @@ web/src/
 - 수집: `uv run jobpost collect --data-dir data` (시험은 `--max-pages 2 --detail-budget 5`)
 - 검사: `uv run ruff check src tests` 와 `uv run pytest -q`, 화면은 `cd web && npm test && npm run lint && npm run build`
 - 화면 개발: `uv run jobpost screen --data-dir <data> --out .dev-data/screen.json.gz` 후 `cd web && npm run dev`(Supabase 값이 없으면 로그인 없이 이 파일을 읽는다)
-- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라간다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
+- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
