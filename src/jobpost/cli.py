@@ -1,4 +1,4 @@
-"""명령줄 실행: uv run jobpost collect --data-dir data"""
+"""명령줄 실행: uv run jobpost collect --data-dir data, uv run jobpost screen --data-dir data --out screen.json.gz"""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import logging
 import sys
 from pathlib import Path
 
-from . import pipeline
+from . import pipeline, publish, screen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -21,6 +21,12 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--max-pages", type=int, help="시험용: 조회마다 최대 페이지 수")
     c.add_argument("--detail-budget", type=int, help="직행 상세를 받을 최대 건수")
 
+    s = sub.add_parser("screen", help="화면용 파일(오늘 열린 국내 공고 + 회사)을 만든다")
+    s.add_argument("--data-dir", type=Path, default=Path("data"))
+    s.add_argument("--out", type=Path, default=Path("screen.json.gz"))
+    s.add_argument("--upload", action="store_true",
+                   help="Supabase 저장소에 올린다(환경 변수 SUPABASE_URL, SUPABASE_SECRET_KEY가 있을 때)")
+
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
                         format="%(asctime)s %(message)s", datefmt="%H:%M:%S")
@@ -32,6 +38,17 @@ def main(argv: list[str] | None = None) -> int:
         print()
         failed = [n for n, s in summary["sources"].items() if s["error_count"] and not s["fetched"]]
         return 1 if failed and len(failed) == len(summary["sources"]) else 0
+    if args.cmd == "screen":
+        built = screen.build(args.data_dir)
+        path = screen.write(built, args.out)
+        logging.info("화면용 파일: 공고 %d건, 회사 %d곳, %s KB",
+                     built["counts"]["open"], built["counts"]["companies"], path.stat().st_size // 1024)
+        if args.upload:
+            if not publish.configured():
+                logging.info("Supabase 설정이 없어 올리지 않음")
+            else:
+                publish.upload(path)
+                logging.info("Supabase 저장소에 올림")
     return 0
 
 

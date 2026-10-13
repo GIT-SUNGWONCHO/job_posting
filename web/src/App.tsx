@@ -1,0 +1,142 @@
+import { useEffect, useMemo, useState } from 'react'
+import type { Session } from '@supabase/supabase-js'
+import { copy } from './copy'
+import { SideNav, TabBar } from './components/Nav'
+import { passes } from './lib/filter'
+import { todayISO } from './lib/format'
+import { loadScreen } from './lib/load'
+import { useRoute } from './lib/route'
+import { readLocal, writeLocal } from './lib/storage'
+import { supabase } from './lib/supabase'
+import type { Filters, Screen } from './lib/types'
+import { useMedia, WIDE } from './lib/useMedia'
+import { CompanyPage } from './screens/CompanyPage'
+import { JobDetail } from './screens/JobDetail'
+import { Jobs, PAGE, type JobsUi } from './screens/Jobs'
+import { Later } from './screens/Later'
+import { Login } from './screens/Login'
+import { Report } from './screens/Report'
+
+const FILTER_KEY = 'jobpost.filters.v1'
+
+function useSession(): Session | null | undefined {
+  // undefined: 확인 중, null: 로그인 안 함. Supabase가 없으면(개발) 로그인 없이 쓴다
+  const [session, setSession] = useState<Session | null | undefined>(supabase ? undefined : null)
+  useEffect(() => {
+    if (!supabase) return
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setSession(s))
+    return () => data.subscription.unsubscribe()
+  }, [])
+  return session
+}
+
+export default function App() {
+  const session = useSession()
+  const needLogin = supabase !== null && session === null
+  const ready = supabase === null || !!session
+
+  const [screen, setScreen] = useState<Screen | null>(null)
+  const [error, setError] = useState(false)
+  const [attempt, setAttempt] = useState(0)
+  useEffect(() => {
+    if (!ready) return
+    let alive = true
+    loadScreen().then(
+      (s) => alive && setScreen(s),
+      () => alive && setError(true),
+    )
+    return () => {
+      alive = false
+    }
+  }, [ready, attempt])
+
+  if (needLogin) return <Login />
+  if (error) {
+    return (
+      <div className="center">
+        <p>{copy.load.failed}</p>
+        <button type="button" className="btn" onClick={() => { setError(false); setAttempt((a) => a + 1) }}>{copy.load.retry}</button>
+      </div>
+    )
+  }
+  if (!screen) return <div className="center muted">{copy.load.loading}</div>
+  return <Main screen={screen} />
+}
+
+function Main({ screen }: { screen: Screen }) {
+  const route = useRoute()
+  const wide = useMedia(WIDE)
+  const today = todayISO()
+  const defaults = screen.defaultFilters
+  const [filters, setFilters] = useState<Filters>(() => readLocal<Filters>(FILTER_KEY) ?? defaults)
+  const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE })
+
+  const passed = useMemo(
+    () => screen.postings.filter((p) => !p.noise && passes(p, screen.companies[p.company], filters)),
+    [screen, filters],
+  )
+  const regions = useMemo(() => {
+    const n = new Map<string, number>()
+    for (const p of screen.postings) for (const r of p.regions) n.set(r, (n.get(r) ?? 0) + 1)
+    const top = [...n.entries()].filter(([r]) => r !== '원격').sort((a, b) => b[1] - a[1]).map(([r]) => r).slice(0, 16)
+    return [...top, '원격']
+  }, [screen])
+
+  function saveFilters(f: Filters) {
+    setFilters(f)
+    writeLocal(FILTER_KEY, f)
+    setUi({ ...ui, limit: PAGE })
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [route.name])
+
+  const jobs = (seg: 'jobs' | 'companies', activeId?: string) => (
+    <Jobs screen={screen} passed={passed} filters={filters} defaults={defaults} regions={regions} seg={seg}
+      ui={ui} setUi={setUi} onFilters={saveFilters} today={today} activeId={activeId} />
+  )
+
+  let body
+  let detail = false
+  switch (route.name) {
+    case 'report':
+      body = <Report screen={screen} passed={passed} today={today} />
+      break
+    case 'jobs':
+      body = jobs(route.seg)
+      break
+    case 'job': {
+      const p = screen.postings.find((x) => x.id === route.id)
+      detail = !wide
+      body = wide
+        ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} panel /></div>
+        : <JobDetail screen={screen} posting={p} today={today} />
+      break
+    }
+    case 'company':
+      detail = !wide
+      body = wide
+        ? <div className="split">{jobs('companies')}<CompanyPage screen={screen} companyKey={route.key} today={today} panel /></div>
+        : <CompanyPage screen={screen} companyKey={route.key} today={today} />
+      break
+    case 'career':
+      body = <Later title={copy.tabs.career} text={copy.later.career} />
+      break
+    case 'apply':
+      body = <Later title={copy.tabs.apply} text={copy.later.apply} />
+      break
+    case 'admin':
+      body = <Later title={copy.tabs.admin} text={copy.later.admin} />
+      break
+  }
+
+  return (
+    <div className={wide ? 'shell wide' : detail ? 'shell detail-only' : 'shell'}>
+      {wide && <SideNav route={route} />}
+      <main className="content">{body}</main>
+      {!wide && !detail && <TabBar route={route} />}
+    </div>
+  )
+}

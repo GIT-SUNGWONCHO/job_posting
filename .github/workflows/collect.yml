@@ -1,4 +1,4 @@
-# 매일 새벽 공고를 수집해 data 브랜치에 쌓는다.
+# 매일 새벽 공고를 수집해 data 브랜치에 쌓고, 화면용 파일을 만들어 Supabase 저장소에 올린다.
 # 수동 실행: GitHub > Actions > collect > Run workflow
 name: collect
 
@@ -46,6 +46,12 @@ jobs:
             args+=(--detail-budget "${{ github.event.inputs.detail_budget }}")
           fi
           uv run jobpost collect "${args[@]}" | tee run.json
+
+      - name: 화면용 파일 만들기·올리기
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: uv run jobpost screen --data-dir data --out screen.json.gz --upload
 
       - name: 실행 요약
         if: always()

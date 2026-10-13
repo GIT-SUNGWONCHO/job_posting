@@ -1,0 +1,39 @@
+/* 디자인 값은 이 파일 한 곳에만 둔다. 쓰는 규칙은 docs/content-rules.md "디자인 스타일". */
+:root {
+  /* 색 */
+  --bg: #ffffff;
+  --ink: #191f28;          /* 본문 글자 */
+  --sub: #4e5968;          /* 보조 글자: 회사 이름, 경력, 마감 */
+  --muted: #8b95a1;        /* 흐린 글자: 건수, 날짜, 자리만 잡은 값 */
+  --line: #eef0f3;         /* 목록 줄, 칩 테두리 */
+  --band: #f3f5f8;         /* 회색 띠, 세그먼트 바탕, 빈 상자 */
+  --accent: #1b64da;       /* 강조: 1등, 점수, 고른 칩, 현재 탭, 글자 버튼 */
+  --accent-soft: #edf3fe;  /* 1등 카드 바탕, 목록 점수 상자 */
+  --on-accent: #ffffff;
+  --urgent: #d92d20;       /* 마감 3일 이내 */
+  --overlay: rgba(25, 31, 40, 0.4);
+
+  /* 글자 크기(px): 페이지 제목 24, 섹션 17, 항목 제목 16, 본문 15, 보조 14, 최소 13 */
+  --fs-page: 24px;
+  --fs-section: 17px;
+  --fs-item: 16px;
+  --fs-body: 15px;
+  --fs-sub: 14px;
+  --fs-min: 13px;
+  --fw-title: 700;
+  --fw-item: 600;
+  --fw-body: 400;
+  --font: "Noto Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif;
+
+  /* 모서리 */
+  --r-card: 16px;
+  --r-score: 12px;
+  --r-chip: 999px;
+  --r-control: 10px;
+
+  /* 간격 */
+  --gutter: 20px;
+  --band-h: 8px;
+  --tabbar-h: 64px;
+  --nav-w: 200px;
+}
