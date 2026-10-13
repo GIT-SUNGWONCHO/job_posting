@@ -15,6 +15,7 @@
 | 내용·형식·화면 원칙, 회사 리서치 모듈 | `docs/content-rules.md` |
 | 용어와 표기 | `docs/glossary.md` |
 | 결정 기록(날짜 · 결정 · 이유 · 다시 볼 조건) | `docs/decisions.md` |
+| 대시보드 | https://careermap-web.oroloov.workers.dev (초대한 사람만 로그인) |
 | 운영 설정: Supabase, Cloudflare, 키 넣는 곳 | `docs/setup.md` |
 | 개발 흐름(다른 프로젝트에도 쓰는 진행 방식) | `docs/dev-workflow.md` |
 | 실제 값: 수집 범위, 개인 필터, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
@@ -26,7 +27,7 @@
 | --- | --- | --- |
 | 0 | 기획, 수집처 검증, 화면 구성, 화면·콘텐츠 원칙 | 완료 |
 | 1 | 개발 기반: 이 파일, 용어집, 데이터 형식 | 완료(기준 샘플은 3단계에서) |
-| 2 | 수집, 아키텍처, 디자인 스타일, 대시보드 | 진행 중: 수집 완료(매일 04:17 자동), 아키텍처·디자인 스타일 확정, 대시보드 첫 버전 진행 |
+| 2 | 수집, 아키텍처, 디자인 스타일, 대시보드 | 진행 중: 수집(매일 04:17 자동), 아키텍처·디자인 스타일 확정, 대시보드 첫 버전 배포. 남은 것: 실제로 써 보며 다듬기 |
 | 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | |
 | 4 | 분석: 회사 리서치, 커리어 탭 | |
 | 5 | 보고: 오늘의 리포트, 아침 카톡 | |
@@ -71,4 +72,4 @@ web/src/
 - 수집: `uv run jobpost collect --data-dir data` (시험은 `--max-pages 2 --detail-budget 5`)
 - 검사: `uv run ruff check src tests` 와 `uv run pytest -q`, 화면은 `cd web && npm test && npm run lint && npm run build`
 - 화면 개발: `uv run jobpost screen --data-dir <data> --out .dev-data/screen.json.gz` 후 `cd web && npm run dev`(Supabase 값이 없으면 로그인 없이 이 파일을 읽는다)
-- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라간다(키를 넣은 뒤). 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
+- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라간다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
