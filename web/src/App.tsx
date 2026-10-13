@@ -10,6 +10,7 @@ import { readLocal, writeLocal } from './lib/storage'
 import { supabase } from './lib/supabase'
 import type { Filters, Screen } from './lib/types'
 import { useMedia, WIDE } from './lib/useMedia'
+import { Admin } from './screens/Admin'
 import { CompanyPage } from './screens/CompanyPage'
 import { JobDetail } from './screens/JobDetail'
 import { Jobs, PAGE, type JobsUi } from './screens/Jobs'
@@ -128,7 +129,7 @@ function Main({ screen }: { screen: Screen }) {
       body = <Later title={copy.tabs.apply} text={copy.later.apply} />
       break
     case 'admin':
-      body = <Later title={copy.tabs.admin} text={copy.later.admin} />
+      body = <Admin />
       break
   }
 

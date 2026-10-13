@@ -58,6 +58,10 @@ export const copy = {
     apply: '지원 현황은 6단계에서 만들어요',
     admin: '관리 화면은 프로필·필터부터 3단계에서 만들어요',
   },
+  admin: {
+    account: '로그인 계정',
+    logout: '로그아웃',
+  },
   login: {
     title: '로그인',
     google: 'Google로 로그인',

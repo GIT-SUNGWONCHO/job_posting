@@ -180,4 +180,6 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .btn.google { gap: 10px; height: 48px; border-color: var(--muted); font-weight: var(--fw-item); }
 .btn.google svg { width: 18px; height: 18px; }
 .text-btn { align-self: center; border: 0; background: none; padding: 8px; color: var(--sub); font-size: var(--fs-sub); text-decoration: underline; cursor: pointer; }
+.account { margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
+.account span { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--sub); }
 .note { margin: 0; font-size: var(--fs-sub); color: var(--sub); }
