@@ -1,13 +1,13 @@
-# 매칭 점수 계산법 v1. 고정 기준이라 버전으로 관리한다(docs/content-rules.md).
+# 매칭 점수 계산법. 고정 기준이라 버전으로 관리한다(docs/content-rules.md).
 # 바꾸면 version을 올린다. 실제로 써 보며 조정한다(기획 문서 "개발하며 정할 것").
 # 점수는 0~100 정수. 세 부분의 합이다.
 
-version: 1
+version: 2  # 2: 스킬 분모를 공고 스킬 수로(위 상한 8 없앰, 최소 5)
 
 weights:
   job: 40      # 직무 유형: 희망·현재 직무와 같으면 만점, 가까운 직무면 절반
   career: 20   # 경력: 공고 범위 안이면 만점, 모자라면 1년에 7점, 넘치면 1년에 4점 깎음
-  skills: 40   # 스킬: 공고에 나온 스킬 중 내 스킬 비율(바꿔 쓸 수 있는 스킬은 하나로 셈, 분모는 4~8개)
+  skills: 40   # 스킬: 공고에 나온 스킬 중 내 스킬 비율(바꿔 쓸 수 있는 스킬은 하나로 셈)
 
 # 가까운 직무 유형(절반 점수)
 related:
@@ -24,9 +24,8 @@ related:
   consulting: [planning]
   software: [ai_eng]
 
-skill_denominator: 8
 # 공고에서 찾은 스킬이 적으면 판단 근거가 약하니 분모를 최소 이만큼으로 둔다
-skill_min_denominator: 4
+skill_min_denominator: 5
 # 본문이 없어 스킬을 모르는 공고는 스킬 점수를 가운데로 둔다
 unknown_skills_ratio: 0.5
 unknown_job_ratio: 0.5

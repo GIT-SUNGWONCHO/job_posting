@@ -99,7 +99,8 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         for p in candidates(screen, user_filters):
             s = matching.score(data, p, posting_skills(p["id"]), today)
             scored.append((s, p))
-        scored.sort(key=lambda x: (-x[0]["score"], x[1]["id"]))
+        # 화면과 같은 순서: 점수, 같으면 최근 공고 먼저(web/src/screens/Report.tsx)
+        scored.sort(key=lambda x: (x[0]["score"], x[1].get("firstSeen", ""), x[1]["id"]), reverse=True)
 
         old = {r["posting_id"]: r for r in db.select(
             "matches", f"select=posting_id,reason,reason_meta,profile_v&user_id=eq.{user}")}

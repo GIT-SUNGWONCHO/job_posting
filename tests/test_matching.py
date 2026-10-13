@@ -21,15 +21,15 @@ def test_canonical_skills_drops_unknown():
 def test_score_parts():
     posting = {"jobType": "data_eng", "careerMin": 7, "careerMax": 15}
     s = matching.score(PROFILE, posting, {"SQL", "Python", "Spark", "Kafka"}, TODAY)
-    assert s["parts"] == {"job": 40, "career": 20, "skills": 20}
-    assert s["score"] == 80 and s["matched"] == ["Python", "SQL"] and s["missing"] == ["Kafka", "Spark"]
+    assert s["parts"] == {"job": 40, "career": 20, "skills": 16}  # 4개 중 2개, 분모는 최소 5
+    assert s["score"] == 76 and s["matched"] == ["Python", "SQL"] and s["missing"] == ["Kafka", "Spark"]
 
 
 def test_interchangeable_skills_count_once():
     posting = {"jobType": "data_eng", "careerMin": 7, "careerMax": 15}
     # Snowflake·Redshift는 Databricks·BigQuery와 같은 묶음, AWS·Azure는 클라우드 묶음(나는 없음)
     s = matching.score(PROFILE, posting, {"Snowflake", "Redshift", "AWS", "Azure"}, TODAY)
-    assert s["parts"]["skills"] == 10  # 2개 단위 중 1개, 분모는 최소 4
+    assert s["parts"]["skills"] == 8  # 2개 단위 중 1개, 분모는 최소 5
     assert s["matched"] == ["BigQuery", "Databricks"] and s["missing"] == ["AWS·Azure"]
 
 
@@ -43,3 +43,10 @@ def test_score_related_job_short_career_and_no_body():
 def test_career_years_matches_the_web():
     assert matching.career_years("2016-12", TODAY) == 10
     assert matching.career_years("2027-01", TODAY) is None
+
+
+def test_skill_ratio_uses_all_posting_skills():
+    posting = {"jobType": "data_eng", "careerMin": 7, "careerMax": 15}
+    many = {"SQL", "Python", "Databricks", "Power BI", "Spark", "Kafka", "Airflow", "dbt", "Kubernetes", "Docker"}
+    s = matching.score(PROFILE, posting, many, TODAY)
+    assert s["parts"]["skills"] == 16  # 10개 중 4개. 상한을 두지 않아 요구 스킬이 많으면 그만큼 덜 맞는다

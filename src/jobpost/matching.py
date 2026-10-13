@@ -1,4 +1,4 @@
-"""매칭 점수(v1). 계산법은 config/matching.yaml, 스킬 사전은 config/skills.yaml.
+"""매칭 점수. 계산법은 config/matching.yaml, 스킬 사전은 config/skills.yaml.
 
 점수는 AI 없이 규칙으로만 낸다(같은 입력이면 늘 같은 점수). 매칭 이유 문장은 따로 AI가 쓴다.
 """
@@ -113,7 +113,7 @@ def score(profile: dict[str, Any], posting: dict[str, Any], posting_skills: set[
             else:
                 missing.append("·".join(sorted(members)))  # 바꿔 쓸 수 있는 묶음은 한 칸으로
         matched, missing = sorted(set(matched)), sorted(set(missing))
-        denom = max(min(len(units), cfg["skill_denominator"]), cfg.get("skill_min_denominator", 1))
+        denom = max(len(units), cfg.get("skill_min_denominator", 1))
         skills = w["skills"] * min(1.0, hit / denom)
 
     return {
