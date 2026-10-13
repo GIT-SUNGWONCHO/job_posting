@@ -144,3 +144,5 @@ def test_group_rules():
     assert match_group("ktcloud") == "KT"
     assert match_group("삼성생명보험(주)") == "삼성"
     assert match_group("삼성제약") is None
+    assert match_group("롯데이노베이트") == "롯데"
+    assert match_group("롯데카드") is None
