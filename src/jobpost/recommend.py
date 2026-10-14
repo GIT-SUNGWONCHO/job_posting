@@ -147,7 +147,8 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
 
         old = {r["posting_id"]: r for r in db.select(
             "matches", f"select=posting_id,score,parts,matched,missing,reason,reason_meta,profile_v,score_v&user_id=eq.{user}")}
-        rows = []
+        rows: list[dict[str, Any]] = []
+        pending: list[dict[str, Any]] = []
         for rule, p in scored:
             o = old.get(p["id"])
             meta = (o or {}).get("reason_meta") or {}
@@ -195,6 +196,11 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                 score_v = guide_v
             rows.append({"user_id": user, "posting_id": p["id"], **row, "score_v": score_v, "profile_v": pv,
                          "computed_on": today.isoformat()})
+            if row.get("reason_meta") and row["reason_meta"].get("on") == today.isoformat() and summary["calls"]:
+                pending.append(rows[-1])
+                if len(pending) >= 25:  # 중간 저장: 끝에서 실패해도 새로 매긴 AI 결과는 남는다
+                    db.insert("matches", pending)
+                    pending = []
         if only is None:
             db.delete("matches", f"user_id=eq.{user}")
         elif rows:

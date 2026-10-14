@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import os
+import time
 from typing import Any
 
 import requests
@@ -40,13 +41,27 @@ class DB:
         if code != "23503":
             raise RuntimeError(f"Supabase 키가 서버 권한으로 들어가지 않음({resp.status_code} {code}). SUPABASE_SECRET_KEY를 확인")
 
+    def _send(self, method: str, url: str, **kw: Any) -> requests.Response:
+        """AI를 부르는 동안 오래 쉰 연결은 끊겨 있을 수 있다(2026-10-14 매칭 끝에 60초 대기 후 실패).
+        연결 오류·시간 초과면 새 연결로 두 번까지 다시 보낸다. 다시 보내도 같은 결과가 되는 요청만 이걸 쓴다."""
+        for attempt in range(3):
+            try:
+                return self._check(self.http.request(method, url, timeout=60, **kw))
+            except (requests.ConnectionError, requests.Timeout):
+                if attempt == 2:
+                    raise
+                self.http = requests.Session()
+                time.sleep(2 * (attempt + 1))
+        raise AssertionError("unreachable")
+
     def select(self, table: str, query: str = "select=*") -> list[dict[str, Any]]:
-        return self._check(self.http.get(f"{self.url}/{table}?{query}", headers=self.headers, timeout=60)).json()
+        return self._send("GET", f"{self.url}/{table}?{query}", headers=self.headers).json()
 
     def delete(self, table: str, query: str) -> None:
-        self._check(self.http.delete(f"{self.url}/{table}?{query}", headers=self.headers, timeout=60))
+        self._send("DELETE", f"{self.url}/{table}?{query}", headers=self.headers)
 
     def insert(self, table: str, rows: list[dict[str, Any]]) -> None:
+        """기본 키가 같은 줄은 덮어쓴다(다시 보내도 안전하고, 중간 저장한 줄을 마지막에 다시 써도 된다)."""
         for i in range(0, len(rows), 500):
-            self._check(self.http.post(f"{self.url}/{table}", json=rows[i:i + 500],
-                                       headers={**self.headers, "Prefer": "return=minimal"}, timeout=60))
+            self._send("POST", f"{self.url}/{table}", json=rows[i:i + 500],
+                       headers={**self.headers, "Prefer": "return=minimal,resolution=merge-duplicates"})
