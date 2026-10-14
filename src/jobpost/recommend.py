@@ -152,6 +152,9 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                 src = o if same else twin
                 row = {k: src[k] for k in ("score", "parts", "matched", "missing", "reason", "reason_meta")}
                 row["parts"] = {**row["parts"], "rule": rule["score"]}
+                if phash:  # 예전 결과에는 해시가 없을 수 있어 여기서 붙여 둔다
+                    row["reason_meta"] = {**(row["reason_meta"] or {}), "profile_hash": phash}
+                    shared[(p["id"], phash)] = row
                 summary["ai_reused"] += 1
             elif ptext and client is not None and calls_left > 0 and time.monotonic() < deadline and len(summary["errors"]) < 5:
                 calls_left -= 1

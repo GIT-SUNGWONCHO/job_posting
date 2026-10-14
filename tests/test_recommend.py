@@ -100,3 +100,14 @@ def test_two_accounts_with_the_same_profile_share_ai_results():
     s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
     assert s["users"] == 2 and s["ai_new"] == 2 and s["ai_reused"] == 2 and len(ai.prompts) == 2
     assert {r["user_id"] for r in db.inserted} == {"u1", "u2"}
+
+
+def test_reused_rows_without_hash_still_cover_the_twin_account():
+    first = FakeDB()
+    recommend.run(SCREEN, BODIES, first, FakeAI(), TODAY)
+    old = [{**r, "reason_meta": {k: v for k, v in (r["reason_meta"] or {}).items() if k != "profile_hash"} or None}
+           for r in first.inserted]  # 해시를 붙이기 전에 만든 결과
+    db, ai = FakeDB(old), FakeAI()
+    db.rows["profiles"].append({"user_id": "u2", "data": PROFILE, "version": 9})
+    s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
+    assert not ai.prompts and s["ai_reused"] == 4
