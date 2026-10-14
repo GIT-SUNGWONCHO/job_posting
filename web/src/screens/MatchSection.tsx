@@ -76,7 +76,8 @@ function FeedbackBox({ postingId, posting, detail, feedback, onFeedback }: {
   onFeedback: (postingId: string, f: Feedback) => void
 }) {
   const current = feedback?.matchKey === matchKey(detail) ? feedback : undefined
-  const [label, setLabel] = useState<Label | null>(current?.label ?? null)
+  // 내 평가는 공고에 대한 판단이라 지난 회차 것을 미리 채운다(회차 리포트도 공고별 최신 평가를 정답으로 쓴다)
+  const [label, setLabel] = useState<Label | null>(current?.label ?? feedback?.label ?? null)
   const [comment, setComment] = useState(current?.comment ?? '')
   const [state, setState] = useState<'idle' | 'saving' | 'saved' | 'failed'>(current ? 'saved' : 'idle')
 
@@ -92,7 +93,7 @@ function FeedbackBox({ postingId, posting, detail, feedback, onFeedback }: {
   return (
     <div className="feedback">
       <h3>{t.mine}</h3>
-      {feedback && !current && <p className="note">{t.previous(t.labels[feedback.label])}</p>}
+      {feedback && !current && <p className="note">{t.previous}</p>}
       <div className="chips wrap" role="radiogroup" aria-label={t.mine}>
         {LABELS.map((l) => (
           <button key={l} type="button" role="radio" aria-checked={label === l} className={label === l ? 'chip selected' : 'chip'}

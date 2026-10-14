@@ -97,8 +97,14 @@ def posting_text(p: dict[str, Any], screen: dict[str, Any], body: str | None, fa
     return out
 
 
+def sample_ids() -> list[str]:
+    """기준 샘플(config/match_sample.yaml) 공고 id."""
+    return [p["id"] for p in config.load("match_sample").get("postings") or []]
+
+
 def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | None, today: date,
-        facts: dict[str, dict[str, Any]] | None = None) -> dict[str, Any]:
+        facts: dict[str, dict[str, Any]] | None = None, only: set[str] | None = None) -> dict[str, Any]:
+    """only가 있으면 그 공고(기준 샘플)만 개인 필터와 상관없이 매기고, 그 공고의 줄만 바꾼다."""
     cfg = config.load("ai").get("match") or {}
     guide_v = config.load("match_guide")["version"]
     defaults = config.load("filters")
@@ -131,7 +137,8 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         phash = hashlib.sha1(ptext.encode()).hexdigest()[:12] if ptext else None
 
         scored = []
-        for p in candidates(screen, user_filters):
+        pool = [p for p in screen["postings"] if p["id"] in only] if only is not None else candidates(screen, user_filters)
+        for p in pool:
             body = texts.get(p["id"])
             rule = matching.score(rule_profile, p, matching.extract_skills(body) if body else None, today)
             scored.append((rule, p))
@@ -188,7 +195,11 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                 score_v = guide_v
             rows.append({"user_id": user, "posting_id": p["id"], **row, "score_v": score_v, "profile_v": pv,
                          "computed_on": today.isoformat()})
-        db.delete("matches", f"user_id=eq.{user}")
+        if only is None:
+            db.delete("matches", f"user_id=eq.{user}")
+        elif rows:
+            ids = ",".join(f'"{r["posting_id"]}"' for r in rows)
+            db.delete("matches", f"user_id=eq.{user}&posting_id=in.({ids})")
         db.insert("matches", rows)
         summary["rows"] += len(rows)
         log.info("매칭: 공고 %d건(AI 새로 %d, 다시 씀 %d, 규칙만 %d)", len(rows), summary["ai_new"],
@@ -198,7 +209,8 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
     return summary
 
 
-def make_client() -> Any | None:
+def make_client(model: str | None = None) -> Any | None:
+    """model을 주면 그 모델로(회차 시험), 없으면 config/ai.yaml match.model, 그것도 없으면 기본 모델."""
     if not ai.configured():
         return None
-    return ai.Gemini(model=(config.load("ai").get("match") or {}).get("model"))
+    return ai.Gemini(model=model or (config.load("ai").get("match") or {}).get("model"))

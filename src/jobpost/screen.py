@@ -19,7 +19,7 @@ from .companies import CompanyRegistry
 from .normalize import career_text, clean_company
 from .store import Store
 
-VERSION = 4  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions)
+VERSION = 4  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
 # 본문을 고르는 순서: 리멤버 원문 > 직행이 정리한 요약 > 사람인 원문
@@ -133,6 +133,8 @@ def build(data_dir: Path, today: date | None = None) -> tuple[dict[str, Any], di
         # 프로필 화면에서 고르는 목록(config/profile.yaml)과 공고에서 나온 스킬
         "profileOptions": config.load("profile"),
         "skills": facts.skill_catalog(texts, facts.load(data_dir)),
+        # 기준 샘플(config/match_sample.yaml): 화면의 "평가할 공고"
+        "sample": [p["id"] for p in config.load("match_sample").get("postings") or []],
         "companies": companies,
         "postings": postings,
     }

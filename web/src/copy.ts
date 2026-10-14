@@ -25,6 +25,8 @@ export const copy = {
     count: (n: number) => `${n.toLocaleString()}건`,
     companyCount: (n: number) => `${n.toLocaleString()}곳`,
     openCount: (n: number) => `열린 공고 ${n}`,
+    sampleChip: (done: number, total: number) => `평가할 공고 ${done}/${total}`,
+    sampleNote: '기준 샘플이에요. ○△×로 평가하면 매칭 기준을 만드는 정답이 돼요',
   },
   filter: {
     jobTypes: '직무',
@@ -75,7 +77,7 @@ export const copy = {
     mine: '내 평가',
     labels: { good: '○ 지원할 만함', maybe: '△ 애매', bad: '× 아님' },
     marks: { good: '○', maybe: '△', bad: '×' },
-    previous: (label: string) => `지난 회차 평가: ${label}`,
+    previous: '지난 회차에 남긴 평가예요. 정답으로 계속 쓰니 판단이 바뀌었을 때만 다시 저장하세요',
     comment: '코멘트',
     commentPlaceholder: '왜 그렇게 봤는지 적어 주세요. 예: 주니어 공고라 아님, 핵심 업무가 딱 맞음',
     save: '저장',

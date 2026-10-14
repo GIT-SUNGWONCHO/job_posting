@@ -1,11 +1,20 @@
 # 매칭만 다시 한다(프로필이나 매칭 지침을 고친 뒤 등). 수집은 하지 않고 data 브랜치의 오늘 공고로 한다.
 # 순서: 공고 정리(남은 것만) → 화면용 파일(스킬 목록 포함) → 매칭 → data 브랜치에 공고 정리 결과 커밋
+# 회차 시험은 scope=sample(기준 샘플 60건, 약 5분). 모델을 바꿔 보려면 model에 이름을 넣는다.
 # 수동 실행: GitHub > Actions > match > Run workflow
 name: match
 
 on:
   workflow_dispatch:
     inputs:
+      scope:
+        description: all = 후보 공고 전부, sample = 기준 샘플 60건만(회차 시험)
+        type: choice
+        options: [all, sample]
+        default: all
+      model:
+        description: 이번 실행만 다른 모델(비우면 config/ai.yaml)
+        required: false
       facts:
         description: 공고 정리도 할지(AI 한도를 매칭에 아끼려면 끈다)
         type: boolean
@@ -50,7 +59,14 @@ jobs:
         run: uv run --no-dev jobpost screen --data-dir data --out screen.json.gz --upload
 
       - name: 매칭
-        run: uv run --no-dev jobpost match --data-dir data
+        env:
+          SCOPE: ${{ inputs.scope }}
+          MODEL: ${{ inputs.model }}
+        run: |
+          args=(--data-dir data)
+          if [ "$SCOPE" = "sample" ]; then args+=(--sample); fi
+          if [ -n "$MODEL" ]; then args+=(--model "$MODEL"); fi
+          uv run --no-dev jobpost match "${args[@]}"
 
       - name: data 브랜치에 커밋
         if: always()

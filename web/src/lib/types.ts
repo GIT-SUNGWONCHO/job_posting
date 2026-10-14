@@ -83,6 +83,8 @@ export interface Screen {
   jobTypes: JobType[]
   profileOptions?: ProfileOptions
   skills?: SkillOption[]
+  /** 기준 샘플 공고 id(config/match_sample.yaml). "평가할 공고" */
+  sample?: string[]
   companies: Record<string, Company>
   postings: Posting[]
 }

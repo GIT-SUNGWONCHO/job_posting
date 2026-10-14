@@ -71,13 +71,21 @@ def test_skill_catalog_merges_dictionary_and_extracted_names():
     assert not any(len(n) > 30 for n in cat)
 
 
-def test_feedback_report_groups_by_round():
-    snap = {"score": 80, "rule": 70, "verdict": "고려", "company": "가나다", "title": "DE",
-            "items": [{"kind": "핵심 업무", "weight": 60, "fit": "충족", "name": "파이프라인"}]}
-    rows = [{"match_key": "g1-p3-m", "label": "bad", "comment": "주니어 공고", "snapshot": snap},
-            {"match_key": "g1-p3-m", "label": "good", "comment": None, "snapshot": {**snap, "score": 55}}]
-    lines = feedback.report(rows)
-    assert lines[0].startswith("== 회차 g1-p3-m: 평가 2건")
-    joined = "\n".join(lines)
-    assert "× AI 80(고려) 규칙 70 | 가나다 | DE | 코멘트: 주니어 공고" in joined
-    assert "핵심 업무: 가중치 60 / 60, 충족 100% / 100%" in joined
+def test_feedback_metrics_and_report():
+    labels = {"a": "good", "b": "good", "c": "bad", "d": "maybe"}
+    scores = {"a": 90, "b": 50, "c": 70, "d": 60}
+    m = feedback.metrics(list(labels), labels, scores.get)
+    assert m == {"n": 4, "top10_good": 2, "top20_bad": 1, "pairs": 0.5}  # a>c, b<c
+
+    sample = [{"id": k, "company": "회사", "title": f"공고 {k}"} for k in "abcde"]
+    item = {"kind": "핵심 업무", "weight": 60, "fit": "충족", "name": "파이프라인", "posting": "-", "me": "-"}
+    matches = [{"user_id": "u1", "posting_id": k, "score": v, "score_v": 1, "reason_meta": {"model": "fake"},
+                "parts": {"kind": "ai", "rule": 80, "verdict": "고려", "items": [item]}} for k, v in scores.items()]
+    rows = [{"user_id": "u1", "posting_id": k, "label": v, "comment": None, "match_key": "g1"} for k, v in labels.items()]
+    rows.append({"user_id": "u1", "posting_id": "b", "label": "good", "comment": "핵심 업무가 딱 맞음", "match_key": "g2"})
+    text = "\n".join(feedback.report(sample, matches, rows))
+    assert "기준 샘플 5건 중 평가 4건 ○ 2 △ 1 × 1, AI 결과 4건 (지침 v1 · fake)" in text
+    assert "AI 점수: 상위 10 중 ○ 2건" in text and "○가 ×보다 위 50%" in text and "미달" in text
+    assert "규칙 점수: 상위 10 중 ○ 2건" in text  # 규칙 점수가 다 같으면 반반
+    assert "○ AI 50(고려) 규칙 80 | 회사 | 공고 b | 코멘트: 핵심 업무가 딱 맞음" in text  # ○인데 60 미만
+    assert "× AI 70(고려)" in text and "[아직 평가 안 함 1건]" in text

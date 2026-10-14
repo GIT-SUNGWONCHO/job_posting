@@ -9,7 +9,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from . import ai, db, facts, feedback, pipeline, publish, recommend, screen
+from . import ai, config, db, facts, feedback, pipeline, publish, recommend, screen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -30,6 +30,8 @@ def main(argv: list[str] | None = None) -> int:
 
     m = sub.add_parser("match", help="사람마다 매칭 점수와 매칭 이유를 Supabase에 쓴다")
     m.add_argument("--data-dir", type=Path, default=Path("data"))
+    m.add_argument("--sample", action="store_true", help="기준 샘플(config/match_sample.yaml)만 다시 매긴다")
+    m.add_argument("--model", help="이번 실행만 다른 모델로(회차 시험)")
 
     f = sub.add_parser("facts", help="후보 공고의 매칭 항목을 AI로 정리해 data 폴더 facts.jsonl에 쌓는다")
     f.add_argument("--data-dir", type=Path, default=Path("data"))
@@ -70,7 +72,9 @@ def main(argv: list[str] | None = None) -> int:
         built, bodies = screen.build(args.data_dir)
         store = db.DB()
         store.check_server_key()
-        summary = recommend.run(built, bodies, store, recommend.make_client(), date.today(), facts.load(args.data_dir))
+        only = set(recommend.sample_ids()) if args.sample else None
+        summary = recommend.run(built, bodies, store, recommend.make_client(args.model), date.today(),
+                                facts.load(args.data_dir), only=only)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
     if args.cmd == "facts":
@@ -91,7 +95,11 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         store = db.DB()
         store.check_server_key()
-        print("\n".join(feedback.report(store.select("feedback", "select=*&order=updated_at.desc"))))
+        ids = recommend.sample_ids()
+        quoted = ",".join(f'"{i}"' for i in ids)
+        matches = store.select("matches", f"select=user_id,posting_id,score,parts,reason,reason_meta,score_v,profile_v&posting_id=in.({quoted})")
+        rows = store.select("feedback", "select=user_id,posting_id,match_key,label,comment,updated_at&order=updated_at")
+        print("\n".join(feedback.report(config.load("match_sample")["postings"], matches, rows)))
     return 0
 
 

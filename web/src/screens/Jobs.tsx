@@ -9,7 +9,8 @@ import type { Filters, Posting, Screen } from '../lib/types'
 
 export const PAGE = 50
 export type Sort = 'recommend' | 'latest' | 'deadline'
-export interface JobsUi { query: string; sort: Sort; limit: number }
+/** sample: 기준 샘플(평가할 공고)만 본다. 개인 필터와 상관없이 */
+export interface JobsUi { query: string; sort: Sort; limit: number; sample: boolean }
 
 function jobChip(f: Filters): string {
   const n = (f.job_types ?? []).length
@@ -57,9 +58,14 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
 }) {
   const [sheet, setSheet] = useState<FilterSection | null>(null)
   const c = screen.companies
+  const sample = useMemo(() => {
+    const ids = new Set(screen.sample ?? [])
+    return screen.postings.filter((p) => ids.has(p.id))
+  }, [screen])
+  const rated = sample.filter((p) => matches.get(p.id)?.mine).length
   const shown = useMemo(
-    () => sortPostings(passed.filter((p) => matchesQuery(p, c[p.company], ui.query)), ui.sort, matches),
-    [passed, c, ui.query, ui.sort, matches],
+    () => sortPostings((ui.sample ? sample : passed).filter((p) => matchesQuery(p, c[p.company], ui.query)), ui.sort, matches),
+    [passed, sample, c, ui.query, ui.sort, ui.sample, matches],
   )
   const companies = useMemo(() => {
     const by = new Map<string, Posting[]>()
@@ -81,11 +87,21 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
         <input className="search" type="search" placeholder={copy.jobs.searchPlaceholder} aria-label="검색" value={ui.query}
           onChange={(e) => setUi({ ...ui, query: e.target.value, limit: PAGE })} />
         <div className="chips scroll">
-          <Chip selected={(filters.job_types ?? []).length > 0} onClick={() => setSheet('jobs')}>{jobChip(filters)} ▾</Chip>
-          <Chip selected={(filters.company_types ?? []).length > 0} onClick={() => setSheet('types')}>{typeChip(filters)} ▾</Chip>
-          <Chip selected={filters.career?.min != null || filters.career?.max != null} onClick={() => setSheet('career')}>{careerChip(filters)} ▾</Chip>
-          <Chip selected={(filters.regions ?? []).length > 0} onClick={() => setSheet('regions')}>{regionChip(filters)} ▾</Chip>
+          {sample.length > 0 && (
+            <Chip selected={ui.sample} onClick={() => setUi({ ...ui, sample: !ui.sample, sort: 'recommend', limit: PAGE })}>
+              {copy.jobs.sampleChip(rated, sample.length)}
+            </Chip>
+          )}
+          {!ui.sample && (
+            <>
+              <Chip selected={(filters.job_types ?? []).length > 0} onClick={() => setSheet('jobs')}>{jobChip(filters)} ▾</Chip>
+              <Chip selected={(filters.company_types ?? []).length > 0} onClick={() => setSheet('types')}>{typeChip(filters)} ▾</Chip>
+              <Chip selected={filters.career?.min != null || filters.career?.max != null} onClick={() => setSheet('career')}>{careerChip(filters)} ▾</Chip>
+              <Chip selected={(filters.regions ?? []).length > 0} onClick={() => setSheet('regions')}>{regionChip(filters)} ▾</Chip>
+            </>
+          )}
         </div>
+        {ui.sample && <p className="note">{copy.jobs.sampleNote}</p>}
         <div className="list-head">
           <span>{seg === 'jobs' ? copy.jobs.count(shown.length) : copy.jobs.companyCount(companies.length)}</span>
           {seg === 'jobs' && (

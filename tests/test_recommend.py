@@ -111,3 +111,15 @@ def test_reused_rows_without_hash_still_cover_the_twin_account():
     db.rows["profiles"].append({"user_id": "u2", "data": PROFILE, "version": 9})
     s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
     assert not ai.prompts and s["ai_reused"] == 4
+
+
+def test_sample_run_scores_only_those_postings_regardless_of_filters():
+    db, ai = FakeDB(), FakeAI()
+    s = recommend.run(SCREEN, BODIES, db, ai, TODAY, only={"z:3"})  # z:3은 필터에서 빠지는 공고
+    assert s["rows"] == 1 and [r["posting_id"] for r in db.inserted] == ["z:3"]
+    assert db.deleted == [("matches", 'user_id=eq.u1&posting_id=in.("z:3")')]  # 나머지 줄은 그대로
+
+
+def test_sample_ids_come_from_config():
+    ids = recommend.sample_ids()
+    assert len(ids) == 60 and len(set(ids)) == 60

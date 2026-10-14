@@ -18,7 +18,7 @@
 | 대시보드 | https://careermap-web.oroloov.workers.dev (초대한 사람만 로그인) |
 | 운영 설정: Supabase, Cloudflare, 키 넣는 곳 | `docs/setup.md` |
 | 개발 흐름(다른 프로젝트에도 쓰는 진행 방식) | `docs/dev-workflow.md` |
-| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수·지침, 프로필 목록(업종·직무), AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
+| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수·지침·기준 샘플, 프로필 목록(업종·직무), AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
 | 수집 데이터 | `data` 브랜치(형식은 그 브랜치 README) |
 
 ## 지금 단계
