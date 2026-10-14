@@ -62,6 +62,7 @@ src/jobpost/
   jobtypes.py      직무 유형 분류(목록은 config/job_types.yaml, AI가 고름)
   matching.py      매칭 점수(규칙, config/matching.yaml + 스킬 사전 config/skills.yaml)
   recommend.py     사람마다 매칭: 점수 + 상위 공고 매칭 이유(AI), Supabase matches에 씀
+  ai_match.py      시험: AI 점수와 규칙 점수 비교(ai-match.yml, 로그에만 남김)
   db.py            Supabase DB 읽기·쓰기(서버 키)
   ai.py            AI 호출(Gemini). 외부 AI는 여기서만 부른다
   screen.py        화면용 파일 만들기(형식은 web/src/lib/types.ts와 같게)

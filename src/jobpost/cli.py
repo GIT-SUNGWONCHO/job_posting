@@ -9,7 +9,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from . import ai, db, pipeline, publish, recommend, screen
+from . import ai, ai_match, db, pipeline, publish, recommend, screen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -30,6 +30,9 @@ def main(argv: list[str] | None = None) -> int:
 
     m = sub.add_parser("match", help="사람마다 매칭 점수와 매칭 이유를 Supabase에 쓴다")
     m.add_argument("--data-dir", type=Path, default=Path("data"))
+
+    t = sub.add_parser("ai-match", help="시험: AI 점수와 규칙 점수를 나란히 로그에 낸다(Supabase에 쓰지 않음)")
+    t.add_argument("--data-dir", type=Path, default=Path("data"))
 
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
@@ -68,6 +71,13 @@ def main(argv: list[str] | None = None) -> int:
         summary = recommend.run(built, bodies, store, client, date.today())
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
+    if args.cmd == "ai-match":
+        if not (db.configured() and ai.configured()):
+            logging.info("Supabase 또는 Gemini 설정이 없어 건너뜀")
+            return 0
+        built, bodies = screen.build(args.data_dir)
+        rows = ai_match.run(built, bodies, db.DB(), ai.Gemini(), date.today())
+        logging.info("AI 점수 %d건, 실패 %d건", sum(r["ai"] is not None for r in rows), sum(r["ai"] is None for r in rows))
     return 0
 
 
