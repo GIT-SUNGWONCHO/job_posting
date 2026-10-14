@@ -1,12 +1,18 @@
-# 매칭만 다시 계산한다(프로필을 고친 뒤 등). 수집은 하지 않고 data 브랜치의 오늘 공고로 계산한다.
+# 매칭만 다시 한다(프로필이나 매칭 지침을 고친 뒤 등). 수집은 하지 않고 data 브랜치의 오늘 공고로 한다.
+# 순서: 공고 정리(남은 것만) → 화면용 파일(스킬 목록 포함) → 매칭 → data 브랜치에 공고 정리 결과 커밋
 # 수동 실행: GitHub > Actions > match > Run workflow
 name: match
 
 on:
   workflow_dispatch:
+    inputs:
+      facts:
+        description: 공고 정리도 할지(AI 한도를 매칭에 아끼려면 끈다)
+        type: boolean
+        default: true
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: collect  # 수집과 겹치지 않게
@@ -15,16 +21,19 @@ concurrency:
 jobs:
   match:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
     env:
       TZ: Asia/Seoul
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
       - name: data 브랜치 연결
         run: |
           git fetch --depth=1 origin data
-          git worktree add data origin/data
+          git worktree add -B data data origin/data
 
       - uses: astral-sh/setup-uv@v6
         with:
@@ -33,9 +42,26 @@ jobs:
       - name: 의존성 설치
         run: uv sync --locked --no-dev
 
+      - name: 공고 정리
+        if: ${{ inputs.facts }}
+        run: uv run --no-dev jobpost facts --data-dir data
+
+      - name: 화면용 파일 만들기·올리기
+        run: uv run --no-dev jobpost screen --data-dir data --out screen.json.gz --upload
+
       - name: 매칭
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: uv run jobpost match --data-dir data
+        run: uv run --no-dev jobpost match --data-dir data
+
+      - name: data 브랜치에 커밋
+        if: always()
+        working-directory: data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "바뀐 데이터 없음"
+            exit 0
+          fi
+          git commit -q -m "facts $(date +%F)"
+          for i in 1 2 3; do git push origin data && break; sleep $((i * 10)); done

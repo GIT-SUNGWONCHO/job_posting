@@ -56,6 +56,24 @@ export interface Filters {
   regions?: string[]
 }
 
+/** 프로필에서 고르는 목록(config/profile.yaml) */
+export interface ProfileOptions {
+  version: number
+  industries: { id: string; name: string }[]
+  roles: { id: string; name: string }[]
+  skill_levels: { level: number; name: string; desc: string }[]
+  project_parts: string[]
+  degrees: string[]
+  major_groups: string[]
+  english: string[]
+}
+
+/** 공고에서 나온 스킬과 나온 공고 수. 프로필 스킬은 이 안에서 고른다 */
+export interface SkillOption {
+  name: string
+  count: number
+}
+
 export interface Screen {
   version: number
   date: string
@@ -63,6 +81,8 @@ export interface Screen {
   counts: { open: number; new: number; companies: number }
   defaultFilters: Filters
   jobTypes: JobType[]
+  profileOptions?: ProfileOptions
+  skills?: SkillOption[]
   companies: Record<string, Company>
   postings: Posting[]
 }

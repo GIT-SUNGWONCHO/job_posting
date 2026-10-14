@@ -1,5 +1,6 @@
 # AI 호출 설정. 모델은 여기서만 바꾼다(코드에 쓰지 않는다).
-# 무료 등급은 보낸 내용을 구글이 제품 개선에 쓸 수 있다. 공개된 공고만 보내고 이력서 같은 개인정보는 보내지 않는다.
+# 무료 등급은 보낸 내용을 구글이 제품 개선에 쓸 수 있다. 프로필은 경력·회사명·프로젝트·스킬까지 보내고
+# 이름·연락처·이력서 원문은 보내지 않는다(docs/decisions.md 2026-10-14 매칭).
 
 provider: gemini
 model: gemini-3.5-flash-lite
@@ -10,8 +11,13 @@ job_types:
   max_calls: 120       # 하루 최대 호출 수(약 9,600건)
   max_minutes: 15
 
-match_reasons:
-  top: 20              # 사람마다 점수 상위 몇 건에 매칭 이유를 쓸지
-  batch: 1             # 한 번에 공고 하나. 여러 개를 묶으면 다른 공고의 내용이 섞였다(2026.10.13 시험)
-  max_chars: 70        # 매칭 이유 최대 글자 수. 넘으면 버린다
-  body_chars: 1200     # 공고 본문을 앞에서 몇 자까지 보낼지
+facts:                 # 공고 정리(facts.py): 공고당 1번, 모두 함께 씀
+  max_calls: 250       # 하루(실행 한 번) 최대 호출 수. 남은 공고는 다음 날
+  max_minutes: 20
+
+match:                 # AI 매칭(recommend.py): 후보 공고마다 항목·가중치·판정. 지침은 config/match_guide.yaml
+  model: null          # 비우면 위 model. 회차 시험에서 다른 모델을 써 볼 때만 바꾼다
+  max_calls: 330       # 실행 한 번 최대 호출 수(후보 전체를 다시 매기는 날 기준)
+  max_minutes: 35
+  body_chars: 3000     # 공고 본문을 앞에서 몇 자까지 보낼지
+  reason_chars: 120    # 매칭 이유가 이보다 길면 자른다

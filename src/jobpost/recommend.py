@@ -1,57 +1,25 @@
-"""사람마다 매칭: 개인 필터를 통과한 공고에 점수를 매기고, 상위 공고에 매칭 이유 한 줄을 AI로 쓴다.
+"""사람마다 매칭: 개인 필터를 통과한 공고(후보)를 AI가 하나씩 매긴다.
 
-점수는 matching.py(규칙), 매칭 이유는 AI 의견이다. AI에는 이름·연락처·회사명을 보내지 않고
-업종·연차·직무·프로젝트 요약·스킬만 보낸다(docs/decisions.md 2026-10-13 매칭).
-결과는 Supabase matches 표에 사람마다 통째로 다시 쓴다. 같은 공고·같은 프로필 버전이면 지난 매칭 이유를 다시 쓴다.
+지금은 로직을 정하는 단계라 점수를 AI가 매기고 판단 근거를 남긴다(docs/decisions.md 2026-10-14 매칭).
+AI는 공고마다 비교할 항목을 고르고 항목마다 공고 요구 · 내 근거 · 판정 · 가중치를 적는다. 점수는 코드가 가중치×판정으로
+다시 계산한다. 지침은 config/match_guide.yaml이고, 회차마다 내 피드백을 보고 고친다.
+규칙 점수(matching.py)도 함께 남겨서 규칙으로 얼마나 비슷하게 낼 수 있는지 비교한다.
+결과는 Supabase matches 표에 사람마다 통째로 다시 쓴다. 같은 공고 · 프로필 버전 · 지침 버전 · 모델이면 지난 결과를 다시 쓴다.
 """
 
 from __future__ import annotations
 
 import logging
+import time
 from datetime import date
 from typing import Any
 
-from . import config, filters, jobtypes, matching
+from . import ai, config, filters, jobtypes, matching, profile
 from .models import CompanyType
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 1
-
-
-def profile_text(profile: dict[str, Any], today: date) -> str:
-    """AI에 보내는 지원자 요약. 회사 이름은 넣지 않는다."""
-    names = jobtypes.names()
-    years = matching.career_years(profile.get("careerStart", ""), today)
-    lines = []
-    if years is not None:
-        lines.append(f"경력: 약 {years}년")
-    if profile.get("currentRole"):
-        lines.append(f"현재 직무: {names.get(profile['currentRole'], profile['currentRole'])}")
-    if profile.get("targetRoles"):
-        lines.append("희망 직무: " + ", ".join(names.get(r, r) for r in profile["targetRoles"]))
-    for j in profile.get("jobs") or []:
-        period = f"{j.get('start', '')}~{j.get('end') or '현재'}"
-        lines.append(f"경력: {j.get('industry') or '업종 미기재'} · {j.get('role', '')} ({period})")
-    for p in profile.get("projects") or []:
-        lines.append(f"프로젝트: {p.get('title', '')} — {p.get('result', '')}")
-    if profile.get("skills"):
-        lines.append("스킬: " + ", ".join(profile["skills"]))
-    return "\n".join(lines)
-
-
-def reason_prompt(profile: str, items: list[str], short: bool = False) -> str:
-    extra = "이번에는 반드시 40자 이내로 쓴다.\n" if short else ""
-    return extra + (
-        "지원자 요약과 채용공고를 보고, 공고마다 이 지원자에게 맞는 이유를 한 줄로 쓴다.\n"
-        "규칙: 50자 안팎, 70자를 넘지 않는 한 문장. 지원자 요약과 공고에 있는 내용만 쓰고 숫자나 사실을 지어내지 않는다. "
-        "맞는 점을 먼저 쓰고, 크게 부족한 점이 있으면 뒤에 짧게 덧붙인다. 존댓말 없이 '~와 맞음', '~ 경험이 강점' 같은 끝맺음.\n\n"
-        f"[지원자 요약]\n{profile}\n\n[공고]\n" + "\n\n".join(items)
-    )
-
-
-REASON_SCHEMA = {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["i", "reason"], "properties": {
-    "i": {"type": "INTEGER"}, "reason": {"type": "STRING"}}}}
+PROMPT_VERSION = 2  # 2: 항목별 판단 근거(지침은 match_guide.yaml의 version으로 따로 센다)
 
 
 def candidates(screen: dict[str, Any], user_filters: dict[str, Any]) -> list[dict[str, Any]]:
@@ -70,89 +38,151 @@ def candidates(screen: dict[str, Any], user_filters: dict[str, Any]) -> list[dic
     return out
 
 
-def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | None, today: date) -> dict[str, Any]:
-    cfg = config.load("ai").get("match_reasons") or {}
-    defaults = config.load("filters")
-    names = jobtypes.names()
-    texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
-    skills_cache: dict[str, set[str] | None] = {}
+def schema() -> dict[str, Any]:
+    g = config.load("match_guide")
+    item = {"type": "OBJECT", "required": ["kind", "name", "posting", "me", "fit", "weight"], "properties": {
+        "kind": {"type": "STRING", "enum": g["item_kinds"]},
+        "name": {"type": "STRING"},
+        "posting": {"type": "STRING"},
+        "me": {"type": "STRING"},
+        "fit": {"type": "STRING", "enum": list(g["fit"])},
+        "weight": {"type": "INTEGER"},
+    }}
+    return {"type": "OBJECT", "required": ["items", "verdict", "reason", "gaps"], "properties": {
+        "items": {"type": "ARRAY", "items": item},
+        "verdict": {"type": "STRING", "enum": g["verdicts"]},
+        "reason": {"type": "STRING"},
+        "gaps": {"type": "ARRAY", "items": {"type": "STRING"}},
+    }}
 
-    def posting_skills(pid: str) -> set[str] | None:
-        if pid not in skills_cache:
-            skills_cache[pid] = matching.extract_skills(texts[pid]) if pid in texts else None
-        return skills_cache[pid]
+
+def prompt(profile_text: str, posting_text: str) -> str:
+    g = config.load("match_guide")
+    return (
+        "지원자와 채용공고가 얼마나 맞는지 항목별로 판단한다. 아래 지침을 따른다.\n"
+        f"[지침]\n{g['guide'].strip()}\n"
+        f"- 항목 종류(kind): {', '.join(g['item_kinds'])}\n"
+        f"- 판정(fit): {', '.join(g['fit'])}\n"
+        "- 항목마다 name은 짧은 이름, posting은 공고가 요구하는 것, me는 지원자 쪽 근거(각 40자 안쪽)\n"
+        f"- verdict: {', '.join(g['verdicts'])} 중 하나\n"
+        "- reason: 이 지원자에게 맞는 이유 한 문장(70자 안쪽, 맞는 점 먼저, 크게 부족한 점이 있으면 뒤에 짧게)\n"
+        "- gaps: 크게 부족한 점 최대 3개, 짧게\n\n"
+        f"[지원자]\n{profile_text}\n\n[공고]\n{posting_text}"
+    )
+
+
+def score_items(items: list[dict[str, Any]]) -> int:
+    """가중치를 합 100으로 맞추고 판정 비율을 곱해 더한다. AI가 쓴 합계는 믿지 않는다."""
+    fit = config.load("match_guide")["fit"]
+    total = sum(max(0, int(i.get("weight") or 0)) for i in items)
+    if not total:
+        return 0
+    return round(sum(max(0, int(i.get("weight") or 0)) * fit.get(i.get("fit"), 0.5) for i in items) * 100 / total)
+
+
+def posting_text(p: dict[str, Any], screen: dict[str, Any], body: str | None, fact: dict[str, Any] | None,
+                 body_chars: int) -> str:
+    c = screen["companies"].get(p["company"]) or {}
+    names = jobtypes.names()
+    head = (f"{c.get('name', '')} ({c.get('type', '')}) | {p['title']} | {names.get(p.get('jobType') or '', '')} | "
+            f"{p.get('career', '')} | {', '.join(p.get('employment') or [])}")
+    out = head + "\n" + ((body or "")[:body_chars] or "(본문 없음)")
+    if fact:
+        f = fact["facts"]
+        years = ", ".join(f"{y.get('area', '')} {y.get('min', '')}년" for y in f.get("years") or [])
+        out += ("\n[공고 정리]\n"
+                f"직급: {f.get('level')} / 필수 스킬: {', '.join(f.get('required_skills') or []) or '-'} / "
+                f"우대 스킬: {', '.join(f.get('preferred_skills') or []) or '-'} / 연수 요건: {years or '-'}")
+    return out
+
+
+def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | None, today: date,
+        facts: dict[str, dict[str, Any]] | None = None) -> dict[str, Any]:
+    cfg = config.load("ai").get("match") or {}
+    guide_v = config.load("match_guide")["version"]
+    defaults = config.load("filters")
+    texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
+    facts = facts or {}
+    model = getattr(client, "model", None)
+    calls_left = cfg.get("max_calls", 330)
+    deadline = time.monotonic() + cfg.get("max_minutes", 35) * 60
 
     settings = {r["user_id"]: r.get("filters") or {} for r in db.select("settings", "select=user_id,filters")}
-    summary: dict[str, Any] = {"settings": len(settings), "profiles": 0, "users": 0, "rows": 0, "reasons_new": 0, "reasons_reused": 0,
-                               "calls": 0, "errors": []}
     profiles = db.select("profiles", "select=user_id,data,version")
-    summary["profiles"] = len(profiles)
+    summary: dict[str, Any] = {"settings": len(settings), "profiles": len(profiles), "users": 0, "rows": 0,
+                               "ai_new": 0, "ai_reused": 0, "rule_only": 0, "calls": 0, "errors": []}
     for prof in profiles:
         user, data, pv = prof["user_id"], prof.get("data") or {}, prof.get("version", 1)
-        if not data.get("skills") and not data.get("currentRole") and not data.get("targetRoles"):
-            summary.setdefault("skipped_empty", 0)
-            summary["skipped_empty"] += 1
-            continue  # 프로필이 비어 있으면 건너뛴다
+        if not profile.has_content(data):
+            summary["skipped_empty"] = summary.get("skipped_empty", 0) + 1
+            continue
         summary["users"] += 1
         user_filters = {**defaults, **settings.get(user, {})}
+        rule_profile = profile.rule_view(data)
+        ptext = profile.text(data, today) if profile.is_v2(data) else None
+
         scored = []
         for p in candidates(screen, user_filters):
-            s = matching.score(data, p, posting_skills(p["id"]), today)
-            scored.append((s, p))
-        # 화면과 같은 순서: 점수, 같으면 최근 공고 먼저(web/src/screens/Report.tsx)
+            body = texts.get(p["id"])
+            rule = matching.score(rule_profile, p, matching.extract_skills(body) if body else None, today)
+            scored.append((rule, p))
+        # 한도가 모자라면 규칙 점수가 높은 공고부터 AI에 묻는다
         scored.sort(key=lambda x: (x[0]["score"], x[1].get("firstSeen", ""), x[1]["id"]), reverse=True)
 
         old = {r["posting_id"]: r for r in db.select(
-            "matches", f"select=posting_id,reason,reason_meta,profile_v&user_id=eq.{user}")}
-        reasons: dict[str, tuple[str, dict[str, Any]]] = {}
-        need: list[tuple[dict[str, Any], dict[str, Any]]] = []
-        for s, p in scored[:cfg.get("top", 20)]:
+            "matches", f"select=posting_id,score,parts,matched,missing,reason,reason_meta,profile_v,score_v&user_id=eq.{user}")}
+        rows = []
+        for rule, p in scored:
             o = old.get(p["id"])
             meta = (o or {}).get("reason_meta") or {}
-            if o and o.get("reason") and o.get("profile_v") == pv and meta.get("prompt") == PROMPT_VERSION:
-                reasons[p["id"]] = (o["reason"], meta)
-                summary["reasons_reused"] += 1
+            same = (o and (o.get("parts") or {}).get("kind") == "ai" and o.get("profile_v") == pv
+                    and o.get("score_v") == guide_v and meta.get("prompt") == PROMPT_VERSION and meta.get("model") == model)
+            row = None
+            if same:
+                row = {k: o[k] for k in ("score", "parts", "matched", "missing", "reason", "reason_meta")}
+                row["parts"] = {**row["parts"], "rule": rule["score"]}
+                summary["ai_reused"] += 1
+            elif ptext and client is not None and calls_left > 0 and time.monotonic() < deadline and len(summary["errors"]) < 5:
+                calls_left -= 1
+                summary["calls"] += 1
+                try:
+                    got = client.json(prompt(ptext, posting_text(p, screen, texts.get(p["id"]), facts.get(p["id"]),
+                                                                 cfg.get("body_chars", 3000))), schema())
+                    items = [i for i in got.get("items") or [] if i.get("kind")]
+                    reason = (got.get("reason") or "").strip()
+                    if len(reason) > cfg.get("reason_chars", 120):
+                        reason = reason[:cfg.get("reason_chars", 120) - 1] + "…"
+                    row = {"score": score_items(items),
+                           "parts": {"kind": "ai", "items": items, "verdict": got.get("verdict"), "rule": rule["score"]},
+                           "matched": [i["name"] for i in items if i.get("fit") == "충족"],
+                           "missing": [g for g in got.get("gaps") or [] if g][:3],
+                           "reason": reason or None,
+                           "reason_meta": {"model": model, "prompt": PROMPT_VERSION, "on": today.isoformat()}}
+                    summary["ai_new"] += 1
+                    if summary["ai_new"] % 25 == 0:
+                        log.info("AI 매칭 %d건", summary["ai_new"])
+                except Exception as e:  # AI가 실패해도 규칙 점수는 남긴다
+                    summary["errors"].append(str(e)[:200])
+            if row is None:
+                row = {"score": rule["score"], "parts": {"kind": "rule", "rule": rule["score"], **rule["parts"]},
+                       "matched": rule["matched"], "missing": rule["missing"][:6], "reason": None, "reason_meta": None}
+                summary["rule_only"] += 1
+                score_v = rule["v"]
             else:
-                need.append((s, p))
-
-        if need and client is not None:
-            ptext = profile_text(data, today)
-            for start in range(0, len(need), cfg.get("batch", 10)):
-                batch = need[start:start + cfg.get("batch", 10)]
-                items = []
-                for i, (s, p) in enumerate(batch):
-                    c = screen["companies"].get(p["company"]) or {}
-                    body = (texts.get(p["id"]) or "")[:cfg.get("body_chars", 1200)]
-                    items.append(f"#{i} {c.get('name', '')} | {p['title']} | {names.get(p.get('jobType') or '', '')} | {p.get('career', '')}\n"
-                                 f"맞는 스킬: {', '.join(s['matched']) or '없음'} / 없는 스킬: {', '.join(s['missing'][:6]) or '없음'}\n{body}")
-                meta = {"model": getattr(client, "model", None), "prompt": PROMPT_VERSION, "on": today.isoformat()}
-                # 형식이 틀리거나 길면 한 번만 더 짧게 묻고, 그래도 안 되면 버린다
-                for short in (False, True):
-                    todo = [i for i in range(len(batch)) if batch[i][1]["id"] not in reasons]
-                    if not todo:
-                        break
-                    summary["calls"] += 1
-                    try:
-                        out = client.json(reason_prompt(ptext, items, short), REASON_SCHEMA)
-                    except Exception as e:  # 이유를 못 써도 점수는 저장한다
-                        summary["errors"].append(str(e)[:200])
-                        break
-                    for row in out:
-                        i, text = row.get("i"), (row.get("reason") or "").strip()
-                        if (isinstance(i, int) and i in todo and 0 < len(text) <= cfg.get("max_chars", 70)):
-                            reasons[batch[i][1]["id"]] = (text, meta)
-                            summary["reasons_new"] += 1
-
-        rows = []
-        for s, p in scored:
-            reason, meta = reasons.get(p["id"], (None, None))
-            rows.append({"user_id": user, "posting_id": p["id"], "score": s["score"], "parts": s["parts"],
-                         "matched": s["matched"], "missing": s["missing"], "reason": reason, "reason_meta": meta,
-                         "score_v": s["v"], "profile_v": pv, "computed_on": today.isoformat()})
+                score_v = guide_v
+            rows.append({"user_id": user, "posting_id": p["id"], **row, "score_v": score_v, "profile_v": pv,
+                         "computed_on": today.isoformat()})
         db.delete("matches", f"user_id=eq.{user}")
         db.insert("matches", rows)
         summary["rows"] += len(rows)
-        log.info("매칭: 공고 %d건, 매칭 이유 %d건", len(rows), len(reasons))
+        log.info("매칭: 공고 %d건(AI 새로 %d, 다시 씀 %d, 규칙만 %d)", len(rows), summary["ai_new"],
+                 summary["ai_reused"], summary["rule_only"])
     if not summary["errors"]:
         summary.pop("errors")
     return summary
+
+
+def make_client() -> Any | None:
+    if not ai.configured():
+        return None
+    return ai.Gemini(model=(config.load("ai").get("match") or {}).get("model"))

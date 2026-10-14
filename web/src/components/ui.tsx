@@ -38,7 +38,12 @@ export function JobRow({ p, c, today, showCompany = true, active = false, match 
           {p.headhunter && <span>{copy.job.headhunter}</span>}
         </span>
       </span>
-      {match && <Score value={match.score} />}
+      {match && (
+        <span className="row-score">
+          <Score value={match.score} />
+          {match.mine && <span className="mine" aria-label={copy.match.labels[match.mine]}>{copy.match.marks[match.mine]}</span>}
+        </span>
+      )}
     </a>
   )
 }

@@ -26,9 +26,9 @@ def configured() -> bool:
 
 
 class Gemini:
-    def __init__(self, session: requests.Session | None = None):
+    def __init__(self, session: requests.Session | None = None, model: str | None = None):
         cfg = config.load("ai")
-        self.model: str = cfg["model"]
+        self.model: str = model or cfg["model"]
         self.min_interval: float = cfg.get("min_interval", 4.0)
         self.session = session or requests.Session()
         self.calls = 0

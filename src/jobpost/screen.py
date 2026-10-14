@@ -14,12 +14,12 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-from . import config, jobtypes
+from . import config, facts, jobtypes
 from .companies import CompanyRegistry
 from .normalize import career_text, clean_company
 from .store import Store
 
-VERSION = 3  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz)
+VERSION = 4  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
 # 본문을 고르는 순서: 리멤버 원문 > 직행이 정리한 요약 > 사람인 원문
@@ -122,6 +122,7 @@ def build(data_dir: Path, today: date | None = None) -> tuple[dict[str, Any], di
         "new": sum(1 for p in postings if p["firstSeen"] == today.isoformat()),
         "companies": len(companies),
     }
+    texts = {pid: b["text"] for pid, b in bodies.items()}
     screen = {
         "version": VERSION,
         "date": today.isoformat(),
@@ -129,6 +130,9 @@ def build(data_dir: Path, today: date | None = None) -> tuple[dict[str, Any], di
         "counts": counts,
         "defaultFilters": config.load("filters"),
         "jobTypes": [{"id": t["id"], "name": t["name"]} for t in jobtypes.taxonomy()["types"]],
+        # 프로필 화면에서 고르는 목록(config/profile.yaml)과 공고에서 나온 스킬
+        "profileOptions": config.load("profile"),
+        "skills": facts.skill_catalog(texts, facts.load(data_dir)),
         "companies": companies,
         "postings": postings,
     }

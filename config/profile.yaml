@@ -1,0 +1,55 @@
+# 프로필에서 고르는 목록. 고르게 해야 AI 판단도 이 안에서 한다(docs/decisions.md 2026-10-14 매칭).
+# 공고 정리(facts.py)도 도메인 경험을 이 업종 id로 적는다. 바꾸면 version을 올린다.
+
+version: 1
+
+# 업종: 회사가 속한 산업. 경력 칸과 공고의 도메인 경험 요구에 쓴다
+industries:
+  - {id: bank, name: 금융(은행·카드)}
+  - {id: securities, name: 금융(증권·자산운용)}
+  - {id: insurance, name: 보험}
+  - {id: fintech, name: 핀테크·간편결제}
+  - {id: commerce, name: 이커머스·유통}
+  - {id: consumer, name: 소비재(패션·뷰티·생활·가구)}
+  - {id: food, name: 식품·외식}
+  - {id: auto, name: 자동차·모빌리티 제조}
+  - {id: electronics, name: 전자·반도체}
+  - {id: chemical, name: 화학·소재·에너지}
+  - {id: heavy, name: 중공업·조선·방산·항공}
+  - {id: construction, name: 건설·부동산}
+  - {id: platform, name: IT 플랫폼·포털}
+  - {id: game, name: 게임}
+  - {id: telecom, name: 통신}
+  - {id: media, name: 미디어·엔터·콘텐츠}
+  - {id: logistics, name: 물류·운송}
+  - {id: health, name: 의료·헬스케어·바이오}
+  - {id: education, name: 교육}
+  - {id: public, name: 공공·공기업}
+  - {id: it_service, name: SI·IT 서비스·컨설팅}
+  - {id: travel, name: 여행·숙박·레저}
+  - {id: other, name: 기타}
+
+# 직무: 내 경력과 관련 있는 직무만 둔다(전체 직무 분류가 아니다). 공고 직무 유형 id와 같은 것은 같은 id
+roles:
+  - {id: data_eng, name: 데이터 엔지니어}
+  - {id: data_arch, name: 데이터 아키텍트·거버넌스}
+  - {id: bi_eng, name: BI·애널리틱스 엔지니어}
+  - {id: analyst, name: 데이터 분석가}
+  - {id: ai_eng, name: AI 엔지니어(LLM·에이전트)}
+  - {id: mlops, name: MLOps·AI 플랫폼}
+  - {id: planning, name: AI·데이터 기획·PM}
+  - {id: pi, name: 업무 프로세스 혁신(PI) 기획}
+  - {id: sales_md, name: 영업·MD}
+  - {id: other, name: 기타(직접 입력)}
+
+# 스킬 숙련도
+skill_levels:
+  - {level: 1, name: 써 봄, desc: 학습·실습이나 작은 업무}
+  - {level: 2, name: 도움 받아 실무, desc: 있는 것을 고치거나 따라 만듦}
+  - {level: 3, name: 혼자 실무, desc: 직접 설계·구축·운영}
+  - {level: 4, name: 리드, desc: 기준을 세우고 남을 가르치거나 검토}
+
+project_parts: [단독, 리드, 참여]
+degrees: [고졸, 전문학사, 학사, 석사, 박사]
+major_groups: [공학(컴퓨터·SW), 공학(기타), 자연(수학·통계·물리), 상경, 인문·사회, 예체능, 기타]
+english: [못함, 읽기·쓰기, 업무 회의, 능통]

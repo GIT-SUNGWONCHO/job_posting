@@ -1,0 +1,29 @@
+# 회차 리포트: 내 평가와 그때의 AI 판단 근거를 모아 로그로 낸다. 매칭 지침을 고칠 때 본다.
+# 수동 실행: GitHub > Actions > feedback > Run workflow
+name: feedback
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  feedback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 회차 리포트
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: uv run --no-dev jobpost feedback

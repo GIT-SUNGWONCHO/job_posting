@@ -16,10 +16,20 @@ SCREEN = {
     ],
 }
 BODIES = {"bodies": {"z:1": {"text": "Spark, Airflow, Databricks로 데이터 파이프라인 구축", "source": "zighang"}}}
-PROFILE = {"careerStart": "2016-12", "currentRole": "data_eng", "targetRoles": ["data_eng"],
-           "jobs": [{"company": "비밀회사", "industry": "대형 건설사", "start": "2023-11", "end": "", "role": "데이터 플랫폼 리드"}],
-           "projects": [{"title": "메타데이터 정리", "result": "테이블 500여 개 → 18개"}],
-           "skills": ["Databricks", "Airflow", "SQL"]}
+PROFILE = {
+    "schema": 2,
+    "careers": [{"company": "가람건설", "industry": "construction", "start": "2016-12", "end": "", "title": "대리",
+                 "roles": [{"role": "data_eng", "start": "2016-12", "end": "", "summary": "마트 설계",
+                            "projects": [{"title": "메타데이터 정리", "start": "2026-01", "end": "2026-09", "part": "단독",
+                                          "summary": "테이블 500여 개 → 18개", "skills": ["Databricks"]}]}]}],
+    "targetRoles": ["data_eng"],
+    "skills": [{"name": "Databricks", "level": 3}, {"name": "Airflow", "level": 2}, {"name": "SQL", "level": 4}],
+}
+ITEMS = [
+    {"kind": "핵심 업무", "name": "파이프라인 구축", "posting": "Spark 파이프라인", "me": "마트 설계", "fit": "일부", "weight": 50},
+    {"kind": "필수 스킬", "name": "Airflow", "posting": "Airflow 필수", "me": "Airflow 2단계", "fit": "충족", "weight": 30},
+    {"kind": "직급·수준", "name": "연차", "posting": "5년 이상", "me": "약 10년", "fit": "충족", "weight": 20},
+]
 
 
 class FakeDB:
@@ -42,34 +52,43 @@ class FakeDB:
 class FakeAI:
     model = "fake"
 
-    def __init__(self):
-        self.prompts = []
+    def __init__(self, fail_on=""):
+        self.prompts, self.fail_on = [], fail_on
 
     def json(self, prompt, schema):
         self.prompts.append(prompt)
-        if "Data Analyst" in prompt:  # 늘 너무 긴 답 → 두 번 묻고 버림
-            return [{"i": 0, "reason": "x" * 200}]
-        return [{"i": 0, "reason": "Databricks·Airflow 경험이 파이프라인 구축과 맞음"}]
+        if self.fail_on and self.fail_on in prompt:
+            raise RuntimeError("429")
+        return {"items": ITEMS, "verdict": "고려", "reason": "Databricks 마트 경험이 맞음", "gaps": ["Spark 경험"]}
 
 
-def test_run_scores_filtered_postings_and_writes_reasons():
-    db, ai = FakeDB(), FakeAI()
+def test_score_items_recomputes_from_weights_and_fit():
+    assert recommend.score_items(ITEMS) == 75  # 50×0.5 + 30 + 20
+    # 가중치 합이 100이 아니어도 맞춘다
+    assert recommend.score_items([{**ITEMS[1], "weight": 3}, {**ITEMS[0], "weight": 1}]) == 88
+
+
+def test_run_scores_candidates_with_ai_and_keeps_basis():
+    db, ai = FakeDB(), FakeAI(fail_on="Data Analyst")
     s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
-    # 공고마다 한 번씩, 긴 답이 온 공고는 한 번 더 물음
-    assert s == {"settings": 1, "profiles": 1, "users": 1, "rows": 2, "reasons_new": 1, "reasons_reused": 0, "calls": 3}
-    assert db.deleted == [("matches", "user_id=eq.u1")]
+    assert s["ai_new"] == 1 and s["rule_only"] == 1 and s["rows"] == 2 and s["errors"] == ["429"]
     by = {r["posting_id"]: r for r in db.inserted}
     assert set(by) == {"z:1", "z:2"}  # z:3은 기업 구분 필터에서 빠짐
-    assert by["z:1"]["reason"].startswith("Databricks") and by["z:1"]["profile_v"] == 3
-    assert by["z:2"]["reason"] is None  # 너무 긴 답은 버림
-    assert by["z:1"]["score"] > by["z:2"]["score"]
-    assert "비밀회사" not in ai.prompts[0] and "대형 건설사" in ai.prompts[0]
+    ai_row = by["z:1"]
+    assert ai_row["score"] == 75 and ai_row["parts"]["kind"] == "ai" and ai_row["parts"]["verdict"] == "고려"
+    assert ai_row["parts"]["items"] == ITEMS and ai_row["parts"]["rule"] > 0
+    assert ai_row["matched"] == ["Airflow", "연차"] and ai_row["missing"] == ["Spark 경험"]
+    assert ai_row["score_v"] == 1 and ai_row["profile_v"] == 3
+    assert by["z:2"]["parts"]["kind"] == "rule"  # AI가 실패하면 규칙 점수만
+    # 회사명까지 보낸다
+    assert "가람건설" in ai.prompts[0] and "직무별 경력: 데이터 엔지니어" in ai.prompts[0]
 
 
-def test_run_reuses_reason_for_same_profile_version():
-    old = [{"posting_id": "z:1", "reason": "지난 이유", "profile_v": 3,
-            "reason_meta": {"prompt": recommend.PROMPT_VERSION, "model": "fake"}}]
+def test_run_reuses_ai_result_for_same_profile_guide_and_model():
+    first = FakeDB()
+    recommend.run(SCREEN, BODIES, first, FakeAI(), TODAY)
+    old = [{k: r[k] for k in ("posting_id", "score", "parts", "matched", "missing", "reason", "reason_meta",
+                              "profile_v", "score_v")} for r in first.inserted]
     db, ai = FakeDB(old), FakeAI()
     s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
-    assert s["reasons_reused"] == 1
-    assert {r["posting_id"]: r["reason"] for r in db.inserted}["z:1"] == "지난 이유"
+    assert s["ai_reused"] == 2 and s["ai_new"] == 0 and not ai.prompts

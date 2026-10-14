@@ -20,9 +20,11 @@ function devScreenFile(): Plugin {
         res.setHeader('Content-Type', 'application/octet-stream')
         res.end(readFileSync(file))
       })
-      server.middlewares.use('/__dev/matches.json', (_req, res) => {
-        const path = resolve(dir, 'matches.json')
-        if (!existsSync(path)) {
+      // 매칭 결과와 프로필(로그인 없이 화면을 볼 때)
+      server.middlewares.use('/__dev/json', (req, res) => {
+        const name = (req.url ?? '').replace(/^\//, '')
+        const path = resolve(dir, name)
+        if (!/^(matches|profile)\.json$/.test(name) || !existsSync(path)) {
           res.statusCode = 404
           res.end()
           return

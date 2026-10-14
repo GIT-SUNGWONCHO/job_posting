@@ -18,7 +18,7 @@
 | 대시보드 | https://careermap-web.oroloov.workers.dev (초대한 사람만 로그인) |
 | 운영 설정: Supabase, Cloudflare, 키 넣는 곳 | `docs/setup.md` |
 | 개발 흐름(다른 프로젝트에도 쓰는 진행 방식) | `docs/dev-workflow.md` |
-| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수, AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
+| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수·지침, 프로필 목록(업종·직무), AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
 | 수집 데이터 | `data` 브랜치(형식은 그 브랜치 README) |
 
 ## 지금 단계
@@ -28,7 +28,7 @@
 | 0 | 기획, 수집처 검증, 화면 구성, 화면·콘텐츠 원칙 | 완료 |
 | 1 | 개발 기반: 이 파일, 용어집, 데이터 형식 | 완료(기준 샘플은 3단계에서) |
 | 2 | 수집, 아키텍처, 디자인 스타일, 대시보드 | 진행 중: 수집(매일 04:17 자동), 아키텍처·디자인 스타일 확정, 대시보드 첫 버전 배포. 남은 것: 실제로 써 보며 다듬기 |
-| 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | 진행 중: 직무 유형 분류·필터 계정 저장·프로필 입력·매칭 점수와 이유(3-1~3-4) 구현, 실제 프로필로 조정과 기준 샘플(3-5) 남음 |
+| 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | 진행 중: 프로필 v2, 공고 정리, AI 매칭(판단 근거) + 내 평가로 지침을 고치는 회차 진행 중. 기준이 서면 규칙화와 기준 샘플(3-5) |
 | 4 | 분석: 회사 리서치, 커리어 탭 | |
 | 5 | 보고: 오늘의 리포트, 아침 카톡 | |
 | 6 | 확장: 지원 상태, 지인 계정, 나머지 수집처 | |
@@ -60,9 +60,11 @@ src/jobpost/
   store.py         data 폴더 형식
   pipeline.py      하루 수집 한 번의 순서
   jobtypes.py      직무 유형 분류(목록은 config/job_types.yaml, AI가 고름)
-  matching.py      매칭 점수(규칙, config/matching.yaml + 스킬 사전 config/skills.yaml)
-  recommend.py     사람마다 매칭: 점수 + 상위 공고 매칭 이유(AI), Supabase matches에 씀
-  ai_match.py      시험: AI 점수와 규칙 점수 비교(ai-match.yml, 로그에만 남김)
+  facts.py         공고 정리: 후보 공고의 매칭 항목을 공고당 1번 AI로(data/facts.jsonl), 스킬 목록
+  profile.py       프로필 v2(경력 > 직무 구간 > 프로젝트, 숙련도): 직무별 연수, AI에 보낼 요약
+  matching.py      규칙 점수(비교용, config/matching.yaml + 스킬 사전 config/skills.yaml)
+  recommend.py     사람마다 매칭: 후보 공고를 AI가 매기고 판단 근거를 남김(지침 config/match_guide.yaml), Supabase matches에 씀
+  feedback.py      회차 리포트: 내 평가와 판단 근거 모음(feedback.yml)
   db.py            Supabase DB 읽기·쓰기(서버 키)
   ai.py            AI 호출(Gemini). 외부 AI는 여기서만 부른다
   screen.py        화면용 파일 만들기(형식은 web/src/lib/types.ts와 같게)
@@ -80,4 +82,4 @@ web/src/
 - 수집: `uv run jobpost collect --data-dir data` (시험은 `--max-pages 2 --detail-budget 5`)
 - 검사: `uv run ruff check src tests` 와 `uv run pytest -q`, 화면은 `cd web && npm test && npm run lint && npm run build`
 - 화면 개발: `uv run jobpost screen --data-dir <data> --out .dev-data/screen.json.gz` 후 `cd web && npm run dev`(Supabase 값이 없으면 로그인 없이 이 파일을 읽는다)
-- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
+- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회차 리포트는 `feedback.yml`. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.

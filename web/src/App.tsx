@@ -6,6 +6,7 @@ import { passes } from './lib/filter'
 import { todayISO } from './lib/format'
 import { loadScreen } from './lib/load'
 import { useRoute } from './lib/route'
+import { loadFeedback, type Feedback } from './lib/feedback'
 import { loadMatches, type Match } from './lib/matches'
 import { loadFilters, saveFilters as saveRemoteFilters } from './lib/settings'
 import { readLocal, writeLocal } from './lib/storage'
@@ -76,18 +77,27 @@ function Main({ screen }: { screen: Screen }) {
   // 예전에 저장한 필터에 없는 항목(새로 생긴 직무 유형 등)은 기본값으로 채운다
   const [filters, setFilters] = useState<Filters>(() => ({ ...defaults, ...(readLocal<Filters>(FILTER_KEY) ?? {}) }))
   const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE })
-  const [matches, setMatches] = useState<Map<string, Match>>(new Map())
+  const [scored, setScored] = useState<Map<string, Match>>(new Map())
+  const [feedback, setFeedback] = useState<Map<string, Feedback>>(new Map())
   useEffect(() => {
     let alive = true
     loadMatches().then((m) => {
       if (!alive) return
-      setMatches(m)
+      setScored(m)
       if (m.size > 0) setUi((u) => (u.sort === 'latest' ? { ...u, sort: 'recommend' } : u))
     })
+    loadFeedback().then((f) => alive && setFeedback(f))
     return () => {
       alive = false
     }
   }, [])
+  // 목록에 내 평가(○△×)를 함께 보여준다
+  const matches = useMemo(() => {
+    const out = new Map<string, Match>()
+    for (const [id, m] of scored) out.set(id, feedback.has(id) ? { ...m, mine: feedback.get(id)!.label } : m)
+    return out
+  }, [scored, feedback])
+  const onFeedback = (id: string, f: Feedback) => setFeedback((prev) => new Map(prev).set(id, f))
 
   const passed = useMemo(
     () => screen.postings.filter((p) => !p.noise && passes(p, screen.companies[p.company], filters)),
@@ -147,8 +157,10 @@ function Main({ screen }: { screen: Screen }) {
       const p = screen.postings.find((x) => x.id === route.id)
       detail = !wide
       body = wide
-        ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)} panel /></div>
-        : <JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)} />
+        ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)}
+          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} panel /></div>
+        : <JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)}
+          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} />
       break
     }
     case 'company':
@@ -168,7 +180,7 @@ function Main({ screen }: { screen: Screen }) {
       break
     case 'profile':
       detail = !wide
-      body = <Profile jobTypes={screen.jobTypes ?? []} />
+      body = <Profile options={screen.profileOptions} skillOptions={screen.skills ?? []} />
       break
   }
 

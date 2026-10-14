@@ -234,3 +234,41 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .hero-title { font-size: 18px; font-weight: var(--fw-title); line-height: 1.4; margin-top: 2px; }
 .hero-top-pick .row-reason { white-space: normal; }
 .match-reason { margin-top: 4px; font-size: var(--fs-body); line-height: 1.5; }
+
+/* 프로필 v2: 경력 > 직무 구간 > 프로젝트 */
+.entry.nested { padding: 12px 0 12px 14px; border-top: 0; border-left: 2px solid var(--line); }
+.sub-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: var(--fs-sub); color: var(--sub); font-weight: var(--fw-item); }
+.levels-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: var(--fs-min); color: var(--sub); }
+.levels-legend b { color: var(--ink); }
+.skill-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); }
+.skill-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.level-pick { display: flex; padding: 3px; border-radius: 10px; background: var(--band); }
+.level-pick button { width: 36px; height: 32px; border: 0; border-radius: 8px; background: none; color: var(--muted); font-size: var(--fs-sub); cursor: pointer; }
+.level-pick button.on { background: var(--bg); color: var(--ink); font-weight: var(--fw-title); box-shadow: 0 1px 2px rgba(25, 31, 40, 0.06); }
+.row2.cert { grid-template-columns: 1fr 96px auto; align-items: end; }
+.pick summary { color: var(--accent); font-size: var(--fs-sub); cursor: pointer; }
+.pick .chips { margin-top: 8px; }
+
+/* 매칭 판단 근거와 내 평가 */
+.verdict { align-self: flex-start; padding: 2px 8px; border-radius: 6px; background: var(--band); font-size: var(--fs-min); font-weight: var(--fw-item); color: var(--ink); }
+.basis { margin-top: 16px; }
+.basis-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.basis-title h3, .feedback h3 { margin: 0; font-size: var(--fs-item); font-weight: var(--fw-item); }
+.basis-item { padding: 10px 0; border-top: 1px solid var(--line); }
+.basis-head { display: flex; align-items: baseline; gap: 8px; }
+.basis-kind { flex: none; font-size: var(--fs-min); color: var(--sub); }
+.basis-name { flex: 1; min-width: 0; font-weight: var(--fw-item); overflow-wrap: anywhere; }
+.basis-weight { flex: none; width: 28px; text-align: right; font-variant-numeric: tabular-nums; color: var(--sub); font-size: var(--fs-sub); }
+.basis-line { display: flex; gap: 8px; margin-top: 4px; font-size: var(--fs-sub); color: var(--sub); overflow-wrap: anywhere; }
+.basis-line > span:first-child { flex: none; width: 28px; color: var(--muted); }
+.fit { flex: none; padding: 1px 8px; border: 1px solid var(--line); border-radius: var(--r-chip); font-size: var(--fs-min); }
+.fit.good { color: var(--ink); font-weight: var(--fw-item); }
+.fit.part { color: var(--sub); }
+.fit.bad { color: var(--muted); border-style: dashed; }
+.fit.none { color: var(--muted); }
+.basis-meta { margin-top: 12px; font-size: var(--fs-min); }
+.feedback { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+.feedback textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-control); background: var(--bg); font-size: var(--fs-body); line-height: 1.4; resize: vertical; }
+.feedback-actions { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+.row-score { flex: none; display: flex; flex-direction: column; align-items: center; gap: 4px; align-self: flex-start; }
+.mine { font-size: var(--fs-sub); color: var(--sub); font-weight: var(--fw-item); }

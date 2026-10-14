@@ -9,7 +9,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from . import ai, ai_match, db, pipeline, publish, recommend, screen
+from . import ai, db, facts, feedback, pipeline, publish, recommend, screen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -31,8 +31,11 @@ def main(argv: list[str] | None = None) -> int:
     m = sub.add_parser("match", help="사람마다 매칭 점수와 매칭 이유를 Supabase에 쓴다")
     m.add_argument("--data-dir", type=Path, default=Path("data"))
 
-    t = sub.add_parser("ai-match", help="시험: AI 점수와 규칙 점수를 나란히 로그에 낸다(Supabase에 쓰지 않음)")
-    t.add_argument("--data-dir", type=Path, default=Path("data"))
+    f = sub.add_parser("facts", help="후보 공고의 매칭 항목을 AI로 정리해 data 폴더 facts.jsonl에 쌓는다")
+    f.add_argument("--data-dir", type=Path, default=Path("data"))
+
+    r = sub.add_parser("feedback", help="회차 리포트: 내 평가와 그때의 AI 판단 근거를 로그로 낸다")
+    r.add_argument("--data-dir", type=Path, default=Path("data"))
 
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
@@ -65,19 +68,30 @@ def main(argv: list[str] | None = None) -> int:
             logging.info("Supabase 설정이 없어 매칭을 건너뜀")
             return 0
         built, bodies = screen.build(args.data_dir)
-        client = ai.Gemini() if ai.configured() else None
         store = db.DB()
         store.check_server_key()
-        summary = recommend.run(built, bodies, store, client, date.today())
+        summary = recommend.run(built, bodies, store, recommend.make_client(), date.today(), facts.load(args.data_dir))
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
-    if args.cmd == "ai-match":
-        if not (db.configured() and ai.configured()):
-            logging.info("Supabase 또는 Gemini 설정이 없어 건너뜀")
-            return 0
+    if args.cmd == "facts":
         built, bodies = screen.build(args.data_dir)
-        rows = ai_match.run(built, bodies, db.DB(), ai.Gemini(), date.today())
-        print("\n".join(["== 비교 요약 ==", *ai_match.summarize(rows)]))
+        settings: list[dict] = []
+        if db.configured():
+            store = db.DB()
+            store.check_server_key()
+            settings = store.select("settings", "select=user_id,filters")
+        wanted = facts.candidates_for_all(built, settings)
+        client = ai.Gemini() if ai.configured() else None
+        summary = facts.run(args.data_dir, built, bodies, wanted, client, date.today().isoformat())
+        json.dump(summary, sys.stdout, ensure_ascii=False)
+        print()
+    if args.cmd == "feedback":
+        if not db.configured():
+            logging.info("Supabase 설정이 없어 건너뜀")
+            return 0
+        store = db.DB()
+        store.check_server_key()
+        print("\n".join(feedback.report(store.select("feedback", "select=*&order=updated_at.desc"))))
     return 0
 
 

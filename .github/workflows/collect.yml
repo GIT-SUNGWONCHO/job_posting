@@ -49,13 +49,20 @@ jobs:
           fi
           uv run jobpost collect "${args[@]}" | tee run.json
 
+      - name: 공고 정리(후보 공고의 매칭 항목, AI)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: uv run jobpost facts --data-dir data
+
       - name: 화면용 파일 만들기·올리기
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
         run: uv run jobpost screen --data-dir data --out screen.json.gz --upload
 
-      - name: 매칭(사람마다 점수와 매칭 이유)
+      - name: 매칭(후보 공고를 AI가 항목별로 매김)
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
