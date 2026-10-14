@@ -92,3 +92,11 @@ def test_run_reuses_ai_result_for_same_profile_guide_and_model():
     db, ai = FakeDB(old), FakeAI()
     s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
     assert s["ai_reused"] == 2 and s["ai_new"] == 0 and not ai.prompts
+
+
+def test_two_accounts_with_the_same_profile_share_ai_results():
+    db, ai = FakeDB(), FakeAI()
+    db.rows["profiles"] = [{"user_id": "u1", "data": PROFILE, "version": 3}, {"user_id": "u2", "data": PROFILE, "version": 5}]
+    s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
+    assert s["users"] == 2 and s["ai_new"] == 2 and s["ai_reused"] == 2 and len(ai.prompts) == 2
+    assert {r["user_id"] for r in db.inserted} == {"u1", "u2"}

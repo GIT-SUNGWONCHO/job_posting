@@ -9,6 +9,7 @@ AI는 공고마다 비교할 항목을 고르고 항목마다 공고 요구 · �
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import time
 from datetime import date
@@ -111,6 +112,13 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
     profiles = db.select("profiles", "select=user_id,data,version")
     summary: dict[str, Any] = {"settings": len(settings), "profiles": len(profiles), "users": 0, "rows": 0,
                                "ai_new": 0, "ai_reused": 0, "rule_only": 0, "calls": 0, "errors": []}
+    # 같은 프로필 내용(계정이 둘이어도)이면 AI 결과를 함께 쓴다: (공고, 프로필 요약 해시) → 결과
+    shared: dict[tuple[str, str], dict[str, Any]] = {}
+    for r in db.select("matches", "select=posting_id,score,parts,matched,missing,reason,reason_meta,score_v"):
+        meta = r.get("reason_meta") or {}
+        if ((r.get("parts") or {}).get("kind") == "ai" and meta.get("profile_hash") and r.get("score_v") == guide_v
+                and meta.get("prompt") == PROMPT_VERSION and meta.get("model") == model):
+            shared[(r["posting_id"], meta["profile_hash"])] = r
     for prof in profiles:
         user, data, pv = prof["user_id"], prof.get("data") or {}, prof.get("version", 1)
         if not profile.has_content(data):
@@ -120,6 +128,7 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         user_filters = {**defaults, **settings.get(user, {})}
         rule_profile = profile.rule_view(data)
         ptext = profile.text(data, today) if profile.is_v2(data) else None
+        phash = hashlib.sha1(ptext.encode()).hexdigest()[:12] if ptext else None
 
         scored = []
         for p in candidates(screen, user_filters):
@@ -138,8 +147,10 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
             same = (o and (o.get("parts") or {}).get("kind") == "ai" and o.get("profile_v") == pv
                     and o.get("score_v") == guide_v and meta.get("prompt") == PROMPT_VERSION and meta.get("model") == model)
             row = None
-            if same:
-                row = {k: o[k] for k in ("score", "parts", "matched", "missing", "reason", "reason_meta")}
+            twin = shared.get((p["id"], phash)) if phash else None
+            if same or twin:
+                src = o if same else twin
+                row = {k: src[k] for k in ("score", "parts", "matched", "missing", "reason", "reason_meta")}
                 row["parts"] = {**row["parts"], "rule": rule["score"]}
                 summary["ai_reused"] += 1
             elif ptext and client is not None and calls_left > 0 and time.monotonic() < deadline and len(summary["errors"]) < 5:
@@ -157,7 +168,9 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                            "matched": [i["name"] for i in items if i.get("fit") == "충족"],
                            "missing": [g for g in got.get("gaps") or [] if g][:3],
                            "reason": reason or None,
-                           "reason_meta": {"model": model, "prompt": PROMPT_VERSION, "on": today.isoformat()}}
+                           "reason_meta": {"model": model, "prompt": PROMPT_VERSION, "on": today.isoformat(),
+                                           "profile_hash": phash}}
+                    shared[(p["id"], phash)] = row
                     summary["ai_new"] += 1
                     if summary["ai_new"] % 25 == 0:
                         log.info("AI 매칭 %d건", summary["ai_new"])
