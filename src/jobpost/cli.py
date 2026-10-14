@@ -77,7 +77,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         built, bodies = screen.build(args.data_dir)
         rows = ai_match.run(built, bodies, db.DB(), ai.Gemini(), date.today())
-        logging.info("AI 점수 %d건, 실패 %d건", sum(r["ai"] is not None for r in rows), sum(r["ai"] is None for r in rows))
+        print("\n".join(["== 비교 요약 ==", *ai_match.summarize(rows)]))
     return 0
 
 

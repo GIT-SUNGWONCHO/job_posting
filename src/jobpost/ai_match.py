@@ -76,3 +76,57 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any, to
         out.append(row)
         print("AIM\t" + json.dumps(row, ensure_ascii=False), flush=True)
     return out
+
+
+def _ranks(values: list[float]) -> list[float]:
+    order = sorted(range(len(values)), key=lambda i: values[i])
+    ranks = [0.0] * len(values)
+    i = 0
+    while i < len(order):
+        j = i
+        while j + 1 < len(order) and values[order[j + 1]] == values[order[i]]:
+            j += 1
+        for k in range(i, j + 1):
+            ranks[order[k]] = (i + j) / 2  # 같은 값은 평균 순위
+        i = j + 1
+    return ranks
+
+
+def spearman(a: list[float], b: list[float]) -> float:
+    ra, rb = _ranks(a), _ranks(b)
+    n = len(a)
+    ma, mb = sum(ra) / n, sum(rb) / n
+    cov = sum((x - ma) * (y - mb) for x, y in zip(ra, rb, strict=True))
+    va = sum((x - ma) ** 2 for x in ra) ** 0.5
+    vb = sum((y - mb) ** 2 for y in rb) ** 0.5
+    return cov / (va * vb) if va and vb else 0.0
+
+
+def summarize(rows: list[dict[str, Any]], top: int = 10, far: int = 8) -> list[str]:
+    """비교 요약 줄들: 순위 상관, 상위 겹침, 크게 엇갈린 공고."""
+    ok = [r for r in rows if r.get("ai") is not None]
+    if len(ok) < 3:
+        return [f"비교할 수 있는 공고가 {len(ok)}건뿐"]
+    line = lambda r: (f"규칙 {r['rule']:>3} / AI {r['ai']:>3} | {r['company']} | {r['title'][:45]} | {r.get('career') or ''}"  # noqa: E731
+                      f" | {r.get('reason') or ''} | 부족: {', '.join(r.get('gaps') or [])}")
+    by_rule = sorted(ok, key=lambda r: (-r["rule"], -r["ai"]))
+    by_ai = sorted(ok, key=lambda r: (-r["ai"], -r["rule"]))
+    both = {r["id"] for r in by_rule[:top]} & {r["id"] for r in by_ai[:top]}
+    buckets: dict[str, list[int]] = {}
+    for r in ok:
+        buckets.setdefault(f"{min(r['ai'] // 10 * 10, 90)}", []).append(r["rule"])
+    out = [
+        f"공고 {len(rows)}건, AI 점수 {len(ok)}건",
+        f"순위 상관(스피어만) {spearman([r['rule'] for r in ok], [r['ai'] for r in ok]):.2f}",
+        f"점수 차이 평균 {sum(abs(r['rule'] - r['ai']) for r in ok) / len(ok):.1f}점",
+        f"상위 {top}건 겹침 {len(both)}건",
+        "AI 점수대별 건수(규칙 평균): " + ", ".join(
+            f"{k}점대 {len(v)}건({sum(v) / len(v):.0f})" for k, v in sorted(buckets.items(), key=lambda x: -int(x[0]))),
+        f"[규칙 상위 {top}]", *map(line, by_rule[:top]),
+        f"[AI 상위 {top}]", *map(line, by_ai[:top]),
+        "[규칙은 높은데 AI는 낮게 본 공고]",
+        *map(line, sorted(ok, key=lambda r: r["ai"] - r["rule"])[:far]),
+        "[AI는 높은데 규칙은 낮게 본 공고]",
+        *map(line, sorted(ok, key=lambda r: r["rule"] - r["ai"])[:far]),
+    ]
+    return out
