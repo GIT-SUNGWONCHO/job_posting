@@ -89,3 +89,6 @@ def test_feedback_metrics_and_report():
     assert "규칙 점수: 상위 10 중 ○ 2건" in text  # 규칙 점수가 다 같으면 반반
     assert "○ AI 50(고려) 규칙 80 | 회사 | 공고 b | 코멘트: 핵심 업무가 딱 맞음" in text  # ○인데 60 미만
     assert "× AI 70(고려)" in text and "[아직 평가 안 함 1건]" in text
+    dump = feedback.sample_dump(sample, matches, rows)
+    assert len(dump) == 4 and dump[0].startswith("SMP\t") and '"score": 90' in dump[0]
+    assert '"label": "good", "comment": "핵심 업무가 딱 맞음"' in dump[3]  # b(50점), 최신 평가

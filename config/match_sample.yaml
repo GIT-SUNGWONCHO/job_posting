@@ -6,63 +6,63 @@
 version: 1
 
 postings:
-  - {id: "zighang:2a03389b-45c9-45d3-b2c1-25a98aca6b02", group: 규칙 상위, company: "카카오뱅크", title: "[카카오뱅크] 데이터 엔지니어 - Data Warehouse"}
-  - {id: "zighang:63da6e63-2799-442c-8b29-5f4799e73a93", group: 규칙 상위, company: "CJ올리브영", title: "Data Architect (주니어)"}
-  - {id: "zighang:f2878179-a89e-4d37-a370-92b5dfb8a1c8", group: 규칙 상위, company: "CJ올리브영", title: "Data Architect (시니어)"}
-  - {id: "remember:346738", group: 규칙 상위, company: "한화에어로스페이스", title: "해양솔루션부문_디지털솔루션개발_AI 활용 솔루션 개발 (데이터 표준화 연구)"}
-  - {id: "zighang:0c66c799-18ca-414f-9012-7df12b67b49a", group: 규칙 상위, company: "CJ올리브영", title: "Data Engineer"}
-  - {id: "zighang:60b7ca3d-953f-4754-840b-37e138a5fca3", group: 규칙 상위, company: "현대백화점", title: "현대그린푸드 데이터 엔지니어 경력사원 채용"}
-  - {id: "zighang:6105ec82-63b9-4366-8b2f-c2c26426cbf6", group: 규칙 상위, company: "카카오페이", title: "데이터 기획자 - 데이터 거버넌스 정책/시스템"}
-  - {id: "zighang:66084d2d-25b4-42eb-be7c-26d4a90be949", group: 규칙 상위, company: "롯데카드", title: "데이터 아키텍트(DA, Data Architect) 직무"}
-  - {id: "remember:341729", group: 규칙 상위, company: "HL만도", title: "데이터 거버넌스 경력직"}
-  - {id: "remember:341738", group: 규칙 상위, company: "HL만도", title: "Data 아키텍처 경력직"}
-  - {id: "remember:346733", group: 규칙 상위, company: "한화에어로스페이스", title: "해양솔루션부문_디지털솔루션개발_데이터플랫폼 SW개발"}
-  - {id: "zighang:a5541f9d-1bbb-48df-b834-2d06233cb765", group: 규칙 상위, company: "HL만도", title: "10월 경력 수시채용(판교) - AX 거버넌스"}
-  - {id: "zighang:f96dbce8-7a2d-476e-be4b-dabbfd67e6cd", group: 규칙 상위, company: "엔코아", title: "데이터 전문가-프로젝트 매칭시 연락"}
-  - {id: "remember:326923", group: 규칙 상위, company: "카카오페이증권", title: "그로스 애널리틱스 엔지니어"}
-  - {id: "saramin:55063411", group: 규칙 상위, company: "베스핀글로벌", title: "[베스핀글로벌] 데이터 처리 및 포털 개발/운영 프로젝트 기술PM"}
-  - {id: "zighang:8dbf227d-8e7d-47f4-9b72-efac30db3cb3", group: 판단 갈림, company: "크래프톤", title: "[AI Transformation Dept.] Sr. Data Analytics Specialist (7년 이상)"}
-  - {id: "zighang:b21524b9-7b43-4ba7-976e-48646be6de96", group: 판단 갈림, company: "카카오헬스케어", title: "[카카오헬스케어] AI Native EHR 개발 (BA팀) 경력 채용"}
-  - {id: "saramin:55235710", group: 판단 갈림, company: "한국전력공사", title: "기간제근로자(대체인력) 채용공고 [경기본부] (NDIS데이터관리원"}
-  - {id: "zighang:d73cd469-fd95-48f8-8563-0963880243ee", group: 판단 갈림, company: "키다리스튜디오", title: "AI 영상 생성 담당 (1년 이상)"}
-  - {id: "zighang:7511e98b-9a72-407f-bdf8-f5c3f07ccf82", group: 판단 갈림, company: "넷플릭스", title: "GenAI Technology Integrations Manager"}
-  - {id: "zighang:2a042f32-19c6-4d7a-a933-4d86ea2da7ef", group: 판단 갈림, company: "네이버클라우드", title: "AI Security 분야 채용 (경력) - AI Security FDE 엔지니어"}
-  - {id: "zighang:16e528c5-0099-4f31-be25-0724eb0923d0", group: 판단 갈림, company: "메리츠증권", title: "[메리츠증권] IT/정보보호부문 채용 공고 (경력) - 수시채용"}
-  - {id: "zighang:fb52cef2-4d1c-4baf-9270-d863deae126e", group: 판단 갈림, company: "한화", title: "[한화시스템/ICT] 온톨로지(Ontology) 전문가"}
-  - {id: "remember:346746", group: 판단 갈림, company: "한화에어로스페이스", title: "해양솔루션부문_차세대추진솔루션개발_성능설계"}
-  - {id: "remember:346276", group: 판단 갈림, company: "쿠팡", title: "[쿠팡] 로켓배송 카탈로그 운영 및 프로세스 개선 PM"}
-  - {id: "saramin:55212672", group: 판단 갈림, company: "피엠인터내셔널코리아", title: "AI/데이터 분석 전문가(경력11년이상)"}
-  - {id: "remember:346275", group: 판단 갈림, company: "쿠팡", title: "[쿠팡] 리테일 운영기획 매니저 (프로세스 개선 및 AI 활용)"}
-  - {id: "remember:344545", group: 판단 갈림, company: "쿠팡", title: "[쿠팡] 컴플라이언스 비즈니스 분석가 (Business Analyst)"}
-  - {id: "remember:296299", group: 판단 갈림, company: "CJ올리브영", title: "[CJ올리브영] 글로벌몰 그로스 데이터 분석가"}
-  - {id: "zighang:f4509b4b-b8b0-4224-a1a9-3e62b3064cf1", group: 판단 갈림, company: "NHN 클라우드", title: "NHN Cloud 데이터 보안 기술 개발 경력 채용"}
-  - {id: "zighang:cd348b6e-ce45-4fa1-9c3b-1dae1b3bbce4", group: 직무별:data_eng, company: "현대트랜시스", title: "'26년 하반기 경력 채용"}
-  - {id: "zighang:2f0a2062-af38-4acb-affb-27d537a128cd", group: 직무별:data_eng, company: "이노크라스코리아", title: "AI Team Lead"}
-  - {id: "zighang:9d10bce8-9eb5-4147-b252-253b2351503d", group: 직무별:data_eng, company: "LS ITC", title: "2026 경력직 수시채용"}
-  - {id: "zighang:09bc5633-8693-441f-b040-4e6737966a98", group: 직무별:data_eng, company: "빅인사이트", title: "Data Platform Engineer"}
-  - {id: "zighang:31131e47-b7e7-4747-98e6-b7c7d9d4d7c8", group: 직무별:data_arch, company: "위프로커넥티드서비시즈인크", title: "[위프로커넥티드서비시즈인크] Talent Pool - AI Architect"}
-  - {id: "zighang:1973bc97-407e-4b8e-89bd-41e555dc1568", group: 직무별:data_arch, company: "LGCNS", title: "어플리케이션 아키텍트/AI 아키텍트 채용(경력)"}
-  - {id: "zighang:f0814d19-437f-43ff-8f60-ff23fcbb9d72", group: 직무별:data_arch, company: "크래프톤", title: "[AI Transformation Dept.] AX Governance Specialist (3년 이상 / 계약직)"}
-  - {id: "zighang:d12588c7-d3fa-4cd8-9798-6215cd50a102", group: 직무별:data_arch, company: "한화에어로스페이스", title: "AI 인력 상시 경력 채용 (선박용 AI 솔루션 개발 데이터 아키텍트)"}
-  - {id: "zighang:e0d44327-0eee-40c9-91f8-886735e650d6", group: 직무별:ai_eng, company: "포스코와이드", title: "[포스코와이드] AX Engineer 채용 (대리급)"}
-  - {id: "saramin:55148830", group: 직무별:ai_eng, company: "나인닷츠컨설팅", title: "AI Agent Engineer (M365 &amp; Automation) 모집"}
-  - {id: "zighang:37d7978e-c068-4eb5-a392-d9103614b870", group: 직무별:ai_eng, company: "오픈에이아이(OpenAI)", title: "Partner AI Deployment Engineer - AWS"}
-  - {id: "zighang:1c6443ff-9dc8-43f7-81b8-5075a562c193", group: 직무별:ai_eng, company: "넷마블", title: "AI 엔지니어(VLM /음성 에이전트) 모집"}
-  - {id: "zighang:e3945f58-1e00-4652-bd94-2a7fc285bcef", group: 직무별:analyst, company: "어센틱금융그룹", title: "(주)어센틱금융그룹 본사 운영전략팀 보험DB 운영 담당자 채용"}
-  - {id: "zighang:295c45f9-cf2d-431b-838e-c92f954e73e0", group: 직무별:analyst, company: "쿠팡", title: "[쿠팡풀필먼트센터] Business Analyst (Fresh FC Fp&A)"}
-  - {id: "remember:313345", group: 직무별:analyst, company: "쿠팡", title: "Senior Data Analyst (Catalog)"}
-  - {id: "zighang:6e7bfc98-3558-43cf-938f-7fe38e4f6037", group: 직무별:analyst, company: "구글(Google)", title: "Measurement and Incrementality Expert"}
-  - {id: "zighang:c0d842e9-5313-4671-9146-7d84c8bed140", group: 직무별:mlops, company: "SK", title: "[SK inc.(AX)] AI 플랫폼 아키텍트"}
-  - {id: "zighang:f0255512-272c-46b6-95b6-e705f291e540", group: 직무별:mlops, company: "DBInc", title: "AI 인프라 / GPU 운영 엔지니어"}
-  - {id: "zighang:16a7d0c2-b732-4ad6-9850-11bd50d7db44", group: 직무별:mlops, company: "카카오스타일(Kakao Style)", title: "MLOps 엔지니어"}
-  - {id: "zighang:8754b40a-3d07-4267-867d-dccef8401f3e", group: 직무별:mlops, company: "TVING", title: "Backend Engineer(AI Ops Platform)"}
-  - {id: "zighang:9a47b484-3de5-4a57-8cbb-c9db123c0496", group: 무작위, company: "비즈테크아이", title: "[비즈테크아이] AI 엔지니어 모집 (경력)"}
-  - {id: "zighang:92ce4ed8-2444-4b75-b176-27e49c5d183d", group: 무작위, company: "쿠팡", title: "Principle Data Analyst"}
-  - {id: "zighang:45d75a04-87b3-47dd-8f07-351c70306350", group: 무작위, company: "한화비전", title: "한화비전 Senior Data Pipeline and DB Engineer 채용"}
-  - {id: "remember:342763", group: 무작위, company: "쿠팡", title: "[쿠팡] CS 전략/기획 및 데이터 분석 담당자"}
-  - {id: "zighang:1ee2c519-f156-40de-b20c-ddc4407ab112", group: 무작위, company: "이노크라스코리아", title: "[이노크라스코리아] 유전체분석(Bioinformatics Scientist) 채용"}
-  - {id: "zighang:97ab3495-278c-4c0c-94af-1bb2ad0abc8d", group: 무작위, company: "디엑스이", title: "[디엑스이] AI/AX 플랫폼 개발 백엔드/데이터 엔지니어 경력 채용"}
-  - {id: "zighang:b1b247bf-92f5-407e-9ff0-e7efe92aa410", group: 무작위, company: "LG AI연구원", title: "Research Scientist - Ontology & Knowledge Graph"}
-  - {id: "zighang:b80d1d9c-3379-4437-9774-106df91e4a79", group: 무작위, company: "넵튠", title: "하이브리드캐주얼1팀 데이터 분석가(DA)"}
-  - {id: "zighang:c61e1823-71ff-4a4e-8315-b1bcff916857", group: 무작위, company: "토스뱅크", title: "AIOps Platform Engineer"}
-  - {id: "zighang:a300c835-a42c-4833-b420-2ae5310b330a", group: 무작위, company: "우아한형제들", title: "Business Analyst (타임세일)"}
+  - {id: "zighang:2a03389b-45c9-45d3-b2c1-25a98aca6b02", group: 규칙 상위, company: "카카오뱅크", title: "[카카오뱅크] 데이터 엔지니어 - Data Warehouse", url: "https://zighang.com/recruitment/2a03389b-45c9-45d3-b2c1-25a98aca6b02"}
+  - {id: "zighang:63da6e63-2799-442c-8b29-5f4799e73a93", group: 규칙 상위, company: "CJ올리브영", title: "Data Architect (주니어)", url: "https://zighang.com/recruitment/63da6e63-2799-442c-8b29-5f4799e73a93"}
+  - {id: "zighang:f2878179-a89e-4d37-a370-92b5dfb8a1c8", group: 규칙 상위, company: "CJ올리브영", title: "Data Architect (시니어)", url: "https://zighang.com/recruitment/f2878179-a89e-4d37-a370-92b5dfb8a1c8"}
+  - {id: "remember:346738", group: 규칙 상위, company: "한화에어로스페이스", title: "해양솔루션부문_디지털솔루션개발_AI 활용 솔루션 개발 (데이터 표준화 연구)", url: "https://career.rememberapp.co.kr/job/posting/346738"}
+  - {id: "zighang:0c66c799-18ca-414f-9012-7df12b67b49a", group: 규칙 상위, company: "CJ올리브영", title: "Data Engineer", url: "https://zighang.com/recruitment/0c66c799-18ca-414f-9012-7df12b67b49a"}
+  - {id: "zighang:60b7ca3d-953f-4754-840b-37e138a5fca3", group: 규칙 상위, company: "현대백화점", title: "현대그린푸드 데이터 엔지니어 경력사원 채용", url: "https://zighang.com/recruitment/60b7ca3d-953f-4754-840b-37e138a5fca3"}
+  - {id: "zighang:6105ec82-63b9-4366-8b2f-c2c26426cbf6", group: 규칙 상위, company: "카카오페이", title: "데이터 기획자 - 데이터 거버넌스 정책/시스템", url: "https://zighang.com/recruitment/6105ec82-63b9-4366-8b2f-c2c26426cbf6"}
+  - {id: "zighang:66084d2d-25b4-42eb-be7c-26d4a90be949", group: 규칙 상위, company: "롯데카드", title: "데이터 아키텍트(DA, Data Architect) 직무", url: "https://zighang.com/recruitment/66084d2d-25b4-42eb-be7c-26d4a90be949"}
+  - {id: "remember:341729", group: 규칙 상위, company: "HL만도", title: "데이터 거버넌스 경력직", url: "https://career.rememberapp.co.kr/job/posting/341729"}
+  - {id: "remember:341738", group: 규칙 상위, company: "HL만도", title: "Data 아키텍처 경력직", url: "https://career.rememberapp.co.kr/job/posting/341738"}
+  - {id: "remember:346733", group: 규칙 상위, company: "한화에어로스페이스", title: "해양솔루션부문_디지털솔루션개발_데이터플랫폼 SW개발", url: "https://career.rememberapp.co.kr/job/posting/346733"}
+  - {id: "zighang:a5541f9d-1bbb-48df-b834-2d06233cb765", group: 규칙 상위, company: "HL만도", title: "10월 경력 수시채용(판교) - AX 거버넌스", url: "https://zighang.com/recruitment/a5541f9d-1bbb-48df-b834-2d06233cb765"}
+  - {id: "zighang:f96dbce8-7a2d-476e-be4b-dabbfd67e6cd", group: 규칙 상위, company: "엔코아", title: "데이터 전문가-프로젝트 매칭시 연락", url: "https://zighang.com/recruitment/f96dbce8-7a2d-476e-be4b-dabbfd67e6cd"}
+  - {id: "remember:326923", group: 규칙 상위, company: "카카오페이증권", title: "그로스 애널리틱스 엔지니어", url: "https://career.rememberapp.co.kr/job/posting/326923"}
+  - {id: "saramin:55063411", group: 규칙 상위, company: "베스핀글로벌", title: "[베스핀글로벌] 데이터 처리 및 포털 개발/운영 프로젝트 기술PM", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55063411"}
+  - {id: "zighang:8dbf227d-8e7d-47f4-9b72-efac30db3cb3", group: 판단 갈림, company: "크래프톤", title: "[AI Transformation Dept.] Sr. Data Analytics Specialist (7년 이상)", url: "https://zighang.com/recruitment/8dbf227d-8e7d-47f4-9b72-efac30db3cb3"}
+  - {id: "zighang:b21524b9-7b43-4ba7-976e-48646be6de96", group: 판단 갈림, company: "카카오헬스케어", title: "[카카오헬스케어] AI Native EHR 개발 (BA팀) 경력 채용", url: "https://zighang.com/recruitment/b21524b9-7b43-4ba7-976e-48646be6de96"}
+  - {id: "saramin:55235710", group: 판단 갈림, company: "한국전력공사", title: "기간제근로자(대체인력) 채용공고 [경기본부] (NDIS데이터관리원", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55235710"}
+  - {id: "zighang:d73cd469-fd95-48f8-8563-0963880243ee", group: 판단 갈림, company: "키다리스튜디오", title: "AI 영상 생성 담당 (1년 이상)", url: "https://zighang.com/recruitment/d73cd469-fd95-48f8-8563-0963880243ee"}
+  - {id: "zighang:7511e98b-9a72-407f-bdf8-f5c3f07ccf82", group: 판단 갈림, company: "넷플릭스", title: "GenAI Technology Integrations Manager", url: "https://zighang.com/recruitment/7511e98b-9a72-407f-bdf8-f5c3f07ccf82"}
+  - {id: "zighang:2a042f32-19c6-4d7a-a933-4d86ea2da7ef", group: 판단 갈림, company: "네이버클라우드", title: "AI Security 분야 채용 (경력) - AI Security FDE 엔지니어", url: "https://zighang.com/recruitment/2a042f32-19c6-4d7a-a933-4d86ea2da7ef"}
+  - {id: "zighang:16e528c5-0099-4f31-be25-0724eb0923d0", group: 판단 갈림, company: "메리츠증권", title: "[메리츠증권] IT/정보보호부문 채용 공고 (경력) - 수시채용", url: "https://zighang.com/recruitment/16e528c5-0099-4f31-be25-0724eb0923d0"}
+  - {id: "zighang:fb52cef2-4d1c-4baf-9270-d863deae126e", group: 판단 갈림, company: "한화", title: "[한화시스템/ICT] 온톨로지(Ontology) 전문가", url: "https://zighang.com/recruitment/fb52cef2-4d1c-4baf-9270-d863deae126e"}
+  - {id: "remember:346746", group: 판단 갈림, company: "한화에어로스페이스", title: "해양솔루션부문_차세대추진솔루션개발_성능설계", url: "https://career.rememberapp.co.kr/job/posting/346746"}
+  - {id: "remember:346276", group: 판단 갈림, company: "쿠팡", title: "[쿠팡] 로켓배송 카탈로그 운영 및 프로세스 개선 PM", url: "https://career.rememberapp.co.kr/job/posting/346276"}
+  - {id: "saramin:55212672", group: 판단 갈림, company: "피엠인터내셔널코리아", title: "AI/데이터 분석 전문가(경력11년이상)", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55212672"}
+  - {id: "remember:346275", group: 판단 갈림, company: "쿠팡", title: "[쿠팡] 리테일 운영기획 매니저 (프로세스 개선 및 AI 활용)", url: "https://career.rememberapp.co.kr/job/posting/346275"}
+  - {id: "remember:344545", group: 판단 갈림, company: "쿠팡", title: "[쿠팡] 컴플라이언스 비즈니스 분석가 (Business Analyst)", url: "https://career.rememberapp.co.kr/job/posting/344545"}
+  - {id: "remember:296299", group: 판단 갈림, company: "CJ올리브영", title: "[CJ올리브영] 글로벌몰 그로스 데이터 분석가", url: "https://career.rememberapp.co.kr/job/posting/296299"}
+  - {id: "zighang:f4509b4b-b8b0-4224-a1a9-3e62b3064cf1", group: 판단 갈림, company: "NHN 클라우드", title: "NHN Cloud 데이터 보안 기술 개발 경력 채용", url: "https://zighang.com/recruitment/f4509b4b-b8b0-4224-a1a9-3e62b3064cf1"}
+  - {id: "zighang:cd348b6e-ce45-4fa1-9c3b-1dae1b3bbce4", group: 직무별:data_eng, company: "현대트랜시스", title: "'26년 하반기 경력 채용", url: "https://zighang.com/recruitment/cd348b6e-ce45-4fa1-9c3b-1dae1b3bbce4"}
+  - {id: "zighang:2f0a2062-af38-4acb-affb-27d537a128cd", group: 직무별:data_eng, company: "이노크라스코리아", title: "AI Team Lead", url: "https://zighang.com/recruitment/2f0a2062-af38-4acb-affb-27d537a128cd"}
+  - {id: "zighang:9d10bce8-9eb5-4147-b252-253b2351503d", group: 직무별:data_eng, company: "LS ITC", title: "2026 경력직 수시채용", url: "https://zighang.com/recruitment/9d10bce8-9eb5-4147-b252-253b2351503d"}
+  - {id: "zighang:09bc5633-8693-441f-b040-4e6737966a98", group: 직무별:data_eng, company: "빅인사이트", title: "Data Platform Engineer", url: "https://zighang.com/recruitment/09bc5633-8693-441f-b040-4e6737966a98"}
+  - {id: "zighang:31131e47-b7e7-4747-98e6-b7c7d9d4d7c8", group: 직무별:data_arch, company: "위프로커넥티드서비시즈인크", title: "[위프로커넥티드서비시즈인크] Talent Pool - AI Architect", url: "https://zighang.com/recruitment/31131e47-b7e7-4747-98e6-b7c7d9d4d7c8"}
+  - {id: "zighang:1973bc97-407e-4b8e-89bd-41e555dc1568", group: 직무별:data_arch, company: "LGCNS", title: "어플리케이션 아키텍트/AI 아키텍트 채용(경력)", url: "https://zighang.com/recruitment/1973bc97-407e-4b8e-89bd-41e555dc1568"}
+  - {id: "zighang:f0814d19-437f-43ff-8f60-ff23fcbb9d72", group: 직무별:data_arch, company: "크래프톤", title: "[AI Transformation Dept.] AX Governance Specialist (3년 이상 / 계약직)", url: "https://zighang.com/recruitment/f0814d19-437f-43ff-8f60-ff23fcbb9d72"}
+  - {id: "zighang:d12588c7-d3fa-4cd8-9798-6215cd50a102", group: 직무별:data_arch, company: "한화에어로스페이스", title: "AI 인력 상시 경력 채용 (선박용 AI 솔루션 개발 데이터 아키텍트)", url: "https://zighang.com/recruitment/d12588c7-d3fa-4cd8-9798-6215cd50a102"}
+  - {id: "zighang:e0d44327-0eee-40c9-91f8-886735e650d6", group: 직무별:ai_eng, company: "포스코와이드", title: "[포스코와이드] AX Engineer 채용 (대리급)", url: "https://zighang.com/recruitment/e0d44327-0eee-40c9-91f8-886735e650d6"}
+  - {id: "saramin:55148830", group: 직무별:ai_eng, company: "나인닷츠컨설팅", title: "AI Agent Engineer (M365 &amp; Automation) 모집", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55148830"}
+  - {id: "zighang:37d7978e-c068-4eb5-a392-d9103614b870", group: 직무별:ai_eng, company: "오픈에이아이(OpenAI)", title: "Partner AI Deployment Engineer - AWS", url: "https://zighang.com/recruitment/37d7978e-c068-4eb5-a392-d9103614b870"}
+  - {id: "zighang:1c6443ff-9dc8-43f7-81b8-5075a562c193", group: 직무별:ai_eng, company: "넷마블", title: "AI 엔지니어(VLM /음성 에이전트) 모집", url: "https://zighang.com/recruitment/1c6443ff-9dc8-43f7-81b8-5075a562c193"}
+  - {id: "zighang:e3945f58-1e00-4652-bd94-2a7fc285bcef", group: 직무별:analyst, company: "어센틱금융그룹", title: "(주)어센틱금융그룹 본사 운영전략팀 보험DB 운영 담당자 채용", url: "https://zighang.com/recruitment/e3945f58-1e00-4652-bd94-2a7fc285bcef"}
+  - {id: "zighang:295c45f9-cf2d-431b-838e-c92f954e73e0", group: 직무별:analyst, company: "쿠팡", title: "[쿠팡풀필먼트센터] Business Analyst (Fresh FC Fp&A)", url: "https://zighang.com/recruitment/295c45f9-cf2d-431b-838e-c92f954e73e0"}
+  - {id: "remember:313345", group: 직무별:analyst, company: "쿠팡", title: "Senior Data Analyst (Catalog)", url: "https://career.rememberapp.co.kr/job/posting/313345"}
+  - {id: "zighang:6e7bfc98-3558-43cf-938f-7fe38e4f6037", group: 직무별:analyst, company: "구글(Google)", title: "Measurement and Incrementality Expert", url: "https://zighang.com/recruitment/6e7bfc98-3558-43cf-938f-7fe38e4f6037"}
+  - {id: "zighang:c0d842e9-5313-4671-9146-7d84c8bed140", group: 직무별:mlops, company: "SK", title: "[SK inc.(AX)] AI 플랫폼 아키텍트", url: "https://zighang.com/recruitment/c0d842e9-5313-4671-9146-7d84c8bed140"}
+  - {id: "zighang:f0255512-272c-46b6-95b6-e705f291e540", group: 직무별:mlops, company: "DBInc", title: "AI 인프라 / GPU 운영 엔지니어", url: "https://zighang.com/recruitment/f0255512-272c-46b6-95b6-e705f291e540"}
+  - {id: "zighang:16a7d0c2-b732-4ad6-9850-11bd50d7db44", group: 직무별:mlops, company: "카카오스타일(Kakao Style)", title: "MLOps 엔지니어", url: "https://zighang.com/recruitment/16a7d0c2-b732-4ad6-9850-11bd50d7db44"}
+  - {id: "zighang:8754b40a-3d07-4267-867d-dccef8401f3e", group: 직무별:mlops, company: "TVING", title: "Backend Engineer(AI Ops Platform)", url: "https://zighang.com/recruitment/8754b40a-3d07-4267-867d-dccef8401f3e"}
+  - {id: "zighang:9a47b484-3de5-4a57-8cbb-c9db123c0496", group: 무작위, company: "비즈테크아이", title: "[비즈테크아이] AI 엔지니어 모집 (경력)", url: "https://zighang.com/recruitment/9a47b484-3de5-4a57-8cbb-c9db123c0496"}
+  - {id: "zighang:92ce4ed8-2444-4b75-b176-27e49c5d183d", group: 무작위, company: "쿠팡", title: "Principle Data Analyst", url: "https://zighang.com/recruitment/92ce4ed8-2444-4b75-b176-27e49c5d183d"}
+  - {id: "zighang:45d75a04-87b3-47dd-8f07-351c70306350", group: 무작위, company: "한화비전", title: "한화비전 Senior Data Pipeline and DB Engineer 채용", url: "https://zighang.com/recruitment/45d75a04-87b3-47dd-8f07-351c70306350"}
+  - {id: "remember:342763", group: 무작위, company: "쿠팡", title: "[쿠팡] CS 전략/기획 및 데이터 분석 담당자", url: "https://career.rememberapp.co.kr/job/posting/342763"}
+  - {id: "zighang:1ee2c519-f156-40de-b20c-ddc4407ab112", group: 무작위, company: "이노크라스코리아", title: "[이노크라스코리아] 유전체분석(Bioinformatics Scientist) 채용", url: "https://zighang.com/recruitment/1ee2c519-f156-40de-b20c-ddc4407ab112"}
+  - {id: "zighang:97ab3495-278c-4c0c-94af-1bb2ad0abc8d", group: 무작위, company: "디엑스이", title: "[디엑스이] AI/AX 플랫폼 개발 백엔드/데이터 엔지니어 경력 채용", url: "https://zighang.com/recruitment/97ab3495-278c-4c0c-94af-1bb2ad0abc8d"}
+  - {id: "zighang:b1b247bf-92f5-407e-9ff0-e7efe92aa410", group: 무작위, company: "LG AI연구원", title: "Research Scientist - Ontology & Knowledge Graph", url: "https://zighang.com/recruitment/b1b247bf-92f5-407e-9ff0-e7efe92aa410"}
+  - {id: "zighang:b80d1d9c-3379-4437-9774-106df91e4a79", group: 무작위, company: "넵튠", title: "하이브리드캐주얼1팀 데이터 분석가(DA)", url: "https://zighang.com/recruitment/b80d1d9c-3379-4437-9774-106df91e4a79"}
+  - {id: "zighang:c61e1823-71ff-4a4e-8315-b1bcff916857", group: 무작위, company: "토스뱅크", title: "AIOps Platform Engineer", url: "https://zighang.com/recruitment/c61e1823-71ff-4a4e-8315-b1bcff916857"}
+  - {id: "zighang:a300c835-a42c-4833-b420-2ae5310b330a", group: 무작위, company: "우아한형제들", title: "Business Analyst (타임세일)", url: "https://zighang.com/recruitment/a300c835-a42c-4833-b420-2ae5310b330a"}

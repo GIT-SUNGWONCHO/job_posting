@@ -97,9 +97,11 @@ def main(argv: list[str] | None = None) -> int:
         store.check_server_key()
         ids = recommend.sample_ids()
         quoted = ",".join(f'"{i}"' for i in ids)
-        matches = store.select("matches", f"select=user_id,posting_id,score,parts,reason,reason_meta,score_v,profile_v&posting_id=in.({quoted})")
+        matches = store.select("matches", "select=user_id,posting_id,score,parts,missing,reason,reason_meta,score_v,profile_v"
+                                          f"&posting_id=in.({quoted})")
         rows = store.select("feedback", "select=user_id,posting_id,match_key,label,comment,updated_at&order=updated_at")
-        print("\n".join(feedback.report(config.load("match_sample")["postings"], matches, rows)))
+        sample = config.load("match_sample")["postings"]
+        print("\n".join(feedback.report(sample, matches, rows) + feedback.sample_dump(sample, matches, rows)))
     return 0
 
 

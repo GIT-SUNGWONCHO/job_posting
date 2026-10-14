@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable
 from typing import Any
 
@@ -103,3 +104,23 @@ def _line(pid: str, info: dict[str, Any], labels: dict[str, str], comments: dict
     parts = m.get("parts") or {}
     return (f"{LABELS[labels[pid]]} AI {m.get('score') if parts.get('kind') == 'ai' else '-'}({parts.get('verdict') or '-'}) "
             f"규칙 {parts.get('rule')} | {info[pid]['company']} | {info[pid]['title'][:40]} | 코멘트: {comments.get(pid, '-')}")
+
+
+def sample_dump(sample: list[dict[str, Any]], matches: list[dict[str, Any]], rows: list[dict[str, Any]]) -> list[str]:
+    """기준 샘플 공고마다 한 줄 JSON(SMP\t...): 점수, 판정, 이유, 판단 근거, 내 최신 평가. 대화에서 함께 평가할 때 쓴다."""
+    labels = {(r["user_id"], r["posting_id"]): (r["label"], r.get("comment")) for r in rows}  # 뒤가 최신
+    out = []
+    for m in sorted(matches, key=lambda m: (m["user_id"], -(m.get("score") or 0))):
+        p = next((x for x in sample if x["id"] == m["posting_id"]), None)
+        if not p:
+            continue
+        parts = m.get("parts") or {}
+        label = labels.get((m["user_id"], m["posting_id"]))
+        out.append("SMP\t" + json.dumps({
+            "user": m["user_id"][:8], "id": p["id"], "group": p.get("group"), "company": p.get("company"),
+            "title": p.get("title"), "url": p.get("url"), "kind": parts.get("kind"), "score": m.get("score"),
+            "verdict": parts.get("verdict"), "rule": parts.get("rule"), "reason": m.get("reason"),
+            "gaps": m.get("missing") or [], "items": parts.get("items") or [],
+            "label": label[0] if label else None, "comment": label[1] if label else None,
+        }, ensure_ascii=False))
+    return out
