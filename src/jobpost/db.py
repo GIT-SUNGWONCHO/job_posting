@@ -24,6 +24,7 @@ class DB:
         if key.count(".") == 2:  # 예전 service_role 키(JWT)
             self.headers["Authorization"] = f"Bearer {key}"
         self.http = session or requests.Session()
+        self._used = time.monotonic()
 
     def _check(self, resp: requests.Response) -> requests.Response:
         if resp.status_code >= 300:
@@ -42,9 +43,13 @@ class DB:
             raise RuntimeError(f"Supabase 키가 서버 권한으로 들어가지 않음({resp.status_code} {code}). SUPABASE_SECRET_KEY를 확인")
 
     def _send(self, method: str, url: str, **kw: Any) -> requests.Response:
-        """AI를 부르는 동안 오래 쉰 연결은 끊겨 있을 수 있다(2026-10-14 매칭 끝에 60초 대기 후 실패).
-        연결 오류·시간 초과면 새 연결로 두 번까지 다시 보낸다. 다시 보내도 같은 결과가 되는 요청만 이걸 쓴다."""
+        """AI를 부르는 동안 몇 분 쉰 연결은 응답 없이 끊겨 있다(2026-10-14 Actions에서 매칭 끝 DELETE가 두 번 60초 시간 초과).
+        1분 넘게 쉬었으면 새 연결로 보내고, 그래도 연결 오류·시간 초과면 두 번까지 다시 보낸다.
+        다시 보내도 같은 결과가 되는 요청만 이걸 쓴다."""
+        if time.monotonic() - self._used > 60:
+            self.http = requests.Session()
         for attempt in range(3):
+            self._used = time.monotonic()
             try:
                 return self._check(self.http.request(method, url, timeout=60, **kw))
             except (requests.ConnectionError, requests.Timeout):
