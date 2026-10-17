@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       code:
-        description: 카톡 연결 화면(/kakao.html)에 나온 인가 코드. 받은 뒤 바로 넣는다(한 번만 쓸 수 있다)
+        description: 카톡 연결 화면(/kakao)에 나온 인가 코드. 받은 뒤 바로 넣는다(한 번만 쓸 수 있다)
         required: false
       user_id:
         description: 카톡을 연결할 사람 id(프로필이 하나면 비운다)

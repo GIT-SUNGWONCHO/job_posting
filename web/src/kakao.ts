@@ -2,7 +2,7 @@ import './styles/tokens.css'
 import './styles/app.css'
 import { copy } from './copy'
 
-// 카톡 연결 화면(/kakao.html): 카카오 로그인 뒤 돌아오는 주소(config/notify.yaml redirect_path).
+// 카톡 연결 화면(/kakao, 파일은 kakao.html): 카카오 로그인 뒤 돌아오는 주소(config/notify.yaml redirect_path).
 // 로그인·데이터를 불러오지 않고 주소에 붙어 온 인가 코드만 보여준다. 코드는 GitHub Actions > kakao에 넣는다(docs/setup.md "4. 카카오").
 const t = copy.kakao
 

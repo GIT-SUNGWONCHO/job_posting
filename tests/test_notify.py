@@ -103,6 +103,6 @@ def test_connect_stores_the_token_for_the_only_profile(monkeypatch):
     monkeypatch.setattr(kakao, "exchange", exchange)
     db = FakeDB([])
     assert notify.connect(db, " CODE \n") == "u1"
-    assert seen == {"code": "CODE", "redirect_uri": "https://careermap-web.oroloov.workers.dev/kakao.html"}
+    assert seen == {"code": "CODE", "redirect_uri": "https://careermap-web.oroloov.workers.dev/kakao"}
     assert db.inserted[0]["user_id"] == "u1" and db.inserted[0]["refresh_token"] == "RT"
     assert db.inserted[0]["last_sent_on"] is None

@@ -88,7 +88,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 
 1. developers.kakao.com에 카카오 계정으로 로그인하고 **앱 만들기**(이름 예: `careermap`).
 2. 앱 설정
-   - [앱] > [플랫폼 키] > [REST API 키]: REST API 키와 클라이언트 시크릿 값을 확인한다(시크릿은 처음부터 켜져 있다). 같은 곳의 **리다이렉트 URI**에 `https://careermap-web.oroloov.workers.dev/kakao.html`을 넣는다(`config/notify.yaml`의 대시보드 주소 + `redirect_path`).
+   - [앱] > [플랫폼 키] > [REST API 키]: REST API 키와 클라이언트 시크릿 값을 확인한다(시크릿은 처음부터 켜져 있다). 같은 곳의 **리다이렉트 URI**에 `https://careermap-web.oroloov.workers.dev/kakao`를 넣는다(`config/notify.yaml`의 대시보드 주소 + `redirect_path`).
    - [앱] > [제품 링크 관리] > [웹 도메인]: `https://careermap-web.oroloov.workers.dev`. 여기 없는 주소는 카톡 메시지에서 열리지 않는다.
    - [카카오 로그인] > [사용 설정]: 상태 ON.
    - [카카오 로그인] > [동의항목] > [접근권한]: **카카오톡 메시지 전송**(`talk_message`)을 선택 동의로 설정.
@@ -97,7 +97,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 5. 휴대폰이나 PC 브라우저에서 아래 주소를 연다. `<REST API 키>`만 바꾼다.
 
    ```
-   https://kauth.kakao.com/oauth/authorize?response_type=code&scope=talk_message&client_id=<REST API 키>&redirect_uri=https://careermap-web.oroloov.workers.dev/kakao.html
+   https://kauth.kakao.com/oauth/authorize?response_type=code&scope=talk_message&client_id=<REST API 키>&redirect_uri=https://careermap-web.oroloov.workers.dev/kakao
    ```
 
    카카오 로그인과 동의를 마치면 "카톡 연결" 화면에 인가 코드가 나온다. 코드는 한 번만, 받은 직후에만 쓸 수 있다.
