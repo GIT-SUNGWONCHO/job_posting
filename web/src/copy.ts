@@ -92,6 +92,21 @@ export const copy = {
     career: '커리어 탭은 4단계에서 만들어요',
     apply: '지원 현황은 6단계에서 만들어요',
   },
+  kakao: {
+    title: '카톡 연결',
+    code: '인가 코드',
+    steps: [
+      '아래 코드를 복사해요',
+      'GitHub > Actions > kakao > Run workflow의 code 칸에 붙여 넣고 실행해요',
+      '1~2분 뒤 카톡 나와의 채팅에 오늘의 공고가 와요',
+    ],
+    once: '코드는 한 번만, 받은 직후에만 쓸 수 있어요',
+    copy: '복사',
+    copied: '복사했어요',
+    failed: (msg: string) => `카카오 연결이 안 됐어요: ${msg}`,
+    none: '코드가 없어요. 카카오 연결 주소로 다시 들어와 주세요',
+    dashboard: '대시보드로',
+  },
   admin: {
     account: '로그인 계정',
     logout: '로그아웃',

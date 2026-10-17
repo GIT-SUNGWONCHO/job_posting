@@ -9,7 +9,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from . import ai, config, db, facts, feedback, pipeline, publish, recommend, screen
+from . import ai, config, db, facts, feedback, kakao, notify, pipeline, publish, recommend, screen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -38,6 +38,11 @@ def main(argv: list[str] | None = None) -> int:
 
     r = sub.add_parser("feedback", help="회차 리포트: 내 평가와 그때의 AI 판단 근거를 로그로 낸다")
     r.add_argument("--data-dir", type=Path, default=Path("data"))
+
+    n = sub.add_parser("notify", help="아침 카톡: 카톡을 연결한 사람마다 새 공고 요약을 보낸다")
+    n.add_argument("--data-dir", type=Path, default=Path("data"))
+    n.add_argument("--connect", metavar="CODE", help="카톡 연결: 인가 코드로 토큰을 받아 저장한 뒤 바로 보낸다")
+    n.add_argument("--user-id", help="카톡 연결할 사람(프로필이 여럿일 때)")
 
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
@@ -89,6 +94,20 @@ def main(argv: list[str] | None = None) -> int:
         summary = facts.run(args.data_dir, built, bodies, wanted, client, date.today().isoformat())
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
+    if args.cmd == "notify":
+        if not (db.configured() and kakao.configured()):
+            logging.info("Supabase나 카카오 설정이 없어 아침 카톡을 건너뜀")
+            return 0
+        store = db.DB()
+        store.check_server_key()
+        if args.connect:
+            user = notify.connect(store, args.connect, args.user_id)
+            logging.info("카톡 연결: 사람 %s", user[:8])
+        built, _ = screen.build(args.data_dir)
+        summary = notify.run(built, store, date.today())
+        json.dump(summary, sys.stdout, ensure_ascii=False)
+        print()
+        return 1 if summary.get("errors") else 0  # 실패하면 Actions가 메일로 알려 준다
     if args.cmd == "feedback":
         if not db.configured():
             logging.info("Supabase 설정이 없어 건너뜀")

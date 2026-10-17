@@ -1,0 +1,11 @@
+# 아침 알림(카톡 "나에게 보내기"). 형식은 고정(docs/content-rules.md "카톡·오늘의 리포트"), 문구 틀은 notify.py.
+# 매일 수집·매칭이 끝난 뒤 보낸다(.github/workflows/collect.yml). 카톡 연결은 docs/setup.md "4. 카카오".
+
+version: 1
+
+dashboard_url: https://careermap-web.oroloov.workers.dev   # 카카오 앱 [제품 링크 관리] > [웹 도메인]에도 같은 주소
+redirect_path: /kakao.html                                  # 카톡 연결 때 인가 코드를 받는 화면(카카오 앱 리다이렉트 URI에 등록)
+
+top: 3              # 새 공고 중 점수 높은 순으로 보여줄 개수(카카오 리스트 템플릿 최대 3)
+soon_days: 3        # 마감 임박: D-day~D-3(용어집)
+soon_min_score: 70  # 새 공고가 모자랄 때 채우는 마감 임박 공고의 최소 점수

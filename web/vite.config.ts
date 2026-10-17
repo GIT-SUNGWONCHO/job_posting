@@ -49,4 +49,6 @@ function devScreenFile(): Plugin {
 
 export default defineConfig({
   plugins: [react(), devScreenFile()],
+  // kakao.html: 카톡 연결 때 카카오가 인가 코드를 붙여 돌려보내는 화면(앱을 불러오지 않는다)
+  build: { rollupOptions: { input: { main: 'index.html', kakao: 'kakao.html' } } },
 })

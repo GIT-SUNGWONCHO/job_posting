@@ -272,3 +272,12 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .feedback-actions { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
 .row-score { flex: none; display: flex; flex-direction: column; align-items: center; gap: 4px; align-self: flex-start; }
 .mine { font-size: var(--fs-sub); color: var(--sub); font-weight: var(--fw-item); }
+
+/* 카톡 연결 화면(kakao.html) */
+.kakao { display: flex; flex-direction: column; gap: 16px; }
+.kakao-steps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.kakao-code { display: flex; gap: 8px; align-items: stretch; }
+.kakao-code code {
+  flex: 1; min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: var(--r-control);
+  background: var(--band); font-size: var(--fs-sub); overflow-wrap: anywhere; user-select: all;
+}

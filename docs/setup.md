@@ -1,6 +1,6 @@
 # 운영 설정
 
-계정을 만들고 키를 넣는 순서. 키 값은 이 문서에도, 코드와 커밋에도 적지 않는다. 넣을 곳은 GitHub Secrets와 Cloudflare 빌드 변수뿐이다.
+계정을 만들고 키를 넣는 순서. 키 값은 이 문서에도, 코드와 커밋에도 적지 않는다. 넣을 곳은 GitHub Secrets와 Cloudflare 빌드 변수뿐이다. 사람마다 받는 카카오 연결 토큰만 Supabase의 서버 전용 표에 둔다(아래 4).
 
 ## 1. Supabase (저장소, 로그인)
 
@@ -77,8 +77,35 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 | `SUPABASE_URL` | Project URL |
 | `SUPABASE_SECRET_KEY` | secret key |
 | `GEMINI_API_KEY` | aistudio.google.com > Get API key. 직무 유형 분류에 쓴다. 없으면 분류만 건너뛴다 |
+| `KAKAO_REST_KEY` | 카카오 앱 REST API 키(아래 4). 없으면 아침 카톡만 건너뛴다 |
+| `KAKAO_CLIENT_SECRET` | 카카오 앱 REST API 키의 클라이언트 시크릿 |
 
 넣은 뒤 Actions > collect > Run workflow로 한 번 돌려 "Supabase 저장소에 올림" 줄이 나오는지 본다(2026.10.13 확인. 새 secret 키는 `apikey` 헤더만으로 올라간다). 키가 없으면 화면용 파일은 만들기만 하고 올리지 않는다.
+
+## 4. 카카오 (아침 카톡)
+
+매일 수집·매칭이 끝나면 카톡 "나와의 채팅"으로 새 공고 요약이 온다(카카오 "나에게 보내기", 무료). 처음 한 번만 연결한다. 메뉴 이름은 2026.10 developers.kakao.com 문서 기준이다.
+
+1. developers.kakao.com에 카카오 계정으로 로그인하고 **앱 만들기**(이름 예: `careermap`).
+2. 앱 설정
+   - [앱] > [플랫폼 키] > [REST API 키]: REST API 키와 클라이언트 시크릿 값을 확인한다(시크릿은 처음부터 켜져 있다). 같은 곳의 **리다이렉트 URI**에 `https://careermap-web.oroloov.workers.dev/kakao.html`을 넣는다(`config/notify.yaml`의 대시보드 주소 + `redirect_path`).
+   - [앱] > [제품 링크 관리] > [웹 도메인]: `https://careermap-web.oroloov.workers.dev`. 여기 없는 주소는 카톡 메시지에서 열리지 않는다.
+   - [카카오 로그인] > [사용 설정]: 상태 ON.
+   - [카카오 로그인] > [동의항목] > [접근권한]: **카카오톡 메시지 전송**(`talk_message`)을 선택 동의로 설정.
+3. GitHub Secrets에 넣는다(위 3의 표): `KAKAO_REST_KEY`, `KAKAO_CLIENT_SECRET`.
+4. Supabase SQL Editor에서 `supabase/migrations/005_kakao.sql`을 실행한다(토큰을 서버만 읽는 표).
+5. 휴대폰이나 PC 브라우저에서 아래 주소를 연다. `<REST API 키>`만 바꾼다.
+
+   ```
+   https://kauth.kakao.com/oauth/authorize?response_type=code&scope=talk_message&client_id=<REST API 키>&redirect_uri=https://careermap-web.oroloov.workers.dev/kakao.html
+   ```
+
+   카카오 로그인과 동의를 마치면 "카톡 연결" 화면에 인가 코드가 나온다. 코드는 한 번만, 받은 직후에만 쓸 수 있다.
+6. 바로 GitHub > Actions > **kakao** > Run workflow의 `code` 칸에 붙여 넣고 실행한다. 1~2분 뒤 오늘의 아침 카톡이 오면 끝이다.
+
+- 그 뒤로는 매일 collect 마지막 단계(아침 카톡)가 보낸다. 같은 날 두 번 보내지 않는다. 오늘 것을 다시 받고 싶으면 kakao를 code 없이 실행한다(오늘 아직 못 받은 사람에게만 간다).
+- 연결 토큰은 60일짜리인데, 카카오가 1개월 미만 남았을 때 새 토큰을 주면 매일 작업이 바꿔 저장한다. 그래서 매일 돌기만 하면 다시 연결할 일이 없다. 끊기면(보내기 단계가 실패하고 GitHub가 메일로 알림) 5~6을 다시 한다.
+- 카톡에서 링크를 누르면 휴대폰 기본 브라우저로 다시 열린다. 카톡 안 브라우저에서는 구글 로그인이 막혀서다. 기본 브라우저에서 한 번 로그인해 두면 계속 쓴다.
 
 ## 개발할 때
 

@@ -1,0 +1,57 @@
+# 카톡 연결과 아침 카톡 다시 보내기. 처음 한 번 연결하는 순서는 docs/setup.md "4. 카카오".
+# code를 넣으면: 인가 코드로 토큰을 받아 Supabase에 저장하고 오늘 아침 카톡을 바로 보낸다(시험 메시지).
+# code를 비우면: 오늘 아침 카톡을 아직 못 받은 사람에게만 보낸다.
+# 수동 실행: GitHub > Actions > kakao > Run workflow
+name: kakao
+
+on:
+  workflow_dispatch:
+    inputs:
+      code:
+        description: 카톡 연결 화면(/kakao.html)에 나온 인가 코드. 받은 뒤 바로 넣는다(한 번만 쓸 수 있다)
+        required: false
+      user_id:
+        description: 카톡을 연결할 사람 id(프로필이 하나면 비운다)
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collect  # 수집과 겹치지 않게
+  cancel-in-progress: false
+
+jobs:
+  kakao:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      KAKAO_REST_KEY: ${{ secrets.KAKAO_REST_KEY }}
+      KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 카톡 연결·보내기
+        env:
+          CODE: ${{ inputs.code }}
+          USER_ID: ${{ inputs.user_id }}
+        run: |
+          args=(--data-dir data)
+          if [ -n "$CODE" ]; then args+=(--connect "$CODE"); fi
+          if [ -n "$USER_ID" ]; then args+=(--user-id "$USER_ID"); fi
+          uv run --no-dev jobpost notify "${args[@]}"

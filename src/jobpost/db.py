@@ -65,6 +65,10 @@ class DB:
     def delete(self, table: str, query: str) -> None:
         self._send("DELETE", f"{self.url}/{table}?{query}", headers=self.headers)
 
+    def update(self, table: str, query: str, values: dict[str, Any]) -> None:
+        """query에 맞는 줄의 값을 바꾼다(없으면 아무 일도 없다)."""
+        self._send("PATCH", f"{self.url}/{table}?{query}", json=values, headers={**self.headers, "Prefer": "return=minimal"})
+
     def insert(self, table: str, rows: list[dict[str, Any]]) -> None:
         """기본 키가 같은 줄은 덮어쓴다(다시 보내도 안전하고, 중간 저장한 줄을 마지막에 다시 써도 된다)."""
         for i in range(0, len(rows), 500):
