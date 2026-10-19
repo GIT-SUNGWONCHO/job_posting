@@ -1,0 +1,96 @@
+{
+ "date": "2026-10-20",
+ "started": "2026-10-20T07:55:36",
+ "sources": {
+  "zighang": {
+   "fetched": 8787,
+   "in_scope": 8786,
+   "complete": true,
+   "requests": 220,
+   "seconds": 88.7,
+   "errors": [],
+   "error_count": 0,
+   "new": 249,
+   "closed": 238
+  },
+  "remember": {
+   "fetched": 1544,
+   "in_scope": 1369,
+   "complete": true,
+   "requests": 59,
+   "seconds": 174.3,
+   "errors": [],
+   "error_count": 0,
+   "new": 35,
+   "closed": 24
+  },
+  "saramin": {
+   "fetched": 3690,
+   "in_scope": 1369,
+   "complete": true,
+   "requests": 42,
+   "seconds": 60.3,
+   "errors": [],
+   "error_count": 0,
+   "new": 81,
+   "closed": 56
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 168,
+   "fetched": 148,
+   "remaining": 20,
+   "errors": [
+    "상세 0bb11680-d0df-4c1f-aca2-a413b9cb8487: 빈 응답",
+    "상세 1ae39661-eeb5-4d31-b1cb-978eda166c9f: 빈 응답",
+    "상세 3b6098fb-1e6f-4c7c-bf2c-51739a269d93: 빈 응답",
+    "상세 460dcdfa-d7fe-4c57-952f-509551d813c8: 빈 응답",
+    "상세 514c7a20-d65c-412e-9e5e-41dbcdfd2ba9: 빈 응답",
+    "상세 7a0e3670-44c9-4f35-aab5-78d066c81354: 빈 응답",
+    "상세 909617f1-0d17-49f1-8e38-d748baddfe63: 빈 응답",
+    "상세 9d5a2cac-9163-4c32-a920-3f728d0ae28c: 빈 응답",
+    "상세 ad03ed53-f3f1-467f-b15a-e8d33974833a: 빈 응답",
+    "상세 b01085a8-e65d-4310-a154-565fa1776d12: 빈 응답",
+    "상세 b638e58a-914c-48f0-a994-431df7c32429: 빈 응답",
+    "상세 b719b116-1fbc-4593-b169-1c263af9e685: 빈 응답",
+    "상세 ceec7491-3d25-4d41-bf8b-c9c40aab1f5b: 빈 응답",
+    "상세 d8646570-fe23-41c3-81b3-4bddeacde77c: 빈 응답",
+    "상세 dca902eb-0f8f-4454-be73-46982efc6601: 빈 응답",
+    "상세 e3bed6f6-47a2-488a-a632-36997f289f45: 빈 응답",
+    "상세 eb5aefab-c119-4593-bee3-ffbf3c8fbb8b: 빈 응답",
+    "상세 f077bba6-e48d-4916-9113-57246ce1edc9: 빈 응답",
+    "상세 f2611a00-1323-4708-a552-e1362d9c6558: 빈 응답",
+    "상세 f4888946-a1a6-4357-b2c1-fa7deed8e564: 빈 응답"
+   ],
+   "seconds": 67.3
+  },
+  "saramin": {
+   "requested": 65,
+   "fetched": 65,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 64.3
+  }
+ },
+ "job_types": {
+  "pending": 0,
+  "classified": 292,
+  "calls": 4
+ },
+ "open": 6707,
+ "overseas_open": 4817,
+ "open_unique": 5658,
+ "duplicates": 1049,
+ "noise": 244,
+ "company_types": {
+  "그 외": 4765,
+  "대기업": 661,
+  "외국계": 188,
+  "공기업·공공기관": 44
+ },
+ "personal_filter_pass": 303,
+ "new": 365,
+ "closed": 318,
+ "finished": "2026-10-20T08:03:31"
+}
