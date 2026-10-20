@@ -1,0 +1,91 @@
+{
+ "date": "2026-10-21",
+ "started": "2026-10-21T07:22:35",
+ "sources": {
+  "zighang": {
+   "fetched": 8851,
+   "in_scope": 8850,
+   "complete": true,
+   "requests": 221,
+   "seconds": 89.4,
+   "errors": [],
+   "error_count": 0,
+   "new": 255,
+   "closed": 250
+  },
+  "remember": {
+   "fetched": 0,
+   "in_scope": 0,
+   "complete": false,
+   "requests": 10,
+   "seconds": 27.0,
+   "errors": [
+    "{'job_category_ids': [339, 340, 343, 344, 345, 500]}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['데이터']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['AI']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['LLM']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['MLOps']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['빅데이터']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['머신러닝']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['BI']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['AX']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search",
+    "{'keywords': ['Data']}: 403 Client Error: Forbidden for url: https://career-api.rememberapp.co.kr/job_postings/search"
+   ],
+   "error_count": 10,
+   "new": 0,
+   "closed": 0
+  },
+  "saramin": {
+   "fetched": 3757,
+   "in_scope": 1386,
+   "complete": true,
+   "requests": 43,
+   "seconds": 55.2,
+   "errors": [],
+   "error_count": 0,
+   "new": 77,
+   "closed": 63
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 144,
+   "fetched": 140,
+   "remaining": 4,
+   "errors": [
+    "상세 460dcdfa-d7fe-4c57-952f-509551d813c8: 빈 응답",
+    "상세 ceec7491-3d25-4d41-bf8b-c9c40aab1f5b: 빈 응답",
+    "상세 d8646570-fe23-41c3-81b3-4bddeacde77c: 빈 응답",
+    "상세 eb5aefab-c119-4593-bee3-ffbf3c8fbb8b: 빈 응답"
+   ],
+   "seconds": 57.7
+  },
+  "saramin": {
+   "requested": 58,
+   "fetched": 58,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 57.4
+  }
+ },
+ "job_types": {
+  "pending": 0,
+  "classified": 236,
+  "calls": 3
+ },
+ "open": 6760,
+ "overseas_open": 4845,
+ "open_unique": 5690,
+ "duplicates": 1070,
+ "noise": 240,
+ "company_types": {
+  "그 외": 4771,
+  "대기업": 676,
+  "외국계": 201,
+  "공기업·공공기관": 42
+ },
+ "personal_filter_pass": 235,
+ "new": 332,
+ "closed": 313,
+ "finished": "2026-10-21T07:27:37"
+}
