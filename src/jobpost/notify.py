@@ -209,7 +209,8 @@ def connect_telegram(db: Any, user: str | None = None, session: Any = None) -> s
     user = _only_user(db, user)
     chat = telegram.latest_chat(session)
     if not chat:
-        raise ValueError("봇이 받은 메시지가 없다. 텔레그램에서 봇에게 /start를 보내고(24시간 안에) 다시 실행")
+        raise ValueError(f"봇 {telegram.bot_name(session)}이 받은 메시지가 없다(최근 24시간). "
+                         "텔레그램에서 이 봇과의 대화방을 열어 시작(/start)이나 아무 메시지를 보내고 다시 실행")
     if chat.get("type") != "private":
         raise ValueError(f"가장 최근 메시지가 1:1 대화가 아니다({chat.get('type')}). 봇과의 1:1 대화에서 /start를 보내고 다시 실행")
     db.insert("telegram_links", [{"user_id": user, "chat_id": chat["id"], "last_sent_on": None,

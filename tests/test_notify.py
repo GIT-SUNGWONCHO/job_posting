@@ -145,6 +145,10 @@ def test_connect_telegram_saves_the_latest_private_chat(monkeypatch, keys):
     monkeypatch.setattr(telegram, "latest_chat", lambda s=None: {"id": -5, "type": "group"})
     with pytest.raises(ValueError):
         notify.connect_telegram(db)
+    monkeypatch.setattr(telegram, "latest_chat", lambda s=None: None)
+    monkeypatch.setattr(telegram, "bot_name", lambda s=None: "@careermap_bot")
+    with pytest.raises(ValueError, match="@careermap_bot"):  # 어느 봇에 보내야 하는지 알려 준다
+        notify.connect_telegram(db)
 
 
 def test_connect_kakao_stores_the_token_for_the_only_profile(monkeypatch):

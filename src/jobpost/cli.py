@@ -102,10 +102,14 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         store = db.DB()
         store.check_server_key()
-        if args.telegram_connect:
-            logging.info("텔레그램 연결: 사람 %s", notify.connect_telegram(store, args.user_id)[:8])
-        if args.kakao_code:
-            logging.info("카톡 연결: 사람 %s", notify.connect_kakao(store, args.kakao_code, args.user_id)[:8])
+        try:
+            if args.telegram_connect:
+                logging.info("텔레그램 연결: 사람 %s", notify.connect_telegram(store, args.user_id)[:8])
+            if args.kakao_code:
+                logging.info("카톡 연결: 사람 %s", notify.connect_kakao(store, args.kakao_code, args.user_id)[:8])
+        except ValueError as e:  # 사람이 고칠 수 있는 연결 문제는 한 줄로
+            logging.error("연결 안 됨: %s", e)
+            return 1
         built, _ = screen.build(args.data_dir)
         summary = notify.run(built, store, date.today())
         json.dump(summary, sys.stdout, ensure_ascii=False)

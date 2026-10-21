@@ -46,6 +46,11 @@ def send(chat_id: int | str, text: str, session: requests.Session | None = None)
                           "link_preview_options": {"is_disabled": True}}, session)
 
 
+def bot_name(session: requests.Session | None = None) -> str:
+    """토큰이 가리키는 봇의 아이디(@..._bot). 연결이 안 될 때 어느 봇인지 알려 주려고."""
+    return "@" + (_call("getMe", {}, session).get("username") or "?")
+
+
 def latest_chat(session: requests.Session | None = None) -> dict[str, Any] | None:
     """봇에게 가장 최근에 말을 건 대화방(/start 등). 없으면 None."""
     for update in reversed(_call("getUpdates", {"allowed_updates": ["message"]}, session) or []):
