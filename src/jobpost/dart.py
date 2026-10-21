@@ -196,10 +196,16 @@ def _download_corp_codes(client: Client) -> bytes:
 
 
 def index(corps: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
-    """공고 회사와 같은 규칙(company_key: 법인 표기·공백·기호를 지우고 별칭 적용)으로 묶는다."""
+    """공고 회사와 같은 규칙(company_key: 법인 표기·공백·기호를 지우고 별칭 적용)으로 묶는다.
+    영문 약자가 든 DART 이름(HDC랩스)은 한글 읽기(에이치디씨랩스)로도 넣는다."""
     out: dict[str, list[dict[str, str]]] = {}
     for c in corps:
-        out.setdefault(company_key(c["corp_name"]), []).append(c)
+        keys = {company_key(c["corp_name"])}
+        if _LATIN.search(c["corp_name"]):
+            keys.add(company_key(_hangul(c["corp_name"])))
+        for k in keys:
+            if k:
+                out.setdefault(k, []).append(c)
     return out
 
 
@@ -213,14 +219,18 @@ _LETTERS = dict(zip("abcdefghijklmnopqrstuvwxyz", [
 _LATIN = re.compile(r"[A-Za-z]+")
 
 
+def _hangul(name: str) -> str:
+    """영문 약자(5글자까지)를 한글 읽기로. 긴 영어 단어는 그대로 둔다."""
+    return _LATIN.sub(lambda m: "".join(_LETTERS[c] for c in m.group().lower()) if len(m.group()) <= 5 else m.group(), name)
+
+
 def variants(key: str, name: str) -> list[str]:
     """DART 이름과 맞춰 볼 회사 키들. 공고 키, 괄호 속 다른 이름을 뺀 것(카카오스타일(Kakao Style) → 카카오스타일),
     영문 약자(5글자까지)를 한글 읽기로 바꾼 것(CJ올리브영 → 씨제이올리브영). 법인명은 보통 영문 약자를 한글로 쓴다."""
     cleaned = clean_company(name)
     bare = re.sub(r"\([^)]*\)", "", cleaned).strip() or cleaned
     out = [key]
-    for n in (bare, _LATIN.sub(lambda m: "".join(_LETTERS[c] for c in m.group().lower()) if len(m.group()) <= 5
-                               else m.group(), bare)):
+    for n in (bare, _hangul(bare)):
         k = company_key(n)
         if k and k not in out:
             out.append(k)
@@ -427,7 +437,8 @@ def annual_year(today: date) -> int:
     return today.year - 1 if (today.month, today.day) >= (4, 10) else today.year - 2
 
 
-MATCH_VERSION = 2  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다(2: 한글 읽기·괄호 빼기, 지금 상장된 곳 고르기)
+MATCH_VERSION = 3  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다
+# 2: 공고 이름의 한글 읽기·괄호 빼기, 지금 상장된 곳 고르기 3: DART 이름의 한글 읽기, 최근 공시를 낸 곳 고르기
 BASICS_VERSION = 2  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다(2: 공시를 거르지 않고 40건)
 
 
@@ -489,34 +500,42 @@ def targets(state: dict[str, dict[str, Any]], registry_type: Any) -> list[tuple[
 
 
 def _override(value: Any, idx: dict[str, list[dict[str, str]]], by_code: dict[str, dict[str, str]]) -> dict[str, str] | None:
-    """손으로 잇기: 8자리 고유번호, 또는 DART 이름(같은 이름이 하나일 때). null이면 잇지 않는다."""
+    """손으로 잇기: 8자리 고유번호, 또는 DART 이름(같은 이름이 하나이거나, 여럿이면 종목코드가 있는 곳이 하나일 때).
+    null이면 잇지 않는다."""
     if not value:
         return None
     v = str(value).strip()
     if re.fullmatch(r"\d{8}", v):
         return by_code.get(v)
     cands = idx.get(company_key(v)) or []
-    return cands[0] if len(cands) == 1 else None
+    listed = [c for c in cands if c["stock_code"]]
+    return cands[0] if len(cands) == 1 else (listed[0] if len(listed) == 1 else None)
 
 
-def _listed_now(client: Client, key: str, name: str,
-                idx: dict[str, list[dict[str, str]]]) -> tuple[dict[str, str] | None, str]:
-    """같은 이름이 여럿일 때(예: 합병 전후 삼성물산) 종목코드가 있는 후보가 4곳 이하면 기업개황을 받아
-    지금 상장된(corp_cls Y·K·N) 곳이 하나일 때 그것. 상장 폐지돼도 종목코드는 남아서 고유번호 파일만으로는 못 고른다."""
+def _resolve(client: Client, key: str, name: str, idx: dict[str, list[dict[str, str]]],
+             today: date) -> tuple[dict[str, str] | None, str]:
+    """같은 이름이 여럿일 때 한 번 더 고른다(후보 4곳까지, 요청이 든다).
+    1) 종목코드가 있는 후보 중 기업개황상 지금 상장된(corp_cls Y·K·N) 곳이 하나면 그것(합병 전후 삼성물산처럼
+       상장 폐지돼도 종목코드는 남는다). 2) 아니면 최근 400일 안에 공시를 낸 곳이 하나면 그것(없어진 옛 법인을 거른다)."""
     cands: list[dict[str, str]] = []
     for k in variants(key, name):
         cands = idx.get(k) or []
         if cands:
             break
     listed = [c for c in cands if c["stock_code"]]
-    if not 1 < len(listed) <= 4:
-        return None, "ambiguous"
-    now = []
-    for c in listed:
-        body = client.json("company.json", {"corp_code": c["corp_code"]})
-        if body and body.get("corp_cls") in ("Y", "K", "N"):
-            now.append(c)
-    return (now[0], "listed_now") if len(now) == 1 else (None, "ambiguous")
+    if 1 < len(listed) <= 4:
+        now = [c for c in listed
+               if (client.json("company.json", {"corp_code": c["corp_code"]}) or {}).get("corp_cls") in ("Y", "K", "N")]
+        if len(now) == 1:
+            return now[0], "listed_now"
+    if 1 < len(cands) <= 4:
+        begin = (today - timedelta(days=400)).strftime("%Y%m%d")
+        active = [c for c in cands
+                  if client.json("list.json", {"corp_code": c["corp_code"], "bgn_de": begin,
+                                               "end_de": today.strftime("%Y%m%d"), "page_count": 1})]
+        if len(active) == 1:
+            return active[0], "active"
+    return None, "ambiguous"
 
 
 def run(data_dir: Path, today: date, budget: int | None = None, session: requests.Session | None = None,
@@ -570,7 +589,7 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                 else:
                     c, how = match(key, name, idx)
                     if how == "ambiguous":
-                        c, how = _listed_now(client, key, name, idx)
+                        c, how = _resolve(client, key, name, idx, today)
                 if c:
                     corps[key] = {"corp_code": c["corp_code"], "corp_name": c["corp_name"],
                                   "stock_code": c["stock_code"] or None, "how": how, "checked": day, "mv": MATCH_VERSION}

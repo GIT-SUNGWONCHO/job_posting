@@ -21,6 +21,7 @@ CORPCODE_XML = """<?xml version="1.0" encoding="UTF-8"?>
 <list><corp_code>06666666</corp_code><corp_name>씨제이올리브영</corp_name><stock_code> </stock_code><modify_date>20240101</modify_date></list>
 <list><corp_code>07777777</corp_code><corp_name>삼성물산</corp_name><stock_code>000830</stock_code><modify_date>20240101</modify_date></list>
 <list><corp_code>08888888</corp_code><corp_name>삼성물산</corp_name><stock_code>028260</stock_code><modify_date>20240101</modify_date></list>
+<list><corp_code>09999999</corp_code><corp_name>HDC랩스</corp_name><stock_code> </stock_code><modify_date>20240101</modify_date></list>
 </result>""".encode()
 
 
@@ -44,6 +45,8 @@ def test_match_by_same_rules_as_postings():
     assert dart.match("없는회사", "없는회사", idx) == (None, "none")
     assert dart.match("cj올리브영", "CJ올리브영(주)", idx)[0]["corp_code"] == "06666666"
     assert dart.match("삼성물산", "삼성물산", idx) == (None, "ambiguous")
+    # DART 이름이 영문 약자면 그 한글 읽기로도 찾는다
+    assert dart.match("에이치디씨랩스", "에이치디씨랩스(주)", idx)[0]["corp_code"] == "09999999"
 
 
 FIN_ROWS = [
@@ -183,17 +186,20 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
             return {"status": "000", "list": FIN_ROWS} if params["bsns_year"] == 2025 else {"status": "013"}
         if name == "empSttus.json":
             return {"status": "000", "list": [{"fo_bbm": "전체", "sexdstn": "남", "sm": "10"}]}
+        if name == "list.json" and params["corp_code"] == "02222222":
+            return {"status": "000", "list": [{"rcept_dt": "20260301", "report_nm": "감사보고서", "rcept_no": "1"}]}
         if name == "list.json":
             return {"status": "013", "message": "조회된 데이타가 없습니다."}
         raise AssertionError(name)
 
     s = FakeSession(respond)
     summary = dart.run(tmp_path, date(2026, 10, 21), session=s, cache=tmp_path / "cache")
-    assert summary["matched_new"] == 2 and summary["unmatched_new"] == 2 and summary["fetched"] == 2
+    assert summary["matched_new"] == 3 and summary["unmatched_new"] == 1 and summary["fetched"] == 3
     assert all(p.get("crtfc_key") == "test-key" for _, p in s.calls)
     corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
     assert corps["삼성전자"]["corp_code"] == "00126380"
-    assert corps["한빛"] == {"corp_code": None, "why": "ambiguous", "checked": "2026-10-21", "mv": dart.MATCH_VERSION}
+    # 같은 이름 둘(한빛, (주)한빛) 중 최근 공시를 낸 곳만 남으면 그것
+    assert corps["한빛"]["corp_code"] == "02222222" and corps["한빛"]["how"] == "active"
     # 같은 이름이 여럿이면 지금 상장된 쪽(기업개황 corp_cls)으로 고른다
     assert corps["삼성물산"]["corp_code"] == "08888888" and corps["삼성물산"]["how"] == "listed_now"
     basics = json.loads((tmp_path / "dart" / "basics.json").read_text(encoding="utf-8"))
@@ -205,14 +211,15 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
     # 다음 날: 이미 이은 회사·받은 기본정보는 다시 요청하지 않는다
     s2 = FakeSession(respond)
     again = dart.run(tmp_path, date(2026, 10, 22), session=s2, cache=tmp_path / "cache")
-    assert s2.calls == [] and again["linked"] == 2 and again["with_basics"] == 2
+    assert s2.calls == [] and again["linked"] == 3 and again["with_basics"] == 3
 
-    # 손으로 잇기(DART 이름): 받아 둔 고유번호 파일을 다시 쓰고 요청하지 않는다
-    monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": "(주)한빛"}})
+    # 손으로 잇기: 받아 둔 고유번호 파일을 다시 쓰고 요청하지 않는다
+    monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": "(주)한빛", "없는회사": "카카오"}})
     s4 = FakeSession(respond)
     dart.run(tmp_path, date(2026, 10, 22), session=s4, cache=tmp_path / "cache", budget=0)
     corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
-    assert corps["한빛"]["corp_code"] is None  # 같은 이름이 둘이라 이름으로는 못 잇는다
+    assert corps["한빛"]["corp_code"] is None  # 같은 이름이 둘이고 둘 다 비상장이라 이름으로는 못 잇는다
+    assert corps["없는회사"]["corp_code"] == "04444444"  # 같은 이름이 둘이면 종목코드가 있는 곳
     monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": "03333333"}})
     dart.run(tmp_path, date(2026, 10, 22), session=s4, cache=tmp_path / "cache", budget=0)
     corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
