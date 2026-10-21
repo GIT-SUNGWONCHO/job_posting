@@ -1,7 +1,7 @@
 # 아침 알림. 형식은 고정(docs/content-rules.md "아침 알림·오늘의 리포트"), 문구 틀은 notify.py.
 # 매일 수집·매칭이 끝난 뒤 보낸다(.github/workflows/collect.yml). 연결은 docs/setup.md "4. 텔레그램".
 
-version: 2
+version: 3
 
 channels: [telegram]   # 보낼 곳. kakao는 2026-10-21 텔레그램으로 바꾸며 껐다(연결 코드와 표는 남겨 둠)
 
@@ -10,6 +10,7 @@ soon_days: 3           # 마감 임박: D-day~D-3(용어집)
 soon_min_score: 70     # 알림에 넣는 마감 임박 공고의 최소 점수(머리의 건수는 점수와 상관없이 전부)
 
 telegram:
+  format: rich         # rich: 리치 메시지(표, 2026-10-21~). 실패하면 그날은 text(일반 메시지)로 대신 보낸다
   top: 10              # 필터 통과 새 공고, 점수 높은 순(메시지 한 통 4096자 안)
   visible: 5           # 그중 펼쳐 보여 줄 개수. 나머지는 접힌 인용(누르면 펼침)
   soon_top: 5          # 마감 임박 공고(접힌 인용)

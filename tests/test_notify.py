@@ -105,18 +105,55 @@ def keys(monkeypatch):
     monkeypatch.setenv("KAKAO_REST_KEY", "k")
 
 
-def test_run_sends_telegram_once_a_day_and_kakao_only_when_switched_on(monkeypatch, keys):
+def test_rich_message_puts_postings_in_tables_with_details_and_buttons():
+    screen = {**SCREEN, "postings": [*SCREEN["postings"], *(posting(f"m:{i}") for i in range(4))]}
+    rich = notify.telegram_rich(notify.digest(screen, FILTERS, MATCHES, TODAY))
+    assert rich.startswith("<h3>10/17(토) 오늘의 공고</h3><p>새 공고 <b>9</b> · 필터 통과 <b>8</b> · 마감 임박 <b>1</b></p>"
+                           "<h4>필터 통과 새 공고</h4><table striped compact>")
+    assert ('<tr><td>🟢</td><td align="left"><b>가나다</b><br>'
+            '<a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">Data Engineer</a></td>'
+            '<td align="right"><b>92</b></td><td align="center">D-12</td></tr>') in rich
+    assert "A&amp;B &lt;ML&gt;" in rich
+    assert "<details><summary>3건 더 보기</summary><table" in rich  # 8건 중 5건 다음은 접는다
+    assert "<details><summary>마감 임박 1건 · 70점 이상</summary>" in rich
+    assert '<tg-button type="url" style="primary" url="https://careermap-web.oroloov.workers.dev/#/report">리포트</tg-button>' in rich
+    assert rich.endswith("<footer>🟢 지원 추천 · 🟡 고려 · ⚪ 비추천</footer>")
+
+
+def test_run_sends_a_rich_message_once_a_day_and_kakao_only_when_switched_on(monkeypatch, keys):
     sent = []
-    monkeypatch.setattr(telegram, "send", lambda chat, text, s=None, buttons=None: sent.append((chat, text, buttons)))
+    monkeypatch.setattr(telegram, "send_rich", lambda chat, rich, s=None: sent.append((chat, rich)))
     db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 42, "last_sent_on": "2026-10-16"},
                                 {"user_id": "u2", "chat_id": 43, "last_sent_on": "2026-10-17"}],
                 kakao_links=[{"user_id": "u1", "refresh_token": "RT", "last_sent_on": None}])
     s = notify.run(SCREEN, db, TODAY)
     assert s == {"telegram": {"linked": 2, "sent": 1, "skipped": 1}}  # 카톡은 config에서 꺼 둠
-    assert sent[0][0] == 42 and sent[0][1].startswith("<b>10/17(토)") and sent[0][2]
+    assert sent[0][0] == 42 and sent[0][1].startswith("<h3>10/17(토)")
     assert db.updates == [("telegram_links", "user_id=eq.u1", {"last_sent_on": "2026-10-17"})]
     again = notify.run(SCREEN, db, TODAY, again=True)  # 모양 확인용으로 다시 보내기
     assert again == {"telegram": {"linked": 2, "sent": 2, "skipped": 0}} and len(db.updates) == 2
+
+
+def test_rich_message_failure_falls_back_to_a_plain_message(monkeypatch, keys):
+    def send_rich(chat, rich, s=None):
+        raise telegram.TelegramError("텔레그램 sendRichMessage 400 Bad Request: can't parse rich message")
+    sent = []
+    monkeypatch.setattr(telegram, "send_rich", send_rich)
+    monkeypatch.setattr(telegram, "send", lambda chat, text, s=None, buttons=None: sent.append((chat, text, buttons)))
+    db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 42, "last_sent_on": None}])
+    s = notify.run(SCREEN, db, TODAY)
+    assert s["telegram"]["sent"] == 1 and "errors" not in s  # 알림은 갔으니 실패로 치지 않는다
+    assert "리치 메시지 실패" in s["notes"][0]
+    assert sent[0][1].startswith("<b>10/17(토) 오늘의 공고</b>") and sent[0][2]
+
+
+def test_plain_format_sends_the_text_message_with_buttons(monkeypatch, keys):
+    monkeypatch.setitem(config.load("notify")["telegram"], "format", "text")
+    sent = []
+    monkeypatch.setattr(telegram, "send", lambda chat, text, s=None, buttons=None: sent.append((chat, text, buttons)))
+    db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 42, "last_sent_on": None}])
+    notify.run(SCREEN, db, TODAY)
+    assert sent and sent[0][2][0][0]["text"] == "리포트"
 
 
 def test_run_keeps_kakao_working_and_saves_a_rotated_token(monkeypatch, keys):
@@ -134,6 +171,7 @@ def test_run_reports_errors_without_stopping_other_people(monkeypatch, keys):
     def send(chat, text, s=None, buttons=None):
         if chat == 1:
             raise telegram.TelegramError("텔레그램 sendMessage 403 Forbidden: bot was blocked by the user")
+    monkeypatch.setitem(config.load("notify")["telegram"], "format", "text")
     monkeypatch.setattr(telegram, "send", send)
     db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 1, "last_sent_on": None},
                                 {"user_id": "u2", "chat_id": 2, "last_sent_on": None}])

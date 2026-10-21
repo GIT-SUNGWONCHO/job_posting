@@ -9,6 +9,9 @@ core.telegram.org/bots/api에서 확인한 것(2026-10-21, Bot API 10.3):
 - HTML: <b> <i> <a href> <blockquote expandable>(접힌 인용) 등. 태그가 아닌 <, >, &는 &lt; &gt; &amp;로 바꾼다
 - reply_markup.inline_keyboard: 메시지 아래 버튼. url 버튼은 누르면 주소를 연다
 - getUpdates: 봇이 받은 메시지. 받아 가지 않은 메시지는 최대 24시간만 남는다
+- sendRichMessage(Bot API 10.x): rich_message {html | markdown | blocks, skip_entity_detection}. 제목(h1~h6), 표
+  (<table striped compact>, 칸 안은 글자 꾸밈만), <details>(접는 블록), <tg-button-row>/<tg-button type="url">, <footer>.
+  32768자, 블록 500개(표 줄 포함), 표 20칸까지. 링크를 누르면 앱이 "이 링크를 열까요?"를 묻는다
 """
 
 from __future__ import annotations
@@ -50,6 +53,12 @@ def send(chat_id: int | str, text: str, session: requests.Session | None = None,
     if buttons:
         payload["reply_markup"] = {"inline_keyboard": buttons}
     _call("sendMessage", payload, session)
+
+
+def send_rich(chat_id: int | str, rich_html: str, session: requests.Session | None = None) -> None:
+    """리치 메시지(표·제목·접는 블록·버튼). 버튼은 HTML 안 <tg-button-row>로 넣는다."""
+    _call("sendRichMessage", {"chat_id": chat_id,
+                              "rich_message": {"html": rich_html, "skip_entity_detection": True}}, session)
 
 
 def bot_name(session: requests.Session | None = None) -> str:

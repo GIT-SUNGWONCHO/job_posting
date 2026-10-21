@@ -136,6 +136,50 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
     return text, buttons
 
 
+def telegram_rich(d: dict[str, Any]) -> str:
+    """텔레그램 리치 메시지(HTML). v3(2026-10-21): 제목, 건수, 공고 표(판정 · 회사와 공고 · 점수 · 마감),
+    위 visible건 다음과 마감 임박은 접힌 블록, 대시보드 버튼, 판정 설명은 꼬리말.
+    리치 메시지는 2026년 새 기능이라 보내기가 실패하면 run()이 telegram_message(일반 메시지)로 대신 보낸다."""
+    cfg = config.load("notify")
+    tg = cfg["telegram"]
+
+    def esc(s: str) -> str:
+        return html.escape(s, quote=False)
+
+    def table(items: list[dict[str, Any]]) -> str:
+        rows = ['<tr><th></th><th align="left">회사 · 공고</th><th align="right">점수</th><th>마감</th></tr>']
+        for it in items:
+            score = "-" if it["score"] < 0 else f"{it['score']:g}"
+            rows.append(f'<tr><td>{MARKS.get(it["verdict"] or "", "▫️")}</td>'
+                        f'<td align="left"><b>{esc(it["company"])}</b><br>'
+                        f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a></td>'
+                        f'<td align="right"><b>{score}</b></td><td align="center">{esc(it["deadline"])}</td></tr>')
+        return "<table striped compact>" + "".join(rows) + "</table>"
+
+    c = d["counts"]
+    parts = [f"<h3>{esc(d['date'])} 오늘의 공고</h3>",
+             f"<p>새 공고 <b>{c['new']}</b> · 필터 통과 <b>{c['passed']}</b> · 마감 임박 <b>{c['soon']}</b></p>"]
+    shown = d["new"][:tg["top"]]
+    if shown:
+        parts += ["<h4>필터 통과 새 공고</h4>", table(shown[:tg["visible"]])]
+        rest = shown[tg["visible"]:]
+        if rest:
+            parts.append(f"<details><summary>{len(rest)}건 더 보기</summary>{table(rest)}</details>")
+        if len(d["new"]) > tg["top"]:
+            parts.append(f"<p>외 {len(d['new']) - tg['top']}건은 공고 목록에서</p>")
+    else:
+        parts.append("<p>필터를 통과한 새 공고가 없어요.</p>")
+    soon = d["soon"][:tg["soon_top"]]
+    if soon:
+        parts.append(f"<details><summary>마감 임박 {len(soon)}건 · {cfg['soon_min_score']}점 이상</summary>"
+                     f"{table(soon)}</details>")
+    parts.append('<tg-button-row align="center">'
+                 f'<tg-button type="url" style="primary" url="{html.escape(d["report"])}">리포트</tg-button>'
+                 f'<tg-button type="url" url="{html.escape(d["jobs"])}">공고 목록</tg-button></tg-button-row>')
+    parts.append("<footer>" + " · ".join(f"{mark} {name}" for name, mark in MARKS.items()) + "</footer>")
+    return "".join(parts)
+
+
 def kakao_message(d: dict[str, Any]) -> dict[str, Any]:
     """카카오 template_object. 리스트 템플릿은 항목 2~3개라 새 공고 상위 3건, 모자라면 마감 임박으로 채운다."""
     cfg = config.load("notify")["kakao"]
@@ -206,8 +250,16 @@ def run(screen: dict[str, Any], db: Any, today: date, session: Any = None, again
             try:
                 d = summary_for(user, last)
                 if channel == "telegram":
-                    text, buttons = telegram_message(d)
-                    telegram.send(link["chat_id"], text, session, buttons=buttons)
+                    sent = False
+                    if cfg["telegram"].get("format") == "rich":
+                        try:
+                            telegram.send_rich(link["chat_id"], telegram_rich(d), session)
+                            sent = True
+                        except telegram.TelegramError as e:  # 새 기능이라 막히면 일반 메시지로 대신 보낸다
+                            out.setdefault("notes", []).append(f"telegram {user[:8]}: 리치 메시지 실패, 일반 메시지로 보냄: {e}")
+                    if not sent:
+                        text, buttons = telegram_message(d)
+                        telegram.send(link["chat_id"], text, session, buttons=buttons)
                 else:
                     tok = kakao.refresh(link["refresh_token"], session)
                     if tok.get("refresh_token"):  # 1개월 미만 남아 새로 받은 토큰. 바로 저장해야 다음 날도 보낼 수 있다
