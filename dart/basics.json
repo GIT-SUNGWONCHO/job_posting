@@ -7839,6 +7839,84 @@
 },
 "v": 3
 },
+"00166528": {
+"company": {
+"ceo": "권영호, 권형록 (각자 대표이사)",
+"founded": "1978-02-15",
+"homepage": "https://smiltd.co.kr",
+"industry_code": "29142",
+"market": "코스닥",
+"name": "서암기계공업(주)",
+"stock_code": "100660"
+},
+"disclosures": [
+{
+"date": "2026-03-26",
+"rcept_no": "20260326900683",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-18",
+"rcept_no": "20260318901109",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-02-25",
+"rcept_no": "20260225901831",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-25",
+"rcept_no": "20260225901818",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2026-02-25",
+"rcept_no": "20260225901660",
+"title": "주주총회소집결의"
+},
+{
+"date": "2025-12-18",
+"rcept_no": "20251218900048",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 135,
+"date": "2025-12-31",
+"rcept_no": "20260318001127",
+"salary": 67704830,
+"tenure": 12.7
+},
+"fetched": "2026-10-22",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318001127",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1926790260,
+"operating": 613607689,
+"revenue": 45836974166,
+"year": 2023
+},
+{
+"net": 395705556,
+"operating": -1293990084,
+"revenue": 42371013550,
+"year": 2024
+},
+{
+"net": 1204628626,
+"operating": 44269957,
+"revenue": 46501236360,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00171104": {
 "company": {
 "ceo": "송영록",
@@ -10813,6 +10891,254 @@
 "net": 1754115278,
 "operating": 419582410,
 "revenue": 146286069658,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00263654": {
+"company": {
+"ceo": "윤태영,이상현",
+"founded": "1998-12-08",
+"homepage": "https://www.oscotec.com",
+"industry_code": "212",
+"market": "코스닥",
+"name": "(주)오스코텍",
+"stock_code": "039200"
+},
+"disclosures": [
+{
+"date": "2026-10-06",
+"rcept_no": "20261006900765",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2026-10-06",
+"rcept_no": "20261006900750",
+"title": "주주총회소집결의 (임시주주총회)"
+},
+{
+"date": "2026-09-23",
+"rcept_no": "20260923900556",
+"title": "소송등의제기ㆍ신청(경영권분쟁소송)"
+},
+{
+"date": "2026-09-04",
+"rcept_no": "20260904900624",
+"title": "투자판단관련주요경영사항(임상시험결과) (알츠하이머 치료 후보물질 ADELY01 임상 1a/1b상 임상시험결과보고서(CSR) 수령)"
+},
+{
+"date": "2026-08-20",
+"rcept_no": "20260820900546",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-07-23",
+"rcept_no": "20260723901022",
+"title": "[기재정정]최대주주변경"
+},
+{
+"date": "2026-07-23",
+"rcept_no": "20260723901021",
+"title": "최대주주변경을수반하는주식담보제공계약체결"
+},
+{
+"date": "2026-07-03",
+"rcept_no": "20260703900573",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-06-17",
+"rcept_no": "20260617900457",
+"title": "[기재정정]투자판단관련주요경영사항 (SYK 저해제 후보물질 세비도플레닙(SKIO703) 기술수출 계약 체결)"
+},
+{
+"date": "2026-05-22",
+"rcept_no": "20260522900751",
+"title": "투자판단관련주요경영사항(임상시험계획승인신청등결정) (SKIO703의 약물 제형 변경을 위한 임상 1상 IND 승인)"
+},
+{
+"date": "2026-05-14",
+"rcept_no": "20260514900973",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-05-14",
+"rcept_no": "20260514900697",
+"title": "투자판단관련주요경영사항 (유한양행의 얀센바이오테크 기술이전 마일스톤 분배)"
+},
+{
+"date": "2026-05-07",
+"rcept_no": "20260507900546",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-03-30",
+"rcept_no": "20260330901800",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-20",
+"rcept_no": "20260320900845",
+"title": "소송등의판결ㆍ결정"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319902127",
+"title": "투자판단관련주요경영사항(임상시험계획승인신청) (SKI-O-703의 약물 제형 변경을 위한 임상 1상 IND 신청)"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319900632",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-13",
+"rcept_no": "20260313901328",
+"title": "[기재정정]주주총회소집결의"
+},
+{
+"date": "2026-03-13",
+"rcept_no": "20260313900986",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-03-11",
+"rcept_no": "20260311902707",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-03-11",
+"rcept_no": "20260311902705",
+"title": "소송등의제기ㆍ신청(경영권분쟁소송)"
+},
+{
+"date": "2026-03-06",
+"rcept_no": "20260306901644",
+"title": "소송등의판결ㆍ결정"
+},
+{
+"date": "2026-02-27",
+"rcept_no": "20260227901564",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2026-02-10",
+"rcept_no": "20260210901330",
+"title": "소송등의판결ㆍ결정"
+},
+{
+"date": "2026-01-13",
+"rcept_no": "20260113900594",
+"title": "소송등의제기ㆍ신청(경영권분쟁소송) (주주총회결의효력정지가처분)"
+},
+{
+"date": "2026-01-12",
+"rcept_no": "20260112900603",
+"title": "소송등의제기ㆍ신청(경영권분쟁소송)"
+},
+{
+"date": "2025-12-29",
+"rcept_no": "20251229900529",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216901825",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216901798",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216901742",
+"title": "기타경영사항(자율공시) (주주총회 결의무효 확인 소송 1심 결과에 대한 항소)"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216900173",
+"title": "투자판단관련주요경영사항 (공동개발사 아델의 알츠하이머 치료 후보물질 ADEL-Y01에 대한 기술실시권 설정 계약 체결)"
+},
+{
+"date": "2025-12-05",
+"rcept_no": "20251205900277",
+"title": "임시주주총회결과"
+},
+{
+"date": "2025-12-03",
+"rcept_no": "20251203900569",
+"title": "소송등의판결ㆍ결정"
+},
+{
+"date": "2025-11-19",
+"rcept_no": "20251119900368",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2025-11-18",
+"rcept_no": "20251118900478",
+"title": "투자판단관련주요경영사항(임상시험계획승인신청등결정) (진행성 고형암 치료 후보물질 OCT598 임상1상 한국 식품의약품안전처 임상시험계획(IND) 승인)"
+},
+{
+"date": "2025-11-18",
+"rcept_no": "20251118900366",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2025-11-17",
+"rcept_no": "20251117900338",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2025-11-13",
+"rcept_no": "20251113900599",
+"title": "[기재정정]주주총회소집결의 (임시주주총회)"
+},
+{
+"date": "2025-10-31",
+"rcept_no": "20251031900836",
+"title": "투자판단관련주요경영사항 (유한양행의 얀센바이오테크 기술이전 마일스톤 분배)"
+},
+{
+"date": "2025-10-22",
+"rcept_no": "20251022900502",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 57,
+"date": "2025-12-31",
+"rcept_no": "20260319001005",
+"salary": 61614035,
+"tenure": 6.0
+},
+"fetched": "2026-10-22",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260319001005",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -28489780658,
+"operating": -32655289595,
+"revenue": 4950929999,
+"year": 2023
+},
+{
+"net": -1589923760,
+"operating": -2733857885,
+"revenue": 34007602680,
+"year": 2024
+},
+{
+"net": 54396875656,
+"operating": 52081332705,
+"revenue": 99838669222,
 "year": 2025
 }
 ]
@@ -14592,6 +14918,104 @@
 },
 "v": 3
 },
+"00414601": {
+"company": {
+"ceo": "앤드류김",
+"founded": "1995-11-25",
+"homepage": "https://www.uniquest.co.kr",
+"industry_code": "4659",
+"market": "유가증권",
+"name": "유니퀘스트(주)",
+"stock_code": "077500"
+},
+"disclosures": [
+{
+"date": "2026-06-26",
+"rcept_no": "20260626800700",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-06-01",
+"rcept_no": "20260601800386",
+"title": "기업지배구조보고서공시"
+},
+{
+"date": "2026-05-04",
+"rcept_no": "20260504800400",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327801302",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-16",
+"rcept_no": "20260316802409",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312800223",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226800597",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226800166",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변경"
+},
+{
+"date": "2026-02-11",
+"rcept_no": "20260211800281",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2025-12-15",
+"rcept_no": "20251215800935",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 248,
+"date": "2025-12-31",
+"rcept_no": "20260319000663",
+"salary": 79153226,
+"tenure": 6.6
+},
+"fetched": "2026-10-22",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260319000663",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 16341231290,
+"operating": 33985725771,
+"revenue": 665926330174,
+"year": 2023
+},
+{
+"net": 4948883049,
+"operating": 34138354685,
+"revenue": 710482069603,
+"year": 2024
+},
+{
+"net": 19302198536,
+"operating": 36686843260,
+"revenue": 730042828552,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00414850": {
 "company": {
 "ceo": "남경환, 홍혜진(각자대표이사)",
@@ -15907,6 +16331,50 @@
 "finance": null,
 "v": 3
 },
+"00459844": {
+"company": {
+"ceo": "이재원",
+"founded": "2003-04-17",
+"homepage": "https://www.fubonhyundai.com",
+"industry_code": "65110",
+"market": "기타",
+"name": "푸본현대생명보험주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 460,
+"date": "2025-12-31",
+"rcept_no": "20260420000334",
+"salary": 96543478,
+"tenure": 7.5
+},
+"fetched": "2026-10-22",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260420000334",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": -128606790023,
+"operating": -155953723105,
+"year": 2023
+},
+{
+"net": -42691455460,
+"operating": -56250807168,
+"year": 2024
+},
+{
+"net": -118696615395,
+"operating": -177841814616,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00460099": {
 "company": {
 "ceo": "이창우",
@@ -16812,6 +17280,22 @@
 "finance": null,
 "v": 3
 },
+"00519012": {
+"company": {
+"ceo": "홍문표",
+"founded": "2000-01-01",
+"homepage": "https://www.ekr.or.kr",
+"industry_code": "9699",
+"market": "기타",
+"name": "한국농어촌공사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "00520267": {
 "company": {
 "ceo": "노익상",
@@ -17017,6 +17501,22 @@
 }
 ]
 },
+"v": 3
+},
+"00522487": {
+"company": {
+"ceo": "박병진",
+"founded": "1984-02-15",
+"homepage": "https://www.topes.com",
+"industry_code": "2642",
+"market": "기타",
+"name": "(주)토페스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
 "v": 3
 },
 "00525642": {
@@ -19570,6 +20070,22 @@
 },
 "v": 3
 },
+"00629568": {
+"company": {
+"ceo": "이석형",
+"founded": "1998-05-30",
+"homepage": "https://bandomne.com",
+"industry_code": "467",
+"market": "기타",
+"name": "반도기전 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "00635000": {
 "company": {
 "ceo": "안병현",
@@ -20718,6 +21234,53 @@
 "finance": null,
 "v": 3
 },
+"00683627": {
+"company": {
+"ceo": "신재호",
+"founded": "2008-07-02",
+"homepage": "https://www.lsmtron.co.kr",
+"industry_code": "29",
+"market": "기타",
+"name": "엘에스엠트론(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 1348,
+"date": "2025-12-31",
+"rcept_no": "20260316001345",
+"salary": 73683234,
+"tenure": 10.9
+},
+"fetched": "2026-10-22",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260316001345",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 41853605972,
+"operating": 39271157082,
+"revenue": 1019090691242,
+"year": 2023
+},
+{
+"net": -11104138895,
+"operating": 27703905234,
+"revenue": 1055399847419,
+"year": 2024
+},
+{
+"net": 640473445,
+"operating": 43910107656,
+"revenue": 1117708641740,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00684714": {
 "company": {
 "ceo": "류진, 박우동",
@@ -21179,6 +21742,189 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"00765569": {
+"company": {
+"ceo": "강해철",
+"founded": "2004-02-18",
+"homepage": "https://www.gigavis.com",
+"industry_code": "292",
+"market": "코스닥",
+"name": "기가비스(주)",
+"stock_code": "420770"
+},
+"disclosures": [
+{
+"date": "2026-10-21",
+"rcept_no": "20261021900346",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-10-21",
+"rcept_no": "20261021900335",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-10-19",
+"rcept_no": "20261019900334",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-09-15",
+"rcept_no": "20260915900285",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-08-19",
+"rcept_no": "20260819900157",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-08-13",
+"rcept_no": "20260813900432",
+"title": "본점소재지변경"
+},
+{
+"date": "2026-08-11",
+"rcept_no": "20260811900329",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-07-30",
+"rcept_no": "20260730900247",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-07-29",
+"rcept_no": "20260729900255",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-07-24",
+"rcept_no": "20260724900446",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-07-07",
+"rcept_no": "20260707900298",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-07-06",
+"rcept_no": "20260706900449",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-06-15",
+"rcept_no": "20260615900536",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-06-04",
+"rcept_no": "20260604900614",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-04-30",
+"rcept_no": "20260430901969",
+"title": "소속부변경"
+},
+{
+"date": "2026-04-24",
+"rcept_no": "20260424900333",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327902339",
+"title": "기업가치제고계획(자율공시)"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327902224",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-13",
+"rcept_no": "20260313900806",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-03",
+"rcept_no": "20260303900146",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-02-13",
+"rcept_no": "20260213901224",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-02-06",
+"rcept_no": "20260206902527",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-06",
+"rcept_no": "20260206902370",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-02-06",
+"rcept_no": "20260206902341",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-06",
+"rcept_no": "20260206902234",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-12",
+"rcept_no": "20251212900153",
+"title": "현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정"
+},
+{
+"date": "2025-12-12",
+"rcept_no": "20251212900151",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 138,
+"date": "2025-12-31",
+"rcept_no": "20260319000682",
+"salary": 68869565,
+"tenure": 7.0
+},
+"fetched": "2026-10-22",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260319000682",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 32663084523,
+"operating": 35013634833,
+"revenue": 91422516772,
+"year": 2023
+},
+{
+"net": 3412006437,
+"operating": -1786928658,
+"revenue": 26133336219,
+"year": 2024
+},
+{
+"net": 15452197332,
+"operating": 12100818200,
+"revenue": 52434995936,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "00770613": {
@@ -22089,6 +22835,22 @@
 "finance": null,
 "v": 3
 },
+"00874210": {
+"company": {
+"ceo": "김성용",
+"founded": "2006-05-04",
+"homepage": "https://www.jininfra.com",
+"industry_code": "61291",
+"market": "기타",
+"name": "주식회사 진인프라",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "00876218": {
 "company": {
 "ceo": "장상환",
@@ -22648,6 +23410,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00937704": {
+"company": {
+"ceo": "유수중",
+"founded": "1999-12-01",
+"homepage": "https://www.kistemp.co.kr",
+"industry_code": "7512",
+"market": "기타",
+"name": "(주)키스템프",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
 "finance": null,
 "v": 3
 },
@@ -24434,6 +25212,22 @@
 "finance": null,
 "v": 3
 },
+"01018088": {
+"company": {
+"ceo": "용석균, 정진혁",
+"founded": "2003-07-28",
+"homepage": "https://www.solideng.co.kr",
+"industry_code": "46510",
+"market": "기타",
+"name": "(주)솔리드이엔지",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01019166": {
 "company": {
 "ceo": "로저스 해롤드 린",
@@ -24843,6 +25637,22 @@
 },
 "v": 3
 },
+"01037269": {
+"company": {
+"ceo": "정홍채",
+"founded": "1998-02-14",
+"homepage": null,
+"industry_code": "42",
+"market": "기타",
+"name": "블루엔이 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01042085": {
 "company": {
 "ceo": "조종암, 고평석(각자대표)",
@@ -25179,6 +25989,22 @@
 "finance": null,
 "v": 3
 },
+"01047761": {
+"company": {
+"ceo": "손창규",
+"founded": "2014-08-20",
+"homepage": "https://www.samoo.com",
+"industry_code": "72111",
+"market": "기타",
+"name": "(주)삼우종합건축사사무소",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01050738": {
 "company": {
 "ceo": "이경일",
@@ -25270,6 +26096,22 @@
 }
 ]
 },
+"v": 3
+},
+"01059395": {
+"company": {
+"ceo": "박찬효",
+"founded": "2014-11-20",
+"homepage": null,
+"industry_code": "41112",
+"market": "기타",
+"name": "주식회사 에스피에이치",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
 "v": 3
 },
 "01061327": {
@@ -27210,6 +28052,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01144912": {
+"company": {
+"ceo": "정철수",
+"founded": "2008-04-01",
+"homepage": null,
+"industry_code": "42",
+"market": "기타",
+"name": "(주)백광도시개발",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
 "finance": null,
 "v": 3
 },
@@ -29872,6 +30730,53 @@
 },
 "v": 3
 },
+"01267602": {
+"company": {
+"ceo": "이라미",
+"founded": "2017-12-01",
+"homepage": "https://www.jeisys.com",
+"industry_code": "271",
+"market": "기타",
+"name": "(주)제이시스메디칼",
+"stock_code": "287410"
+},
+"disclosures": [],
+"employees": {
+"count": 324,
+"date": "2024-12-31",
+"rcept_no": "20250407003477",
+"salary": 63543210,
+"tenure": 2.7
+},
+"fetched": "2026-10-22",
+"finance": {
+"basis": "연결",
+"rcept_no": "20250407003477",
+"revenue_name": "매출액",
+"year": 2024,
+"years": [
+{
+"net": 27012265584,
+"operating": 34035162077,
+"revenue": 116549559691,
+"year": 2022
+},
+{
+"net": 25107906079,
+"operating": 36313752059,
+"revenue": 143029552904,
+"year": 2023
+},
+{
+"net": 21782757793,
+"operating": 39973819896,
+"revenue": 192076238234,
+"year": 2024
+}
+]
+},
+"v": 3
+},
 "01271395": {
 "company": {
 "ceo": "최재호",
@@ -31434,6 +32339,22 @@
 "finance": null,
 "v": 3
 },
+"01369007": {
+"company": {
+"ceo": "윤여찬",
+"founded": "1997-10-01",
+"homepage": null,
+"industry_code": "42132",
+"market": "기타",
+"name": "(주)청조이엔씨",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01369548": {
 "company": {
 "ceo": "박현호",
@@ -32856,6 +33777,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01442346": {
+"company": {
+"ceo": "김남진",
+"founded": "2000-02-01",
+"homepage": "https://www.blueweb.co.kr",
+"industry_code": "63112",
+"market": "기타",
+"name": "(주)유니파이",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
 "finance": null,
 "v": 3
 },
@@ -34607,6 +35544,22 @@
 "finance": null,
 "v": 3
 },
+"01505636": {
+"company": {
+"ceo": "황인범",
+"founded": "2005-07-01",
+"homepage": null,
+"industry_code": "75122",
+"market": "기타",
+"name": "아이비커리어(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01505821": {
 "company": {
 "ceo": "정현철",
@@ -35756,6 +36709,22 @@
 "finance": null,
 "v": 3
 },
+"01538980": {
+"company": {
+"ceo": "강인구",
+"founded": "2004-03-10",
+"homepage": null,
+"industry_code": "72",
+"market": "기타",
+"name": "엘티메트릭 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01539891": {
 "company": {
 "ceo": "김미경",
@@ -36004,6 +36973,22 @@
 "finance": null,
 "v": 3
 },
+"01548598": {
+"company": {
+"ceo": "장은정",
+"founded": "2009-01-01",
+"homepage": null,
+"industry_code": "74211",
+"market": "기타",
+"name": "(주)청송씨앤유",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01548941": {
 "company": {
 "ceo": "홍승일",
@@ -36193,6 +37178,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01559257": {
+"company": {
+"ceo": "최원욱",
+"founded": "2011-11-17",
+"homepage": "https://melkinsports.com",
+"industry_code": "3330",
+"market": "기타",
+"name": "주식회사 거성디지털",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
 "finance": null,
 "v": 3
 },
@@ -39434,6 +40435,22 @@
 "finance": null,
 "v": 3
 },
+"01744536": {
+"company": {
+"ceo": "구본원,구현모",
+"founded": "1982-12-30",
+"homepage": null,
+"industry_code": "42201",
+"market": "기타",
+"name": "엘에스네오텍(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01745234": {
 "company": {
 "ceo": "최윤호",
@@ -41900,6 +42917,22 @@
 "finance": null,
 "v": 3
 },
+"01901566": {
+"company": {
+"ceo": "황동연,김형준",
+"founded": "2019-12-11",
+"homepage": null,
+"industry_code": "716",
+"market": "기타",
+"name": "주식회사 지투지",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01903166": {
 "company": {
 "ceo": "이연수",
@@ -42060,6 +43093,22 @@
 "finance": null,
 "v": 3
 },
+"01919574": {
+"company": {
+"ceo": "구자성",
+"founded": "2016-08-16",
+"homepage": "https://www.mosone.co.kr",
+"industry_code": "75122",
+"market": "기타",
+"name": "모스원주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "01919671": {
 "company": {
 "ceo": "신동용",
@@ -42217,6 +43266,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01926644": {
+"company": {
+"ceo": "강성수",
+"founded": "2017-09-14",
+"homepage": null,
+"industry_code": "29199",
+"market": "기타",
+"name": "유원엔지니어링",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
 "finance": null,
 "v": 3
 },
@@ -43144,6 +44209,22 @@
 "finance": null,
 "v": 3
 },
+"02024138": {
+"company": {
+"ceo": "김근호",
+"founded": "2003-02-24",
+"homepage": null,
+"industry_code": "582",
+"market": "기타",
+"name": "(주)주인정보시스템",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
 "02025094": {
 "company": {
 "ceo": "마민철",
@@ -43413,6 +44494,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"02053626": {
+"company": {
+"ceo": "정용훈",
+"founded": "2013-04-22",
+"homepage": null,
+"industry_code": "62",
+"market": "기타",
+"name": "주식회사 에이치앤아이씨",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-22",
 "finance": null,
 "v": 3
 }
