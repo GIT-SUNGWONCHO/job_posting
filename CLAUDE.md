@@ -18,7 +18,7 @@
 | 대시보드 | https://careermap-web.oroloov.workers.dev (초대한 사람만 로그인) |
 | 운영 설정: Supabase, Cloudflare, 키 넣는 곳 | `docs/setup.md` |
 | 개발 흐름(다른 프로젝트에도 쓰는 진행 방식) | `docs/dev-workflow.md` |
-| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수·지침·기준 샘플, 프로필 목록(업종·직무), 아침 알림, AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
+| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수·지침·기준 샘플, 프로필 목록(업종·직무), 아침 알림, AI 모델, 그룹 규칙, 회사 별칭, DART | `config/*.yaml` |
 | 수집 데이터 | `data` 브랜치(형식은 그 브랜치 README) |
 
 ## 지금 단계
@@ -29,7 +29,7 @@
 | 1 | 개발 기반: 이 파일, 용어집, 데이터 형식 | 완료(기준 샘플은 3단계에서) |
 | 2 | 수집, 아키텍처, 디자인 스타일, 대시보드 | 진행 중: 수집(매일 04:17 자동), 아키텍처·디자인 스타일 확정, 대시보드 첫 버전 배포. 남은 것: 실제로 써 보며 다듬기 |
 | 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | 진행 중: 프로필 v2, 공고 정리, AI 매칭(판단 근거) + 내 평가로 지침을 고치는 회차 진행 중. 기준이 서면 규칙화와 기준 샘플(3-5) |
-| 4 | 분석: 회사 리서치, 커리어 탭 | 초안: 커리어 탭(시장 · 내 위치 · 성장 계획, 공고에서 센 지표 v1, 이번 달 할 일). 남은 것: 회사 기본정보(DART) |
+| 4 | 분석: 회사 리서치, 커리어 탭 | 초안: 커리어 탭(시장 · 내 위치 · 성장 계획, 공고에서 센 지표 v1, 이번 달 할 일), 회사 기본정보(DART: 회사 개요, 지난 공고). 남은 것: 심층분석 |
 | 5 | 보고: 오늘의 리포트, 아침 알림 | 초안: 아침 알림(매일 매칭 끝에 텔레그램으로, 카톡은 꺼 둠). 매칭 고도화보다 나머지 단계 초안을 먼저 끝낸다(2026-10-17) |
 | 6 | 확장: 지원 상태, 지인 계정, 나머지 수집처 | 초안: 지원 상태(공고 상세의 단계·메모·일정, 지원 현황 탭, 추천·알림에서 빼기) |
 
@@ -60,6 +60,7 @@ src/jobpost/
   store.py         data 폴더 형식
   pipeline.py      하루 수집 한 번의 순서
   jobtypes.py      직무 유형 분류(목록은 config/job_types.yaml, AI가 고름)
+  dart.py          회사 기본정보: 공고 회사를 DART와 잇고 기업개황·주요 계정·직원 현황·주요 공시를 data/dart/에(설정 config/dart.yaml). DART는 여기서만 부른다
   career.py        커리어 지표(시장): 직무 유형 × 기업 구분별 날짜별 공고 수, 경력 요구, 요구 스킬(화면용 파일 career)
   facts.py         공고 정리: 후보 공고의 매칭 항목을 공고당 1번 AI로(data/facts.jsonl), 스킬 목록
   profile.py       프로필 v2(경력 > 직무 구간 > 프로젝트, 숙련도): 직무별 연수, AI에 보낼 요약
@@ -88,4 +89,4 @@ web/src/
 - 수집: `uv run jobpost collect --data-dir data` (시험은 `--max-pages 2 --detail-budget 5`)
 - 검사: `uv run ruff check src tests` 와 `uv run pytest -q`, 화면은 `cd web && npm test && npm run lint && npm run build`
 - 화면 개발: `uv run jobpost screen --data-dir <data> --out .dev-data/screen.json.gz` 후 `cd web && npm run dev`(Supabase 값이 없으면 로그인 없이 이 파일을 읽는다)
-- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회차 리포트는 `feedback.yml`, 알림 연결·다시 보내기는 `telegram.yml`(카톡은 `kakao.yml`). 매칭 뒤 아침 알림을 보낸다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
+- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과(DART 기본정보 포함)는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회사 기본정보(DART)만 받으려면 `dart.yml`, 회차 리포트는 `feedback.yml`, 알림 연결·다시 보내기는 `telegram.yml`(카톡은 `kakao.yml`). 매칭 뒤 아침 알림을 보낸다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.

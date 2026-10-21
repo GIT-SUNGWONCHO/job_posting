@@ -110,3 +110,62 @@ export interface CareerMetrics {
   /** 지금 열린 공고의 연차 분포, 요구 스킬(공고 수 많은 순), 본문이 있는 공고 수 */
   current: Record<string, { career: Partial<Record<CareerBucket, number>>; skills: [string, number][]; withBody: number }>
 }
+
+/** 회사 기본정보 파일(companies.json.gz). 만드는 쪽은 src/jobpost/screen.py build_companies */
+export interface CompaniesFile {
+  version: number
+  date: string
+  /** 수집을 시작한 날(지난 공고는 이날부터) */
+  since: string
+  companies: Record<string, CompanyBasics>
+}
+
+export interface CompanyBasics {
+  dart?: DartBasics | DartPending | DartNone
+  /** 이 앱이 수집한 마감된 공고(최근 마감 순, 일부) */
+  past?: PastPosting[]
+  /** 마감된 공고 전체의 직무 유형별 수(분류 전은 none) */
+  pastByJob?: Record<string, number>
+}
+
+export interface PastPosting {
+  title: string
+  jobType: string | null
+  firstSeen: string
+  closedOn: string
+}
+
+/** DART와 이었고 기본정보를 받은 회사 */
+export interface DartBasics {
+  corpCode: string
+  corpName: string
+  /** 유가증권 · 코스닥 · 코넥스 · 기타 */
+  market: string | null
+  ceo: string | null
+  founded: string | null
+  homepage: string | null
+  /** 사업보고서 주요 계정(원). 오래된 해부터 */
+  finance: {
+    year: number
+    basis: '연결' | '별도'
+    rceptNo: string | null
+    years: { year: number; revenue?: number | null; operating?: number | null; net?: number | null }[]
+  } | null
+  /** 사업보고서 직원 현황. salary는 1인 평균(원), tenure는 평균 근속(년) */
+  employees: { count: number; tenure: number | null; salary: number | null; rceptNo: string | null } | null
+  disclosures: { date: string; title: string; rceptNo: string | null }[]
+  fetched: string
+}
+
+/** 이었지만 기본정보는 아직 받기 전 */
+export interface DartPending {
+  corpCode: string
+  corpName: string
+  pending: true
+}
+
+/** DART에서 찾지 못함: none(같은 이름 없음), ambiguous(같은 이름 여럿) */
+export interface DartNone {
+  none: string
+  checked: string
+}

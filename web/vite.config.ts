@@ -32,6 +32,16 @@ function devScreenFile(): Plugin {
         res.setHeader('Content-Type', 'application/json')
         res.end(readFileSync(path))
       })
+      server.middlewares.use('/__dev/companies.json.gz', (_req, res) => {
+        const path = resolve(dir, 'companies.json.gz')
+        if (!existsSync(path)) {
+          res.statusCode = 404
+          res.end()
+          return
+        }
+        res.setHeader('Content-Type', 'application/octet-stream')
+        res.end(readFileSync(path))
+      })
       server.middlewares.use('/__dev/bodies', (req, res) => {
         const name = (req.url ?? '').replace(/^\//, '')
         const path = resolve(dir, 'bodies', name)

@@ -154,3 +154,79 @@ def write(screen: dict[str, Any], out: Path) -> Path:  # 본문 파일도 같은
     else:
         out.write_bytes(raw)
     return out
+
+
+COMPANIES_VERSION = 1  # 회사 기본정보 파일(companies.json.gz) 형식. web/src/lib/types.ts CompanyBasics와 같게
+PAST_MAX = 50  # 회사마다 남길 지난 공고 수(최근 마감 순). 수는 pastByJob에 전부 센다
+
+
+def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None = None) -> dict[str, Any]:
+    """회사 기본정보 파일: 오늘 화면에 있는 회사마다 DART 기본정보(dart.py가 data/dart/에 쌓은 것)와
+    이 앱이 수집한 지난 공고(마감된 국내 공고). 회사 화면을 열 때 한 번 받는다."""
+    today = today or date.today()
+    corps = _read_json(data_dir / "dart" / "corps.json")
+    basics = _read_json(data_dir / "dart" / "basics.json")
+    store = Store(data_dir)
+    keys = set(screen["companies"])
+    past: dict[str, list[dict[str, Any]]] = {}
+    for r in store.state.values():
+        if not r.get("closed_on") or r.get("overseas") or r.get("dup_of") or r.get("noise"):
+            continue
+        key = r.get("company_key") or r.get("company", "")
+        if key in keys:
+            past.setdefault(key, []).append({
+                "title": r.get("title", ""),
+                "jobType": (r.get("job_type") or {}).get("id"),
+                "firstSeen": r.get("first_seen"),
+                "closedOn": r.get("closed_on"),
+            })
+    out: dict[str, Any] = {}
+    for key in sorted(keys):
+        item: dict[str, Any] = {}
+        m = corps.get(key)
+        if m:
+            code = m.get("corp_code")
+            b = basics.get(code) if code else None
+            if code and b:
+                item["dart"] = _dart_item(code, m, b)
+            elif code:
+                item["dart"] = {"corpCode": code, "corpName": m.get("corp_name"), "pending": True}
+            else:
+                item["dart"] = {"none": m.get("why", "none"), "checked": m.get("checked")}
+        rows = sorted(past.get(key, []), key=lambda x: (x["closedOn"] or "", x["firstSeen"] or ""), reverse=True)
+        if rows:
+            item["past"] = rows[:PAST_MAX]
+            by_job: dict[str, int] = {}
+            for x in rows:
+                by_job[x["jobType"] or "none"] = by_job.get(x["jobType"] or "none", 0) + 1
+            item["pastByJob"] = by_job
+        if item:
+            out[key] = item
+    return {"version": COMPANIES_VERSION, "date": today.isoformat(), "since": min(
+        (r.get("first_seen") for r in store.state.values() if r.get("first_seen")), default=today.isoformat()),
+        "companies": out}
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+
+
+def _dart_item(code: str, m: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
+    c = b.get("company") or {}
+    fin = b.get("finance")
+    emp = b.get("employees")
+    return {
+        "corpCode": code,
+        "corpName": m.get("corp_name") or c.get("name"),  # 고유번호 파일 이름은 (주) 같은 표기가 없다
+        "market": c.get("market"),
+        "ceo": c.get("ceo"),
+        "founded": c.get("founded"),
+        "homepage": c.get("homepage"),
+        "finance": fin and {"year": fin["year"], "basis": fin["basis"], "rceptNo": fin.get("rcept_no"),
+                            "years": fin["years"]},
+        "employees": emp and {"count": emp["count"], "tenure": emp.get("tenure"), "salary": emp.get("salary"),
+                              "rceptNo": emp.get("rcept_no")},
+        "disclosures": [{"date": d["date"], "title": d["title"], "rceptNo": d.get("rcept_no")}
+                        for d in b.get("disclosures") or []],
+        "fetched": b.get("fetched"),
+    }

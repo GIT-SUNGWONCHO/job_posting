@@ -80,6 +80,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 | `TELEGRAM_BOT_TOKEN` | 텔레그램 봇 토큰(아래 4). 없으면 아침 알림만 건너뛴다 |
 | `KAKAO_REST_KEY` | 카카오 앱 REST API 키(아래 5, 지금은 꺼 둠) |
 | `KAKAO_CLIENT_SECRET` | 카카오 앱 REST API 키의 클라이언트 시크릿 |
+| `DART_API_KEY` | opendart.fss.or.kr > 인증키 신청·관리(무료, 하루 2만 건). 회사 기본정보에 쓴다(아래 6). 없으면 회사 기본정보만 건너뛴다 |
 
 넣은 뒤 Actions > collect > Run workflow로 한 번 돌려 "Supabase 저장소에 올림" 줄이 나오는지 본다(2026.10.13 확인. 새 secret 키는 `apikey` 헤더만으로 올라간다). 키가 없으면 화면용 파일은 만들기만 하고 올리지 않는다.
 
@@ -116,6 +117,14 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 
 - 연결 토큰은 60일짜리인데, 카카오가 1개월 미만 남았을 때 새 토큰을 주면 매일 작업이 바꿔 저장한다. 그래서 매일 돌기만 하면 다시 연결할 일이 없다. 끊기면(보내기 단계가 실패하고 GitHub가 메일로 알림) 5~6을 다시 한다.
 - 카톡에서 링크를 누르면 휴대폰 기본 브라우저로 다시 열린다. 카톡 안 브라우저에서는 구글 로그인이 막혀서다. 기본 브라우저에서 한 번 로그인해 두면 계속 쓴다.
+
+## 6. DART (회사 기본정보)
+
+공고가 들어온 회사를 DART 공시 회사와 이어 기업개황·사업보고서 주요 실적·직원 현황·최근 1년 주요 공시를 회사 화면에 보여준다.
+
+1. opendart.fss.or.kr에서 인증키를 받아 GitHub Secrets에 `DART_API_KEY`로 넣는다(위 3의 표). 2026-10-21에 넣음.
+2. 처음 한 번 GitHub > Actions > **dart** > Run workflow(budget 기본 5000)로 크게 받는다. 회사 1곳에 요청 5건쯤이라 약 1,000곳이다. 다 못 받으면 매일 collect가 `config/dart.yaml` budget만큼 이어서 받는다.
+3. 못 찾았거나 잘못 이은 회사는 `config/dart.yaml` overrides에 회사 키와 DART 고유번호를 적고 dart를 다시 돌린다. 회사 키는 대시보드 회사 주소(`#/company/<키>`)에 보이는 값, 고유번호는 DART 회사 검색 결과의 8자리다.
 
 ## 개발할 때
 

@@ -1,5 +1,5 @@
 import { SCREEN_BUCKET, SCREEN_PATH, supabase } from './supabase'
-import type { Body, Screen } from './types'
+import type { Body, CompaniesFile, Screen } from './types'
 
 async function gunzipJson<T = Screen>(blob: Blob): Promise<T> {
   const bytes = new Uint8Array(await blob.arrayBuffer())
@@ -24,6 +24,33 @@ export async function loadScreen(): Promise<Screen> {
   throw new Error('Supabase가 설정되지 않았어요')
 }
 
+async function fetchFile<T>(path: string): Promise<T> {
+  let blob: Blob
+  if (supabase) {
+    const { data, error } = await supabase.storage.from(SCREEN_BUCKET).download(path)
+    if (error || !data) throw error ?? new Error('no data')
+    blob = data
+  } else {
+    const res = await fetch(`/__dev/${path}`)
+    if (!res.ok) throw new Error(`dev file ${path}: ${res.status}`)
+    blob = await res.blob()
+  }
+  return gunzipJson<T>(blob)
+}
+
+let companies: Promise<CompaniesFile> | null = null
+
+/** 회사 기본정보(DART, 지난 공고). 회사 화면을 처음 열 때 한 번 받는다. 예전 배포에는 파일이 없을 수 있다 */
+export function loadCompanies(): Promise<CompaniesFile> {
+  if (!companies) {
+    companies = fetchFile<CompaniesFile>('companies.json.gz')
+    companies.catch(() => {
+      companies = null
+    })
+  }
+  return companies
+}
+
 /** 본문 묶음 번호. src/jobpost/screen.py body_shard와 같은 FNV-1a 32비트(UTF-8), 16묶음. */
 export function bodyShard(id: string): string {
   let h = 0x811c9dc5
@@ -37,18 +64,7 @@ export function bodyShard(id: string): string {
 const shards = new Map<string, Promise<Record<string, Body>>>()
 
 async function fetchShard(shard: string): Promise<Record<string, Body>> {
-  const path = `bodies/${shard}.json.gz`
-  let blob: Blob
-  if (supabase) {
-    const { data, error } = await supabase.storage.from(SCREEN_BUCKET).download(path)
-    if (error || !data) throw error ?? new Error('no data')
-    blob = data
-  } else {
-    const res = await fetch(`/__dev/${path}`)
-    if (!res.ok) throw new Error(`dev body file: ${res.status}`)
-    blob = await res.blob()
-  }
-  return (await gunzipJson<{ bodies: Record<string, Body> }>(blob)).bodies
+  return (await fetchFile<{ bodies: Record<string, Body> }>(`bodies/${shard}.json.gz`)).bodies
 }
 
 /** 공고 본문. 같은 묶음은 한 번만 받는다. */

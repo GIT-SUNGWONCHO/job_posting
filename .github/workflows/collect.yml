@@ -1,4 +1,5 @@
-# 매일 새벽 공고를 수집해 data 브랜치에 쌓고, 화면용 파일을 만들어 Supabase 저장소에 올리고, 매칭한 뒤 아침 알림을 보낸다.
+# 매일 새벽 공고를 수집해 data 브랜치에 쌓고, 회사 기본정보(DART)를 받고, 화면용 파일을 만들어 Supabase 저장소에 올리고,
+# 매칭한 뒤 아침 알림을 보낸다.
 # 수동 실행: GitHub > Actions > collect > Run workflow
 name: collect
 
@@ -56,6 +57,12 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: uv run jobpost facts --data-dir data
 
+      - name: 회사 기본정보(DART)
+        continue-on-error: true  # DART가 막힌 날에도 화면용 파일·매칭·알림은 계속한다
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: uv run jobpost dart --data-dir data | tee dart.json
+
       - name: 화면용 파일 만들기·올리기
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -85,6 +92,10 @@ jobs:
           echo '### 수집 요약' >> "$GITHUB_STEP_SUMMARY"
           echo '```json' >> "$GITHUB_STEP_SUMMARY"
           cat run.json >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo '### 회사 기본정보(DART)' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat dart.json >> "$GITHUB_STEP_SUMMARY" || true
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: data 브랜치에 커밋

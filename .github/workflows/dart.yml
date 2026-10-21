@@ -1,0 +1,78 @@
+# 회사 기본정보(DART)만 받는다. 처음 한꺼번에 모을 때, config/dart.yaml overrides(손으로 잇기)를 고친 뒤.
+# 순서: DART 받기(budget만큼) → 화면용 파일 만들기·올리기 → data 브랜치에 커밋
+# 매일 수집(collect)에서도 config/dart.yaml budget만큼 이어서 받는다.
+# 수동 실행: GitHub > Actions > dart > Run workflow
+name: dart
+
+on:
+  workflow_dispatch:
+    inputs:
+      budget:
+        description: 이번에 쓸 최대 요청 수(DART는 하루 2만 건, 회사 1곳에 5건쯤)
+        required: false
+        default: "5000"
+      raw:
+        description: 처음 이만큼의 DART 응답을 로그에 남긴다(해석이 맞는지 볼 때, 보통 0)
+        required: false
+        default: "0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect  # 수집과 겹치지 않게
+  cancel-in-progress: false
+
+jobs:
+  dart:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 회사 기본정보(DART)
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          BUDGET: ${{ inputs.budget }}
+          RAW: ${{ inputs.raw }}
+        run: |
+          uv run --no-dev jobpost dart --data-dir data --budget "${BUDGET:-5000}" --raw "${RAW:-0}" | tee dart.json
+          echo '### 회사 기본정보(DART)' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat dart.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 화면용 파일 만들기·올리기
+        if: ${{ !cancelled() }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: uv run --no-dev jobpost screen --data-dir data --out screen.json.gz --upload
+
+      - name: data 브랜치에 커밋
+        if: always()
+        working-directory: data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "바뀐 데이터 없음"
+            exit 0
+          fi
+          git commit -q -m "dart $(date +%F)"
+          for i in 1 2 3; do git push origin data && break; sleep $((i * 10)); done

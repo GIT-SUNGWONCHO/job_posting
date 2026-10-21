@@ -49,3 +49,39 @@ export const signed = (n: number) => (n > 0 ? `+${n.toLocaleString()}` : n.toLoc
 
 /** 2026-10 */
 export const monthOf = (iso: string) => iso.slice(0, 7)
+
+/** 금액(원): 1조 이상은 12.3조, 10억 이상은 1,234억, 1억 이상은 3.2억, 그 아래는 1,234만 원 */
+export function money(won: number): string {
+  const sign = won < 0 ? '-' : ''
+  const v = Math.abs(won)
+  if (v >= 1e12) return `${sign}${(v / 1e12).toFixed(1)}조`
+  if (v >= 1e9) return `${sign}${Math.round(v / 1e8).toLocaleString()}억`
+  if (v >= 1e8) return `${sign}${(v / 1e8).toFixed(1)}억`
+  return `${sign}${Math.round(v / 1e4).toLocaleString()}만 원`
+}
+
+/** 1인 평균 급여처럼 만 원 단위로: 9,800만 원 */
+export const manwon = (won: number) => `${Math.round(won / 1e4).toLocaleString()}만 원`
+
+/** 전년 대비 증감: ▲12.3%, ▼4.0%. 비교할 값이 없거나 0 이하이면 null */
+export function growth(cur: number | null | undefined, prev: number | null | undefined): string | null {
+  if (cur === null || cur === undefined || !prev || prev <= 0) return null
+  const pct = ((cur - prev) / prev) * 100
+  return `${pct >= 0 ? '▲' : '▼'}${Math.abs(pct).toFixed(1)}%`
+}
+
+/** 비율의 증감: ▲1.2%p */
+export function pointChange(cur: number | null, prev: number | null): string | null {
+  if (cur === null || prev === null) return null
+  const d = cur - prev
+  return `${d >= 0 ? '▲' : '▼'}${Math.abs(d).toFixed(1)}%p`
+}
+
+/** 2026.03(접수번호 앞 8자리 YYYYMMDD나 YYYY-MM-DD에서) */
+export function yearMonth(s: string | null | undefined): string | null {
+  const m = /^(\d{4})-?(\d{2})/.exec(s ?? '')
+  return m ? `${m[1]}.${m[2]}` : null
+}
+
+/** DART 공시 보기 주소 */
+export const dartUrl = (rceptNo: string) => `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`

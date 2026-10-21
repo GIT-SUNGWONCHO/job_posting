@@ -9,7 +9,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from . import ai, config, db, facts, feedback, notify, pipeline, publish, recommend, screen
+from . import ai, config, dart, db, facts, feedback, notify, pipeline, publish, recommend, screen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -47,6 +47,11 @@ def main(argv: list[str] | None = None) -> int:
     n.add_argument("--user-id", help="연결할 사람(프로필이 여럿일 때)")
     n.add_argument("--again", action="store_true", help="오늘 이미 보냈어도 다시 보낸다(모양 확인용)")
 
+    d = sub.add_parser("dart", help="회사 기본정보: 공고 회사를 DART와 잇고 기업개황·재무·직원·공시를 data/dart/에 쌓는다")
+    d.add_argument("--data-dir", type=Path, default=Path("data"))
+    d.add_argument("--budget", type=int, help="이번 실행에서 쓸 최대 요청 수(비우면 config/dart.yaml)")
+    d.add_argument("--raw", type=int, default=0, help="처음 이만큼의 DART 응답을 로그에 남긴다(해석 확인용)")
+
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
                         format="%(asctime)s %(message)s", datefmt="%H:%M:%S")
@@ -62,9 +67,11 @@ def main(argv: list[str] | None = None) -> int:
         built, bodies = screen.build(args.data_dir, with_career=True)
         path = screen.write(built, args.out)
         body_paths = screen.write_bodies(bodies, args.out.parent)
-        logging.info("화면용 파일: 공고 %d건, 회사 %d곳, %s KB / 본문 %d건, %d개 파일 %s KB",
+        companies_path = screen.write(screen.build_companies(args.data_dir, built), args.out.parent / "companies.json.gz")
+        logging.info("화면용 파일: 공고 %d건, 회사 %d곳, %s KB / 본문 %d건, %d개 파일 %s KB / 회사 기본정보 %s KB",
                      built["counts"]["open"], built["counts"]["companies"], path.stat().st_size // 1024,
-                     len(bodies["bodies"]), len(body_paths), sum(p.stat().st_size for p in body_paths) // 1024)
+                     len(bodies["bodies"]), len(body_paths), sum(p.stat().st_size for p in body_paths) // 1024,
+                     companies_path.stat().st_size // 1024)
         if args.upload:
             if not publish.configured():
                 logging.info("Supabase 설정이 없어 올리지 않음")
@@ -72,7 +79,17 @@ def main(argv: list[str] | None = None) -> int:
                 publish.upload(path)
                 for bp in body_paths:
                     publish.upload(bp, name=f"bodies/{bp.name}")
+                publish.upload(companies_path, name="companies.json.gz")
                 logging.info("Supabase 저장소에 올림")
+    if args.cmd == "dart":
+        if not dart.configured():
+            logging.info("DART 키(DART_API_KEY)가 없어 회사 기본정보를 건너뜀")
+            return 0
+        summary = dart.run(args.data_dir, date.today(), budget=args.budget, raw=args.raw)
+        json.dump(summary, sys.stdout, ensure_ascii=False, indent=1)
+        print()
+        # 한도·실패로 멈춰도 받은 만큼은 저장했으니 다음 단계(화면용 파일)는 계속한다
+        return 0
     if args.cmd == "match":
         if not db.configured():
             logging.info("Supabase 설정이 없어 매칭을 건너뜀")
