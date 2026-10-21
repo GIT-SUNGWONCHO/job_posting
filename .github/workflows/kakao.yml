@@ -48,9 +48,11 @@ jobs:
 
       - name: 카톡 연결·보내기
         env:
-          CODE: ${{ inputs.code }}
           USER_ID: ${{ inputs.user_id }}
         run: |
+          # 인가 코드는 env로 넘기면 실행 로그에 그대로 찍힌다(2026-10-21). 실행 정보 파일에서 읽고 가린다
+          CODE=$(jq -r '.inputs.code // ""' "$GITHUB_EVENT_PATH")
+          if [ -n "$CODE" ]; then echo "::add-mask::$CODE"; fi
           args=(--data-dir data)
           if [ -n "$CODE" ]; then args+=(--connect "$CODE"); fi
           if [ -n "$USER_ID" ]; then args+=(--user-id "$USER_ID"); fi
