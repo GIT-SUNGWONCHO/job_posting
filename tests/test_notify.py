@@ -37,6 +37,15 @@ def test_digest_counts_and_orders_new_postings_that_pass_filters():
     assert [it["id"] for it in d["soon"]] == ["z:6"]
 
 
+def test_applied_and_dismissed_postings_drop_out_and_interest_ones_lead_closing_soon():
+    screen = {**SCREEN, "postings": [*SCREEN["postings"], posting("i:1", company="b", deadline="2026-10-18", first="2026-10-01")]}
+    stages = {"z:2": "applied", "z:4": "dismissed", "i:1": "interest", "z:6": "interview"}
+    d = notify.digest(screen, FILTERS, MATCHES, TODAY, stages=stages)
+    assert [it["id"] for it in d["new"]] == ["z:1", "z:3"]  # 지원·관심 없음은 빼고
+    assert [(it["id"], it["interest"]) for it in d["soon"]] == [("i:1", True)]  # 필터 밖이어도 관심 공고는, 면접 중인 공고는 빼고
+    assert "★ <b>" not in notify.telegram_rich(d) and "<b>★ 라마바</b>" in notify.telegram_rich(d)
+
+
 def test_new_postings_since_the_last_message_count_when_a_day_was_missed():
     screen = {**SCREEN, "postings": [posting("y:1", first="2026-10-16"), *SCREEN["postings"]]}
     assert "새 공고 5건" in notify.digest(screen, FILTERS, MATCHES, TODAY)["head"]
@@ -50,7 +59,7 @@ def test_telegram_message_lists_new_and_urgent_postings_as_escaped_html():
             '<a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">Data Engineer</a>') in text
     assert "▫️ <b>가나다</b>  88점 · 상시" in text  # 규칙 점수
     assert "A&amp;B &lt;ML&gt;" in text  # 태그가 아닌 <, >, &는 바꾼다
-    assert "<b>마감 임박</b> 70점 이상 1건\n<blockquote expandable>🟢 <b>가나다</b>  81점 · D-2" in text
+    assert "<b>마감 임박</b> ★ 관심 공고와 70점 이상 1건\n<blockquote expandable>🟢 <b>가나다</b>  81점 · D-2" in text
     assert text.endswith("🟢 지원 추천 · 🟡 고려 · ⚪ 비추천")
     assert buttons == [[{"text": "리포트", "url": "https://careermap-web.oroloov.workers.dev/#/report"},
                         {"text": "공고 목록", "url": "https://careermap-web.oroloov.workers.dev/#/jobs"}]]
@@ -85,7 +94,7 @@ def test_kakao_message_uses_the_list_template_and_falls_back_to_text():
 class FakeDB:
     def __init__(self, telegram_links=(), kakao_links=()):
         self.rows = {"settings": [], "telegram_links": list(telegram_links), "kakao_links": list(kakao_links),
-                     "profiles": [{"user_id": "u1"}],
+                     "profiles": [{"user_id": "u1"}], "applications": [],
                      "matches": [{"posting_id": "z:2", "score": 92, "parts": {"kind": "ai", "verdict": "지원 추천"}}]}
         self.updates, self.inserted = [], []
 
@@ -115,7 +124,7 @@ def test_rich_message_puts_postings_in_tables_with_details_and_buttons():
             '<td align="right"><b>92</b></td><td align="center">D-12</td></tr>') in rich
     assert "A&amp;B &lt;ML&gt;" in rich
     assert "<details><summary>3건 더 보기</summary><table" in rich  # 8건 중 5건 다음은 접는다
-    assert "<details><summary>마감 임박 1건 · 70점 이상</summary>" in rich
+    assert "<details><summary>마감 임박 1건 · ★ 관심 공고와 70점 이상</summary>" in rich
     assert '<tg-button type="url" style="primary" url="https://careermap-web.oroloov.workers.dev/#/report">리포트</tg-button>' in rich
     assert rich.endswith("<footer>🟢 지원 추천 · 🟡 고려 · ⚪ 비추천</footer>")
 

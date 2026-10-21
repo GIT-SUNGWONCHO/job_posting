@@ -1,5 +1,6 @@
 import { copy } from '../copy'
 import { Deadline, Empty, JobRow, Score, SectionTitle } from '../components/ui'
+import { NOT_AGAIN, useApps } from '../lib/applications'
 import { companyLine, dateText, isUrgent } from '../lib/format'
 import type { Match } from '../lib/matches'
 import { href } from '../lib/route'
@@ -19,9 +20,14 @@ export function Report({ screen, passed, today, matches }: {
     .filter((p) => isUrgent(p, today))
     .sort((a, b) => (a.deadline ?? '').localeCompare(b.deadline ?? ''))
   const c = screen.companies
-  // 오늘의 1등: 점수 가장 높은 공고(같으면 새 공고 먼저). 다음 추천은 그다음 4건
+  const apps = useApps()
+  // 오늘의 1등: 점수 가장 높은 공고(같으면 새 공고 먼저). 다음 추천은 그다음 4건.
+  // 이미 지원했거나 관심 없음으로 둔 공고는 다시 추천하지 않는다
   const ranked = passed
-    .filter((p) => matches.has(p.id))
+    .filter((p) => {
+      const stage = apps.get(p.id)?.stage
+      return matches.has(p.id) && !(stage && NOT_AGAIN.includes(stage))
+    })
     .sort((a, b) => (matches.get(b.id)!.score - matches.get(a.id)!.score) || (b.firstSeen.localeCompare(a.firstSeen)))
   const top = ranked[0]
   const next = ranked.slice(1, 5)

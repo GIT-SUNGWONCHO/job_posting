@@ -47,9 +47,15 @@ def _score_text(m: dict[str, Any] | None) -> str:
     return f"{m['score']}점 {m['verdict']}" if m.get("verdict") else f"{m['score']}점"
 
 
+# 다시 추천하지 않는 지원 단계: 이미 지원했거나 관심 없음(web/src/lib/applications.ts NOT_AGAIN과 같게)
+NOT_AGAIN = {"applied", "passed", "interview", "result", "dismissed"}
+
+
 def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, dict[str, Any]], today: date,
-           since: date | None = None) -> dict[str, Any]:
-    """채널과 상관없는 요약. matches: 공고 id → {score, verdict, kind}."""
+           since: date | None = None, stages: dict[str, str] | None = None) -> dict[str, Any]:
+    """채널과 상관없는 요약. matches: 공고 id → {score, verdict, kind}, stages: 공고 id → 지원 단계.
+    지원했거나 관심 없음인 공고는 빼고, 관심 공고는 필터와 상관없이 마감 임박에 점수보다 먼저 넣는다."""
+    stages = stages or {}
     cfg = config.load("notify")
     base = cfg["dashboard_url"].rstrip("/") + "/"
     companies = screen.get("companies") or {}
@@ -68,19 +74,25 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
                 "verdict": m.get("verdict") if m.get("kind") == "ai" else ("규칙 점수" if m else None),
                 "deadline": deadline_text(p, today),
                 "info": f"{_score_text(matches.get(p['id']))} · {deadline_text(p, today)}",
-                "url": base + "#/job/" + quote(p["id"], safe="")}
+                "url": base + "#/job/" + quote(p["id"], safe=""), "interest": stages.get(p["id"]) == "interest"}
+
+    def closing(p: dict[str, Any]) -> bool:
+        n = days_left(p, today)
+        return n is not None and 0 <= n <= cfg["soon_days"]
 
     new = [p for p in screen["postings"] if start <= p["firstSeen"] <= today.isoformat()]
-    passed = {p["id"]: p for p in recommend.candidates(screen, filters)}
+    passed = {p["id"]: p for p in recommend.candidates(screen, filters) if stages.get(p["id"]) not in NOT_AGAIN}
     new_passed = sorted((p for p in new if p["id"] in passed), key=lambda p: (score(p), p["firstSeen"]), reverse=True)
-    soon = sorted((p for p in passed.values() if (n := days_left(p, today)) is not None and 0 <= n <= cfg["soon_days"]),
-                  key=score, reverse=True)
+    interest = [p for p in screen["postings"] if stages.get(p["id"]) == "interest" and closing(p)]
+    soon = sorted((p for p in passed.values() if closing(p) and stages.get(p["id"]) != "interest"), key=score, reverse=True)
+    n_soon = len(soon) + len(interest)
     head = (f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]}) 새 공고 {len(new)}건 · "
-            f"필터 통과 {len(new_passed)}건" + (f" · 마감 임박 {len(soon)}건" if soon else ""))
+            f"필터 통과 {len(new_passed)}건" + (f" · 마감 임박 {n_soon}건" if n_soon else ""))
     return {"head": head, "date": f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]})",
-            "counts": {"new": len(new), "passed": len(new_passed), "soon": len(soon)},
-            "new": [item(p) for p in new_passed], "soon_count": len(soon),
-            "soon": [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
+            "counts": {"new": len(new), "passed": len(new_passed), "soon": len(soon) + len(interest)},
+            "new": [item(p) for p in new_passed], "soon_count": len(soon) + len(interest),
+            "soon": [item(p) for p in sorted(interest, key=lambda p: p.get("deadline") or "")]
+            + [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
             "report": base + "#/report", "jobs": base + "#/jobs"}
 
 
@@ -102,7 +114,8 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
     def entry(it: dict[str, Any]) -> str:
         score = "점수 없음" if it["score"] < 0 else f"{it['score']:g}점"
         mark = MARKS.get(it["verdict"] or "", "▫️")
-        return (f"{mark} <b>{esc(it['company'])}</b>  {score} · {esc(it['deadline'])}\n"
+        star = "★ " if it["interest"] else ""
+        return (f"{mark} <b>{star}{esc(it['company'])}</b>  {score} · {esc(it['deadline'])}\n"
                 f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a>')
 
     def build(top: int, soon_top: int) -> str:
@@ -121,7 +134,7 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
         else:
             lines.append("필터를 통과한 새 공고가 없어요.")
         if d["soon"][:soon_top]:
-            lines += ["", f"<b>마감 임박</b> {cfg['soon_min_score']}점 이상 {len(d['soon'][:soon_top])}건",
+            lines += ["", f"<b>마감 임박</b> ★ 관심 공고와 {cfg['soon_min_score']}점 이상 {len(d['soon'][:soon_top])}건",
                       "<blockquote expandable>" + "\n\n".join(entry(it) for it in d["soon"][:soon_top]) + "</blockquote>"]
         lines += ["", " · ".join(f"{mark} {name}" for name, mark in MARKS.items())]  # 판정 표시 설명
         return "\n".join(lines).replace("\n\n\n", "\n\n").strip()
@@ -151,7 +164,7 @@ def telegram_rich(d: dict[str, Any]) -> str:
         for it in items:
             score = "-" if it["score"] < 0 else f"{it['score']:g}"
             rows.append(f'<tr><td>{MARKS.get(it["verdict"] or "", "▫️")}</td>'
-                        f'<td align="left"><b>{esc(it["company"])}</b><br>'
+                        f'<td align="left"><b>{"★ " if it["interest"] else ""}{esc(it["company"])}</b><br>'
                         f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a></td>'
                         f'<td align="right"><b>{score}</b></td><td align="center">{esc(it["deadline"])}</td></tr>')
         return "<table striped compact>" + "".join(rows) + "</table>"
@@ -171,7 +184,7 @@ def telegram_rich(d: dict[str, Any]) -> str:
         parts.append("<p>필터를 통과한 새 공고가 없어요.</p>")
     soon = d["soon"][:tg["soon_top"]]
     if soon:
-        parts.append(f"<details><summary>마감 임박 {len(soon)}건 · {cfg['soon_min_score']}점 이상</summary>"
+        parts.append(f"<details><summary>마감 임박 {len(soon)}건 · ★ 관심 공고와 {cfg['soon_min_score']}점 이상</summary>"
                      f"{table(soon)}</details>")
     parts.append('<tg-button-row align="center">'
                  f'<tg-button type="url" style="primary" url="{html.escape(d["report"])}">리포트</tg-button>'
@@ -227,10 +240,19 @@ def run(screen: dict[str, Any], db: Any, today: date, session: Any = None, again
             rows = db.select("matches", f"select=posting_id,score,parts&user_id=eq.{user}")
             matches = {r["posting_id"]: {"score": r["score"], "verdict": (r.get("parts") or {}).get("verdict"),
                                          "kind": (r.get("parts") or {}).get("kind")} for r in rows}
-            cache[key] = digest(screen, {**defaults, **settings.get(user, {})}, matches, today, since)
+            cache[key] = digest(screen, {**defaults, **settings.get(user, {})}, matches, today, since, stages_of(user))
         return cache[key]
 
     out: dict[str, Any] = {"errors": []}
+
+    def stages_of(user: str) -> dict[str, str]:
+        try:
+            rows = db.select("applications", f"select=posting_id,stage&user_id=eq.{user}")
+        except RuntimeError as e:  # 007_applications.sql을 아직 안 돌렸으면 지원 상태 없이 보낸다
+            out.setdefault("notes", []).append(f"지원 상태를 못 읽음: {str(e)[:120]}")
+            return {}
+        return {r["posting_id"]: r["stage"] for r in rows}
+
     for channel in cfg["channels"]:
         if channel not in channels():
             out[channel] = "키 없음"

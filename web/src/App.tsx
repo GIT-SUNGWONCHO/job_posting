@@ -6,6 +6,7 @@ import { passes } from './lib/filter'
 import { todayISO } from './lib/format'
 import { loadScreen } from './lib/load'
 import { useRoute } from './lib/route'
+import { AppsContext, loadApplications, type Application } from './lib/applications'
 import { loadFeedback, type Feedback } from './lib/feedback'
 import { loadMatches, type Match } from './lib/matches'
 import { loadFilters, saveFilters as saveRemoteFilters } from './lib/settings'
@@ -14,6 +15,7 @@ import { supabase } from './lib/supabase'
 import type { Filters, Screen } from './lib/types'
 import { useMedia, WIDE } from './lib/useMedia'
 import { Admin } from './screens/Admin'
+import { Apply } from './screens/Apply'
 import { CompanyPage } from './screens/CompanyPage'
 import { JobDetail } from './screens/JobDetail'
 import { Jobs, PAGE, type JobsUi } from './screens/Jobs'
@@ -79,6 +81,7 @@ function Main({ screen }: { screen: Screen }) {
   const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE, sample: false })
   const [scored, setScored] = useState<Map<string, Match>>(new Map())
   const [feedback, setFeedback] = useState<Map<string, Feedback>>(new Map())
+  const [apps, setApps] = useState<Map<string, Application>>(new Map())
   useEffect(() => {
     let alive = true
     loadMatches().then((m) => {
@@ -87,6 +90,7 @@ function Main({ screen }: { screen: Screen }) {
       if (m.size > 0) setUi((u) => (u.sort === 'latest' ? { ...u, sort: 'recommend' } : u))
     })
     loadFeedback().then((f) => alive && setFeedback(f))
+    loadApplications().then((a) => alive && setApps(a))
     return () => {
       alive = false
     }
@@ -98,6 +102,12 @@ function Main({ screen }: { screen: Screen }) {
     return out
   }, [scored, feedback])
   const onFeedback = (id: string, f: Feedback) => setFeedback((prev) => new Map(prev).set(id, f))
+  const onApp = (id: string, a: Application | null) => setApps((prev) => {
+    const next = new Map(prev)
+    if (a) next.set(id, a)
+    else next.delete(id)
+    return next
+  })
 
   const passed = useMemo(
     () => screen.postings.filter((p) => !p.noise && passes(p, screen.companies[p.company], filters)),
@@ -158,9 +168,9 @@ function Main({ screen }: { screen: Screen }) {
       detail = !wide
       body = wide
         ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)}
-          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} panel /></div>
+          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} app={p && apps.get(p.id)} onApp={onApp} panel /></div>
         : <JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)}
-          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} />
+          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} app={p && apps.get(p.id)} onApp={onApp} />
       break
     }
     case 'company':
@@ -173,7 +183,7 @@ function Main({ screen }: { screen: Screen }) {
       body = <Later title={copy.tabs.career} text={copy.later.career} />
       break
     case 'apply':
-      body = <Later title={copy.tabs.apply} text={copy.later.apply} />
+      body = <Apply screen={screen} apps={apps} today={today} />
       break
     case 'admin':
       body = <Admin />
@@ -185,10 +195,12 @@ function Main({ screen }: { screen: Screen }) {
   }
 
   return (
-    <div className={wide ? 'shell wide' : detail ? 'shell detail-only' : 'shell'}>
-      {wide && <SideNav route={route} />}
-      <main className="content">{body}</main>
-      {!wide && !detail && <TabBar route={route} />}
-    </div>
+    <AppsContext.Provider value={apps}>
+      <div className={wide ? 'shell wide' : detail ? 'shell detail-only' : 'shell'}>
+        {wide && <SideNav route={route} />}
+        <main className="content">{body}</main>
+        {!wide && !detail && <TabBar route={route} />}
+      </div>
+    </AppsContext.Provider>
   )
 }

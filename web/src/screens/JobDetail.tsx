@@ -1,7 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { copy } from '../copy'
 import { Deadline, SectionTitle } from '../components/ui'
+import type { Application } from '../lib/applications'
 import type { Feedback } from '../lib/feedback'
+import { ApplySection } from './ApplySection'
 import { MatchSection } from './MatchSection'
 import { companyLine, dateText } from '../lib/format'
 import { goBack, href } from '../lib/route'
@@ -13,13 +15,15 @@ import type { Body, Posting, Screen } from '../lib/types'
 const HEADING = /^(\p{Extended_Pictographic}\s*)?\[?(소개|포지션 소개|회사 소개|담당\s*업무|주요\s*업무|자격\s*요건|필수\s*요건|우대\s*사항|혜택\s*및\s*복지|복지\s*및\s*혜택|채용\s*절차|전형\s*절차|근무\s*조건|근무\s*환경|기타\s*사항|유의\s*사항|보상|접수\s*방법|마감\s*기한|사내\s*문화)\]?$/u
 
 
-export function JobDetail({ screen, posting, today, match, feedback, onFeedback, panel = false }: {
+export function JobDetail({ screen, posting, today, match, feedback, onFeedback, app, onApp, panel = false }: {
   screen: Screen
   posting: Posting | undefined
   today: string
   match?: Match
   feedback?: Feedback
   onFeedback: (postingId: string, f: Feedback) => void
+  app?: Application
+  onApp: (postingId: string, app: Application | null) => void
   panel?: boolean
 }) {
   const [body, setBody] = useState<{ id: string; body: Body | null; failed?: boolean } | null>(null)
@@ -86,10 +90,11 @@ export function JobDetail({ screen, posting, today, match, feedback, onFeedback,
           </div>
         )}
       </section>
+      <ApplySection key={p.id} posting={p} company={c?.name ?? p.company} app={app} today={today} onChange={onApp} />
       <section className="section actions">
         {p.sources.filter((s) => s.url).map((s, i) => (
           <a key={s.source} className={i === 0 ? 'btn primary' : 'btn'} href={s.url ?? undefined} target="_blank" rel="noreferrer noopener">
-            {copy.job.openAt(s.name)} ↗
+            {i === 0 ? copy.apply.openOriginal : copy.job.openAt(s.name)} ↗
           </a>
         ))}
       </section>

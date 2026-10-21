@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { copy } from '../copy'
+import { useApps } from '../lib/applications'
 import { companyLine, deadlineText, isUrgent } from '../lib/format'
 import { href } from '../lib/route'
 import type { Match } from '../lib/matches'
@@ -26,6 +27,7 @@ export function JobRow({ p, c, today, showCompany = true, active = false, match 
   active?: boolean
   match?: Match
 }) {
+  const stage = useApps().get(p.id)?.stage
   return (
     <a className={active ? 'row active' : 'row'} href={href.job(p.id)} aria-current={active ? 'page' : undefined}>
       <span className="row-main">
@@ -33,6 +35,7 @@ export function JobRow({ p, c, today, showCompany = true, active = false, match 
         <span className="row-title">{p.title}</span>
         {match?.reason && <span className="row-reason">{match.reason}</span>}
         <span className="row-meta">
+          {stage && <span className={stage === 'dismissed' ? 'stage-chip muted' : 'stage-chip'}>{copy.apply.short[stage]}</span>}
           <Deadline p={p} today={today} />
           <span>{p.career}</span>
           {p.headhunter && <span>{copy.job.headhunter}</span>}

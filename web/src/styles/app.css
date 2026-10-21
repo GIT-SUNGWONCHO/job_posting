@@ -287,3 +287,16 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
   height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: var(--r-control);
   font-family: var(--font-mono); font-weight: var(--fw-body);
 }
+
+/* 지원 상태(공고 상세)와 지원 현황 */
+.apply, .apply-details { display: flex; flex-direction: column; gap: 12px; }
+.apply-details .feedback-actions { justify-content: space-between; }
+.stage-chip { flex: none; align-self: flex-start; padding: 2px 8px; border-radius: var(--r-chip); background: var(--accent-soft); color: var(--accent); font-size: var(--fs-min); font-weight: var(--fw-item); }
+.stage-chip.muted { background: var(--band); color: var(--muted); }
+.stage-boxes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.stage-box { display: flex; flex-direction: column; align-items: center; padding: 12px 0; border-radius: var(--r-score); background: var(--band); color: var(--sub); font-size: var(--fs-min); }
+.stage-box b { font-size: var(--fs-page); line-height: 1.2; color: var(--ink); }
+.upcoming { display: flex; gap: 14px; padding: 10px 0; }
+.upcoming + .upcoming { border-top: 1px solid var(--line); }
+.upcoming b { flex: none; width: 48px; font-weight: var(--fw-item); }
+.upcoming b.urgent { color: var(--urgent); }
