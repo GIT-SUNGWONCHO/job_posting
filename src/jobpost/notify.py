@@ -62,7 +62,11 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
     def item(p: dict[str, Any]) -> dict[str, Any]:
         name = (companies.get(p["company"]) or {}).get("name") or p["company"]
         # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다. 글자로 풀어 두고 채널마다 다시 바꾼다
-        return {"id": p["id"], "title": html.unescape(f"{name} · {p['title']}"), "score": score(p),
+        m = matches.get(p["id"]) or {}
+        return {"id": p["id"], "title": html.unescape(f"{name} · {p['title']}"),
+                "company": html.unescape(name), "name": html.unescape(p["title"]), "score": score(p),
+                "verdict": m.get("verdict") if m.get("kind") == "ai" else ("규칙 점수" if m else None),
+                "deadline": deadline_text(p, today),
                 "info": f"{_score_text(matches.get(p['id']))} · {deadline_text(p, today)}",
                 "url": base + "#/job/" + quote(p["id"], safe="")}
 
@@ -73,44 +77,63 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
                   key=score, reverse=True)
     head = (f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]}) 새 공고 {len(new)}건 · "
             f"필터 통과 {len(new_passed)}건" + (f" · 마감 임박 {len(soon)}건" if soon else ""))
-    return {"head": head, "new": [item(p) for p in new_passed], "soon_count": len(soon),
+    return {"head": head, "date": f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]})",
+            "counts": {"new": len(new), "passed": len(new_passed), "soon": len(soon)},
+            "new": [item(p) for p in new_passed], "soon_count": len(soon),
             "soon": [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
             "report": base + "#/report", "jobs": base + "#/jobs"}
 
 
-def telegram_message(d: dict[str, Any]) -> str:
-    """텔레그램 HTML 메시지(4096자 안)."""
-    cfg = config.load("notify")["telegram"]
+MARKS = {"지원 추천": "🟢", "고려": "🟡", "비추천": "⚪"}  # 판정을 한눈에(규칙 점수·점수 없음은 ▫️)
+
+
+def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]]:
+    """텔레그램 HTML 메시지(4096자 안)와 아래 버튼.
+
+    v2(2026-10-21): 머리 두 줄(날짜 / 건수), 공고마다 "판정 표시 회사 점수 · 마감" + 제목 링크 두 줄.
+    위 visible건만 펼쳐 두고 나머지와 마감 임박은 접힌 인용(누르면 펼침). 대시보드 링크는 버튼으로.
+    """
+    cfg = config.load("notify")
+    tg = cfg["telegram"]
 
     def esc(s: str) -> str:
         return html.escape(s, quote=False)
 
-    def link(url: str, text: str) -> str:
-        return f'<a href="{html.escape(url)}">{esc(text)}</a>'
+    def entry(it: dict[str, Any]) -> str:
+        score = "점수 없음" if it["score"] < 0 else f"{it['score']:g}점"
+        mark = MARKS.get(it["verdict"] or "", "▫️")
+        return (f"{mark} <b>{esc(it['company'])}</b>  {score} · {esc(it['deadline'])}\n"
+                f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a>')
 
     def build(top: int, soon_top: int) -> str:
-        lines = [f"<b>{esc(d['head'])}</b>", ""]
-        if d["new"]:
+        c = d["counts"]
+        lines = [f"<b>{esc(d['date'])} 오늘의 공고</b>",
+                 f"새 공고 {c['new']} · 필터 통과 {c['passed']} · 마감 임박 {c['soon']}", ""]
+        shown = d["new"][:top]
+        if shown:
             lines.append("<b>필터 통과 새 공고</b>")
-            for i, it in enumerate(d["new"][:top], 1):
-                lines += [f"{i}. {link(it['url'], it['title'])}", f"    {esc(it['info'])}"]
+            lines += [entry(it) + "\n" for it in shown[:tg["visible"]]]
+            if shown[tg["visible"]:]:
+                lines.append("<blockquote expandable>" + "\n\n".join(entry(it) for it in shown[tg["visible"]:])
+                             + "</blockquote>")
             if len(d["new"]) > top:
-                lines.append(f"외 {len(d['new']) - top}건은 {link(d['jobs'], '공고 목록')}에서")
+                lines.append(f"외 {len(d['new']) - top}건은 공고 목록에서")
         else:
             lines.append("필터를 통과한 새 공고가 없어요.")
         if d["soon"][:soon_top]:
-            lines += ["", f"<b>마감 임박</b> ({config.load('notify')['soon_min_score']}점 이상)"]
-            lines += [f"· {link(it['url'], it['title'])}  {esc(it['info'])}" for it in d["soon"][:soon_top]]
-        lines += ["", f"{link(d['report'], '리포트')} · {link(d['jobs'], '공고 목록')}"]
-        return "\n".join(lines)
+            lines += ["", f"<b>마감 임박</b> {cfg['soon_min_score']}점 이상 {len(d['soon'][:soon_top])}건",
+                      "<blockquote expandable>" + "\n\n".join(entry(it) for it in d["soon"][:soon_top]) + "</blockquote>"]
+        lines += ["", " · ".join(f"{mark} {name}" for name, mark in MARKS.items())]  # 판정 표시 설명
+        return "\n".join(lines).replace("\n\n\n", "\n\n").strip()
 
-    top, soon_top = cfg["top"], cfg["soon_top"]
+    top, soon_top = tg["top"], tg["soon_top"]
     text = build(top, soon_top)
     while len(text) > telegram.TEXT_MAX and top > 1:  # 태그까지 세어 넉넉히 줄인다
         top -= 1
         soon_top = min(soon_top, top)
         text = build(top, soon_top)
-    return text
+    buttons = [[{"text": "리포트", "url": d["report"]}, {"text": "공고 목록", "url": d["jobs"]}]]
+    return text, buttons
 
 
 def kakao_message(d: dict[str, Any]) -> dict[str, Any]:
@@ -143,8 +166,9 @@ def channels() -> list[str]:
     return [c for c in config.load("notify")["channels"] if mods[c].configured()]
 
 
-def run(screen: dict[str, Any], db: Any, today: date, session: Any = None) -> dict[str, Any]:
-    """연결한 사람마다 켜 둔 채널로 아침 알림을 보낸다. 같은 날 두 번 보내지 않고, 한 사람이 실패해도 나머지는 보낸다."""
+def run(screen: dict[str, Any], db: Any, today: date, session: Any = None, again: bool = False) -> dict[str, Any]:
+    """연결한 사람마다 켜 둔 채널로 아침 알림을 보낸다. 같은 날 두 번 보내지 않고(again이면 다시 보내며 그때는
+    오늘 처음 본 공고만), 한 사람이 실패해도 나머지는 보낸다."""
     cfg = config.load("notify")
     defaults = config.load("filters")
     settings = {r["user_id"]: r.get("filters") or {} for r in db.select("settings", "select=user_id,filters")}
@@ -173,19 +197,24 @@ def run(screen: dict[str, Any], db: Any, today: date, session: Any = None) -> di
         s = out[channel] = {"linked": len(links), "sent": 0, "skipped": 0}
         for link in links:
             user = link["user_id"]
-            if link.get("last_sent_on") == today.isoformat():
-                s["skipped"] += 1  # 오늘 이미 보냄(수집을 다시 돌린 날)
-                continue
+            last = link.get("last_sent_on")
+            if last == today.isoformat():
+                if not again:
+                    s["skipped"] += 1  # 오늘 이미 보냄(수집을 다시 돌린 날)
+                    continue
+                last = None  # 다시 보낼 때는 오늘 처음 본 공고만
             try:
-                d = summary_for(user, link.get("last_sent_on"))
+                d = summary_for(user, last)
                 if channel == "telegram":
-                    telegram.send(link["chat_id"], telegram_message(d), session)
+                    text, buttons = telegram_message(d)
+                    telegram.send(link["chat_id"], text, session, buttons=buttons)
                 else:
                     tok = kakao.refresh(link["refresh_token"], session)
                     if tok.get("refresh_token"):  # 1개월 미만 남아 새로 받은 토큰. 바로 저장해야 다음 날도 보낼 수 있다
                         db.update(table, f"user_id=eq.{user}", token_values(tok))
                     kakao.send(tok["access_token"], kakao_message(d), session)
-                db.update(table, f"user_id=eq.{user}", {"last_sent_on": today.isoformat()})
+                if link.get("last_sent_on") != today.isoformat():
+                    db.update(table, f"user_id=eq.{user}", {"last_sent_on": today.isoformat()})
                 s["sent"] += 1
                 log.info("아침 알림(%s) 보냄: 사람 %s, %s", channel, user[:8], d["head"])
             except Exception as e:  # 토큰 값은 오류 문장에 들어가지 않는다(telegram.py, kakao.py)

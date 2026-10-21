@@ -6,7 +6,8 @@
 core.telegram.org/bots/api에서 확인한 것(2026-10-21, Bot API 10.3):
 - 요청: https://api.telegram.org/bot<token>/METHOD, 응답 {"ok": true, "result": ...} 또는 {"ok": false, "error_code", "description"}
 - sendMessage: chat_id, text(엔티티를 풀고 1~4096자), parse_mode "HTML", link_preview_options {"is_disabled": true}
-- HTML: <b> <i> <a href> 등. 태그가 아닌 <, >, &는 &lt; &gt; &amp;로 바꾼다
+- HTML: <b> <i> <a href> <blockquote expandable>(접힌 인용) 등. 태그가 아닌 <, >, &는 &lt; &gt; &amp;로 바꾼다
+- reply_markup.inline_keyboard: 메시지 아래 버튼. url 버튼은 누르면 주소를 연다
 - getUpdates: 봇이 받은 메시지. 받아 가지 않은 메시지는 최대 24시간만 남는다
 """
 
@@ -41,9 +42,14 @@ def _call(method: str, payload: dict[str, Any], session: requests.Session | None
     return body["result"]
 
 
-def send(chat_id: int | str, text: str, session: requests.Session | None = None) -> None:
-    _call("sendMessage", {"chat_id": chat_id, "text": text, "parse_mode": "HTML",
-                          "link_preview_options": {"is_disabled": True}}, session)
+def send(chat_id: int | str, text: str, session: requests.Session | None = None,
+         buttons: list[list[dict[str, str]]] | None = None) -> None:
+    """buttons: 메시지 아래 링크 버튼 줄들([[{"text", "url"}, ...], ...])."""
+    payload: dict[str, Any] = {"chat_id": chat_id, "text": text, "parse_mode": "HTML",
+                               "link_preview_options": {"is_disabled": True}}
+    if buttons:
+        payload["reply_markup"] = {"inline_keyboard": buttons}
+    _call("sendMessage", payload, session)
 
 
 def bot_name(session: requests.Session | None = None) -> str:

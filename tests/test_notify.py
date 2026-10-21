@@ -44,19 +44,31 @@ def test_new_postings_since_the_last_message_count_when_a_day_was_missed():
 
 
 def test_telegram_message_lists_new_and_urgent_postings_as_escaped_html():
-    text = notify.telegram_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))
-    assert text.startswith("<b>10/17(토) 새 공고 5건 · 필터 통과 4건 · 마감 임박 1건</b>")
-    assert '1. <a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">가나다 · Data Engineer</a>\n    92점 지원 추천 · D-12' in text
-    assert "가나다 · A&amp;B &lt;ML&gt;" in text  # 태그가 아닌 <, >, &는 바꾼다
-    assert "<b>마감 임박</b> (70점 이상)\n· " in text and "81점 지원 추천 · D-2" in text
-    assert len(text) <= telegram.TEXT_MAX
+    text, buttons = notify.telegram_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))
+    assert text.startswith("<b>10/17(토) 오늘의 공고</b>\n새 공고 5 · 필터 통과 4 · 마감 임박 1\n\n<b>필터 통과 새 공고</b>")
+    assert ('🟢 <b>가나다</b>  92점 · D-12\n'
+            '<a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">Data Engineer</a>') in text
+    assert "▫️ <b>가나다</b>  88점 · 상시" in text  # 규칙 점수
+    assert "A&amp;B &lt;ML&gt;" in text  # 태그가 아닌 <, >, &는 바꾼다
+    assert "<b>마감 임박</b> 70점 이상 1건\n<blockquote expandable>🟢 <b>가나다</b>  81점 · D-2" in text
+    assert text.endswith("🟢 지원 추천 · 🟡 고려 · ⚪ 비추천")
+    assert buttons == [[{"text": "리포트", "url": "https://careermap-web.oroloov.workers.dev/#/report"},
+                        {"text": "공고 목록", "url": "https://careermap-web.oroloov.workers.dev/#/jobs"}]]
+
+
+def test_telegram_message_folds_postings_after_the_first_five(monkeypatch):
+    screen = {**SCREEN, "postings": [posting(f"m:{i}") for i in range(12)]}
+    text, _ = notify.telegram_message(notify.digest(screen, FILTERS, {}, TODAY))
+    head, folded = text.split("<blockquote expandable>")
+    assert head.count("<a href") == 5 and folded.count("<a href") == 5  # 10건 중 5건은 접어 둔다
+    assert "외 2건은 공고 목록에서" in text
 
 
 def test_telegram_message_says_so_when_nothing_new_passes_and_stays_under_the_limit(monkeypatch):
     none = {**SCREEN, "postings": [SCREEN["postings"][4]]}
-    assert "필터를 통과한 새 공고가 없어요." in notify.telegram_message(notify.digest(none, FILTERS, MATCHES, TODAY))
+    assert "필터를 통과한 새 공고가 없어요." in notify.telegram_message(notify.digest(none, FILTERS, MATCHES, TODAY))[0]
     many = {**SCREEN, "postings": [posting(f"m:{i}", title="데이터 엔지니어 " * 60) for i in range(10)]}
-    assert len(notify.telegram_message(notify.digest(many, FILTERS, {}, TODAY))) <= telegram.TEXT_MAX
+    assert len(notify.telegram_message(notify.digest(many, FILTERS, {}, TODAY))[0]) <= telegram.TEXT_MAX
 
 
 def test_kakao_message_uses_the_list_template_and_falls_back_to_text():
@@ -95,14 +107,16 @@ def keys(monkeypatch):
 
 def test_run_sends_telegram_once_a_day_and_kakao_only_when_switched_on(monkeypatch, keys):
     sent = []
-    monkeypatch.setattr(telegram, "send", lambda chat, text, s=None: sent.append((chat, text)))
+    monkeypatch.setattr(telegram, "send", lambda chat, text, s=None, buttons=None: sent.append((chat, text, buttons)))
     db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 42, "last_sent_on": "2026-10-16"},
                                 {"user_id": "u2", "chat_id": 43, "last_sent_on": "2026-10-17"}],
                 kakao_links=[{"user_id": "u1", "refresh_token": "RT", "last_sent_on": None}])
     s = notify.run(SCREEN, db, TODAY)
     assert s == {"telegram": {"linked": 2, "sent": 1, "skipped": 1}}  # 카톡은 config에서 꺼 둠
-    assert sent[0][0] == 42 and sent[0][1].startswith("<b>10/17(토)")
+    assert sent[0][0] == 42 and sent[0][1].startswith("<b>10/17(토)") and sent[0][2]
     assert db.updates == [("telegram_links", "user_id=eq.u1", {"last_sent_on": "2026-10-17"})]
+    again = notify.run(SCREEN, db, TODAY, again=True)  # 모양 확인용으로 다시 보내기
+    assert again == {"telegram": {"linked": 2, "sent": 2, "skipped": 0}} and len(db.updates) == 2
 
 
 def test_run_keeps_kakao_working_and_saves_a_rotated_token(monkeypatch, keys):
@@ -117,7 +131,7 @@ def test_run_keeps_kakao_working_and_saves_a_rotated_token(monkeypatch, keys):
 
 
 def test_run_reports_errors_without_stopping_other_people(monkeypatch, keys):
-    def send(chat, text, s=None):
+    def send(chat, text, s=None, buttons=None):
         if chat == 1:
             raise telegram.TelegramError("텔레그램 sendMessage 403 Forbidden: bot was blocked by the user")
     monkeypatch.setattr(telegram, "send", send)

@@ -45,6 +45,7 @@ def main(argv: list[str] | None = None) -> int:
                    help="텔레그램 연결: 봇에게 최근에 /start를 보낸 대화방을 저장한 뒤 바로 보낸다")
     n.add_argument("--kakao-code", metavar="CODE", help="카톡 연결: 인가 코드로 토큰을 받아 저장한 뒤 바로 보낸다")
     n.add_argument("--user-id", help="연결할 사람(프로필이 여럿일 때)")
+    n.add_argument("--again", action="store_true", help="오늘 이미 보냈어도 다시 보낸다(모양 확인용)")
 
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
@@ -111,7 +112,7 @@ def main(argv: list[str] | None = None) -> int:
             logging.error("연결 안 됨: %s", e)
             return 1
         built, _ = screen.build(args.data_dir)
-        summary = notify.run(built, store, date.today())
+        summary = notify.run(built, store, date.today(), again=args.again)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
         return 1 if summary.get("errors") else 0  # 실패하면 Actions가 메일로 알려 준다

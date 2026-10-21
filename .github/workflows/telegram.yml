@@ -1,6 +1,6 @@
 # 텔레그램 연결과 아침 알림 다시 보내기. 처음 한 번 연결하는 순서는 docs/setup.md "4. 텔레그램".
 # connect를 켜면: 봇에게 가장 최근에 /start를 보낸 1:1 대화방을 저장하고 오늘 알림을 바로 보낸다(시험 메시지).
-# connect를 끄면: 오늘 알림을 아직 못 받은 사람에게만 보낸다.
+# connect를 끄면: 오늘 알림을 아직 못 받은 사람에게만 보낸다. again을 켜면 오늘 받았어도 다시 보낸다.
 # 수동 실행: GitHub > Actions > telegram > Run workflow
 name: telegram
 
@@ -11,6 +11,10 @@ on:
         description: 텔레그램 연결(봇에게 /start를 보낸 뒤 24시간 안에)
         type: boolean
         default: true
+      again:
+        description: 오늘 이미 받았어도 다시 보내기(모양 확인용, 오늘 처음 본 공고만)
+        type: boolean
+        default: false
       user_id:
         description: 연결할 사람 id(프로필이 하나면 비운다)
         required: false
@@ -51,9 +55,11 @@ jobs:
       - name: 텔레그램 연결·보내기
         env:
           CONNECT: ${{ inputs.connect }}
+          AGAIN: ${{ inputs.again }}
           USER_ID: ${{ inputs.user_id }}
         run: |
           args=(--data-dir data)
           if [ "$CONNECT" = "true" ]; then args+=(--telegram-connect); fi
+          if [ "$AGAIN" = "true" ]; then args+=(--again); fi
           if [ -n "$USER_ID" ]; then args+=(--user-id "$USER_ID"); fi
           uv run --no-dev jobpost notify "${args[@]}"
