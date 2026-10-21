@@ -12,9 +12,9 @@ on:
         required: false
         default: "5000"
       minutes:
-        description: 이 시간(분)이 지나면 멈춘다
+        description: 이 시간(분)이 지나면 멈춘다. 아침 수집(04:17, 실제로는 7시 전후)과 겹치면 수집이 기다리니 그 시간은 피한다
         required: false
-        default: "90"
+        default: "30"
       find:
         description: 쉼표로 구분한 말. DART 회사 목록에서 이 말이 든 이름을 로그에 남긴다(손으로 이을 때, 보통 비움)
         required: false
@@ -60,6 +60,7 @@ jobs:
           restore-keys: dart-corpcode-
 
       - name: 회사 기본정보(DART)
+        shell: bash  # pipefail: 실패하면 | tee에 가려지지 않게
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
           DART_CACHE: .cache/dart
@@ -68,7 +69,7 @@ jobs:
           RAW: ${{ inputs.raw }}
           MINUTES: ${{ inputs.minutes }}
         run: |
-          uv run --no-dev jobpost dart --data-dir data --budget "${BUDGET:-5000}" --raw "${RAW:-0}" --minutes "${MINUTES:-90}" --find "${FIND:-}" | tee dart.json
+          uv run --no-dev jobpost dart --data-dir data --budget "${BUDGET:-5000}" --raw "${RAW:-0}" --minutes "${MINUTES:-30}" --find "${FIND:-}" | tee dart.json
           echo '### 회사 기본정보(DART)' >> "$GITHUB_STEP_SUMMARY"
           echo '```json' >> "$GITHUB_STEP_SUMMARY"
           cat dart.json >> "$GITHUB_STEP_SUMMARY"

@@ -54,7 +54,7 @@ export function ColumnChart({ data, label }: { data: Bin[]; label: string }) {
   return (
     <div className="chart" ref={ref}>
       {width > 0 && (
-        <svg width={width} height={H} role="img" aria-label={label} onPointerLeave={() => setHover(null)}>
+        <svg width={width} height={H} role="group" aria-label={label} onPointerLeave={() => setHover(null)}>
           {ticks.map((t) => (
             <g key={t}>
               <line x1={pad.l} x2={width - pad.r} y1={y(t)} y2={y(t)} className="grid" />
@@ -138,8 +138,8 @@ const CORNERS: { q: Quadrant; x: 'l' | 'r'; y: 't' | 'b' }[] = [
   { q: 'grow', x: 'l', y: 't' }, { q: 'apply', x: 'r', y: 't' }, { q: 'reduce', x: 'l', y: 'b' }, { q: 'keep', x: 'r', y: 'b' },
 ]
 
-/** 글자 폭 어림(12px): 한글 12, 그 밖 7 */
-const textWidth = (s: string) => [...s].reduce((w, ch) => w + (/[ㄱ-힝]/.test(ch) ? 12 : 7), 0)
+/** 글자 폭 어림(13px): 한글 13, 그 밖 7.5 */
+const textWidth = (s: string) => [...s].reduce((w, ch) => w + (/[ㄱ-힝]/.test(ch) ? 13 : 7.5), 0)
 
 interface Box { x: number; y: number; w: number; h: number }
 
@@ -188,11 +188,25 @@ export function PositionMap({ list, demandLine, mine, label }: {
     labels.set(p.id, pick.at)
   }
   const hovered = shown.find((p) => p.id === hover)
+  // 점이 겹쳐도 모두 고를 수 있게 포인터에서 가장 가까운 점(24px 안)
+  const nearest = (px: number, py: number): string | null => {
+    let best: string | null = null
+    let dist = 24 * 24
+    for (const p of shown) {
+      const d = (x(p.fit!) - px) ** 2 + (y(p.open) - py) ** 2
+      if (d < dist) {
+        dist = d
+        best = p.id
+      }
+    }
+    return best
+  }
 
   return (
     <div className="chart" ref={ref}>
       {width > 0 && (
-        <svg width={width} height={H} role="img" aria-label={label} onPointerLeave={() => setHover(null)}>
+        <svg width={width} height={H} role="group" aria-label={label} onPointerLeave={() => setHover(null)}
+          onPointerMove={(e) => setHover(nearest(e.nativeEvent.offsetX, e.nativeEvent.offsetY))}>
           {ticks.map((t) => (
             <g key={t}>
               <line x1={pad.l} x2={width - pad.r} y1={y(t)} y2={y(t)} className="grid" />
@@ -217,9 +231,10 @@ export function PositionMap({ list, demandLine, mine, label }: {
               <g key={p.id}>
                 <circle cx={x(p.fit!)} cy={y(p.open)} r={hover === p.id ? 6.5 : 5} className={on ? 'dot on' : 'dot'} />
                 <text x={l.x} y={l.y} className={on ? 'dot-label on' : 'dot-label'} textAnchor={l.anchor} dominantBaseline="middle">{p.short}</text>
+                {/* 마우스는 가장 가까운 점(nearest)으로, 키보드는 점마다 포커스 */}
                 <circle cx={x(p.fit!)} cy={y(p.open)} r={14} className="hit" tabIndex={0}
                   aria-label={`${p.name} ${copy.career.open(p.open)} ${copy.career.fit(p.fit)}`}
-                  onPointerEnter={() => setHover(p.id)} onFocus={() => setHover(p.id)} onBlur={() => setHover(null)} />
+                  onFocus={() => setHover(p.id)} onBlur={() => setHover(null)} />
               </g>
             )
           })}
@@ -239,19 +254,20 @@ export function PositionMap({ list, demandLine, mine, label }: {
   )
 }
 
-/** 몇 해 안 되는 값(연도별 매출). 막대마다 값을 적는다(3~5개라 다 읽힌다). 음수는 0 아래로 */
+/** 몇 해 안 되는 값(연도별 매출). 막대마다 값을 적는다(3~5개라 다 읽혀서 툴팁·포커스는 두지 않는다).
+ * 음수는 0 아래로, 마지막 해만 강조색 */
 export function YearBars({ data, label, format }: {
   data: { year: number; value: number | null | undefined }[]
   label: string
   format: (v: number) => string
 }) {
   const [ref, width] = useWidth<HTMLDivElement>()
-  const [hover, setHover] = useState<number | null>(null)
-  const H = 150
-  const pad = { l: 8, r: 8, t: 22, b: 24 }
   const vals = data.map((d) => d.value ?? 0)
   const max = Math.max(0, ...vals)
   const min = Math.min(0, ...vals)
+  const H = min < 0 ? 166 : 150
+  // 음수 막대 아래에 값을 적을 자리를 연도 위에 따로 둔다
+  const pad = { l: 8, r: 8, t: 22, b: min < 0 ? 42 : 24 }
   const span = max - min || 1
   const plotW = Math.max(0, width - pad.l - pad.r)
   const plotH = H - pad.t - pad.b
@@ -260,29 +276,29 @@ export function YearBars({ data, label, format }: {
   const y = (v: number) => pad.t + ((max - v) / span) * plotH
   const zero = y(0)
   const last = data.length - 1
+  const summary = `${label} ${data.map((d) => `${d.year} ${d.value === null || d.value === undefined ? '-' : format(d.value)}`).join(', ')}`
 
   return (
     <div className="chart" ref={ref}>
       {width > 0 && (
-        <svg width={width} height={H} role="img" aria-label={label} onPointerLeave={() => setHover(null)}>
+        <svg width={width} height={H} role="img" aria-label={summary}>
           <line x1={pad.l} x2={width - pad.r} y1={zero} y2={zero} className="grid" />
           {data.map((d, i) => {
             const cx = pad.l + slot * i + slot / 2
             const v = d.value
-            const top = v === null || v === undefined ? zero : Math.min(y(v), zero)
-            const h = v === null || v === undefined ? 0 : Math.abs(y(v) - zero)
+            if (v === null || v === undefined) {
+              return <text key={d.year} x={cx} y={H - 6} className="tick" textAnchor="middle">{d.year}</text>
+            }
+            const top = Math.min(y(v), zero)
+            const h = Math.abs(y(v) - zero)
+            const cls = i === last ? 'mark' : 'mark off'
             return (
               <g key={d.year}>
-                {h > 0 && (v! >= 0
-                  ? <path d={columnPath(cx - barW / 2, top, barW, h)} className={i === last ? (hover === i ? 'mark on' : 'mark') : (hover === i ? 'mark off on' : 'mark off')} />
-                  : <rect x={cx - barW / 2} y={top} width={barW} height={h} className="mark neg" />)}
-                {v !== null && v !== undefined && (
-                  <text x={cx} y={v >= 0 ? top - 6 : top + h + 14} className="value" textAnchor="middle">{format(v)}</text>
-                )}
+                {h > 0 && (v >= 0
+                  ? <path d={columnPath(cx - barW / 2, top, barW, h)} className={cls} />
+                  : <rect x={cx - barW / 2} y={top} width={barW} height={h} className={cls} />)}
+                <text x={cx} y={v >= 0 ? top - 6 : top + h + 14} className="value" textAnchor="middle">{format(v)}</text>
                 <text x={cx} y={H - 6} className="tick" textAnchor="middle">{d.year}</text>
-                <rect x={pad.l + slot * i} y={pad.t} width={slot} height={plotH} className="hit" tabIndex={0}
-                  aria-label={`${d.year} ${v === null || v === undefined ? '-' : format(v)}`}
-                  onPointerEnter={() => setHover(i)} onFocus={() => setHover(i)} onBlur={() => setHover(null)} />
               </g>
             )
           })}

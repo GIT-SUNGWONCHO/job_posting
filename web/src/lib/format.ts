@@ -50,31 +50,36 @@ export const signed = (n: number) => (n > 0 ? `+${n.toLocaleString()}` : n.toLoc
 /** 2026-10 */
 export const monthOf = (iso: string) => iso.slice(0, 7)
 
-/** 금액(원): 1조 이상은 12.3조, 10억 이상은 1,234억, 1억 이상은 3.2억, 그 아래는 1,234만 원 */
+/** 금액(원): 1조 이상은 12.3조, 10억 이상은 1,234억, 1억 이상은 3.2억, 그 아래는 1,234만 원(반올림한 뒤 단위를 고른다) */
 export function money(won: number): string {
   const sign = won < 0 ? '-' : ''
   const v = Math.abs(won)
-  if (v >= 1e12) return `${sign}${(v / 1e12).toFixed(1)}조`
-  if (v >= 1e9) return `${sign}${Math.round(v / 1e8).toLocaleString()}억`
-  if (v >= 1e8) return `${sign}${(v / 1e8).toFixed(1)}억`
+  const jo = Math.round(v / 1e11) / 10
+  if (jo >= 1) return `${sign}${jo.toFixed(1)}조`
+  const eok = v / 1e8
+  if (Math.round(eok * 10) / 10 >= 10) return `${sign}${Math.round(eok).toLocaleString()}억`
+  if (eok >= 1 || Math.round(v / 1e4) >= 10000) return `${sign}${(Math.round(eok * 10) / 10).toFixed(1)}억`
   return `${sign}${Math.round(v / 1e4).toLocaleString()}만 원`
 }
 
-/** 1인 평균 급여처럼 만 원 단위로: 9,800만 원 */
-export const manwon = (won: number) => `${Math.round(won / 1e4).toLocaleString()}만 원`
-
-/** 전년 대비 증감: ▲12.3%, ▼4.0%. 비교할 값이 없거나 0 이하이면 null */
+/** 전년 대비 증감: ▲12.3%, ▼4.0%, 0.0%. 부호가 바뀌면 흑자 전환 · 적자 전환, 둘 다 손실이면 적자 지속.
+ * 비교할 값이 없거나 전년이 0이면 null */
 export function growth(cur: number | null | undefined, prev: number | null | undefined): string | null {
-  if (cur === null || cur === undefined || !prev || prev <= 0) return null
-  const pct = ((cur - prev) / prev) * 100
-  return `${pct >= 0 ? '▲' : '▼'}${Math.abs(pct).toFixed(1)}%`
+  if (cur === null || cur === undefined || prev === null || prev === undefined || prev === 0) return null
+  if (prev > 0 && cur < 0) return '적자 전환'
+  if (prev < 0 && cur > 0) return '흑자 전환'
+  if (prev < 0 && cur <= 0) return '적자 지속'
+  const pct = Math.round(((cur - prev) / prev) * 1000) / 10
+  if (pct === 0) return '0.0%'
+  return `${pct > 0 ? '▲' : '▼'}${Math.abs(pct).toFixed(1)}%`
 }
 
-/** 비율의 증감: ▲1.2%p */
+/** 비율의 증감: ▲1.2%p, 0.0%p(반올림한 뒤 화살표를 고른다) */
 export function pointChange(cur: number | null, prev: number | null): string | null {
   if (cur === null || prev === null) return null
-  const d = cur - prev
-  return `${d >= 0 ? '▲' : '▼'}${Math.abs(d).toFixed(1)}%p`
+  const d = Math.round((cur - prev) * 10) / 10
+  if (d === 0) return '0.0%p'
+  return `${d > 0 ? '▲' : '▼'}${Math.abs(d).toFixed(1)}%p`
 }
 
 /** 2026.03(접수번호 앞 8자리 YYYYMMDD나 YYYY-MM-DD에서) */

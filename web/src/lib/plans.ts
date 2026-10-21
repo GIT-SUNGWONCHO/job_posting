@@ -21,12 +21,14 @@ export interface Plan {
 
 const LOCAL_KEY = 'jobpost.plans.v1'
 
-export async function loadPlans(): Promise<Plan[] | null> {
+/** 할 일 전부. 표가 아직 없으면(008을 실행하기 전) 'missing', 그 밖의 오류는 'failed' */
+export async function loadPlans(): Promise<Plan[] | 'missing' | 'failed'> {
   if (!supabase) return readLocal<Plan[]>(LOCAL_KEY) ?? []
   const { data, error } = await supabase.from('plans').select('id, month, text, kind, skill, done, created_at')
     .order('created_at')
-  // 표가 아직 없으면(008을 실행하기 전) null: 화면이 안내를 띄운다
-  if (error || !data) return null
+  // 42P01: Postgres 표 없음, PGRST205: PostgREST가 표를 찾지 못함
+  if (error) return error.code === '42P01' || error.code === 'PGRST205' ? 'missing' : 'failed'
+  if (!data) return 'failed'
   return data.map((r) => ({
     id: r.id as string, month: r.month as string, text: r.text as string, kind: r.kind as PlanKind,
     skill: (r.skill as string | null) ?? null, done: !!r.done, createdAt: r.created_at as string,

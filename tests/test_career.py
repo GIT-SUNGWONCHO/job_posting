@@ -33,3 +33,20 @@ def test_current_career_buckets_and_skills_from_bodies():
     cur = out["current"]["data_eng|대기업"]
     assert cur["career"] == {"7-12": 1, "any": 1} and cur["withBody"] == 2
     assert dict(cur["skills"])["Airflow"] == 2
+
+
+def test_bucket_treats_entry_level_and_upper_bound_only_as_under_three_years():
+    assert career.bucket(None, 0) == "0-3"  # 신입
+    assert career.bucket(None, 5) == "0-3"  # 경력 5년 이하
+    assert career.bucket(0, None) == "any" and career.bucket(None, None) == "any"  # 연차 무관
+    assert career.bucket(3, 7) == "3-7" and career.bucket(120, None) == "12+"
+
+
+def test_duplicate_group_uses_earliest_first_seen_and_stays_open_while_any_member_is():
+    state = {r["uid"]: r for r in [
+        rec("a", "2026-10-14", closed="2026-10-15"),  # 대표는 늦게 처음 보고 먼저 내려갔다
+        rec("f", "2026-10-13", dup_of="a"),           # 같은 공고가 다른 수집처에 먼저, 아직 열려 있다
+    ]}
+    out = career.build(state, Registry(), [], {}, {}, date(2026, 10, 15))
+    assert out["series"]["data_eng|대기업"] == {"open": [1, 1, 1], "new": [None, 0, 0]}
+    assert "Airflow" in out["dictionary"]

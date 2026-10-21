@@ -14,6 +14,16 @@ import { href, type CareerSeg } from '../lib/route'
 import type { CareerMetrics, Filters, Screen } from '../lib/types'
 
 const t = copy.career
+
+/** 할 일: 받기 전(undefined), 표가 없음(008 실행 전), 불러오기 실패 */
+type PlansState = Plan[] | 'missing' | 'failed' | undefined
+
+function PlansNote({ plans }: { plans: PlansState }) {
+  if (plans === 'missing') return <p className="note urgent">{t.noTable}</p>
+  if (plans === 'failed') return <p className="note urgent">{t.plansFailed}</p>
+  if (plans === undefined) return <p className="note">{copy.load.loading}</p>
+  return null
+}
 const SEGS: CareerSeg[] = ['market', 'position', 'plan']
 const SKILLS_SHOWN = 15
 const MY_SKILLS_SHOWN = 10
@@ -29,7 +39,7 @@ export function Career({ screen, seg, filters, matches, today }: {
 }) {
   const m = screen.career
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined)
-  const [plans, setPlans] = useState<Plan[] | null | undefined>(undefined)
+  const [plans, setPlans] = useState<PlansState>(undefined)
   useEffect(() => {
     let alive = true
     loadProfile().then((r) => alive && setProfile(r?.profile ?? null))
@@ -41,6 +51,8 @@ export function Career({ screen, seg, filters, matches, today }: {
 
   const direction = screen.jobTypes.filter((j) => j.direction !== false)
   const myJobs = (filters.job_types ?? []).filter((id) => direction.some((j) => j.id === id))
+  // 직무 필터가 비면 커리어 방향인 직무 전부(라벨링·데이터 아닌 직무는 뺀다)
+  const myJobsOrAll = myJobs.length ? myJobs : direction.map((j) => j.id)
   const ctypes = filters.company_types?.length ? filters.company_types : null
   const mine = useMemo(() => mySkills(profile ?? null), [profile])
   const toJob = useMemo(() => roleToJob(screen.profileOptions, screen.jobTypes), [screen])
@@ -55,12 +67,15 @@ export function Career({ screen, seg, filters, matches, today }: {
   async function addPlan(p: Plan): Promise<boolean> {
     const ok = await savePlan(p)
     // 고친 할 일은 제자리에서 바꾸고, 새 할 일은 끝에 붙인다
-    if (ok) setPlans((prev) => (prev?.some((x) => x.id === p.id) ? prev.map((x) => (x.id === p.id ? p : x)) : [...(prev ?? []), p]))
+    if (ok) {
+      setPlans((prev) => (!Array.isArray(prev) ? prev
+        : prev.some((x) => x.id === p.id) ? prev.map((x) => (x.id === p.id ? p : x)) : [...prev, p]))
+    }
     return ok
   }
   async function removePlan(id: string): Promise<boolean> {
     const ok = await deletePlan(id)
-    if (ok) setPlans((prev) => (prev ?? []).filter((x) => x.id !== id))
+    if (ok) setPlans((prev) => (Array.isArray(prev) ? prev.filter((x) => x.id !== id) : prev))
     return ok
   }
 
@@ -90,7 +105,7 @@ export function Career({ screen, seg, filters, matches, today }: {
       {head}
       {seg === 'market' && <Market m={m} screen={screen} myJobs={myJobs} ctypes={ctypes} profile={profile ?? null} mine={mine} />}
       {seg === 'position' && (needProfile ? <NoProfile /> : profile && (
-        <PositionView m={m} pos={pos.list} demandLine={pos.demandLine} myJobs={myJobs} ctypes={ctypes} mine={mine}
+        <PositionView m={m} pos={pos.list} demandLine={pos.demandLine} myJobs={myJobs} slice={{ jobs: myJobsOrAll, ctypes }} mine={mine}
           levels={screen.profileOptions?.skill_levels ?? []} plans={plans} month={monthOf(today)} onAdd={addPlan} />
       ))}
       {seg === 'plan' && (needProfile ? <NoProfile /> : profile && (
@@ -129,10 +144,13 @@ function Market({ m, screen, myJobs, ctypes, profile, mine }: {
   const series = sumSeries(m, slice)
   const stats = periodStats(series, days)
   const cur = currentOf(m, slice)
-  const data = bins(m.days, series.new, stats.from)
-  const weekly = data.length > 1 && data[0].start !== data[0].end
+  const { bins: data, size } = bins(m.days, series.new, stats.from)
+  const weekly = size > 1
   const label = t.period(days)
-  const change = stats.prevSum ? `${signed(Math.round(((stats.newSum - stats.prevSum) / stats.prevSum) * 100))}%` : null
+  // 앞 기간이 0건이면 비율 대신 건수 차이
+  const change = stats.prevSum === null ? null
+    : stats.prevSum === 0 ? t.count(stats.newSum - stats.prevSum).replace(/^/, stats.newSum > 0 ? '+' : '')
+      : `${signed(Math.round(((stats.newSum - stats.prevSum) / stats.prevSum) * 100))}%`
   const years = profile ? careerTotals(profile)[1] : null
   const myBucket = years !== null && profile?.careers.length ? bucketOf(years) : null
   // 직무별 열린 공고: 같은 기업 구분, 모든 직무(내 직무 먼저 강조)
@@ -151,7 +169,7 @@ function Market({ m, screen, myJobs, ctypes, profile, mine }: {
             <Chip key={j.id} selected={job === j.id} onClick={() => setJob(j.id)}>{j.short ?? j.name}</Chip>
           ))}
         </div>
-        <div className="chips" role="group" aria-label="기간">
+        <div className="chips" role="group" aria-label={t.periodLabel}>
           {[...options, 0].map((d) => <Chip key={d} selected={days === d} onClick={() => setDays(d)}>{t.period(d)}</Chip>)}
         </div>
       </div>
@@ -207,27 +225,32 @@ function Market({ m, screen, myJobs, ctypes, profile, mine }: {
 }
 
 /** 내 위치(C2): 포지션 맵과 표, 내 스킬의 수요, 채우면 좋은 것 */
-function PositionView({ m, pos, demandLine, myJobs, ctypes, mine, levels, plans, month, onAdd }: {
+function PositionView({ m, pos, demandLine, myJobs, slice, mine, levels, plans, month, onAdd }: {
   m: CareerMetrics
   pos: Position[]
   demandLine: number
   myJobs: string[]
-  ctypes: string[] | null
+  slice: Slice
   mine: Map<string, number>
   levels: { level: number; name: string }[]
-  plans: Plan[] | null | undefined
+  plans: PlansState
   month: string
   onAdd: (p: Plan) => Promise<boolean>
 }) {
   const [allSkills, setAllSkills] = useState(false)
   const mySet = new Set(myJobs)
-  const cur = currentOf(m, { jobs: myJobs.length ? myJobs : null, ctypes })
+  const cur = currentOf(m, slice)
   const counts = new Map(cur.skills)
+  // 스킬 사전에 없는 프로필 스킬은 공고에서 셀 수 없다(0건과 다르다)
+  const dictionary = m.dictionary ? new Set(m.dictionary) : null
   const levelName = (lv: number) => levels.find((l) => l.level === lv)?.name ?? t.levelNone
-  const mySkillRows = [...mine.entries()].map(([name, lv]) => ({ name, lv, n: counts.get(name) ?? 0 })).sort((a, b) => b.n - a.n)
+  const mySkillRows = [...mine.entries()]
+    .map(([name, lv]) => ({ name, lv, n: counts.get(name) ?? 0, known: !dictionary || dictionary.has(name) }))
+    .sort((a, b) => Number(b.known) - Number(a.known) || b.n - a.n)
   const fill = gaps(cur.skills, mine, 8)
-  const planned = new Set((plans ?? []).filter((p) => !p.done && p.skill).map((p) => p.skill!))
-  const quads = (['apply', 'grow', 'keep', 'reduce'] as const).map((q) => ({ q, list: pos.filter((p) => p.quadrant === q && p.fit !== null) }))
+  const ready = Array.isArray(plans)
+  const planned = new Set((ready ? plans : []).filter((p) => !p.done && p.skill).map((p) => p.skill!))
+  const quads = (['apply', 'grow', 'keep', 'reduce'] as const).map((q) => ({ q, list: pos.filter((p) => p.quadrant === q) }))
 
   return (
     <>
@@ -248,7 +271,8 @@ function PositionView({ m, pos, demandLine, myJobs, ctypes, mine, levels, plans,
                 <span className="quad-name">{p.name}{mySet.has(p.id) && <span className="bar-tag">{t.myJobs}</span>}</span>
                 <span className="quad-meta">
                   {[
-                    `${t.open(p.open)}${p.change !== null ? ` (${signed(p.change)})` : ''}`,
+                    t.open(p.open),
+                    p.change !== null && t.change(signed(p.change)),
                     t.fit(p.fit),
                     p.years > 0 && t.years(yearsText(Math.round(p.years * 10) / 10)),
                     p.match && t.matchAvg(p.match.avg, p.match.n),
@@ -264,7 +288,8 @@ function PositionView({ m, pos, demandLine, myJobs, ctypes, mine, levels, plans,
         <SectionTitle>{t.mySkillDemand}</SectionTitle>
         <p className="note small">{t.mySkillDemandNote} · {t.topSkillsNote(cur.withBody)}</p>
         <BarList rows={(allSkills ? mySkillRows : mySkillRows.slice(0, MY_SKILLS_SHOWN)).map((r) => ({
-          key: r.name, label: r.name, value: r.n, text: t.share(r.n, pct(r.n, cur.withBody)), on: true, tag: levelName(r.lv),
+          key: r.name, label: r.name, value: r.n, text: r.known ? t.share(r.n, pct(r.n, cur.withBody)) : t.notInDictionary,
+          on: true, tag: levelName(r.lv),
         }))} />
         {!allSkills && mySkillRows.length > MY_SKILLS_SHOWN && (
           <button type="button" className="text-link" onClick={() => setAllSkills(true)}>{t.more(mySkillRows.length - MY_SKILLS_SHOWN)}</button>
@@ -274,7 +299,7 @@ function PositionView({ m, pos, demandLine, myJobs, ctypes, mine, levels, plans,
       <section className="section">
         <SectionTitle>{t.fill}</SectionTitle>
         <p className="note small">{t.fillNote}</p>
-        {plans === null && <p className="note urgent">{t.noTable}</p>}
+        <PlansNote plans={plans} />
         <div className="rows">
           {fill.map((g) => (
             <div key={g.name} className="fill-row">
@@ -287,7 +312,7 @@ function PositionView({ m, pos, demandLine, myJobs, ctypes, mine, levels, plans,
               </span>
               {planned.has(g.name)
                 ? <span className="note small">{t.inPlan}</span>
-                : <AddPlanButton disabled={plans === null} onAdd={() => onAdd(newPlan(month, t.planText(g.name), 'study', g.name))} />}
+                : <AddPlanButton disabled={!ready} onAdd={() => onAdd(newPlan(month, t.planText(g.name), 'study', g.name))} />}
             </div>
           ))}
         </div>
@@ -312,7 +337,7 @@ function PlanView({ pos, targets, mine, plans, month, onSave, onRemove }: {
   pos: Position[]
   targets: string[]
   mine: Map<string, number>
-  plans: Plan[] | null | undefined
+  plans: PlansState
   month: string
   onSave: (p: Plan) => Promise<boolean>
   onRemove: (id: string) => Promise<boolean>
@@ -330,11 +355,12 @@ function PlanView({ pos, targets, mine, plans, month, onSave, onRemove }: {
               <div key={p.id} className="goal">
                 <div className="goal-head">
                   <h3>{p.name}</h3>
-                  <span className="quad-chip">{t.quadrants[p.quadrant]}</span>
+                  {p.quadrant && <span className="quad-chip">{t.quadrants[p.quadrant]}</span>}
                 </div>
                 <div className="quad-meta">
                   {[
-                    `${t.open(p.open)}${p.change !== null ? ` (${signed(p.change)})` : ''}`,
+                    t.open(p.open),
+                    p.change !== null && t.change(signed(p.change)),
                     t.fit(p.fit),
                     t.years(yearsText(Math.round(p.years * 10) / 10)),
                     p.match && t.matchAvg(p.match.avg, p.match.n),
@@ -360,7 +386,7 @@ function PlanView({ pos, targets, mine, plans, month, onSave, onRemove }: {
         <div className="rows">
           {others.map((p) => (
             <div key={p.id} className="quad-row">
-              <span className="quad-name">{p.name}<span className="quad-chip">{t.quadrants[p.quadrant]}</span></span>
+              <span className="quad-name">{p.name}{p.quadrant && <span className="quad-chip">{t.quadrants[p.quadrant]}</span>}</span>
               <span className="quad-meta">{[t.open(p.open), t.fit(p.fit), p.years > 0 && t.years(yearsText(Math.round(p.years * 10) / 10))].filter(Boolean).join(' · ')}</span>
             </div>
           ))}
@@ -378,7 +404,7 @@ function PlanView({ pos, targets, mine, plans, month, onSave, onRemove }: {
 }
 
 function Todos({ plans, month, onSave, onRemove }: {
-  plans: Plan[] | null | undefined
+  plans: PlansState
   month: string
   onSave: (p: Plan) => Promise<boolean>
   onRemove: (id: string) => Promise<boolean>
@@ -387,7 +413,7 @@ function Todos({ plans, month, onSave, onRemove }: {
   const [kind, setKind] = useState<PlanKind>('study')
   const [failed, setFailed] = useState(false)
   const [saving, setSaving] = useState(false)
-  const view = monthView(plans ?? [], month)
+  const view = monthView(Array.isArray(plans) ? plans : [], month)
 
   async function run(job: Promise<boolean>) {
     setSaving(true)
@@ -416,7 +442,7 @@ function Todos({ plans, month, onSave, onRemove }: {
   return (
     <section className="section">
       <SectionTitle right={<span className="count">{month.replace('-', '.')}</span>}>{t.todo}</SectionTitle>
-      {plans === null ? <p className="note urgent">{t.noTable}</p> : (
+      {!Array.isArray(plans) ? <PlansNote plans={plans} /> : (
         <>
           {view.now.length === 0 ? <p className="note">{t.todoEmpty}</p> : <div className="todos">{view.now.map(item)}</div>}
           {view.carried.length > 0 && (

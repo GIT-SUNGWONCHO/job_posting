@@ -2,7 +2,8 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { copy } from '../copy'
 import { YearBars } from '../components/charts'
 import { JobRow, SectionTitle } from '../components/ui'
-import { dartUrl, dateText, growth, manwon, money, pointChange, yearMonth } from '../lib/format'
+import { passes } from '../lib/filter'
+import { dartUrl, dateText, growth, money, pointChange, yearMonth } from '../lib/format'
 import { loadCompanies } from '../lib/load'
 import { goBack, href } from '../lib/route'
 import type { CompaniesFile, CompanyBasics, DartBasics, Filters, PastPosting, Screen } from '../lib/types'
@@ -21,8 +22,12 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
   panel?: boolean
 }) {
   const c = screen.companies[companyKey]
-  const open = screen.postings.filter((p) => p.company === companyKey && !p.noise)
+  // 필터를 통과한 공고(회사 목록의 "열린 공고" 수와 같은 것)를 먼저, 나머지는 그 뒤에
+  const all = screen.postings.filter((p) => p.company === companyKey && !p.noise)
+  const passed = all.filter((p) => passes(p, c, filters))
+  const open = [...passed, ...all.filter((p) => !passed.includes(p))]
   const [file, setFile] = useState<CompaniesFile | null | 'failed'>(null)
+  const [attempt, setAttempt] = useState(0)
   const [allOpen, setAllOpen] = useState(false)
   useEffect(() => {
     let alive = true
@@ -30,7 +35,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
     return () => {
       alive = false
     }
-  }, [])
+  }, [attempt])
   const basics: CompanyBasics | undefined = file && file !== 'failed' ? file.companies[companyKey] : undefined
   const dart = basics?.dart
   const listed = dart && 'market' in dart && dart.market ? t.market(dart.market) : null
@@ -55,13 +60,21 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
           {t.overview}
         </SectionTitle>
         {file === null && <p className="note">{t.loading}</p>}
-        {file === 'failed' && <p className="note">{t.loadFailed}</p>}
+        {file === 'failed' && (
+          <div className="load-failed">
+            <p className="note">{t.loadFailed}</p>
+            <button type="button" className="text-link" onClick={() => { setFile(null); setAttempt((a) => a + 1) }}>{copy.load.retry}</button>
+          </div>
+        )}
         {file && file !== 'failed' && <Overview basics={basics} />}
       </section>
 
       <section className="section">
         <SectionTitle right={<span className="count">{t.daily}</span>}>{t.hiring}</SectionTitle>
-        <div className="sub-head">{copy.jobs.openCount(open.length)}</div>
+        <div className="sub-head">
+          <span>{copy.jobs.openCount(open.length)}</span>
+          {passed.length < open.length && <span className="count">{t.openPassed(passed.length)}</span>}
+        </div>
         <div className="rows">
           {(allOpen ? open : open.slice(0, OPEN_SHOWN)).map((p) => <JobRow key={p.id} p={p} c={c} today={today} showCompany={false} />)}
         </div>
@@ -101,12 +114,17 @@ function DartOverview({ d }: { d: DartBasics }) {
   const revenueLabel = fin?.revenueName === '영업수익' ? t.operatingRevenue : t.revenue
   const margin = (y: typeof cur | undefined) =>
     y && y.revenue && y.operating !== null && y.operating !== undefined ? (y.operating / y.revenue) * 100 : null
+  // 전년 중간에 세운 회사(분할 신설 등)는 전년이 몇 달치라 전년 대비를 보여주지 않는다
+  const partialPrev = !!(prev && d.founded && d.founded > `${prev.year}-01-01`)
+  const vs = (delta: string | null) => (partialPrev ? null : delta)
   const emp = d.employees
   const info: [string, ReactNode][] = []
+  const legal = d.legalName || d.corpName
+  if (legal) info.push([t.legalName, legal])
   if (d.ceo) info.push([t.ceo, d.ceo])
   if (d.founded) info.push([t.founded, dateText(d.founded, true)])
   if (d.homepage) {
-    info.push([t.homepage, <a key="hp" className="text-link inline" href={d.homepage} target="_blank" rel="noreferrer noopener">
+    info.push([t.homepage, <a key="hp" className="plain-link" href={d.homepage} target="_blank" rel="noreferrer noopener">
       {d.homepage.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗</a>])
   }
 
@@ -117,14 +135,15 @@ function DartOverview({ d }: { d: DartBasics }) {
           {/* 금융사처럼 매출액 줄이 없으면 영업이익·순이익만(다른 계정으로 바꿔 넣지 않는다) */}
           {hasRevenue ? (
             <div className="tiles three">
-              <Tile label={t.yearOf(revenueLabel, cur.year)} value={cur.revenue} delta={growth(cur.revenue, prev?.revenue)} fmt={money} />
-              <Tile label={t.operating} value={cur.operating} delta={growth(cur.operating, prev?.operating)} fmt={money} />
-              <Tile label={t.margin} value={margin(cur)} delta={pointChange(margin(cur), margin(prev))} fmt={(v) => `${v.toFixed(1)}%`} />
+              <Tile label={t.yearOf(revenueLabel, cur.year)} value={cur.revenue} delta={vs(growth(cur.revenue, prev?.revenue))} fmt={money} />
+              <Tile label={t.operating} value={cur.operating} delta={vs(growth(cur.operating, prev?.operating))} fmt={money} />
+              <Tile label={t.margin} value={margin(cur)} delta={vs(pointChange(margin(cur), margin(prev)))} fmt={(v) => `${v.toFixed(1)}%`} />
             </div>
           ) : (
             <div className="tiles">
-              <Tile label={t.yearOf(t.operating, cur.year)} value={cur.operating} delta={growth(cur.operating, prev?.operating)} fmt={money} />
-              <Tile label={t.net} value={cur.net} delta={growth(cur.net, prev?.net)} fmt={money} />
+              <Tile label={<>{t.yearOf(t.operating, cur.year)} <span className="help" title={t.noRevenue} aria-label={t.noRevenue}>?</span></>}
+                value={cur.operating} delta={vs(growth(cur.operating, prev?.operating))} fmt={money} />
+              <Tile label={t.net} value={cur.net} delta={vs(growth(cur.net, prev?.net))} fmt={money} />
             </div>
           )}
           {years.filter((y) => y[chartField] !== null && y[chartField] !== undefined).length > 1 && (
@@ -134,22 +153,28 @@ function DartOverview({ d }: { d: DartBasics }) {
                 label={t.byYear(hasRevenue ? revenueLabel : t.operating)} format={money} />
             </>
           )}
-          {!hasRevenue && <p className="note small">{t.noRevenue}</p>}
           <Source text={t.sourceFinance(fin.year, fin.basis)} date={yearMonth(fin.rceptNo)} rceptNo={fin.rceptNo} />
         </>
       )}
-      {(emp || info.length > 0) && (
-        <dl className="kv">
-          {emp && <div><dt>{t.employees}</dt><dd>{t.people(emp.count)}</dd></div>}
-          {emp && (emp.tenure !== null || emp.salary !== null) && (
-            <div><dt>{t.tenureSalary}</dt><dd>{t.tenureSalaryValue(emp.tenure !== null ? emp.tenure.toFixed(1) : null,
-              emp.salary !== null ? manwon(emp.salary) : null)}</dd></div>
-          )}
-          {info.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
-        </dl>
+      {/* 직원 현황(사업보고서)과 기업개황은 출처가 달라 따로 묶는다 */}
+      {emp && (
+        <>
+          <dl className="kv">
+            <div><dt>{t.employees}</dt><dd>{t.people(emp.count)}</dd></div>
+            {(emp.tenure !== null || emp.salary !== null) && (
+              <div><dt>{t.tenureSalary}</dt><dd>{t.tenureSalaryValue(emp.tenure !== null ? emp.tenure.toFixed(1) : null,
+                emp.salary !== null ? money(emp.salary) : null)}</dd></div>
+            )}
+          </dl>
+          <Source text={t.sourceEmployees} date={yearMonth(emp.rceptNo)} rceptNo={emp.rceptNo} />
+        </>
       )}
-      {emp && <Source text={t.sourceEmployees} date={yearMonth(emp.rceptNo)} rceptNo={emp.rceptNo} />}
-      {!emp && info.length > 0 && <Source text={t.sourceCompany} />}
+      {info.length > 0 && (
+        <>
+          <dl className="kv">{info.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+          <Source text={t.sourceCompany} />
+        </>
+      )}
 
       <h3 className="sub-head">{t.disclosures}</h3>
       {d.disclosures.length === 0 ? <p className="note">{t.noDisclosures}</p> : (
@@ -170,7 +195,7 @@ function DartOverview({ d }: { d: DartBasics }) {
 }
 
 function Tile({ label, value, delta, fmt }: {
-  label: string
+  label: ReactNode
   value: number | null | undefined
   delta: string | null
   fmt: (v: number) => string
@@ -198,12 +223,16 @@ function Past({ past, byJob, since, jobs }: { past: PastPosting[]; byJob: Record
     <div className="past">
       <div className="sub-head">
         <span>{t.pastTitle}</span>
-        {total > 0 && <span className="count">{jobs.length && !all ? t.pastMine(mineTotal, total) : t.pastAll(total)}</span>}
+        {total > 0 && (
+          <span className="count">
+            {jobs.length && !all ? t.pastMine(mineTotal, total) : past.length < total ? t.pastRecent(past.length, total) : t.pastAll(total)}
+          </span>
+        )}
       </div>
       {list.length === 0 ? <p className="note">{total === 0 ? t.noPast : t.noPastMine}</p> : (
         <div className="past-rows">
           {shown.map((p) => (
-            <div key={p.title + p.firstSeen + p.closedOn} className="past-row">
+            <div key={p.id} className="past-row">
               <span className="past-date">{t.closedOn(dateText(p.closedOn))}</span>
               <span>{p.title}</span>
             </div>

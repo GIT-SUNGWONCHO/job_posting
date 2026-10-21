@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  bins, bucketOf, currentOf, gaps, otherDirections, periodStats, periods, positions, skillFit, strengths, sumSeries,
+  bins, bucketOf, currentOf, gaps, niceTicks, otherDirections, periodStats, periods, positions, skillFit, strengths, sumSeries,
 } from './career'
 import type { CareerMetrics, JobType } from './types'
 
@@ -48,14 +48,22 @@ describe('커리어 지표', () => {
     expect(periodStats(s, 0).newSum).toBe(16)
   })
 
-  it('막대: 짧으면 하루, 60일이 넘으면 7일씩 끝에서부터 묶는다', () => {
-    expect(bins(m.days, [null, 1, 2, 3, 4, 5, 6, 7, 8], 0)).toHaveLength(9)
-    const d = Array.from({ length: 70 }, (_, i) => new Date(Date.UTC(2026, 0, 1 + i)).toISOString().slice(0, 10))
+  it('막대: 짧으면 하루, 60일이 넘으면 7일씩 끝에서부터 묶고 7일이 안 되는 맨 앞은 뺀다', () => {
+    expect(bins(m.days, [null, 1, 2, 3, 4, 5, 6, 7, 8], 0)).toMatchObject({ size: 1 })
+    expect(bins(m.days, [null, 1, 2, 3, 4, 5, 6, 7, 8], 0).bins).toHaveLength(9)
+    const d = Array.from({ length: 71 }, (_, i) => new Date(Date.UTC(2026, 0, 1 + i)).toISOString().slice(0, 10))
     const v = d.map((_, i) => (i === 0 ? null : 1))
-    const b = bins(d, v, 0)
-    expect(b).toHaveLength(10)
-    expect(b[b.length - 1]).toMatchObject({ end: d[69], value: 7 })
-    expect(b[0].value).toBe(6)
+    const { bins: b, size } = bins(d, v, 0)
+    expect(size).toBe(7)
+    expect(b).toHaveLength(10) // 71일 = 7일 × 10 + 맨 앞 하루(뺌)
+    expect(b[b.length - 1]).toMatchObject({ end: d[70], value: 7 })
+    expect(b[0]).toMatchObject({ start: d[1], value: 7 })
+  })
+
+  it('묶음이 없는 직무도 0건(세지 않음은 첫날만), 눈금 간격은 1 이상', () => {
+    const s = sumSeries(m, { jobs: ['dba'], ctypes: null })
+    expect(s.new).toEqual([null, 0, 0, 0, 0, 0, 0, 0, 0])
+    expect(niceTicks(1, 3)).toEqual([0, 1])
   })
 
   it('지금 열린 공고의 연차와 스킬을 더한다', () => {
@@ -87,5 +95,13 @@ describe('커리어 지표', () => {
     expect(de).toMatchObject({ open: 16, change: 5, fit: 78, years: 4, quadrant: 'keep' })
     expect(list.find((p) => p.id === 'ml_eng')!.quadrant).toBe('grow')
     expect(otherDirections(list, ['data_eng'], 3).map((p) => p.id)).toEqual(['ml_eng'])
+  })
+
+  it('포지션 맵: 적합도가 없는 직무는 기준선과 네 칸에서 뺀다', () => {
+    const noSkills: CareerMetrics = { ...m, series: { ...m.series, 'dba|대기업': { open: new Array(9).fill(100), new: new Array(9).fill(0) } } }
+    const types: JobType[] = [...jobTypes, { id: 'dba', name: 'DBA' }]
+    const { list, demandLine } = positions(noSkills, types, ['대기업'], new Map([['SQL', 3]]), new Map(), new Map())
+    expect(demandLine).toBe(25) // DBA(100건, 적합도 없음)는 가운데 값에 넣지 않는다
+    expect(list.find((p) => p.id === 'dba')).toMatchObject({ fit: null, quadrant: null })
   })
 })

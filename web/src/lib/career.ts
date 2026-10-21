@@ -31,13 +31,13 @@ function inSlice(key: string, s: Slice): boolean {
 export function sumSeries(m: CareerMetrics, s: Slice): { open: number[]; new: (number | null)[] } {
   const n = m.days.length
   const open = new Array<number>(n).fill(0)
-  const fresh = new Array<number | null>(n).fill(null)
+  // 묶음이 하나도 없는 직무·기업 구분도 0건이다(세지 않는 날은 수집 첫날뿐)
+  const fresh = new Array<number | null>(n).fill(0)
   for (const [key, v] of Object.entries(m.series)) {
     if (!inSlice(key, s)) continue
     for (let i = 0; i < n; i++) {
       open[i] += v.open[i] ?? 0
-      const x = v.new[i]
-      if (x !== null && x !== undefined) fresh[i] = (fresh[i] ?? 0) + x
+      fresh[i] = (fresh[i] ?? 0) + (v.new[i] ?? 0)
     }
   }
   // 수집 첫날은 늘 세지 않는다(묶음이 하나도 없어도)
@@ -76,17 +76,18 @@ export interface Bin {
   value: number | null
 }
 
-/** 막대 하나 = 하루, 기간이 길면 7일. 끝(오늘)에서부터 묶는다 */
-export function bins(days: string[], values: (number | null)[], from: number): Bin[] {
+/** 막대 하나 = 하루, 기간이 길면 7일. 끝(오늘)에서부터 묶고, 7일이 안 되는 맨 앞 묶음은 뺀다
+ * (짧은 막대가 수요가 준 것처럼 보이지 않게). size는 막대 하나의 날 수 */
+export function bins(days: string[], values: (number | null)[], from: number): { bins: Bin[]; size: number } {
   const size = days.length - from > WEEKLY_OVER ? 7 : 1
   const out: Bin[] = []
-  for (let end = days.length; end > from; end -= size) {
-    const start = Math.max(from, end - size)
+  for (let end = days.length; end - size >= from; end -= size) {
+    const start = end - size
     const vs = values.slice(start, end)
     const value = vs.every((v) => v === null) ? null : vs.reduce<number>((s, v) => s + (v ?? 0), 0)
     out.unshift({ start: days[start], end: days[end - 1], value })
   }
-  return out
+  return { bins: out, size }
 }
 
 export interface Current {
@@ -184,7 +185,8 @@ export interface Position {
   match: { avg: number; n: number } | null
   /** 요구 스킬(공고 수 많은 순) */
   skills: [string, number][]
-  quadrant: Quadrant
+  /** 적합도를 셀 수 없는 직무(요구 스킬이 없음)는 null: 포지션 맵과 네 칸에 넣지 않는다 */
+  quadrant: Quadrant | null
 }
 
 function median(xs: number[]): number {
@@ -206,13 +208,15 @@ export function positions(m: CareerMetrics, jobTypes: JobType[], ctypes: string[
       id: j.id, name: j.name, short: j.short ?? j.name, open,
       change: len > 7 ? open - series.open[len - 8] : null,
       fit: skillFit(skills, mine), years: years.get(j.id) ?? 0, match: matchAvg.get(j.id) ?? null, skills,
-      quadrant: 'reduce' as Quadrant,
+      quadrant: null as Quadrant | null,
     }
   })
-  const demandLine = median(list.map((p) => p.open))
+  // 기준선은 맵에 보이는(적합도가 있는) 직무들의 가운데 값
+  const demandLine = median(list.filter((p) => p.fit !== null).map((p) => p.open))
   for (const p of list) {
+    if (p.fit === null) continue
     const high = p.open >= demandLine
-    const fits = (p.fit ?? 0) >= FIT_LINE
+    const fits = p.fit >= FIT_LINE
     p.quadrant = high ? (fits ? 'apply' : 'grow') : (fits ? 'keep' : 'reduce')
   }
   return { list, demandLine }
@@ -237,12 +241,12 @@ export function otherDirections(list: Position[], targets: string[], n: number):
     .slice(0, n)
 }
 
-/** 짧은 눈금: 0부터 max를 넘는 깔끔한 값까지 */
+/** 짧은 눈금: 0부터 max를 넘는 깔끔한 값까지. 공고 수라 간격은 1 이상(0.5 같은 눈금이 없게) */
 export function niceTicks(max: number, count = 4): number[] {
   if (max <= 0) return [0]
   const raw = max / count
   const pow = 10 ** Math.floor(Math.log10(raw))
-  const step = [1, 2, 5, 10].map((k) => k * pow).find((s) => s >= raw) ?? 10 * pow
+  const step = Math.max(1, [1, 2, 5, 10].map((k) => k * pow).find((s) => s >= raw) ?? 10 * pow)
   const out: number[] = []
   for (let v = 0; v < max + step; v += step) out.push(v)
   return out

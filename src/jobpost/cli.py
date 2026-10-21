@@ -69,11 +69,16 @@ def main(argv: list[str] | None = None) -> int:
         built, bodies = screen.build(args.data_dir, with_career=True)
         path = screen.write(built, args.out)
         body_paths = screen.write_bodies(bodies, args.out.parent)
-        companies_path = screen.write(screen.build_companies(args.data_dir, built), args.out.parent / "companies.json.gz")
+        # 회사 기본정보 파일은 실패해도 화면용 파일은 올린다(data/dart/가 깨진 날에도 공고·매칭·알림은 계속)
+        companies_path = None
+        try:
+            companies_path = screen.write(screen.build_companies(args.data_dir, built), args.out.parent / "companies.json.gz")
+        except (OSError, ValueError) as e:
+            logging.warning("회사 기본정보 파일을 만들지 못함: %s", e)
         logging.info("화면용 파일: 공고 %d건, 회사 %d곳, %s KB / 본문 %d건, %d개 파일 %s KB / 회사 기본정보 %s KB",
                      built["counts"]["open"], built["counts"]["companies"], path.stat().st_size // 1024,
                      len(bodies["bodies"]), len(body_paths), sum(p.stat().st_size for p in body_paths) // 1024,
-                     companies_path.stat().st_size // 1024)
+                     companies_path.stat().st_size // 1024 if companies_path else "-")
         if args.upload:
             if not publish.configured():
                 logging.info("Supabase 설정이 없어 올리지 않음")
@@ -81,7 +86,8 @@ def main(argv: list[str] | None = None) -> int:
                 publish.upload(path)
                 for bp in body_paths:
                     publish.upload(bp, name=f"bodies/{bp.name}")
-                publish.upload(companies_path, name="companies.json.gz")
+                if companies_path:
+                    publish.upload(companies_path, name="companies.json.gz")
                 logging.info("Supabase 저장소에 올림")
     if args.cmd == "dart":
         if not dart.configured():

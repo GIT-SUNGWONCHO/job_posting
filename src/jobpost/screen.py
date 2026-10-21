@@ -175,6 +175,7 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
         key = r.get("company_key") or r.get("company", "")
         if key in keys:
             past.setdefault(key, []).append({
+                "id": r["uid"],
                 "title": r.get("title", ""),
                 "jobType": (r.get("job_type") or {}).get("id"),
                 "firstSeen": r.get("first_seen"),
@@ -219,10 +220,12 @@ def _dart_item(code: str, m: dict[str, Any], b: dict[str, Any]) -> dict[str, Any
     return {
         "corpCode": code,
         "corpName": m.get("corp_name") or c.get("name"),  # 고유번호 파일 이름은 (주) 같은 표기가 없다
+        # 기업개황의 법인명(현대자동차(주)). 잘못 이은 회사를 알아볼 수 있게 화면에 보여준다
+        "legalName": c.get("name") or m.get("corp_name"),
         "market": c.get("market"),
         "ceo": c.get("ceo"),
         "founded": c.get("founded"),
-        "homepage": c.get("homepage"),
+        "homepage": dart.clean_url(c.get("homepage")),  # 예전에 받은 값도 화면을 만들 때 다시 거른다
         "finance": fin and {"year": fin["year"], "basis": fin["basis"], "rceptNo": fin.get("rcept_no"),
                             "revenueName": fin.get("revenue_name") or "매출액", "years": fin["years"]},
         "employees": emp and {"count": emp["count"], "tenure": emp.get("tenure"), "salary": emp.get("salary"),

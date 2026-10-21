@@ -14,7 +14,8 @@ opendart.fss.or.kr 개발가이드·FAQ와 공개된 실제 응답에서 확인�
   000 정상, 013 데이터 없음(실패 아님), 020 하루 한도 초과(다시 하지 않음), 800 점검·900 알 수 없는 오류.
   개인 키 하루 2만 건(모든 API 합), 분당 1,000건 넘으면 IP가 1시간 막힌다. User-Agent가 비면 404가 날 수 있다
 - 값은 모두 문자열. 금액은 원 단위 쉼표("9,457,000,000"), 음수는 앞에 -, 없으면 "-"나 "", 키가 아예 빠지기도 한다
-- corpCode.xml: zip(약 3.6MB) 안 CORPCODE.xml. <list><corp_code><corp_name>(정식명칭, (주) 없음)<corp_eng_name>
+- corpCode.xml: zip(약 3.6MB) 안 CORPCODE.xml. <list><corp_code><corp_name>((주) 없음. 정식명칭이라지만 상장사는
+  짧은 이름이 많다: NAVER, 고영, 코오롱인더, 효성 ITX — 2026-10-22 확인)<corp_eng_name>
   <stock_code>(비상장은 " ")<modify_date>. 약 12만 곳, 비상장 외감법인 포함. 상장 폐지돼도 stock_code가 남는다
 - company.json: corp_name("삼성전자(주)"처럼 법인 표기 포함), corp_cls Y 유가증권 · K 코스닥 · N 코넥스 · E 기타(비상장·상장폐지),
   ceo_nm(여러 명이면 쉼표), est_dt YYYYMMDD, hm_url(주소 앞 https:// 없음), induty_code(업종 코드, 길이 제각각)
@@ -195,18 +196,40 @@ def _download_corp_codes(client: Client) -> bytes:
     return data
 
 
-def index(corps: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
-    """공고 회사와 같은 규칙(company_key: 법인 표기·공백·기호를 지우고 별칭 적용)으로 묶는다.
-    영문 약자가 든 DART 이름(HDC랩스)은 한글 읽기(에이치디씨랩스)로도 넣는다."""
-    out: dict[str, list[dict[str, str]]] = {}
-    for c in corps:
-        keys = {company_key(c["corp_name"])}
-        if _LATIN.search(c["corp_name"]):
-            keys.add(company_key(_hangul(c["corp_name"])))
-        for k in keys:
+class Index:
+    """DART 회사를 공고 회사와 같은 규칙(company_key: 법인 표기·공백·기호를 지우고 별칭 적용)으로 묶는다.
+    literal은 DART 이름 그대로, hangul은 영문 약자가 든 DART 이름(HDC랩스)의 한글 읽기(에이치디씨랩스).
+    한글 읽기로만 같은 회사가 글자 그대로 같은 회사를 이기지 않게 둘을 나눠 찾는다."""
+
+    def __init__(self, corps: list[dict[str, str]]):
+        self.literal: dict[str, list[dict[str, str]]] = {}
+        self.hangul: dict[str, list[dict[str, str]]] = {}
+        for c in corps:
+            k = company_key(c["corp_name"])
             if k:
-                out.setdefault(k, []).append(c)
-    return out
+                self.literal.setdefault(k, []).append(c)
+            if _LATIN.search(c["corp_name"]):
+                kh = company_key(_hangul(c["corp_name"]))
+                if kh and kh != k:
+                    self.hangul.setdefault(kh, []).append(c)
+
+    def get(self, key: str) -> list[dict[str, str]]:
+        return self.literal.get(key) or self.hangul.get(key) or []
+
+    def find(self, key: str, name: str) -> tuple[list[dict[str, str]], str]:
+        """(후보, 어떻게 찾았나). 공고 키로 글자 그대로 찾은 것은 "key", 괄호 빼기는 "bare", 그 밖(한글 읽기)은 "reading"."""
+        vs = variants(key, name)
+        for book in (self.literal, self.hangul):
+            for k, kind in vs:
+                cands = book.get(k) or []
+                if cands:
+                    return cands, ("key" if kind == "key" and book is self.literal else
+                                   "bare" if kind == "bare" else "reading")
+        return [], "none"
+
+
+def index(corps: list[dict[str, str]]) -> Index:
+    return Index(corps)
 
 
 def _compact(name: str) -> str:
@@ -217,6 +240,7 @@ _LETTERS = dict(zip("abcdefghijklmnopqrstuvwxyz", [
     "에이", "비", "씨", "디", "이", "에프", "지", "에이치", "아이", "제이", "케이", "엘", "엠", "엔", "오", "피", "큐", "알",
     "에스", "티", "유", "브이", "더블유", "엑스", "와이", "제트"], strict=True))
 _LATIN = re.compile(r"[A-Za-z]+")
+BIG = ("대기업", "공기업·공공기관")
 
 
 def _hangul(name: str) -> str:
@@ -224,38 +248,50 @@ def _hangul(name: str) -> str:
     return _LATIN.sub(lambda m: "".join(_LETTERS[c] for c in m.group().lower()) if len(m.group()) <= 5 else m.group(), name)
 
 
-def variants(key: str, name: str) -> list[str]:
-    """DART 이름과 맞춰 볼 회사 키들. 공고 키, 괄호 속 다른 이름을 뺀 것(카카오스타일(Kakao Style) → 카카오스타일),
-    영문 약자(5글자까지)를 한글 읽기로 바꾼 것(CJ올리브영 → 씨제이올리브영). 법인명은 보통 영문 약자를 한글로 쓴다."""
+def _bare(name: str) -> str:
     cleaned = clean_company(name)
-    bare = re.sub(r"\([^)]*\)", "", cleaned).strip() or cleaned
-    out = [key]
-    for n in (bare, _hangul(bare)):
+    return re.sub(r"\([^)]*\)", "", cleaned).strip() or cleaned
+
+
+def variants(key: str, name: str) -> list[tuple[str, str]]:
+    """DART 이름과 맞춰 볼 (회사 키, 종류). 공고 키("key"), 괄호 속 다른 이름을 뺀 것("bare",
+    카카오스타일(Kakao Style) → 카카오스타일), 영문 약자(5글자까지)를 한글 읽기로 바꾼 것("reading",
+    CJ올리브영 → 씨제이올리브영). 법인명은 보통 영문 약자를 한글로 쓴다."""
+    bare = _bare(name)
+    out = [(key, "key")]
+    for n, kind in ((bare, "bare"), (_hangul(bare), "reading")):
         k = company_key(n)
-        if k and k not in out:
-            out.append(k)
+        if k and all(k != x for x, _ in out):
+            out.append((k, kind))
     return out
 
 
-def match(key: str, name: str, idx: dict[str, list[dict[str, str]]]) -> tuple[dict[str, str] | None, str]:
-    """(DART 회사, 어떻게). 이름(variants 차례로)이 같은 회사가 하나면 그것, 여럿이면 상장사가 하나일 때 그것,
-    그래도 여럿이면 이름이 글자까지 같은 것이 하나일 때 그것. 아니면 잇지 않는다(잘못 잇는 것보다 낫다).
-    여럿이라 못 고른 것("ambiguous")은 run이 기업개황으로 지금 상장된 회사를 한 번 더 고른다."""
-    cands: list[dict[str, str]] = []
-    for k in variants(key, name):
-        cands = idx.get(k) or []
-        if cands:
-            break
+def _weak(name: str, ctype: str, how: str) -> bool:
+    """공고 키가 아닌 이름으로 찾았을 때 믿기 어려운 경우. 대기업·공기업 계열은 한글 읽기가 법인명과 거의 맞았고,
+    틀린 것은 짧은 영문 약자만인 회사(MMS → 엠엠에스, SAP → 에스에이피)와 외국계의 괄호 속 한글 브랜드(테슬라(Tesla) →
+    국내 주식회사 테슬라)였다(2026-10-22 리뷰). 이때는 종목코드가 있는 후보만 받는다."""
+    if how == "key" or ctype in BIG:
+        return False
+    short_latin = bool(re.fullmatch(r"[A-Za-z]{1,5}", PUNCT.sub("", _bare(name))))
+    return short_latin or (ctype == "외국계" and how == "bare")
+
+
+def match(key: str, name: str, idx: Index, ctype: str = "그 외") -> tuple[dict[str, str] | None, str]:
+    """(DART 회사, 어떻게). 이름이 같은 회사(Index.find)가 하나면 그것, 여럿이면 종목코드가 있는 곳이 하나일 때 그것.
+    아니면 잇지 않는다(잘못 잇는 것보다 낫다). 공고 키가 아닌 이름으로만 찾았고 믿기 어려우면(_weak) 종목코드가 있는
+    후보만 본다. 여럿이라 못 고른 것("ambiguous")은 run이 _resolve로 한 번 더 고른다."""
+    cands, how = idx.find(key, name)
     if not cands:
         return None, "none"
+    if _weak(name, ctype, how):
+        cands = [c for c in cands if c["stock_code"]]
+        if not cands:
+            return None, "weak"
     if len(cands) == 1:
         return cands[0], "name"
     listed = [c for c in cands if c["stock_code"]]
     if len(listed) == 1:
         return listed[0], "listed"
-    same = [c for c in (listed or cands) if _compact(c["corp_name"]) == _compact(name)]
-    if len(same) == 1:
-        return same[0], "exact"
     return None, "ambiguous"
 
 
@@ -389,22 +425,19 @@ def parse_employees(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
 
 
 def parse_disclosures(rows: list[dict[str, Any]], skip: list[str], limit: int) -> list[dict[str, str]]:
-    """list.json 응답 → [{"date", "title", "rcept_no"}] 최근 순. 정기적인 공시(skip)는 빼고 같은 공시는 하나만."""
+    """list.json 응답 → [{"date", "title", "rcept_no"}] 최근 순. 정기적인 공시(skip)는 빼고, 같은 접수번호는 하나만.
+    제목은 DART 그대로 둔다([기재정정] 같은 머리도). 같은 종류의 다른 공시(공급계약 여러 건)는 따로 남긴다."""
     out = []
     seen = set()
     squash = [s.replace(" ", "") for s in skip]
     for r in sorted(rows, key=lambda r: (r.get("rcept_dt") or "", r.get("rcept_no") or ""), reverse=True):
-        # [기재정정] 같은 머리는 뗀다(last_reprt_at=Y라 정정된 최종본만 온다)
-        title = re.sub(r"^\[[^\]]*\]\s*", "", re.sub(r"\s+", " ", (r.get("report_nm") or "")).strip())
-        flat = title.replace(" ", "")
-        if not title or any(s in flat for s in squash):
+        title = re.sub(r"\s+", " ", (r.get("report_nm") or "")).strip()
+        no = r.get("rcept_no")
+        if not title or any(s in title.replace(" ", "") for s in squash) or (no and no in seen):
             continue
-        base = re.sub(r"^\[[^\]]*\]", "", flat)  # [기재정정] 같은 머리를 떼고 같은 공시는 하나만
-        if base in seen:
-            continue
-        seen.add(base)
+        seen.add(no)
         d = r.get("rcept_dt") or ""
-        out.append({"date": f"{d[:4]}-{d[4:6]}-{d[6:8]}" if len(d) == 8 else d, "title": title, "rcept_no": r.get("rcept_no")})
+        out.append({"date": f"{d[:4]}-{d[4:6]}-{d[6:8]}" if len(d) == 8 else d, "title": title, "rcept_no": no})
         if len(out) >= limit:
             break
     return out
@@ -419,11 +452,20 @@ def pick_disclosures(items: list[dict[str, Any]], skip: list[str], limit: int) -
     return [d for d in items if not any(w in (d.get("title") or "").replace(" ", "") for w in squash)][:limit]
 
 
+def clean_url(raw: Any) -> str | None:
+    """기업개황 홈페이지 칸을 쓸 수 있는 주소로. "-", "없음", 주소·우편번호 같은 글은 None.
+    실제로 본 값(2026-10-22): "https:///www.nota.ai", "www. eie.co.kr", "주식회사 제이엘티", "13201"."""
+    s = re.sub(r"\s+", "", str(raw or ""))
+    s = re.sub(r"^https?:/*", "", s, flags=re.IGNORECASE).lstrip("/")
+    host, _, rest = s.partition("/")
+    if not re.fullmatch(r"[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}(:\d+)?", host):
+        return None
+    return f"https://{host.lower()}" + (f"/{rest}" if rest else "")
+
+
 def parse_company(body: dict[str, Any]) -> dict[str, Any]:
     est = body.get("est_dt") or ""
-    url = (body.get("hm_url") or "").strip()
-    if url and not url.startswith("http"):
-        url = "https://" + url
+    url = clean_url(body.get("hm_url"))
     return {
         "name": body.get("corp_name"),
         "stock_code": (body.get("stock_code") or "").strip() or None,
@@ -443,8 +485,9 @@ def annual_year(today: date) -> int:
     return today.year - 1 if (today.month, today.day) >= (4, 10) else today.year - 2
 
 
-MATCH_VERSION = 3  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다
+MATCH_VERSION = 4  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다
 # 2: 공고 이름의 한글 읽기·괄호 빼기, 지금 상장된 곳 고르기 3: DART 이름의 한글 읽기, 최근 공시를 낸 곳 고르기
+# 4: 리뷰(2026-10-22) — 믿기 어려운 대체 이름(_weak) 거르기, 최근 공시로 고르기는 대기업·공기업만, 글자까지 같은 이름 규칙 뺌
 BASICS_VERSION = 3  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다
 # 2: 공시를 거르지 않고 40건 3: 영업수익도 매출 자리에(revenue_name). 2에서 매출액이 있던 회사는 다시 받지 않는다
 
@@ -496,8 +539,11 @@ def _load(path: Path) -> dict[str, Any]:
 
 
 def _save(path: Path, data: dict[str, Any]) -> None:
+    """다 쓴 뒤 바꿔 넣는다(실행이 중간에 끊겨도 반쯤 쓴 파일이 남지 않게)."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=0, sort_keys=True) + "\n", encoding="utf-8")
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=0, sort_keys=True) + "\n", encoding="utf-8")
+    os.replace(tmp, path)
 
 
 def targets(state: dict[str, dict[str, Any]], registry_type: Any) -> list[tuple[str, str]]:
@@ -517,36 +563,38 @@ def targets(state: dict[str, dict[str, Any]], registry_type: Any) -> list[tuple[
                   key=lambda kn: (rank.get(registry_type(kn[0], kn[1]), 3), -counts[kn[0]], kn[0]))
 
 
-def _override(value: Any, idx: dict[str, list[dict[str, str]]], by_code: dict[str, dict[str, str]]) -> dict[str, str] | None:
+def _override(value: Any, idx: Index, by_code: dict[str, dict[str, str]]) -> dict[str, str] | None:
     """손으로 잇기: 8자리 고유번호, 또는 DART 이름(같은 이름이 하나이거나, 여럿이면 종목코드가 있는 곳이 하나일 때).
-    null이면 잇지 않는다."""
-    if not value:
+    null이면 잇지 않는다. 따옴표 없이 적은 고유번호(00547033)는 YAML이 8진수로 읽어 숫자가 되므로 되돌린다."""
+    if value is None or value == "":
         return None
+    if isinstance(value, int):
+        value = format(value, "o").zfill(8)
     v = str(value).strip()
     if re.fullmatch(r"\d{8}", v):
         return by_code.get(v)
-    cands = idx.get(company_key(v)) or []
+    cands = idx.get(company_key(v))
     listed = [c for c in cands if c["stock_code"]]
     return cands[0] if len(cands) == 1 else (listed[0] if len(listed) == 1 else None)
 
 
-def _resolve(client: Client, key: str, name: str, idx: dict[str, list[dict[str, str]]],
-             today: date) -> tuple[dict[str, str] | None, str]:
+def _resolve(client: Client, key: str, name: str, idx: Index, today: date,
+             ctype: str = "그 외") -> tuple[dict[str, str] | None, str]:
     """같은 이름이 여럿일 때 한 번 더 고른다(후보 4곳까지, 요청이 든다).
     1) 종목코드가 있는 후보 중 기업개황상 지금 상장된(corp_cls Y·K·N) 곳이 하나면 그것(합병 전후 삼성물산처럼
-       상장 폐지돼도 종목코드는 남는다). 2) 아니면 최근 400일 안에 공시를 낸 곳이 하나면 그것(없어진 옛 법인을 거른다)."""
-    cands: list[dict[str, str]] = []
-    for k in variants(key, name):
-        cands = idx.get(k) or []
-        if cands:
-            break
+       상장 폐지돼도 종목코드는 남는다).
+    2) 대기업·공기업만: 최근 400일 안에 공시를 낸 곳이 하나면 그것(CJ올리브영처럼 없어진 옛 법인을 거른다).
+       일반 회사는 짧은 이름이 겹치는 일이 많아(일동홀딩스 공고 → 아파트 관리 회사 "일동") 쓰지 않는다."""
+    cands, how = idx.find(key, name)
+    if _weak(name, ctype, how):
+        cands = [c for c in cands if c["stock_code"]]
     listed = [c for c in cands if c["stock_code"]]
     if 1 < len(listed) <= 4:
         now = [c for c in listed
                if (client.json("company.json", {"corp_code": c["corp_code"]}) or {}).get("corp_cls") in ("Y", "K", "N")]
         if len(now) == 1:
             return now[0], "listed_now"
-    if 1 < len(cands) <= 4:
+    if ctype in BIG and 1 < len(cands) <= 4:
         begin = (today - timedelta(days=400)).strftime("%Y%m%d")
         active = [c for c in cands
                   if client.json("list.json", {"corp_code": c["corp_code"], "bgn_de": begin,
@@ -587,6 +635,8 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
         m = corps.get(key)
         if key in overrides:
             return not m or m.get("how") != "override" or m.get("override") != overrides[key]
+        if m and m.get("how") == "override":
+            return True  # 손으로 잇기를 지웠으면 규칙으로 다시 잇는다
         return (not m or m.get("mv") != MATCH_VERSION
                 or (not m.get("corp_code") and date.fromisoformat(m["checked"]) + retry <= today))
 
@@ -601,13 +651,24 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                 log.info("DART 이름 찾기 %r: %d곳 %s", word, len(hits),
                          [(c["corp_name"], c["corp_code"], c["stock_code"]) for c in hits[:15]])
             for key, name in need:
+                ctype = registry.company_type(key, name).value
                 if key in overrides:
                     c = _override(overrides[key], idx, by_code)
                     how = "override" if c else "none"
+                    if not c:
+                        log.warning("DART 손으로 잇기가 안 됨: %s → %r(고유번호는 따옴표로, 이름은 같은 이름이 하나여야)",
+                                    key, overrides[key])
                 else:
-                    c, how = match(key, name, idx)
+                    c, how = match(key, name, idx, ctype)
                     if how == "ambiguous":
-                        c, how = _resolve(client, key, name, idx, today)
+                        try:
+                            c, how = _resolve(client, key, name, idx, today, ctype)
+                        except LimitReached:
+                            raise
+                        except DartError as e:
+                            # 한 회사에서 난 오류로 그날 전체가 멈추지 않게
+                            summary["failed"] += 1
+                            log.warning("DART 같은 이름 고르기 %s: %s", key, e)
                 if c:
                     corps[key] = {"corp_code": c["corp_code"], "corp_name": c["corp_name"],
                                   "stock_code": c["stock_code"] or None, "how": how, "checked": day, "mv": MATCH_VERSION}

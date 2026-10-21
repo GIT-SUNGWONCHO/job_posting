@@ -109,6 +109,8 @@ export interface CareerMetrics {
   series: Record<string, { open: number[]; new: (number | null)[] }>
   /** 지금 열린 공고의 연차 분포, 요구 스킬(공고 수 많은 순), 본문이 있는 공고 수 */
   current: Record<string, { career: Partial<Record<CareerBucket, number>>; skills: [string, number][]; withBody: number }>
+  /** 스킬 사전에 있는 이름(v2부터). 이 밖의 프로필 스킬은 공고에서 셀 수 없다 */
+  dictionary?: string[]
 }
 
 /** 회사 기본정보 파일(companies.json.gz). 만드는 쪽은 src/jobpost/screen.py build_companies */
@@ -129,6 +131,7 @@ export interface CompanyBasics {
 }
 
 export interface PastPosting {
+  id: string
   title: string
   jobType: string | null
   firstSeen: string
@@ -139,6 +142,8 @@ export interface PastPosting {
 export interface DartBasics {
   corpCode: string
   corpName: string
+  /** 기업개황의 법인명(현대자동차(주)). 잘못 이은 회사를 알아볼 수 있게 보여준다 */
+  legalName?: string | null
   /** 유가증권 · 코스닥 · 코넥스 · 기타 */
   market: string | null
   ceo: string | null

@@ -26,10 +26,38 @@ CORPCODE_XML = """<?xml version="1.0" encoding="UTF-8"?>
 
 
 def test_variants_try_korean_reading_of_acronyms():
-    assert dart.variants("cj올리브영", "CJ올리브영(주)") == ["cj올리브영", "씨제이올리브영"]
-    assert dart.variants("카카오스타일kakaostyle", "카카오스타일(Kakao Style)")[1] == "카카오스타일"
+    assert dart.variants("cj올리브영", "CJ올리브영(주)") == [("cj올리브영", "key"), ("씨제이올리브영", "reading")]
+    assert dart.variants("카카오스타일kakaostyle", "카카오스타일(Kakao Style)")[1] == ("카카오스타일", "bare")
     # 긴 영어 단어는 그대로 둔다
-    assert dart.variants("ktcloud", "ktcloud") == ["ktcloud"]
+    assert dart.variants("ktcloud", "ktcloud") == [("ktcloud", "key")]
+
+
+def test_weak_fallback_names_need_a_listed_company():
+    # 2026-10-22 리뷰에서 잘못 이은 것: 짧은 영문 약자만인 회사, 외국계의 괄호 속 한글 브랜드
+    xml = """<result>
+<list><corp_code>1</corp_code><corp_name>엠엠에스</corp_name><stock_code> </stock_code></list>
+<list><corp_code>2</corp_code><corp_name>테슬라</corp_name><stock_code> </stock_code></list>
+<list><corp_code>3</corp_code><corp_name>에스케이쉴더스</corp_name><stock_code> </stock_code></list>
+<list><corp_code>4</corp_code><corp_name>구다이글로벌</corp_name><stock_code> </stock_code></list>
+<list><corp_code>5</corp_code><corp_name>씨에스</corp_name><stock_code> </stock_code></list>
+<list><corp_code>6</corp_code><corp_name>CS</corp_name><stock_code>065770</stock_code></list>
+</result>""".encode()
+    idx = dart.index(dart.parse_corp_codes(xml))
+    assert dart.match("mms", "MMS", idx, "그 외") == (None, "weak")
+    assert dart.match("테슬라tesla", "테슬라(Tesla)", idx, "외국계") == (None, "weak")
+    # 대기업 계열의 한글 읽기, 일반 회사의 괄호 빼기는 그대로 잇는다
+    assert dart.match("sk쉴더스", "SK쉴더스(주)", idx, "대기업")[0]["corp_code"] == "3"
+    assert dart.match("구다이글로벌조선미녀", "구다이글로벌(조선미녀)", idx, "그 외")[0]["corp_code"] == "4"
+    # 한글 읽기로만 같은 상장사(CS)가 글자 그대로 같은 회사(씨에스)를 이기지 않는다
+    assert dart.match("씨에스", "(주)씨에스", idx, "그 외")[0]["corp_code"] == "5"
+
+
+def test_clean_url():
+    assert dart.clean_url("www.samsung.com/sec") == "https://www.samsung.com/sec"
+    assert dart.clean_url("https:///www.nota.ai") == "https://www.nota.ai"
+    assert dart.clean_url("www. eie.co.kr") == "https://www.eie.co.kr"
+    for bad in ["-", "없음", "13201", "주식회사 제이엘티", "", None, "서울시 강남구 테헤란로 1"]:
+        assert dart.clean_url(bad) is None
 
 
 def test_match_by_same_rules_as_postings():
@@ -123,9 +151,11 @@ def test_parse_disclosures_skips_routine_and_dedupes():
         {"rcept_dt": "20260301", "report_nm": "대표이사변경", "rcept_no": "3"},
         {"rcept_dt": "20260302", "report_nm": "기업설명회(IR)개최(안내공시)", "rcept_no": "4"},
     ]
-    out = dart.parse_disclosures(rows, ["기업설명회"], 5)
-    assert [(d["date"], d["rcept_no"]) for d in out] == [("2026-08-05", "2"), ("2026-03-01", "3")]
-    assert out[0]["title"] == "타법인주식및출자증권취득결정"
+    out = dart.parse_disclosures(rows + [{"rcept_dt": "20260801", "report_nm": "타법인주식및출자증권취득결정", "rcept_no": "1"}],
+                                 ["기업설명회"], 5)
+    # 같은 접수번호만 하나로. 같은 종류의 다른 공시는 따로, 제목은 DART 그대로([기재정정] 포함)
+    assert [(d["date"], d["rcept_no"]) for d in out] == [("2026-08-05", "2"), ("2026-08-01", "1"), ("2026-03-01", "3")]
+    assert out[0]["title"] == "[기재정정]타법인주식및출자증권취득결정"
 
 
 def test_pick_disclosures_filters_at_screen_time():
@@ -207,12 +237,12 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
 
     s = FakeSession(respond)
     summary = dart.run(tmp_path, date(2026, 10, 21), session=s, cache=tmp_path / "cache")
-    assert summary["matched_new"] == 3 and summary["unmatched_new"] == 1 and summary["fetched"] == 3
+    assert summary["matched_new"] == 2 and summary["unmatched_new"] == 2 and summary["fetched"] == 2
     assert all(p.get("crtfc_key") == "test-key" for _, p in s.calls)
     corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
     assert corps["삼성전자"]["corp_code"] == "00126380"
-    # 같은 이름 둘(한빛, (주)한빛) 중 최근 공시를 낸 곳만 남으면 그것
-    assert corps["한빛"]["corp_code"] == "02222222" and corps["한빛"]["how"] == "active"
+    # 같은 이름 둘(한빛, (주)한빛): 일반 회사는 최근 공시로 고르지 않는다(짧은 이름이 겹치는 일이 많다)
+    assert corps["한빛"]["corp_code"] is None and corps["한빛"]["why"] == "ambiguous"
     # 같은 이름이 여럿이면 지금 상장된 쪽(기업개황 corp_cls)으로 고른다
     assert corps["삼성물산"]["corp_code"] == "08888888" and corps["삼성물산"]["how"] == "listed_now"
     basics = json.loads((tmp_path / "dart" / "basics.json").read_text(encoding="utf-8"))
@@ -224,7 +254,7 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
     # 다음 날: 이미 이은 회사·받은 기본정보는 다시 요청하지 않는다
     s2 = FakeSession(respond)
     again = dart.run(tmp_path, date(2026, 10, 22), session=s2, cache=tmp_path / "cache")
-    assert s2.calls == [] and again["linked"] == 3 and again["with_basics"] == 3
+    assert s2.calls == [] and again["linked"] == 2 and again["with_basics"] == 2
 
     # 손으로 잇기: 받아 둔 고유번호 파일을 다시 쓰고 요청하지 않는다
     monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": "(주)한빛", "없는회사": "카카오"}})
@@ -233,11 +263,17 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
     corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
     assert corps["한빛"]["corp_code"] is None  # 같은 이름이 둘이고 둘 다 비상장이라 이름으로는 못 잇는다
     assert corps["없는회사"]["corp_code"] == "04444444"  # 같은 이름이 둘이면 종목코드가 있는 곳
-    monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": "03333333"}})
+    # 따옴표 없이 적어 YAML이 8진수로 읽은 고유번호(03333333 → 1022683)도 되돌린다
+    monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": int("03333333", 8)}})
     dart.run(tmp_path, date(2026, 10, 22), session=s4, cache=tmp_path / "cache", budget=0)
     corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
     assert corps["한빛"]["corp_code"] == "03333333" and corps["한빛"]["how"] == "override"
     assert s4.calls == []
+    # 손으로 잇기를 지우면 규칙으로 다시 잇는다
+    monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {}})
+    dart.run(tmp_path, date(2026, 10, 22), session=s4, cache=tmp_path / "cache", budget=0)
+    corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
+    assert corps["한빛"]["corp_code"] is None and corps["한빛"]["why"] == "ambiguous"
     monkeypatch.undo()
     monkeypatch.setenv("DART_API_KEY", "test-key")
     monkeypatch.setattr(dart.time, "sleep", lambda s: None)
@@ -260,3 +296,25 @@ def test_errors_do_not_leak_the_key(monkeypatch):
     with pytest.raises(dart.DartError) as e:
         client.json("company.json", {"corp_code": "1"})
     assert "secret-key-123" not in str(e.value)
+
+
+def test_one_failing_company_does_not_stop_the_day(tmp_path, monkeypatch):
+    # 같은 이름 고르기(_resolve)에서 난 오류는 그 회사만 실패로 세고 다음 회사로 간다
+    monkeypatch.setenv("DART_API_KEY", "test-key")
+    monkeypatch.setattr(dart.time, "sleep", lambda s: None)
+    _state(tmp_path, [("삼성물산", "삼성물산"), ("삼성전자", "삼성전자")])
+    (tmp_path / "companies.json").write_text("{}", encoding="utf-8")
+
+    def respond(name, params):
+        if name == "corpCode.xml":
+            return _zip(CORPCODE_XML)
+        if name == "company.json" and params["corp_code"] in ("07777777", "08888888"):
+            raise requests.ReadTimeout("slow")
+        if name == "company.json":
+            return {"status": "000", "corp_name": "삼성전자", "corp_cls": "Y"}
+        return {"status": "013"}
+
+    out = dart.run(tmp_path, date(2026, 10, 21), session=FakeSession(respond), cache=tmp_path / "cache")
+    corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
+    assert out["failed"] == 1 and corps["삼성물산"]["corp_code"] is None
+    assert corps["삼성전자"]["corp_code"] == "00126380" and out["fetched"] == 1
