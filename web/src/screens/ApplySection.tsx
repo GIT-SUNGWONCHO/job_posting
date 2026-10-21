@@ -9,43 +9,48 @@ import type { Posting } from '../lib/types'
 const t = copy.apply
 const CHOICES: Stage[] = [...STAGES, 'dismissed']
 
-// 공고 상세의 지원 상태: 단계 고르기(누르면 바로 저장), 결과(합격·불합격), 메모·다음 일정(저장 버튼)
-export function ApplySection({ posting, company, app, today, onChange }: {
-  posting: Posting
+// 지원 상태: 단계 고르기(누르면 바로 저장), 결과(합격·불합격), 메모·다음 일정(저장 버튼).
+// 공고 상세에서는 posting으로, 지원 현황에서 마감되거나 직접 추가한 공고는 저장해 둔 사본(app.snapshot)으로 고친다
+export function ApplySection({ postingId, posting, company, app, today, onChange, embedded = false }: {
+  postingId: string
+  posting?: Posting
   company: string
   app: Application | undefined
   today: string
   onChange: (postingId: string, app: Application | null) => void
+  /** 지원 현황 목록 안에 펼쳐 보일 때(제목 없이) */
+  embedded?: boolean
 }) {
   const [state, setState] = useState<'idle' | 'saving' | 'saved' | 'failed'>('idle')
 
   async function save(next: Application) {
     setState('saving')
     const ok = await saveApplication(next, today)
-    if (ok) onChange(posting.id, { ...next, dates: next.dates[next.stage] ? next.dates : { ...next.dates, [next.stage]: today } })
+    if (ok) onChange(postingId, { ...next, dates: next.dates[next.stage] ? next.dates : { ...next.dates, [next.stage]: today } })
     setState(ok ? 'saved' : 'failed')
   }
 
   function pick(stage: Stage) {
     if (app?.stage === stage) return
-    const base: Application = app ?? {
-      postingId: posting.id, stage, outcome: null, memo: '', nextOn: null, nextLabel: '', dates: {},
-      snapshot: snapshotOf(posting, company),
-    }
     // 공고가 아직 열려 있으면 마감 같은 정보를 최신으로 바꿔 둔다
-    save({ ...base, stage, snapshot: snapshotOf(posting, company) })
+    const snapshot = posting ? snapshotOf(posting, company) : app?.snapshot
+    if (!snapshot) return
+    const base: Application = app ?? {
+      postingId, stage, outcome: null, memo: '', nextOn: null, nextLabel: '', dates: {}, snapshot,
+    }
+    save({ ...base, stage, snapshot })
   }
 
   async function clear() {
     setState('saving')
-    const ok = await deleteApplication(posting.id)
-    if (ok) onChange(posting.id, null)
+    const ok = await deleteApplication(postingId)
+    if (ok) onChange(postingId, null)
     setState(ok ? 'idle' : 'failed')
   }
 
   return (
-    <section className="section apply">
-      <h2>{t.status}</h2>
+    <section className={embedded ? 'apply' : 'section apply'}>
+      {!embedded && <h2>{t.status}</h2>}
       <div className="chips wrap" role="radiogroup" aria-label={t.status}>
         {CHOICES.map((s) => (
           <button key={s} type="button" role="radio" aria-checked={app?.stage === s}

@@ -90,7 +90,7 @@ export function JobDetail({ screen, posting, today, match, feedback, onFeedback,
           </div>
         )}
       </section>
-      <ApplySection key={p.id} posting={p} company={c?.name ?? p.company} app={app} today={today} onChange={onApp} />
+      <ApplySection key={p.id} postingId={p.id} posting={p} company={c?.name ?? p.company} app={app} today={today} onChange={onApp} />
       <section className="section actions">
         {p.sources.filter((s) => s.url).map((s, i) => (
           <a key={s.source} className={i === 0 ? 'btn primary' : 'btn'} href={s.url ?? undefined} target="_blank" rel="noreferrer noopener">

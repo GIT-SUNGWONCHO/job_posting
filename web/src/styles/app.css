@@ -300,3 +300,7 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .upcoming + .upcoming { border-top: 1px solid var(--line); }
 .upcoming b { flex: none; width: 48px; font-weight: var(--fw-item); }
 .upcoming b.urgent { color: var(--urgent); }
+button.row { width: 100%; border: 0; background: none; padding: 14px 0; text-align: left; cursor: pointer; }
+.app-row + .app-row, .row + .app-row, .app-row + .row { border-top: 1px solid var(--line); }
+.app-edit { display: flex; flex-direction: column; gap: 8px; padding: 0 0 16px; }
+.app-add { padding: 12px 0 0; border-top: 1px solid var(--line); }

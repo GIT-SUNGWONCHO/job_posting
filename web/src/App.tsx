@@ -183,7 +183,7 @@ function Main({ screen }: { screen: Screen }) {
       body = <Later title={copy.tabs.career} text={copy.later.career} />
       break
     case 'apply':
-      body = <Apply screen={screen} apps={apps} today={today} />
+      body = <Apply screen={screen} apps={apps} today={today} onApp={onApp} />
       break
     case 'admin':
       body = <Admin />
