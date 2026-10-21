@@ -12,6 +12,8 @@
   --on-accent: #ffffff;
   --urgent: #d92d20;       /* 마감 3일 이내 */
   --overlay: rgba(25, 31, 40, 0.4);
+  --chart-grid: #e5e8eb;   /* 차트 눈금선 */
+  --chart-off: #c3cad3;    /* 차트에서 강조하지 않은 막대, 기준선(강조는 --accent) */
 
   /* 글자 크기(px): 페이지 제목 24, 섹션 17, 항목 제목 16, 본문 15, 보조 14, 최소 13 */
   --fs-page: 24px;

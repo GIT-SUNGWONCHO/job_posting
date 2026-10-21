@@ -38,6 +38,10 @@ export interface Body {
 export interface JobType {
   id: string
   name: string
+  /** 좁은 곳(포지션 맵)에 쓰는 짧은 이름 */
+  short?: string
+  /** false: 커리어 방향으로 보지 않는 유형(커리어 탭에서 뺀다) */
+  direction?: boolean
 }
 
 export interface Company {
@@ -60,7 +64,8 @@ export interface Filters {
 export interface ProfileOptions {
   version: number
   industries: { id: string; name: string }[]
-  roles: { id: string; name: string }[]
+  /** job_type: 공고에서는 이 직무 유형으로 본다(없으면 id가 같은 직무 유형) */
+  roles: { id: string; name: string; job_type?: string }[]
   skill_levels: { level: number; name: string; desc: string }[]
   project_parts: string[]
   degrees: string[]
@@ -85,6 +90,23 @@ export interface Screen {
   skills?: SkillOption[]
   /** 기준 샘플 공고 id(config/match_sample.yaml). "평가할 공고" */
   sample?: string[]
+  /** 커리어 탭 시장 지표(src/jobpost/career.py). 예전 파일에는 없다 */
+  career?: CareerMetrics | null
   companies: Record<string, Company>
   postings: Posting[]
+}
+
+/** 연차 구간: 최소 경력 0~3년 미만, 3~7, 7~12, 12년 이상, 연차 무관 */
+export type CareerBucket = '0-3' | '3-7' | '7-12' | '12+' | 'any'
+
+/** 커리어 지표. 묶음 이름은 "직무 유형 id|기업 구분"(분류 전은 none) */
+export interface CareerMetrics {
+  version: number
+  /** 수집을 시작한 날 */
+  since: string
+  days: string[]
+  /** 날짜별 열린 공고 수와 새 공고 수(수집 첫날의 새 공고는 null) */
+  series: Record<string, { open: number[]; new: (number | null)[] }>
+  /** 지금 열린 공고의 연차 분포, 요구 스킬(공고 수 많은 순), 본문이 있는 공고 수 */
+  current: Record<string, { career: Partial<Record<CareerBucket, number>>; skills: [string, number][]; withBody: number }>
 }

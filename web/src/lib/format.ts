@@ -43,3 +43,9 @@ export function companyLine(c: Company | undefined, fallback: string): string {
   const name = c?.name ?? fallback
   return c?.group ? `${name} · ${c.group} 계열` : name
 }
+
+/** +3, -2, 0 */
+export const signed = (n: number) => (n > 0 ? `+${n.toLocaleString()}` : n.toLocaleString())
+
+/** 2026-10 */
+export const monthOf = (iso: string) => iso.slice(0, 7)

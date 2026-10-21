@@ -14,12 +14,12 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-from . import config, facts, jobtypes
+from . import career, config, facts, jobtypes
 from .companies import CompanyRegistry
 from .normalize import career_text, clean_company
 from .store import Store
 
-VERSION = 4  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample)
+VERSION = 5  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
 # 본문을 고르는 순서: 리멤버 원문 > 직행이 정리한 요약 > 사람인 원문
@@ -58,8 +58,8 @@ def _body(members: list[dict[str, Any]], originals: dict[str, dict[str, Any]],
     return None
 
 
-def build(data_dir: Path, today: date | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
-    """(화면용 파일, 본문 파일)."""
+def build(data_dir: Path, today: date | None = None, with_career: bool = False) -> tuple[dict[str, Any], dict[str, Any]]:
+    """(화면용 파일, 본문 파일). with_career: 커리어 지표까지(본문 스킬을 다 찾느라 20초쯤 더 걸려 화면용 파일을 올릴 때만)."""
     today = today or date.today()
     store = Store(data_dir)
     registry = CompanyRegistry(data_dir / "companies.json")
@@ -129,12 +129,15 @@ def build(data_dir: Path, today: date | None = None) -> tuple[dict[str, Any], di
         "built": datetime.now().isoformat(timespec="seconds"),
         "counts": counts,
         "defaultFilters": config.load("filters"),
-        "jobTypes": [{"id": t["id"], "name": t["name"]} for t in jobtypes.taxonomy()["types"]],
+        "jobTypes": [{"id": t["id"], "name": t["name"], "short": t.get("short", t["name"]), "direction": t.get("direction", True)}
+                     for t in jobtypes.taxonomy()["types"]],
         # 프로필 화면에서 고르는 목록(config/profile.yaml)과 공고에서 나온 스킬
         "profileOptions": config.load("profile"),
         "skills": facts.skill_catalog(texts, facts.load(data_dir)),
         # 기준 샘플(config/match_sample.yaml): 화면의 "평가할 공고"
         "sample": [p["id"] for p in config.load("match_sample").get("postings") or []],
+        # 커리어 탭 시장 지표(career.py): 날짜별 공고 수, 지금 열린 공고의 연차·스킬
+        "career": career.build(store.state, registry, postings, companies, bodies, today) if with_career else None,
         "companies": companies,
         "postings": postings,
     }

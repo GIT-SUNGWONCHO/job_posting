@@ -29,11 +29,12 @@ industries:
   - {id: travel, name: 여행·숙박·레저}
   - {id: other, name: 기타}
 
-# 직무: 내 경력과 관련 있는 직무만 둔다(전체 직무 분류가 아니다). 공고 직무 유형 id와 같은 것은 같은 id
+# 직무: 내 경력과 관련 있는 직무만 둔다(전체 직무 분류가 아니다). 공고 직무 유형 id와 같은 것은 같은 id,
+# 이름이 다른데 공고에서는 한 직무 유형으로 보는 것은 job_type에 적는다(커리어 탭에서 직무별 내 경력을 셀 때)
 roles:
   - {id: data_eng, name: 데이터 엔지니어}
   - {id: data_arch, name: 데이터 아키텍트·거버넌스}
-  - {id: bi_eng, name: BI·애널리틱스 엔지니어}
+  - {id: bi_eng, name: BI·애널리틱스 엔지니어, job_type: analyst}
   - {id: analyst, name: 데이터 분석가}
   - {id: ai_eng, name: AI 엔지니어(LLM·에이전트)}
   - {id: mlops, name: MLOps·AI 플랫폼}

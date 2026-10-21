@@ -59,7 +59,7 @@ def main(argv: list[str] | None = None) -> int:
         failed = [n for n, s in summary["sources"].items() if s["error_count"] and not s["fetched"]]
         return 1 if failed and len(failed) == len(summary["sources"]) else 0
     if args.cmd == "screen":
-        built, bodies = screen.build(args.data_dir)
+        built, bodies = screen.build(args.data_dir, with_career=True)
         path = screen.write(built, args.out)
         body_paths = screen.write_bodies(bodies, args.out.parent)
         logging.info("화면용 파일: 공고 %d건, 회사 %d곳, %s KB / 본문 %d건, %d개 파일 %s KB",

@@ -16,10 +16,10 @@ import type { Filters, Screen } from './lib/types'
 import { useMedia, WIDE } from './lib/useMedia'
 import { Admin } from './screens/Admin'
 import { Apply } from './screens/Apply'
+import { Career } from './screens/Career'
 import { CompanyPage } from './screens/CompanyPage'
 import { JobDetail } from './screens/JobDetail'
 import { Jobs, PAGE, type JobsUi } from './screens/Jobs'
-import { Later } from './screens/Later'
 import { Login } from './screens/Login'
 import { Profile } from './screens/Profile'
 import { Report } from './screens/Report'
@@ -180,7 +180,7 @@ function Main({ screen }: { screen: Screen }) {
         : <CompanyPage screen={screen} companyKey={route.key} today={today} />
       break
     case 'career':
-      body = <Later title={copy.tabs.career} text={copy.later.career} />
+      body = <Career screen={screen} seg={route.seg} filters={filters} matches={matches} today={today} />
       break
     case 'apply':
       body = <Apply screen={screen} apps={apps} today={today} onApp={onApp} />

@@ -1,12 +1,15 @@
 import { useSyncExternalStore } from 'react'
 
 // 주소 뒤 #/... 로 화면을 고른다. 서버 설정 없이 새로고침·뒤로 가기가 된다.
+export type CareerSeg = 'market' | 'position' | 'plan'
+const CAREER_SEGS: CareerSeg[] = ['market', 'position', 'plan']
+
 export type Route =
   | { name: 'report' }
   | { name: 'jobs'; seg: 'jobs' | 'companies' }
   | { name: 'job'; id: string }
   | { name: 'company'; key: string }
-  | { name: 'career' }
+  | { name: 'career'; seg: CareerSeg }
   | { name: 'apply' }
   | { name: 'admin' }
   | { name: 'profile' }
@@ -22,6 +25,7 @@ export function parse(hash: string): Route {
     case 'company':
       return arg ? { name: 'company', key: arg } : { name: 'jobs', seg: 'companies' }
     case 'career':
+      return { name: 'career', seg: CAREER_SEGS.includes(arg as CareerSeg) ? (arg as CareerSeg) : 'market' }
     case 'apply':
     case 'admin':
     case 'profile':
@@ -36,6 +40,7 @@ export const href = {
   jobs: '#/jobs',
   companies: '#/jobs/companies',
   career: '#/career',
+  careerSeg: (seg: CareerSeg) => (seg === 'market' ? '#/career' : `#/career/${seg}`),
   apply: '#/apply',
   admin: '#/admin',
   profile: '#/profile',

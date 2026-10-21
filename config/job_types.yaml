@@ -2,6 +2,8 @@
 # 고정 목록이고 버전으로 관리한다(docs/content-rules.md "고정 기준은 버전으로").
 # 목록이나 설명을 바꾸면 version을 올린다. 다음 수집 때 열린 공고를 모두 다시 분류한다.
 # desc는 AI 분류 지시문에 그대로 들어간다.
+# short는 좁은 화면(커리어 탭 포지션 맵)에 쓰는 짧은 이름, direction: false는 커리어 방향으로 보지 않는 유형(커리어 탭에서 뺀다).
+# 둘은 분류에 쓰지 않아서 바꿔도 version을 올리지 않는다.
 
 version: 1
 field: AI·데이터
@@ -9,43 +11,59 @@ field: AI·데이터
 types:
   - id: data_eng
     name: 데이터 엔지니어
+    short: 데이터 엔지니어
     desc: 데이터 파이프라인·ETL, 데이터 플랫폼, DW·데이터 레이크·레이크하우스, 데이터 인프라 구축·운영, Spark·Kafka·Airflow 같은 데이터 처리 기술 중심 개발
   - id: data_arch
     name: 데이터 아키텍트·거버넌스
+    short: 데이터 아키텍트
     desc: 데이터 아키텍처(DA), 데이터 모델링, 데이터 표준·품질·메타데이터·MDM, 데이터 거버넌스
   - id: dba
     name: DBA·DB 엔지니어
+    short: DBA
     desc: 데이터베이스 운영·튜닝·이행, DBA
   - id: analyst
     name: 데이터 분석가
+    short: 데이터 분석가
     desc: 데이터 분석, BI·대시보드, 그로스·마케팅·사업 데이터 분석, 통계 분석
   - id: data_sci
     name: 데이터 사이언티스트
+    short: 데이터 사이언티스트
     desc: 예측·통계 모델링, 실험 설계, 데이터 사이언스
   - id: ml_eng
     name: ML 엔지니어
+    short: ML 엔지니어
     desc: 머신러닝·딥러닝 모델 개발(추천·검색·랭킹·컴퓨터 비전·음성·NLP·로봇·자율주행 인지 등)
   - id: mlops
     name: MLOps·AI 플랫폼
+    short: MLOps
     desc: 모델 학습·서빙 파이프라인, ML·AI 플랫폼, GPU·AI 인프라
   - id: ai_eng
     name: AI 엔지니어(LLM·에이전트)
+    short: AI 엔지니어
     desc: LLM·생성형 AI 응용, RAG, AI 에이전트, AI 서비스 개발, FDE
   - id: research
     name: AI 연구
+    short: AI 연구
     desc: AI·ML 연구원, 리서치 사이언티스트, 논문·신기술 연구, 교수·연구교수
   - id: planning
     name: AI·데이터 기획·PM
+    short: 기획·PM
     desc: AI·데이터 서비스 기획, PM·PO, AX·DX 전략, AI·데이터 조직 리더
   - id: consulting
     name: AI·데이터 컨설팅·사업
+    short: 컨설팅·사업
     desc: AI·데이터 컨설팅, 솔루션 아키텍트·프리세일즈, 사업개발, 교육·강의
   - id: software
     name: AI 활용 SW 개발
+    short: SW 개발
     desc: 백엔드·프론트엔드·풀스택·임베디드·QA·보안·DevOps 등 일반 소프트웨어 개발(AI 서비스 회사이거나 AI를 일부 쓰는 경우)
   - id: labeling
     name: 데이터 수집·라벨링
+    short: 라벨링
+    direction: false
     desc: 데이터 라벨링·어노테이션·수집·입력·검수, AI 학습 데이터 작업, AI 평가·튜터, 사무용 데이터 관리
   - id: non_data
     name: 데이터·AI 아닌 직무
+    short: 데이터 아닌 직무
+    direction: false
     desc: 마케팅·영업·디자인·콘텐츠 제작·회계·인사·생산·물류·장비 수리(하드디스크 데이터 복구 포함) 등 데이터나 AI가 주 업무가 아닌 직무
