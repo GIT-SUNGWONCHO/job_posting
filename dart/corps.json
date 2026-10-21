@@ -9,9 +9,12 @@
 },
 "11번가": {
 "checked": "2026-10-21",
-"corp_code": null,
+"corp_code": "01326206",
+"corp_name": "십일번가",
+"how": "override",
 "mv": 3,
-"why": "none"
+"override": "01326206",
+"stock_code": null
 },
 "26도라인": {
 "checked": "2026-10-21",
@@ -1742,10 +1745,11 @@
 },
 "넥슨": {
 "checked": "2026-10-21",
-"corp_code": "01870336",
-"corp_name": "넥슨",
-"how": "active",
+"corp_code": "00547033",
+"corp_name": "넥슨코리아",
+"how": "override",
 "mv": 3,
+"override": "00547033",
 "stock_code": null
 },
 "넵튠": {
@@ -7988,9 +7992,12 @@
 },
 "신한라이프": {
 "checked": "2026-10-21",
-"corp_code": null,
+"corp_code": "00137517",
+"corp_name": "신한라이프생명보험",
+"how": "override",
 "mv": 3,
-"why": "none"
+"override": "00137517",
+"stock_code": null
 },
 "신한서브": {
 "checked": "2026-10-21",
@@ -14154,9 +14161,12 @@
 },
 "코오롱인더스트리": {
 "checked": "2026-10-21",
-"corp_code": null,
+"corp_code": "00795135",
+"corp_name": "코오롱인더",
+"how": "override",
 "mv": 3,
-"why": "none"
+"override": "00795135",
+"stock_code": "120110"
 },
 "코지니": {
 "checked": "2026-10-21",

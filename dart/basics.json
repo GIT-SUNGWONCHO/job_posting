@@ -13,7 +13,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00103626": {
 "company": {
@@ -37,6 +37,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312000618",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -59,7 +60,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00105271": {
 "company": {
@@ -189,6 +190,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260309001896",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -211,7 +213,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00105466": {
 "company": {
@@ -291,6 +293,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260319001024",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -313,7 +316,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00105961": {
 "company": {
@@ -423,6 +426,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312001270",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -445,7 +449,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00106641": {
 "company": {
@@ -595,6 +599,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312001224",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -617,7 +622,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00108038": {
 "company": {
@@ -687,6 +692,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001210",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -709,7 +715,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00108241": {
 "company": {
@@ -809,6 +815,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260311003892",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -831,7 +838,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00108940": {
 "company": {
@@ -901,6 +908,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000799",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -923,7 +931,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00109019": {
 "company": {
@@ -947,6 +955,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001111",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -966,7 +975,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00110051": {
 "company": {
@@ -982,7 +991,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00110918": {
 "company": {
@@ -998,7 +1007,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00111704": {
 "company": {
@@ -1158,6 +1167,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260317000644",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -1180,7 +1190,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00111722": {
 "company": {
@@ -1305,6 +1315,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260515002972",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -1327,7 +1338,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00111810": {
 "company": {
@@ -1487,6 +1498,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001178",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -1509,7 +1521,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00113410": {
 "company": {
@@ -1614,6 +1626,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001417",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -1636,7 +1649,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00113526": {
 "company": {
@@ -1801,6 +1814,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001125",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -1823,7 +1837,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00114385": {
 "company": {
@@ -1839,7 +1853,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00115931": {
 "company": {
@@ -1934,6 +1948,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260306000812",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -1956,7 +1971,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00117212": {
 "company": {
@@ -2106,6 +2121,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323000945",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -2128,7 +2144,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00117230": {
 "company": {
@@ -2228,6 +2244,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001226",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -2250,7 +2267,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00117337": {
 "company": {
@@ -2380,6 +2397,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001406",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -2402,7 +2420,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00120182": {
 "company": {
@@ -2542,6 +2560,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260313000771",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -2561,7 +2580,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00120562": {
 "company": {
@@ -2736,6 +2755,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001619",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -2758,7 +2778,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00120988": {
 "company": {
@@ -2782,6 +2802,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331001760",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -2798,7 +2819,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00123143": {
 "company": {
@@ -2908,6 +2929,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260709000536",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -2930,7 +2952,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00124540": {
 "company": {
@@ -3060,6 +3082,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001029",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -3082,7 +3105,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00124656": {
 "company": {
@@ -3106,6 +3129,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260327001174",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -3128,7 +3152,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00125576": {
 "company": {
@@ -3193,6 +3217,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323000928",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -3215,7 +3240,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00126362": {
 "company": {
@@ -3340,6 +3365,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260310002954",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -3362,7 +3388,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00126566": {
 "company": {
@@ -3552,6 +3578,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001112",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -3574,7 +3601,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00126937": {
 "company": {
@@ -3699,6 +3726,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001299",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -3721,7 +3749,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00126955": {
 "company": {
@@ -3811,6 +3839,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001082",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -3833,7 +3862,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00127158": {
 "company": {
@@ -3973,6 +4002,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001571",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -3995,7 +4025,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00127459": {
 "company": {
@@ -4011,7 +4041,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00129679": {
 "company": {
@@ -4126,6 +4156,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001316",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -4148,7 +4179,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00130596": {
 "company": {
@@ -4164,7 +4195,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00131799": {
 "company": {
@@ -4224,6 +4255,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003895",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -4246,7 +4278,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00132202": {
 "company": {
@@ -4341,6 +4373,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001120",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -4363,7 +4396,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00136271": {
 "company": {
@@ -4473,6 +4506,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000940",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -4495,7 +4529,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00136864": {
 "company": {
@@ -4570,6 +4604,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260814002718",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -4592,7 +4627,51 @@
 }
 ]
 },
-"v": 2
+"v": 3
+},
+"00137517": {
+"company": {
+"ceo": "천상영",
+"founded": "1990-03-23",
+"homepage": "https://www.shinhanlife.co.kr",
+"industry_code": "65110",
+"market": "기타",
+"name": "신한라이프생명보험 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 1553,
+"date": "2025-12-31",
+"rcept_no": "20260331004136",
+"salary": 127039279,
+"tenure": 15.5
+},
+"fetched": "2026-10-21",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004136",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 472395000000,
+"operating": 659057000000,
+"year": 2023
+},
+{
+"net": 528401000000,
+"operating": 725082000000,
+"year": 2024
+},
+{
+"net": 507708000000,
+"operating": 791988000000,
+"year": 2025
+}
+]
+},
+"v": 3
 },
 "00138695": {
 "company": {
@@ -4608,7 +4687,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00139834": {
 "company": {
@@ -4723,6 +4802,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316000832",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -4745,7 +4825,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00140131": {
 "company": {
@@ -4830,6 +4910,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260317000560",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -4852,7 +4933,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00140168": {
 "company": {
@@ -4932,6 +5013,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260413002635",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -4954,7 +5036,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00140177": {
 "company": {
@@ -5044,6 +5126,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260311004487",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -5066,7 +5149,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00144243": {
 "company": {
@@ -5246,6 +5329,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001238",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -5268,7 +5352,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00146092": {
 "company": {
@@ -5284,7 +5368,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00149655": {
 "company": {
@@ -5419,6 +5503,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312000856",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -5441,7 +5526,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00152880": {
 "company": {
@@ -5591,6 +5676,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001556",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -5613,7 +5699,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00154329": {
 "company": {
@@ -5718,6 +5804,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001472",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -5740,7 +5827,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00155920": {
 "company": {
@@ -5756,7 +5843,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00157399": {
 "company": {
@@ -5876,6 +5963,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260311004024",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -5898,7 +5986,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00158325": {
 "company": {
@@ -5993,6 +6081,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260313001207",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -6015,7 +6104,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00158592": {
 "company": {
@@ -6031,7 +6120,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00158909": {
 "company": {
@@ -6061,6 +6150,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316000962",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -6080,7 +6170,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00159023": {
 "company": {
@@ -6235,6 +6325,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000532",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -6257,7 +6348,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00159193": {
 "company": {
@@ -6377,6 +6468,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260317000686",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -6399,7 +6491,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00159263": {
 "company": {
@@ -6415,7 +6507,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00159616": {
 "company": {
@@ -6550,6 +6642,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001246",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -6572,7 +6665,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00160117": {
 "company": {
@@ -6588,7 +6681,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00160144": {
 "company": {
@@ -6618,6 +6711,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260515000880",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -6637,7 +6731,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00160588": {
 "company": {
@@ -6802,6 +6896,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003871",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -6824,7 +6919,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00161693": {
 "company": {
@@ -6929,6 +7024,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001167",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -6951,7 +7047,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00162221": {
 "company": {
@@ -6981,6 +7077,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331002541",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -7003,7 +7100,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00163682": {
 "company": {
@@ -7038,6 +7135,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260401004248",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -7057,7 +7155,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00164724": {
 "company": {
@@ -7197,6 +7295,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001372",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -7219,7 +7318,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00164742": {
 "company": {
@@ -7374,6 +7473,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001394",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -7396,7 +7496,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00164788": {
 "company": {
@@ -7526,6 +7626,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260309001878",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -7548,7 +7649,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00165413": {
 "company": {
@@ -7713,6 +7814,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312001296",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -7735,7 +7837,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00171104": {
 "company": {
@@ -7751,7 +7853,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00173874": {
 "company": {
@@ -7861,6 +7963,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001435",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -7883,7 +7986,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00181712": {
 "company": {
@@ -8108,6 +8211,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001157",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -8130,7 +8234,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00185912": {
 "company": {
@@ -8146,7 +8250,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00190321": {
 "company": {
@@ -8286,6 +8390,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001553",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -8308,7 +8413,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00192347": {
 "company": {
@@ -8324,7 +8429,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00195043": {
 "company": {
@@ -8340,7 +8445,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00197591": {
 "company": {
@@ -8356,7 +8461,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00200910": {
 "company": {
@@ -8441,6 +8546,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000005",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -8463,7 +8569,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00203519": {
 "company": {
@@ -8479,7 +8585,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00204749": {
 "company": {
@@ -8495,7 +8601,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00208046": {
 "company": {
@@ -8511,7 +8617,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00208514": {
 "company": {
@@ -8535,6 +8641,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001032",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -8557,7 +8664,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00219051": {
 "company": {
@@ -8592,6 +8699,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260327001072",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -8614,7 +8722,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00219486": {
 "company": {
@@ -8724,6 +8832,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001238",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -8746,7 +8855,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00219644": {
 "company": {
@@ -8762,7 +8871,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00219875": {
 "company": {
@@ -8799,7 +8908,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00219909": {
 "company": {
@@ -8815,7 +8924,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00220084": {
 "company": {
@@ -8831,7 +8940,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00220668": {
 "company": {
@@ -8847,7 +8956,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00222374": {
 "company": {
@@ -8871,6 +8980,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001407",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -8893,7 +9003,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00223799": {
 "company": {
@@ -8915,7 +9025,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00225584": {
 "company": {
@@ -8931,7 +9041,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00227333": {
 "company": {
@@ -8991,6 +9101,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001666",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -9013,7 +9124,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00231105": {
 "company": {
@@ -9123,6 +9234,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001705",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -9145,7 +9257,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00231363": {
 "company": {
@@ -9275,6 +9387,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260313000442",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -9297,7 +9410,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00241449": {
 "company": {
@@ -9313,7 +9426,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00241731": {
 "company": {
@@ -9329,7 +9442,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00243562": {
 "company": {
@@ -9351,7 +9464,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00243988": {
 "company": {
@@ -9386,6 +9499,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003304",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -9408,7 +9522,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00244260": {
 "company": {
@@ -9424,7 +9538,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00245436": {
 "company": {
@@ -9440,7 +9554,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00248725": {
 "company": {
@@ -9456,7 +9570,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00249928": {
 "company": {
@@ -9472,7 +9586,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00251349": {
 "company": {
@@ -9488,7 +9602,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00252135": {
 "company": {
@@ -9558,6 +9672,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000323",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -9580,7 +9695,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00254911": {
 "company": {
@@ -9596,7 +9711,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00254948": {
 "company": {
@@ -9620,6 +9735,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316000090",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -9642,7 +9758,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00255114": {
 "company": {
@@ -9658,7 +9774,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00255275": {
 "company": {
@@ -9733,6 +9849,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001660",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -9755,7 +9872,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00258801": {
 "company": {
@@ -9910,6 +10027,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001423",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -9932,7 +10050,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00259156": {
 "company": {
@@ -9948,7 +10066,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00260082": {
 "company": {
@@ -9964,7 +10082,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00260198": {
 "company": {
@@ -9980,7 +10098,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00260295": {
 "company": {
@@ -9996,7 +10114,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00260745": {
 "company": {
@@ -10101,6 +10219,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323000571",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -10123,7 +10242,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00260958": {
 "company": {
@@ -10218,6 +10337,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260319001242",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -10240,7 +10360,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00261355": {
 "company": {
@@ -10335,6 +10455,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000921",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -10357,7 +10478,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00261373": {
 "company": {
@@ -10442,6 +10563,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001371",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -10464,7 +10586,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00261443": {
 "company": {
@@ -10589,6 +10711,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001448",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -10611,7 +10734,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00261957": {
 "company": {
@@ -10671,6 +10794,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000722",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -10693,7 +10817,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00265324": {
 "company": {
@@ -10778,6 +10902,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001469",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -10800,7 +10925,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00266961": {
 "company": {
@@ -10945,6 +11070,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260313001021",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -10967,7 +11093,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00269852": {
 "company": {
@@ -11027,6 +11153,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001559",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -11046,7 +11173,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00273420": {
 "company": {
@@ -11121,6 +11248,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001289",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -11143,7 +11271,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00274094": {
 "company": {
@@ -11159,7 +11287,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00298270": {
 "company": {
@@ -11234,6 +11362,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320000868",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -11256,7 +11385,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00300520": {
 "company": {
@@ -11272,7 +11401,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00305297": {
 "company": {
@@ -11342,6 +11471,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331004794",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -11364,7 +11494,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00307091": {
 "company": {
@@ -11380,7 +11510,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00315188": {
 "company": {
@@ -11396,7 +11526,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00320791": {
 "company": {
@@ -11412,7 +11542,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00324867": {
 "company": {
@@ -11428,7 +11558,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00331016": {
 "company": {
@@ -11523,6 +11653,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260309001578",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -11545,7 +11676,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00335483": {
 "company": {
@@ -11561,7 +11692,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00339197": {
 "company": {
@@ -11577,7 +11708,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00339230": {
 "company": {
@@ -11601,6 +11732,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003660",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -11623,7 +11755,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00339328": {
 "company": {
@@ -11639,7 +11771,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00339391": {
 "company": {
@@ -11809,6 +11941,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260513000644",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -11831,7 +11964,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00343224": {
 "company": {
@@ -11847,7 +11980,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00350312": {
 "company": {
@@ -11947,6 +12080,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001288",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -11969,7 +12103,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00351807": {
 "company": {
@@ -12029,6 +12163,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000827",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12051,7 +12186,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00355380": {
 "company": {
@@ -12081,6 +12216,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260330000536",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12103,7 +12239,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00357740": {
 "company": {
@@ -12178,6 +12314,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000635",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12200,7 +12337,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00358943": {
 "company": {
@@ -12216,7 +12353,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00359386": {
 "company": {
@@ -12232,7 +12369,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00361169": {
 "company": {
@@ -12307,6 +12444,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260326000238",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12329,7 +12467,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00362007": {
 "company": {
@@ -12345,7 +12483,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00362441": {
 "company": {
@@ -12465,6 +12603,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001324",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12487,7 +12626,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00362885": {
 "company": {
@@ -12503,7 +12642,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00364467": {
 "company": {
@@ -12628,6 +12767,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000743",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12650,7 +12790,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00365457": {
 "company": {
@@ -12710,6 +12850,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001329",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12732,7 +12873,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00366438": {
 "company": {
@@ -12842,6 +12983,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260403003697",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12864,7 +13006,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00368889": {
 "company": {
@@ -12880,7 +13022,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00369213": {
 "company": {
@@ -12960,6 +13102,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260316001624",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -12982,7 +13125,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00372688": {
 "company": {
@@ -13077,6 +13220,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000012",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -13099,7 +13243,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00372873": {
 "company": {
@@ -13219,6 +13363,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323001433",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -13241,7 +13386,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00374738": {
 "company": {
@@ -13321,6 +13466,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320000390",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -13343,7 +13489,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00379229": {
 "company": {
@@ -13418,6 +13564,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001380",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -13440,7 +13587,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00380298": {
 "company": {
@@ -13456,7 +13603,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00382001": {
 "company": {
@@ -13472,7 +13619,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00384887": {
 "company": {
@@ -13527,6 +13674,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260602000371",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -13549,7 +13697,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00387547": {
 "company": {
@@ -13565,7 +13713,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00389970": {
 "company": {
@@ -13665,6 +13813,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000938",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -13687,7 +13836,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00399694": {
 "company": {
@@ -13792,6 +13941,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001348",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -13814,7 +13964,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00403793": {
 "company": {
@@ -13904,6 +14054,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001232",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -13926,7 +14077,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00405676": {
 "company": {
@@ -13942,7 +14093,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00407294": {
 "company": {
@@ -14012,6 +14163,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001386",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -14034,7 +14186,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00408141": {
 "company": {
@@ -14050,7 +14202,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00411154": {
 "company": {
@@ -14066,7 +14218,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00412287": {
 "company": {
@@ -14082,7 +14234,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00413046": {
 "company": {
@@ -14307,6 +14459,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001415",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -14329,7 +14482,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00413523": {
 "company": {
@@ -14414,6 +14567,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001377",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -14436,7 +14590,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00414850": {
 "company": {
@@ -14521,6 +14675,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001001",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -14543,7 +14698,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00414975": {
 "company": {
@@ -14578,6 +14733,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331002340",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -14600,7 +14756,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00415822": {
 "company": {
@@ -14616,7 +14772,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00417440": {
 "company": {
@@ -14632,7 +14788,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00418537": {
 "company": {
@@ -14648,7 +14804,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00418643": {
 "company": {
@@ -14664,7 +14820,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00423779": {
 "company": {
@@ -14680,7 +14836,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00426873": {
 "company": {
@@ -14696,7 +14852,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00427483": {
 "company": {
@@ -14851,6 +15007,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001528",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -14873,7 +15030,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00428251": {
 "company": {
@@ -14998,6 +15155,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001314",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -15020,7 +15178,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00438036": {
 "company": {
@@ -15115,6 +15273,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001267",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -15137,7 +15296,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00442321": {
 "company": {
@@ -15153,7 +15312,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00442561": {
 "company": {
@@ -15218,6 +15377,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001548",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -15240,7 +15400,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00444019": {
 "company": {
@@ -15256,7 +15416,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00444329": {
 "company": {
@@ -15356,6 +15516,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000853",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -15378,7 +15539,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00446901": {
 "company": {
@@ -15473,6 +15634,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260327000999",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -15495,7 +15657,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00447928": {
 "company": {
@@ -15580,6 +15742,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260629000421",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -15602,7 +15765,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00449379": {
 "company": {
@@ -15687,6 +15850,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001677",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -15709,7 +15873,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00449652": {
 "company": {
@@ -15725,7 +15889,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00459279": {
 "company": {
@@ -15741,7 +15905,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00460099": {
 "company": {
@@ -15757,7 +15921,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00472021": {
 "company": {
@@ -15773,7 +15937,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00475985": {
 "company": {
@@ -15858,6 +16022,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001269",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -15880,7 +16045,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00476498": {
 "company": {
@@ -15995,6 +16160,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001410",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -16017,7 +16183,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00479857": {
 "company": {
@@ -16033,7 +16199,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00480792": {
 "company": {
@@ -16049,7 +16215,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00482277": {
 "company": {
@@ -16065,7 +16231,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00483090": {
 "company": {
@@ -16081,7 +16247,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00485353": {
 "company": {
@@ -16097,7 +16263,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00486653": {
 "company": {
@@ -16113,7 +16279,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00490090": {
 "company": {
@@ -16193,6 +16359,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20250618000187",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -16215,7 +16382,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00490179": {
 "company": {
@@ -16305,6 +16472,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000522",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -16327,7 +16495,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00492353": {
 "company": {
@@ -16407,6 +16575,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320000730",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -16429,7 +16598,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00494731": {
 "company": {
@@ -16445,7 +16614,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00503668": {
 "company": {
@@ -16570,6 +16739,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001211",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -16592,7 +16762,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00504232": {
 "company": {
@@ -16608,7 +16778,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00513522": {
 "company": {
@@ -16624,7 +16794,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00518235": {
 "company": {
@@ -16640,7 +16810,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00520267": {
 "company": {
@@ -16656,7 +16826,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00520887": {
 "company": {
@@ -16726,6 +16896,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260625000299",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -16748,7 +16919,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00521390": {
 "company": {
@@ -16823,6 +16994,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001403",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -16845,7 +17017,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00525642": {
 "company": {
@@ -16940,6 +17112,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001698",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -16962,7 +17135,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00525882": {
 "company": {
@@ -17112,6 +17285,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260311004607",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -17134,7 +17308,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00526599": {
 "company": {
@@ -17264,6 +17438,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260928000355",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -17286,7 +17461,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00529356": {
 "company": {
@@ -17302,7 +17477,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00529772": {
 "company": {
@@ -17318,7 +17493,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00530088": {
 "company": {
@@ -17334,7 +17509,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00531078": {
 "company": {
@@ -17469,6 +17644,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20251229000628",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -17491,7 +17667,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00531829": {
 "company": {
@@ -17551,6 +17727,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001578",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -17570,7 +17747,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00534701": {
 "company": {
@@ -17650,6 +17827,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260318000562",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -17672,7 +17850,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00541844": {
 "company": {
@@ -17688,7 +17866,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00541899": {
 "company": {
@@ -17704,7 +17882,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00545202": {
 "company": {
@@ -17720,7 +17898,23 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
+},
+"00547033": {
+"company": {
+"ceo": "강대현,김정욱",
+"founded": "2005-10-01",
+"homepage": "https://www.nexon.com",
+"industry_code": "5821",
+"market": "기타",
+"name": "(주) 넥슨코리아",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-21",
+"finance": null,
+"v": 3
 },
 "00550994": {
 "company": {
@@ -17810,6 +18004,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001657",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -17832,7 +18027,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00553025": {
 "company": {
@@ -17884,7 +18079,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00556147": {
 "company": {
@@ -17900,7 +18095,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00558093": {
 "company": {
@@ -17916,7 +18111,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00563998": {
 "company": {
@@ -17932,7 +18127,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00565154": {
 "company": {
@@ -18037,6 +18232,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260310003051",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -18059,7 +18255,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00570846": {
 "company": {
@@ -18075,7 +18271,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00571605": {
 "company": {
@@ -18091,7 +18287,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00574417": {
 "company": {
@@ -18107,7 +18303,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00574754": {
 "company": {
@@ -18123,7 +18319,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00579999": {
 "company": {
@@ -18233,6 +18429,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312000804",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -18255,7 +18452,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00580144": {
 "company": {
@@ -18271,7 +18468,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00581569": {
 "company": {
@@ -18287,7 +18484,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00582443": {
 "company": {
@@ -18303,7 +18500,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00583424": {
 "company": {
@@ -18423,6 +18620,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000785",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -18445,7 +18643,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00585608": {
 "company": {
@@ -18469,6 +18667,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20250321000823",
+"revenue_name": "매출액",
 "year": 2024,
 "years": [
 {
@@ -18491,7 +18690,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00585875": {
 "company": {
@@ -18507,7 +18706,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00594934": {
 "company": {
@@ -18523,7 +18722,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00599285": {
 "company": {
@@ -18588,6 +18787,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001112",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -18610,7 +18810,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00601243": {
 "company": {
@@ -18626,7 +18826,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00603278": {
 "company": {
@@ -18656,6 +18856,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260318001404",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -18678,7 +18879,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00603357": {
 "company": {
@@ -18694,7 +18895,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00603393": {
 "company": {
@@ -18710,7 +18911,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00607724": {
 "company": {
@@ -18726,7 +18927,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00608699": {
 "company": {
@@ -18796,6 +18997,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000016",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -18818,7 +19020,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00612434": {
 "company": {
@@ -18834,7 +19036,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00612489": {
 "company": {
@@ -18904,6 +19106,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260313000025",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -18926,7 +19129,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00617819": {
 "company": {
@@ -18942,7 +19145,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00619482": {
 "company": {
@@ -18958,7 +19161,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00619534": {
 "company": {
@@ -18974,7 +19177,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00623555": {
 "company": {
@@ -18990,7 +19193,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00623810": {
 "company": {
@@ -19006,7 +19209,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00626464": {
 "company": {
@@ -19091,6 +19294,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003325",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -19113,7 +19317,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00628189": {
 "company": {
@@ -19193,6 +19397,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001421",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -19215,7 +19420,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00628860": {
 "company": {
@@ -19340,6 +19545,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001284",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -19362,7 +19568,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00635000": {
 "company": {
@@ -19378,7 +19584,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00635134": {
 "company": {
@@ -19473,6 +19679,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001116",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -19495,7 +19702,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00635851": {
 "company": {
@@ -19511,7 +19718,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00636230": {
 "company": {
@@ -19527,7 +19734,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00636656": {
 "company": {
@@ -19607,6 +19814,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001078",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -19629,7 +19837,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00638487": {
 "company": {
@@ -19714,6 +19922,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260703000477",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -19736,7 +19945,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00642541": {
 "company": {
@@ -19876,6 +20085,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001251",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -19898,7 +20108,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00646495": {
 "company": {
@@ -19928,6 +20138,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003788",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -19950,7 +20161,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00648457": {
 "company": {
@@ -19966,7 +20177,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00653361": {
 "company": {
@@ -19982,7 +20193,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00656030": {
 "company": {
@@ -19998,7 +20209,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00656146": {
 "company": {
@@ -20014,7 +20225,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00656988": {
 "company": {
@@ -20030,7 +20241,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00657224": {
 "company": {
@@ -20135,6 +20346,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260319001077",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -20157,7 +20369,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00658126": {
 "company": {
@@ -20173,7 +20385,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00664686": {
 "company": {
@@ -20189,7 +20401,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00664871": {
 "company": {
@@ -20205,7 +20417,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00665676": {
 "company": {
@@ -20295,6 +20507,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260709000678",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -20317,7 +20530,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00667160": {
 "company": {
@@ -20333,7 +20546,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00671978": {
 "company": {
@@ -20398,6 +20611,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000906",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -20420,7 +20634,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00673523": {
 "company": {
@@ -20450,6 +20664,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260331003329",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -20469,7 +20684,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00675859": {
 "company": {
@@ -20485,7 +20700,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00677194": {
 "company": {
@@ -20501,7 +20716,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00684714": {
 "company": {
@@ -20616,6 +20831,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312001327",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -20638,7 +20854,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00689436": {
 "company": {
@@ -20660,7 +20876,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00698896": {
 "company": {
@@ -20676,7 +20892,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00759513": {
 "company": {
@@ -20766,6 +20982,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001555",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -20788,7 +21005,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00760971": {
 "company": {
@@ -20923,6 +21140,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260515002689",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -20945,7 +21163,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00762146": {
 "company": {
@@ -20961,7 +21179,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00770613": {
 "company": {
@@ -20977,7 +21195,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00777272": {
 "company": {
@@ -21004,7 +21222,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00778794": {
 "company": {
@@ -21028,6 +21246,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260331003535",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -21050,7 +21269,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00779386": {
 "company": {
@@ -21066,7 +21285,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00790839": {
 "company": {
@@ -21111,6 +21330,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260331003700",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -21133,7 +21353,170 @@
 }
 ]
 },
-"v": 2
+"v": 3
+},
+"00795135": {
+"company": {
+"ceo": "허성, 김민태",
+"founded": "2010-01-05",
+"homepage": "https://www.kolonindustries.com/",
+"industry_code": "205",
+"market": "유가증권",
+"name": "코오롱인더스트리(주)",
+"stock_code": "120110"
+},
+"disclosures": [
+{
+"date": "2026-10-12",
+"rcept_no": "20261012800446",
+"title": "조회공시요구(풍문또는보도)에대한답변(미확정)"
+},
+{
+"date": "2026-09-17",
+"rcept_no": "20260917000235",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+},
+{
+"date": "2026-08-31",
+"rcept_no": "20260831800459",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-08-07",
+"rcept_no": "20260807800484",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-08-06",
+"rcept_no": "20260806800577",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-08-06",
+"rcept_no": "20260806800529",
+"title": "현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정"
+},
+{
+"date": "2026-08-06",
+"rcept_no": "20260806800485",
+"title": "기업가치제고계획(자율공시)"
+},
+{
+"date": "2026-08-06",
+"rcept_no": "20260806800462",
+"title": "수시공시의무관련사항(공정공시)"
+},
+{
+"date": "2026-07-23",
+"rcept_no": "20260723800170",
+"title": "기업설명회(IR)개최(안내공시)"
+},
+{
+"date": "2026-07-23",
+"rcept_no": "20260723800164",
+"title": "결산실적공시예고(안내공시)"
+},
+{
+"date": "2026-06-30",
+"rcept_no": "20260630800182",
+"title": "지속가능경영보고서등관련사항(자율공시)"
+},
+{
+"date": "2026-06-01",
+"rcept_no": "20260601800258",
+"title": "기업지배구조보고서공시"
+},
+{
+"date": "2026-05-11",
+"rcept_no": "20260511800294",
+"title": "조회공시요구(풍문또는보도)"
+},
+{
+"date": "2026-05-08",
+"rcept_no": "20260508000544",
+"title": "주요사항보고서(주식교환ㆍ이전결정)"
+},
+{
+"date": "2026-05-07",
+"rcept_no": "20260507800728",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2026-04-13",
+"rcept_no": "20260413002895",
+"title": "주요사항보고서(회사합병결정)"
+},
+{
+"date": "2026-03-31",
+"rcept_no": "20260331800994",
+"title": "대표이사(대표집행임원)변경(안내공시)"
+},
+{
+"date": "2026-03-31",
+"rcept_no": "20260331800899",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-20",
+"rcept_no": "20260320801646",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226800798",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226800735",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변경"
+},
+{
+"date": "2026-02-13",
+"rcept_no": "20260213001447",
+"title": "주요사항보고서(교환사채권발행결정)"
+},
+{
+"date": "2025-11-21",
+"rcept_no": "20251121800740",
+"title": "풍문또는보도에대한해명(미확정)"
+}
+],
+"employees": {
+"count": 4260,
+"date": "2025-12-31",
+"rcept_no": "20260331001900",
+"salary": 78146568,
+"tenure": 11.7
+},
+"fetched": "2026-10-21",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331001900",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 50777732316,
+"operating": 199654688223,
+"revenue": 4734907182667,
+"year": 2023
+},
+{
+"net": 110628722171,
+"operating": 158723468850,
+"revenue": 4843003131269,
+"year": 2024
+},
+{
+"net": 51573520480,
+"operating": 108896018558,
+"revenue": 4873399491952,
+"year": 2025
+}
+]
+},
+"v": 3
 },
 "00799539": {
 "company": {
@@ -21243,6 +21626,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260327001840",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -21265,7 +21649,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00820024": {
 "company": {
@@ -21300,6 +21684,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001094",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -21322,7 +21707,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00824950": {
 "company": {
@@ -21338,7 +21723,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00833213": {
 "company": {
@@ -21365,7 +21750,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00834188": {
 "company": {
@@ -21381,7 +21766,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00834407": {
 "company": {
@@ -21397,7 +21782,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00841045": {
 "company": {
@@ -21413,7 +21798,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00843645": {
 "company": {
@@ -21429,7 +21814,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00855084": {
 "company": {
@@ -21445,7 +21830,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00855190": {
 "company": {
@@ -21461,7 +21846,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00857480": {
 "company": {
@@ -21561,6 +21946,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260313001349",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -21583,7 +21969,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00864550": {
 "company": {
@@ -21599,7 +21985,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00866691": {
 "company": {
@@ -21621,7 +22007,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00866831": {
 "company": {
@@ -21637,7 +22023,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00869388": {
 "company": {
@@ -21653,7 +22039,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00871444": {
 "company": {
@@ -21669,7 +22055,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00872425": {
 "company": {
@@ -21685,7 +22071,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00873840": {
 "company": {
@@ -21701,7 +22087,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00876218": {
 "company": {
@@ -21717,7 +22103,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00899459": {
 "company": {
@@ -21802,6 +22188,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001022",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -21824,7 +22211,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00904672": {
 "company": {
@@ -21979,6 +22366,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001170",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -22001,7 +22389,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00914679": {
 "company": {
@@ -22017,7 +22405,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00915067": {
 "company": {
@@ -22033,7 +22421,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00916826": {
 "company": {
@@ -22113,6 +22501,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001678",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -22135,7 +22524,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00923288": {
 "company": {
@@ -22151,7 +22540,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00925374": {
 "company": {
@@ -22221,6 +22610,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001135",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -22243,7 +22633,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00929282": {
 "company": {
@@ -22259,7 +22649,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00939465": {
 "company": {
@@ -22275,7 +22665,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00943158": {
 "company": {
@@ -22291,7 +22681,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00946030": {
 "company": {
@@ -22381,6 +22771,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260708000478",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -22403,7 +22794,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00950088": {
 "company": {
@@ -22419,7 +22810,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00957373": {
 "company": {
@@ -22524,6 +22915,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260410001848",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -22546,7 +22938,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00959016": {
 "company": {
@@ -22562,7 +22954,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00962782": {
 "company": {
@@ -22578,7 +22970,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00964090": {
 "company": {
@@ -22594,7 +22986,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00965196": {
 "company": {
@@ -22610,7 +23002,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00965424": {
 "company": {
@@ -22626,7 +23018,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00966618": {
 "company": {
@@ -22642,7 +23034,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00967699": {
 "company": {
@@ -22658,7 +23050,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00969387": {
 "company": {
@@ -22674,7 +23066,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00971993": {
 "company": {
@@ -22690,7 +23082,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00975315": {
 "company": {
@@ -22706,7 +23098,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00976615": {
 "company": {
@@ -22766,6 +23158,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20250321001909",
+"revenue_name": "매출액",
 "year": 2024,
 "years": [
 {
@@ -22788,7 +23181,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00976688": {
 "company": {
@@ -22804,7 +23197,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00976749": {
 "company": {
@@ -22820,7 +23213,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00977641": {
 "company": {
@@ -22955,6 +23348,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260716000527",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -22977,7 +23371,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00978677": {
 "company": {
@@ -23001,6 +23395,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003196",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -23023,7 +23418,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00980043": {
 "company": {
@@ -23133,6 +23528,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001692",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -23155,7 +23551,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00983271": {
 "company": {
@@ -23295,6 +23691,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001525",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -23317,7 +23714,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "00984119": {
 "company": {
@@ -23344,7 +23741,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00985206": {
 "company": {
@@ -23360,7 +23757,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "00992622": {
 "company": {
@@ -23376,7 +23773,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01004298": {
 "company": {
@@ -23392,7 +23789,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01009789": {
 "company": {
@@ -23512,6 +23909,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000694",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -23534,7 +23932,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01010110": {
 "company": {
@@ -23659,6 +24057,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260724000595",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -23681,7 +24080,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01011845": {
 "company": {
@@ -23697,7 +24096,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01012640": {
 "company": {
@@ -23777,6 +24176,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000594",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -23796,7 +24196,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01012871": {
 "company": {
@@ -23812,7 +24212,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01013029": {
 "company": {
@@ -23828,7 +24228,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01013074": {
 "company": {
@@ -23844,7 +24244,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01013311": {
 "company": {
@@ -23929,6 +24329,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001375",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -23951,7 +24352,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01016211": {
 "company": {
@@ -23967,7 +24368,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01016734": {
 "company": {
@@ -23983,7 +24384,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01016813": {
 "company": {
@@ -23999,7 +24400,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01016965": {
 "company": {
@@ -24015,7 +24416,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01017210": {
 "company": {
@@ -24031,7 +24432,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01019166": {
 "company": {
@@ -24047,7 +24448,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01020418": {
 "company": {
@@ -24063,7 +24464,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01020843": {
 "company": {
@@ -24133,6 +24534,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000720",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -24155,7 +24557,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01023840": {
 "company": {
@@ -24171,7 +24573,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01024098": {
 "company": {
@@ -24187,7 +24589,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01026157": {
 "company": {
@@ -24307,6 +24709,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000788",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -24329,7 +24732,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01026731": {
 "company": {
@@ -24345,7 +24748,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01027794": {
 "company": {
@@ -24415,6 +24818,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260324000049",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -24437,7 +24841,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01042085": {
 "company": {
@@ -24552,6 +24956,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001293",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -24574,7 +24979,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01042623": {
 "company": {
@@ -24598,6 +25003,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260814002150",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -24617,7 +25023,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01042775": {
 "company": {
@@ -24732,6 +25138,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000883",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -24754,7 +25161,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01047734": {
 "company": {
@@ -24770,7 +25177,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01050738": {
 "company": {
@@ -24840,6 +25247,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001029",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -24862,7 +25270,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01061327": {
 "company": {
@@ -25007,6 +25415,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001541",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25029,7 +25438,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01063273": {
 "company": {
@@ -25045,7 +25454,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01067516": {
 "company": {
@@ -25120,6 +25529,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001346",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25142,7 +25552,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01067808": {
 "company": {
@@ -25217,6 +25627,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000703",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25239,7 +25650,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01070741": {
 "company": {
@@ -25255,7 +25666,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01073465": {
 "company": {
@@ -25271,7 +25682,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01074862": {
 "company": {
@@ -25386,6 +25797,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000849",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25408,7 +25820,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01075038": {
 "company": {
@@ -25424,7 +25836,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01075366": {
 "company": {
@@ -25440,7 +25852,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01076073": {
 "company": {
@@ -25456,7 +25868,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01078178": {
 "company": {
@@ -25551,6 +25963,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331004907",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25573,7 +25986,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01082180": {
 "company": {
@@ -25589,7 +26002,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01083587": {
 "company": {
@@ -25605,7 +26018,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01084294": {
 "company": {
@@ -25675,6 +26088,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001402",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25697,7 +26111,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01087477": {
 "company": {
@@ -25727,6 +26141,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260330001771",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25749,7 +26164,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01088713": {
 "company": {
@@ -25765,7 +26180,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01096262": {
 "company": {
@@ -25781,7 +26196,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01105153": {
 "company": {
@@ -25871,6 +26286,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001562",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25893,7 +26309,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01108442": {
 "company": {
@@ -25973,6 +26389,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001383",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -25995,7 +26412,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01115266": {
 "company": {
@@ -26011,7 +26428,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01124653": {
 "company": {
@@ -26121,6 +26538,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001121",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -26143,7 +26561,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01132281": {
 "company": {
@@ -26159,7 +26577,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01133217": {
 "company": {
@@ -26259,6 +26677,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260318000884",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -26281,7 +26700,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01133341": {
 "company": {
@@ -26297,7 +26716,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01133679": {
 "company": {
@@ -26313,7 +26732,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01134216": {
 "company": {
@@ -26378,6 +26797,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260312000578",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -26400,7 +26820,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01134410": {
 "company": {
@@ -26416,7 +26836,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01134669": {
 "company": {
@@ -26432,7 +26852,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01135640": {
 "company": {
@@ -26487,6 +26907,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001123",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -26509,7 +26930,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01137383": {
 "company": {
@@ -26634,6 +27055,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001659",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -26656,7 +27078,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01137727": {
 "company": {
@@ -26691,6 +27113,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003116",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -26713,7 +27136,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01139947": {
 "company": {
@@ -26740,7 +27163,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01141164": {
 "company": {
@@ -26756,7 +27179,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01143241": {
 "company": {
@@ -26772,7 +27195,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01144125": {
 "company": {
@@ -26788,7 +27211,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01145799": {
 "company": {
@@ -26804,7 +27227,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01151055": {
 "company": {
@@ -26820,7 +27243,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01151231": {
 "company": {
@@ -26836,7 +27259,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01153293": {
 "company": {
@@ -26921,6 +27344,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001416",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -26943,7 +27367,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01153956": {
 "company": {
@@ -26978,6 +27402,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260327000997",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -27000,7 +27425,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01156944": {
 "company": {
@@ -27016,7 +27441,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01157235": {
 "company": {
@@ -27156,6 +27581,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260331001631",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -27178,7 +27604,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01159233": {
 "company": {
@@ -27288,6 +27714,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260325001187",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -27310,7 +27737,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01161292": {
 "company": {
@@ -27326,7 +27753,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01167108": {
 "company": {
@@ -27342,7 +27769,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01172678": {
 "company": {
@@ -27358,7 +27785,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01174038": {
 "company": {
@@ -27448,6 +27875,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000014",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -27470,7 +27898,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01175781": {
 "company": {
@@ -27486,7 +27914,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01182259": {
 "company": {
@@ -27551,6 +27979,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323001657",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -27573,7 +28002,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01203312": {
 "company": {
@@ -27653,6 +28082,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323001560",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -27672,7 +28102,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01203835": {
 "company": {
@@ -27688,7 +28118,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01204603": {
 "company": {
@@ -27704,7 +28134,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01206896": {
 "company": {
@@ -27720,7 +28150,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01208186": {
 "company": {
@@ -27736,7 +28166,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01209130": {
 "company": {
@@ -27752,7 +28182,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01209592": {
 "company": {
@@ -27768,7 +28198,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01209893": {
 "company": {
@@ -27784,7 +28214,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01211481": {
 "company": {
@@ -27800,7 +28230,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01212921": {
 "company": {
@@ -27845,6 +28275,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003713",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -27867,7 +28298,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01213832": {
 "company": {
@@ -27889,7 +28320,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01214044": {
 "company": {
@@ -27905,7 +28336,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01214743": {
 "company": {
@@ -27995,6 +28426,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260317000817",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28017,7 +28449,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01215399": {
 "company": {
@@ -28033,7 +28465,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01217014": {
 "company": {
@@ -28098,6 +28530,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001220",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28120,7 +28553,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01217494": {
 "company": {
@@ -28136,7 +28569,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01225101": {
 "company": {
@@ -28152,7 +28585,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01234507": {
 "company": {
@@ -28242,6 +28675,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001065",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28264,7 +28698,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01236532": {
 "company": {
@@ -28374,6 +28808,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260313001171",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28396,7 +28831,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01237434": {
 "company": {
@@ -28476,6 +28911,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000117",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28498,7 +28934,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01244601": {
 "company": {
@@ -28588,6 +29024,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312001366",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28610,7 +29047,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01246715": {
 "company": {
@@ -28626,7 +29063,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01246885": {
 "company": {
@@ -28642,7 +29079,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01247361": {
 "company": {
@@ -28658,7 +29095,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01250666": {
 "company": {
@@ -28688,6 +29125,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003637",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28710,7 +29148,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01251489": {
 "company": {
@@ -28860,6 +29298,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001204",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28882,7 +29321,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01251577": {
 "company": {
@@ -28962,6 +29401,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000482",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -28984,7 +29424,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01258710": {
 "company": {
@@ -29064,6 +29504,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320000994",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -29086,7 +29527,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01259214": {
 "company": {
@@ -29102,7 +29543,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01259630": {
 "company": {
@@ -29118,7 +29559,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01261644": {
 "company": {
@@ -29193,6 +29634,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320000803",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -29212,7 +29654,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01262032": {
 "company": {
@@ -29317,6 +29759,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260313000002",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -29339,7 +29782,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01264872": {
 "company": {
@@ -29404,6 +29847,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323000880",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -29426,7 +29870,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01271395": {
 "company": {
@@ -29442,7 +29886,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01279698": {
 "company": {
@@ -29464,7 +29908,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01282285": {
 "company": {
@@ -29480,7 +29924,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01287800": {
 "company": {
@@ -29496,7 +29940,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01287864": {
 "company": {
@@ -29512,7 +29956,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01288234": {
 "company": {
@@ -29528,7 +29972,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01290132": {
 "company": {
@@ -29585,7 +30029,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01292291": {
 "company": {
@@ -29715,6 +30159,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001002",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -29737,7 +30182,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01295322": {
 "company": {
@@ -29753,7 +30198,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01296233": {
 "company": {
@@ -29769,7 +30214,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01297898": {
 "company": {
@@ -29859,6 +30304,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000767",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -29881,7 +30327,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01298028": {
 "company": {
@@ -29897,7 +30343,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01302084": {
 "company": {
@@ -29919,7 +30365,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01305124": {
 "company": {
@@ -29935,7 +30381,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01305434": {
 "company": {
@@ -29951,7 +30397,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01306460": {
 "company": {
@@ -29967,7 +30413,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01308194": {
 "company": {
@@ -29983,7 +30429,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01309795": {
 "company": {
@@ -30163,6 +30609,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323000695",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -30185,7 +30632,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01310241": {
 "company": {
@@ -30220,6 +30667,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260330001631",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -30239,7 +30687,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01311107": {
 "company": {
@@ -30255,7 +30703,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01313415": {
 "company": {
@@ -30271,7 +30719,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01314566": {
 "company": {
@@ -30287,7 +30735,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01315042": {
 "company": {
@@ -30432,6 +30880,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320000005",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -30454,7 +30903,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01319899": {
 "company": {
@@ -30559,6 +31008,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260313000936",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -30581,7 +31031,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01326206": {
 "company": {
@@ -30597,7 +31047,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01327746": {
 "company": {
@@ -30702,6 +31152,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320000892",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -30724,7 +31175,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01336726": {
 "company": {
@@ -30740,7 +31191,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01344831": {
 "company": {
@@ -30840,6 +31291,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323000942",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -30862,7 +31314,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01346343": {
 "company": {
@@ -30884,7 +31336,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01346486": {
 "company": {
@@ -30900,7 +31352,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01350063": {
 "company": {
@@ -30916,7 +31368,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01353635": {
 "company": {
@@ -30932,7 +31384,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01361403": {
 "company": {
@@ -30948,7 +31400,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01362280": {
 "company": {
@@ -30964,7 +31416,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01362475": {
 "company": {
@@ -30980,7 +31432,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01369548": {
 "company": {
@@ -30996,7 +31448,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01370128": {
 "company": {
@@ -31012,7 +31464,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01370517": {
 "company": {
@@ -31072,6 +31524,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003309",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -31094,7 +31547,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01372117": {
 "company": {
@@ -31110,7 +31563,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01372694": {
 "company": {
@@ -31126,7 +31579,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01373240": {
 "company": {
@@ -31142,7 +31595,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01373709": {
 "company": {
@@ -31247,6 +31700,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260723000522",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -31269,7 +31723,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01373851": {
 "company": {
@@ -31285,7 +31739,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01374337": {
 "company": {
@@ -31301,7 +31755,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01375804": {
 "company": {
@@ -31317,7 +31771,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01376229": {
 "company": {
@@ -31333,7 +31787,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01377051": {
 "company": {
@@ -31349,7 +31803,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01377158": {
 "company": {
@@ -31365,7 +31819,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01377574": {
 "company": {
@@ -31381,7 +31835,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01379129": {
 "company": {
@@ -31448,7 +31902,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01379350": {
 "company": {
@@ -31464,7 +31918,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01380675": {
 "company": {
@@ -31480,7 +31934,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01380727": {
 "company": {
@@ -31496,7 +31950,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01381054": {
 "company": {
@@ -31512,7 +31966,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01383706": {
 "company": {
@@ -31528,7 +31982,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01384787": {
 "company": {
@@ -31623,6 +32077,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001672",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -31645,7 +32100,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01385005": {
 "company": {
@@ -31705,6 +32160,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001621",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -31727,7 +32183,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01387094": {
 "company": {
@@ -31743,7 +32199,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01387377": {
 "company": {
@@ -31759,7 +32215,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01390399": {
 "company": {
@@ -31834,6 +32290,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260310002556",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -31856,7 +32313,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01390715": {
 "company": {
@@ -31872,7 +32329,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01397620": {
 "company": {
@@ -32007,6 +32464,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001574",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -32029,7 +32487,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01397985": {
 "company": {
@@ -32045,7 +32503,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01398531": {
 "company": {
@@ -32061,7 +32519,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01405451": {
 "company": {
@@ -32181,6 +32639,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318000741",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -32200,7 +32659,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01405947": {
 "company": {
@@ -32216,7 +32675,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01406900": {
 "company": {
@@ -32232,7 +32691,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01408555": {
 "company": {
@@ -32248,7 +32707,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01410505": {
 "company": {
@@ -32264,7 +32723,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01419834": {
 "company": {
@@ -32280,7 +32739,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01421848": {
 "company": {
@@ -32296,7 +32755,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01423068": {
 "company": {
@@ -32312,7 +32771,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01424261": {
 "company": {
@@ -32334,7 +32793,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01425376": {
 "company": {
@@ -32350,7 +32809,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01434161": {
 "company": {
@@ -32366,7 +32825,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01436637": {
 "company": {
@@ -32382,7 +32841,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01437168": {
 "company": {
@@ -32398,7 +32857,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01444937": {
 "company": {
@@ -32414,7 +32873,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01446412": {
 "company": {
@@ -32430,7 +32889,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01446759": {
 "company": {
@@ -32454,6 +32913,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331004974",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -32470,7 +32930,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01447800": {
 "company": {
@@ -32486,7 +32946,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01450141": {
 "company": {
@@ -32502,7 +32962,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01451089": {
 "company": {
@@ -32518,7 +32978,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01451788": {
 "company": {
@@ -32534,7 +32994,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01452875": {
 "company": {
@@ -32550,7 +33010,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01453546": {
 "company": {
@@ -32566,7 +33026,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01454031": {
 "company": {
@@ -32582,7 +33042,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01454341": {
 "company": {
@@ -32667,6 +33127,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001038",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -32689,7 +33150,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01454387": {
 "company": {
@@ -32705,7 +33166,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01454590": {
 "company": {
@@ -32721,7 +33182,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01454633": {
 "company": {
@@ -32737,7 +33198,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01455386": {
 "company": {
@@ -32753,7 +33214,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01455492": {
 "company": {
@@ -32833,6 +33294,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312000318",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -32855,7 +33317,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01455599": {
 "company": {
@@ -32871,7 +33333,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01455696": {
 "company": {
@@ -32887,7 +33349,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01456011": {
 "company": {
@@ -32977,6 +33439,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001246",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -32999,7 +33462,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01457232": {
 "company": {
@@ -33015,7 +33478,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01457481": {
 "company": {
@@ -33031,7 +33494,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01458073": {
 "company": {
@@ -33047,7 +33510,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01458949": {
 "company": {
@@ -33063,7 +33526,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01461369": {
 "company": {
@@ -33079,7 +33542,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01461509": {
 "company": {
@@ -33095,7 +33558,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01462508": {
 "company": {
@@ -33111,7 +33574,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01462757": {
 "company": {
@@ -33127,7 +33590,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01462775": {
 "company": {
@@ -33143,7 +33606,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01463419": {
 "company": {
@@ -33159,7 +33622,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01463613": {
 "company": {
@@ -33175,7 +33638,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01465019": {
 "company": {
@@ -33191,7 +33654,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01466391": {
 "company": {
@@ -33207,7 +33670,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01467053": {
 "company": {
@@ -33223,7 +33686,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01467451": {
 "company": {
@@ -33323,6 +33786,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323000748",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -33345,7 +33809,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01467974": {
 "company": {
@@ -33361,7 +33825,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01468186": {
 "company": {
@@ -33377,7 +33841,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01468229": {
 "company": {
@@ -33393,7 +33857,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01468681": {
 "company": {
@@ -33409,7 +33873,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01468955": {
 "company": {
@@ -33425,7 +33889,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01472019": {
 "company": {
@@ -33441,7 +33905,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01474789": {
 "company": {
@@ -33457,7 +33921,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01475025": {
 "company": {
@@ -33473,7 +33937,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01475265": {
 "company": {
@@ -33489,7 +33953,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01475502": {
 "company": {
@@ -33505,7 +33969,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01476051": {
 "company": {
@@ -33521,7 +33985,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01476273": {
 "company": {
@@ -33537,7 +34001,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01476556": {
 "company": {
@@ -33553,7 +34017,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01476787": {
 "company": {
@@ -33569,7 +34033,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01485846": {
 "company": {
@@ -33591,7 +34055,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01486517": {
 "company": {
@@ -33618,7 +34082,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01487446": {
 "company": {
@@ -33733,6 +34197,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260317000826",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -33755,7 +34220,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01493252": {
 "company": {
@@ -33779,6 +34244,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260331003029",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -33798,7 +34264,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01493535": {
 "company": {
@@ -33908,6 +34374,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001269",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -33930,7 +34397,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01495782": {
 "company": {
@@ -33946,7 +34413,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01496134": {
 "company": {
@@ -33962,7 +34429,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01497902": {
 "company": {
@@ -33978,7 +34445,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01498080": {
 "company": {
@@ -33994,7 +34461,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01498187": {
 "company": {
@@ -34010,7 +34477,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01498512": {
 "company": {
@@ -34026,7 +34493,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01500109": {
 "company": {
@@ -34042,7 +34509,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01502107": {
 "company": {
@@ -34058,7 +34525,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01502134": {
 "company": {
@@ -34074,7 +34541,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01502277": {
 "company": {
@@ -34090,7 +34557,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01502578": {
 "company": {
@@ -34106,7 +34573,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01502806": {
 "company": {
@@ -34122,7 +34589,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01503717": {
 "company": {
@@ -34138,7 +34605,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01505821": {
 "company": {
@@ -34154,7 +34621,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01506556": {
 "company": {
@@ -34170,7 +34637,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01506990": {
 "company": {
@@ -34305,6 +34772,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001681",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -34327,7 +34795,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01511743": {
 "company": {
@@ -34343,7 +34811,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01512575": {
 "company": {
@@ -34458,6 +34926,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000888",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -34477,7 +34946,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01513699": {
 "company": {
@@ -34562,6 +35031,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001166",
+"revenue_name": null,
 "year": 2025,
 "years": [
 {
@@ -34581,7 +35051,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01514005": {
 "company": {
@@ -34736,6 +35206,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001402",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -34758,7 +35229,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01514227": {
 "company": {
@@ -34843,6 +35314,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000571",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -34865,7 +35337,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01514351": {
 "company": {
@@ -34881,7 +35353,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01515323": {
 "company": {
@@ -35036,6 +35508,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260312000217",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -35058,7 +35531,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01518339": {
 "company": {
@@ -35074,7 +35547,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01518454": {
 "company": {
@@ -35090,7 +35563,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01518755": {
 "company": {
@@ -35114,6 +35587,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260417000701",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -35136,7 +35610,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01523386": {
 "company": {
@@ -35163,7 +35637,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01524817": {
 "company": {
@@ -35193,6 +35667,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20250314001587",
+"revenue_name": "매출액",
 "year": 2024,
 "years": [
 {
@@ -35215,7 +35690,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01527984": {
 "company": {
@@ -35231,7 +35706,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01528327": {
 "company": {
@@ -35247,7 +35722,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01529195": {
 "company": {
@@ -35263,7 +35738,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01535327": {
 "company": {
@@ -35279,7 +35754,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01539891": {
 "company": {
@@ -35295,7 +35770,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01540152": {
 "company": {
@@ -35311,7 +35786,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01541285": {
 "company": {
@@ -35327,7 +35802,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01541443": {
 "company": {
@@ -35343,7 +35818,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01541540": {
 "company": {
@@ -35359,7 +35834,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01541683": {
 "company": {
@@ -35375,7 +35850,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01542813": {
 "company": {
@@ -35391,7 +35866,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01543821": {
 "company": {
@@ -35407,7 +35882,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01546998": {
 "company": {
@@ -35423,7 +35898,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01547933": {
 "company": {
@@ -35488,6 +35963,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000254",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -35510,7 +35986,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01548172": {
 "company": {
@@ -35526,7 +36002,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01548941": {
 "company": {
@@ -35542,7 +36018,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01549287": {
 "company": {
@@ -35558,7 +36034,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01549357": {
 "company": {
@@ -35574,7 +36050,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01549843": {
 "company": {
@@ -35590,7 +36066,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01553369": {
 "company": {
@@ -35606,7 +36082,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01554164": {
 "company": {
@@ -35622,7 +36098,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01556047": {
 "company": {
@@ -35638,7 +36114,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01556056": {
 "company": {
@@ -35654,7 +36130,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01556241": {
 "company": {
@@ -35670,7 +36146,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01558337": {
 "company": {
@@ -35686,7 +36162,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01558744": {
 "company": {
@@ -35702,7 +36178,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01558902": {
 "company": {
@@ -35718,7 +36194,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01560749": {
 "company": {
@@ -35734,7 +36210,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01561270": {
 "company": {
@@ -35750,7 +36226,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01563463": {
 "company": {
@@ -35766,7 +36242,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01564541": {
 "company": {
@@ -35782,7 +36258,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01566442": {
 "company": {
@@ -35798,7 +36274,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01566637": {
 "company": {
@@ -35814,7 +36290,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01569102": {
 "company": {
@@ -35889,6 +36365,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323000697",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -35911,7 +36388,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01569564": {
 "company": {
@@ -35927,7 +36404,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01571295": {
 "company": {
@@ -35949,7 +36426,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01571435": {
 "company": {
@@ -35965,7 +36442,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01576704": {
 "company": {
@@ -35995,6 +36472,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323001564",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -36017,7 +36495,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01579039": {
 "company": {
@@ -36033,7 +36511,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01582909": {
 "company": {
@@ -36049,7 +36527,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01583652": {
 "company": {
@@ -36114,6 +36592,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260611000460",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -36136,7 +36615,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01585207": {
 "company": {
@@ -36152,7 +36631,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01585915": {
 "company": {
@@ -36168,7 +36647,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01586923": {
 "company": {
@@ -36190,7 +36669,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01588189": {
 "company": {
@@ -36265,6 +36744,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260617000463",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -36287,7 +36767,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01588462": {
 "company": {
@@ -36303,7 +36783,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01588897": {
 "company": {
@@ -36325,7 +36805,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01589294": {
 "company": {
@@ -36341,7 +36821,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01590980": {
 "company": {
@@ -36411,6 +36891,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323000047",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -36433,7 +36914,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01592049": {
 "company": {
@@ -36493,6 +36974,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323000858",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -36515,7 +36997,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01592243": {
 "company": {
@@ -36531,7 +37013,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01593622": {
 "company": {
@@ -36547,7 +37029,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01594630": {
 "company": {
@@ -36563,7 +37045,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01596708": {
 "company": {
@@ -36579,7 +37061,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01597336": {
 "company": {
@@ -36595,7 +37077,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01597840": {
 "company": {
@@ -36611,7 +37093,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01597859": {
 "company": {
@@ -36627,7 +37109,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01598982": {
 "company": {
@@ -36643,7 +37125,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01599574": {
 "company": {
@@ -36659,7 +37141,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01602452": {
 "company": {
@@ -36675,7 +37157,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01603886": {
 "company": {
@@ -36691,7 +37173,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01604584": {
 "company": {
@@ -36707,7 +37189,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01604681": {
 "company": {
@@ -36723,7 +37205,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01608447": {
 "company": {
@@ -36739,7 +37221,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01609598": {
 "company": {
@@ -36755,7 +37237,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01610114": {
 "company": {
@@ -36771,7 +37253,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01610150": {
 "company": {
@@ -36787,7 +37269,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01612413": {
 "company": {
@@ -36803,7 +37285,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01613582": {
 "company": {
@@ -36819,7 +37301,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01615915": {
 "company": {
@@ -36835,7 +37317,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01616136": {
 "company": {
@@ -36851,7 +37333,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01617755": {
 "company": {
@@ -36867,7 +37349,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01618091": {
 "company": {
@@ -36883,7 +37365,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01618550": {
 "company": {
@@ -36899,7 +37381,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01622331": {
 "company": {
@@ -36994,6 +37476,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260318000778",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -37016,7 +37499,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01624649": {
 "company": {
@@ -37032,7 +37515,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01624870": {
 "company": {
@@ -37048,7 +37531,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01625480": {
 "company": {
@@ -37064,7 +37547,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01625569": {
 "company": {
@@ -37080,7 +37563,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01625675": {
 "company": {
@@ -37096,7 +37579,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01627406": {
 "company": {
@@ -37112,7 +37595,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01627619": {
 "company": {
@@ -37128,7 +37611,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01627798": {
 "company": {
@@ -37144,7 +37627,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01627992": {
 "company": {
@@ -37160,7 +37643,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01628946": {
 "company": {
@@ -37182,7 +37665,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01630701": {
 "company": {
@@ -37198,7 +37681,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01632268": {
 "company": {
@@ -37214,7 +37697,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01634114": {
 "company": {
@@ -37230,7 +37713,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01634132": {
 "company": {
@@ -37246,7 +37729,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01634345": {
 "company": {
@@ -37268,7 +37751,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01635654": {
 "company": {
@@ -37284,7 +37767,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01636565": {
 "company": {
@@ -37364,6 +37847,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260323000575",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -37386,7 +37870,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01638590": {
 "company": {
@@ -37402,7 +37886,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01639508": {
 "company": {
@@ -37467,6 +37951,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260318000699",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -37489,7 +37974,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01640434": {
 "company": {
@@ -37505,7 +37990,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01640878": {
 "company": {
@@ -37521,7 +38006,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01641840": {
 "company": {
@@ -37537,7 +38022,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01646915": {
 "company": {
@@ -37553,7 +38038,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01647002": {
 "company": {
@@ -37569,7 +38054,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01648117": {
 "company": {
@@ -37585,7 +38070,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01648560": {
 "company": {
@@ -37601,7 +38086,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01649073": {
 "company": {
@@ -37628,7 +38113,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01649408": {
 "company": {
@@ -37644,7 +38129,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01650185": {
 "company": {
@@ -37660,7 +38145,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01652271": {
 "company": {
@@ -37676,7 +38161,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01654190": {
 "company": {
@@ -37692,7 +38177,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01655108": {
 "company": {
@@ -37708,7 +38193,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01655445": {
 "company": {
@@ -37724,7 +38209,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01655968": {
 "company": {
@@ -37740,7 +38225,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01657188": {
 "company": {
@@ -37756,7 +38241,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01657841": {
 "company": {
@@ -37772,7 +38257,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01660960": {
 "company": {
@@ -37788,7 +38273,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01660997": {
 "company": {
@@ -37804,7 +38289,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01661677": {
 "company": {
@@ -37820,7 +38305,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01667583": {
 "company": {
@@ -37836,7 +38321,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01669110": {
 "company": {
@@ -37852,7 +38337,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01669794": {
 "company": {
@@ -37919,7 +38404,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01673937": {
 "company": {
@@ -37935,7 +38420,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01677021": {
 "company": {
@@ -37957,7 +38442,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01678330": {
 "company": {
@@ -37973,7 +38458,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01680113": {
 "company": {
@@ -37989,7 +38474,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01681024": {
 "company": {
@@ -38005,7 +38490,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01682643": {
 "company": {
@@ -38021,7 +38506,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01684951": {
 "company": {
@@ -38037,7 +38522,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01686427": {
 "company": {
@@ -38107,6 +38592,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260319000013",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -38129,7 +38615,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01688045": {
 "company": {
@@ -38145,7 +38631,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01689910": {
 "company": {
@@ -38161,7 +38647,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01690837": {
 "company": {
@@ -38177,7 +38663,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01693108": {
 "company": {
@@ -38193,7 +38679,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01693384": {
 "company": {
@@ -38209,7 +38695,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01695300": {
 "company": {
@@ -38225,7 +38711,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01701443": {
 "company": {
@@ -38241,7 +38727,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01704334": {
 "company": {
@@ -38257,7 +38743,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01704680": {
 "company": {
@@ -38337,6 +38823,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320000986",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -38359,7 +38846,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01709065": {
 "company": {
@@ -38406,7 +38893,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01713059": {
 "company": {
@@ -38422,7 +38909,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01715631": {
 "company": {
@@ -38438,7 +38925,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01716375": {
 "company": {
@@ -38454,7 +38941,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01718762": {
 "company": {
@@ -38470,7 +38957,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01719035": {
 "company": {
@@ -38486,7 +38973,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01721793": {
 "company": {
@@ -38502,7 +38989,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01722066": {
 "company": {
@@ -38529,7 +39016,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01724143": {
 "company": {
@@ -38545,7 +39032,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01724161": {
 "company": {
@@ -38561,7 +39048,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01724295": {
 "company": {
@@ -38577,7 +39064,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01724523": {
 "company": {
@@ -38593,7 +39080,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01724648": {
 "company": {
@@ -38609,7 +39096,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01724976": {
 "company": {
@@ -38625,7 +39112,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01725133": {
 "company": {
@@ -38641,7 +39128,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01726770": {
 "company": {
@@ -38657,7 +39144,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01727520": {
 "company": {
@@ -38673,7 +39160,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01727733": {
 "company": {
@@ -38689,7 +39176,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01727858": {
 "company": {
@@ -38705,7 +39192,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01727937": {
 "company": {
@@ -38721,7 +39208,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01728404": {
 "company": {
@@ -38737,7 +39224,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01729926": {
 "company": {
@@ -38753,7 +39240,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01730162": {
 "company": {
@@ -38769,7 +39256,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01730755": {
 "company": {
@@ -38785,7 +39272,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01732841": {
 "company": {
@@ -38801,7 +39288,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01736306": {
 "company": {
@@ -38817,7 +39304,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01737192": {
 "company": {
@@ -38833,7 +39320,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01737369": {
 "company": {
@@ -38849,7 +39336,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01738049": {
 "company": {
@@ -38865,7 +39352,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01738951": {
 "company": {
@@ -38881,7 +39368,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01739640": {
 "company": {
@@ -38897,7 +39384,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01740336": {
 "company": {
@@ -38913,7 +39400,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01742398": {
 "company": {
@@ -38929,7 +39416,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01742936": {
 "company": {
@@ -38945,7 +39432,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01745234": {
 "company": {
@@ -38961,7 +39448,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01745687": {
 "company": {
@@ -38977,7 +39464,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01746561": {
 "company": {
@@ -38993,7 +39480,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01746677": {
 "company": {
@@ -39009,7 +39496,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01746862": {
 "company": {
@@ -39025,7 +39512,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01747658": {
 "company": {
@@ -39041,7 +39528,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01750962": {
 "company": {
@@ -39057,7 +39544,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01751183": {
 "company": {
@@ -39073,7 +39560,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01753163": {
 "company": {
@@ -39089,7 +39576,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01753297": {
 "company": {
@@ -39105,7 +39592,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01753978": {
 "company": {
@@ -39121,7 +39608,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01754302": {
 "company": {
@@ -39137,7 +39624,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01754551": {
 "company": {
@@ -39153,7 +39640,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01754649": {
 "company": {
@@ -39169,7 +39656,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01754737": {
 "company": {
@@ -39185,7 +39672,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01755055": {
 "company": {
@@ -39201,7 +39688,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01756197": {
 "company": {
@@ -39217,7 +39704,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01756832": {
 "company": {
@@ -39233,7 +39720,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01756993": {
 "company": {
@@ -39249,7 +39736,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01760899": {
 "company": {
@@ -39265,7 +39752,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01772353": {
 "company": {
@@ -39281,7 +39768,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01782004": {
 "company": {
@@ -39376,6 +39863,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260320001389",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -39398,7 +39886,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01783979": {
 "company": {
@@ -39414,7 +39902,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01785560": {
 "company": {
@@ -39430,7 +39918,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01785746": {
 "company": {
@@ -39446,7 +39934,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01786541": {
 "company": {
@@ -39462,7 +39950,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01786985": {
 "company": {
@@ -39478,7 +39966,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01787355": {
 "company": {
@@ -39563,6 +40051,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260319000778",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -39585,7 +40074,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01787364": {
 "company": {
@@ -39601,7 +40090,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01788576": {
 "company": {
@@ -39617,7 +40106,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01793666": {
 "company": {
@@ -39633,7 +40122,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01795859": {
 "company": {
@@ -39649,7 +40138,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01798616": {
 "company": {
@@ -39665,7 +40154,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01799448": {
 "company": {
@@ -39681,7 +40170,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01800744": {
 "company": {
@@ -39697,7 +40186,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01801026": {
 "company": {
@@ -39713,7 +40202,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01801211": {
 "company": {
@@ -39729,7 +40218,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01801442": {
 "company": {
@@ -39745,7 +40234,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01801691": {
 "company": {
@@ -39761,7 +40250,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01802937": {
 "company": {
@@ -39777,7 +40266,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01803538": {
 "company": {
@@ -39793,7 +40282,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01803635": {
 "company": {
@@ -39873,6 +40362,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260318001533",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -39895,7 +40385,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01809851": {
 "company": {
@@ -39911,7 +40401,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01810361": {
 "company": {
@@ -39927,7 +40417,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01810477": {
 "company": {
@@ -39987,6 +40477,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260323000987",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -40009,7 +40500,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01810565": {
 "company": {
@@ -40025,7 +40516,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01810981": {
 "company": {
@@ -40041,7 +40532,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01814048": {
 "company": {
@@ -40057,7 +40548,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01816657": {
 "company": {
@@ -40073,7 +40564,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01816806": {
 "company": {
@@ -40089,7 +40580,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01817294": {
 "company": {
@@ -40105,7 +40596,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01817629": {
 "company": {
@@ -40121,7 +40612,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01817647": {
 "company": {
@@ -40137,7 +40628,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01817717": {
 "company": {
@@ -40153,7 +40644,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01817902": {
 "company": {
@@ -40169,7 +40660,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01817957": {
 "company": {
@@ -40185,7 +40676,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01822913": {
 "company": {
@@ -40201,7 +40692,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01823091": {
 "company": {
@@ -40217,7 +40708,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01824300": {
 "company": {
@@ -40233,7 +40724,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01825035": {
 "company": {
@@ -40249,7 +40740,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01825071": {
 "company": {
@@ -40265,7 +40756,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01825549": {
 "company": {
@@ -40281,7 +40772,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01825947": {
 "company": {
@@ -40308,7 +40799,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01825956": {
 "company": {
@@ -40324,7 +40815,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01826274": {
 "company": {
@@ -40340,7 +40831,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01827167": {
 "company": {
@@ -40356,7 +40847,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01828023": {
 "company": {
@@ -40372,7 +40863,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01828519": {
 "company": {
@@ -40388,7 +40879,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01828616": {
 "company": {
@@ -40404,7 +40895,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01829068": {
 "company": {
@@ -40420,7 +40911,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01829864": {
 "company": {
@@ -40436,7 +40927,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01829882": {
 "company": {
@@ -40452,7 +40943,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01830046": {
 "company": {
@@ -40468,7 +40959,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01830587": {
 "company": {
@@ -40484,7 +40975,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01830709": {
 "company": {
@@ -40500,7 +40991,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01830781": {
 "company": {
@@ -40516,7 +41007,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01831708": {
 "company": {
@@ -40561,6 +41052,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260727000043",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -40577,7 +41069,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01832008": {
 "company": {
@@ -40593,7 +41085,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01832150": {
 "company": {
@@ -40609,7 +41101,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01832567": {
 "company": {
@@ -40625,7 +41117,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01833991": {
 "company": {
@@ -40641,7 +41133,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01834024": {
 "company": {
@@ -40657,7 +41149,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01834033": {
 "company": {
@@ -40673,7 +41165,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01835768": {
 "company": {
@@ -40689,7 +41181,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01835829": {
 "company": {
@@ -40705,7 +41197,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01836721": {
 "company": {
@@ -40721,7 +41213,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01838349": {
 "company": {
@@ -40737,7 +41229,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01839612": {
 "company": {
@@ -40753,7 +41245,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01842908": {
 "company": {
@@ -40769,7 +41261,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01844076": {
 "company": {
@@ -40785,7 +41277,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01845206": {
 "company": {
@@ -40801,7 +41293,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01846481": {
 "company": {
@@ -40823,7 +41315,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01847888": {
 "company": {
@@ -40839,7 +41331,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01848470": {
 "company": {
@@ -40855,7 +41347,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01852312": {
 "company": {
@@ -40871,7 +41363,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01859500": {
 "company": {
@@ -40911,6 +41403,7 @@
 "finance": {
 "basis": "별도",
 "rcept_no": "20260325001160",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -40933,7 +41426,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01860700": {
 "company": {
@@ -40949,7 +41442,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01863594": {
 "company": {
@@ -40965,7 +41458,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01864274": {
 "company": {
@@ -40981,7 +41474,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01867758": {
 "company": {
@@ -41086,6 +41579,7 @@
 "finance": {
 "basis": "연결",
 "rcept_no": "20260316001204",
+"revenue_name": "매출액",
 "year": 2025,
 "years": [
 {
@@ -41102,7 +41596,7 @@
 }
 ]
 },
-"v": 2
+"v": 3
 },
 "01868678": {
 "company": {
@@ -41118,7 +41612,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01869260": {
 "company": {
@@ -41134,7 +41628,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01870336": {
 "company": {
@@ -41150,7 +41644,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01872893": {
 "company": {
@@ -41222,7 +41716,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01875757": {
 "company": {
@@ -41238,7 +41732,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01876251": {
 "company": {
@@ -41254,7 +41748,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01879708": {
 "company": {
@@ -41270,7 +41764,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01880476": {
 "company": {
@@ -41286,7 +41780,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01881262": {
 "company": {
@@ -41302,7 +41796,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01885578": {
 "company": {
@@ -41318,7 +41812,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01889893": {
 "company": {
@@ -41334,7 +41828,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01895788": {
 "company": {
@@ -41356,7 +41850,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01896547": {
 "company": {
@@ -41372,7 +41866,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01898022": {
 "company": {
@@ -41388,7 +41882,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01898378": {
 "company": {
@@ -41404,7 +41898,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01903166": {
 "company": {
@@ -41420,7 +41914,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01907588": {
 "company": {
@@ -41436,7 +41930,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01909513": {
 "company": {
@@ -41452,7 +41946,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01910111": {
 "company": {
@@ -41468,7 +41962,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01911147": {
 "company": {
@@ -41484,7 +41978,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01911509": {
 "company": {
@@ -41500,7 +41994,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01912979": {
 "company": {
@@ -41516,7 +42010,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01916045": {
 "company": {
@@ -41532,7 +42026,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01916780": {
 "company": {
@@ -41548,7 +42042,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01917150": {
 "company": {
@@ -41564,7 +42058,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01919671": {
 "company": {
@@ -41580,7 +42074,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01919802": {
 "company": {
@@ -41596,7 +42090,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01919811": {
 "company": {
@@ -41612,7 +42106,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01920039": {
 "company": {
@@ -41628,7 +42122,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01921445": {
 "company": {
@@ -41644,7 +42138,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01922295": {
 "company": {
@@ -41660,7 +42154,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01922949": {
 "company": {
@@ -41676,7 +42170,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01924938": {
 "company": {
@@ -41692,7 +42186,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01925195": {
 "company": {
@@ -41708,7 +42202,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01925609": {
 "company": {
@@ -41724,7 +42218,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01928794": {
 "company": {
@@ -41740,7 +42234,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01930249": {
 "company": {
@@ -41756,7 +42250,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01930869": {
 "company": {
@@ -41772,7 +42266,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01944792": {
 "company": {
@@ -41788,7 +42282,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01946639": {
 "company": {
@@ -41804,7 +42298,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01946693": {
 "company": {
@@ -41820,7 +42314,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01947115": {
 "company": {
@@ -41836,7 +42330,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01948479": {
 "company": {
@@ -41852,7 +42346,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01948947": {
 "company": {
@@ -41868,7 +42362,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01949760": {
 "company": {
@@ -41884,7 +42378,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01950720": {
 "company": {
@@ -41900,7 +42394,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01951792": {
 "company": {
@@ -41916,7 +42410,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01953268": {
 "company": {
@@ -41938,7 +42432,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01956751": {
 "company": {
@@ -41954,7 +42448,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01957015": {
 "company": {
@@ -41970,7 +42464,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01957608": {
 "company": {
@@ -41986,7 +42480,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01961762": {
 "company": {
@@ -42002,7 +42496,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01966679": {
 "company": {
@@ -42018,7 +42512,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01967216": {
 "company": {
@@ -42034,7 +42528,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01972412": {
 "company": {
@@ -42050,7 +42544,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01973749": {
 "company": {
@@ -42066,7 +42560,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01983180": {
 "company": {
@@ -42088,7 +42582,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01989069": {
 "company": {
@@ -42104,7 +42598,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01989670": {
 "company": {
@@ -42120,7 +42614,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01991985": {
 "company": {
@@ -42136,7 +42630,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "01994016": {
 "company": {
@@ -42152,7 +42646,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02001775": {
 "company": {
@@ -42168,7 +42662,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02002330": {
 "company": {
@@ -42184,7 +42678,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02003968": {
 "company": {
@@ -42200,7 +42694,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02004277": {
 "company": {
@@ -42216,7 +42710,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02005346": {
 "company": {
@@ -42232,7 +42726,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02005425": {
 "company": {
@@ -42248,7 +42742,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02006442": {
 "company": {
@@ -42264,7 +42758,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02006789": {
 "company": {
@@ -42280,7 +42774,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02006886": {
 "company": {
@@ -42296,7 +42790,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02009148": {
 "company": {
@@ -42312,7 +42806,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02009999": {
 "company": {
@@ -42328,7 +42822,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02010056": {
 "company": {
@@ -42344,7 +42838,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02010223": {
 "company": {
@@ -42360,7 +42854,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02010232": {
 "company": {
@@ -42376,7 +42870,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02010791": {
 "company": {
@@ -42392,7 +42886,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02018544": {
 "company": {
@@ -42408,7 +42902,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02019020": {
 "company": {
@@ -42424,7 +42918,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02019075": {
 "company": {
@@ -42440,7 +42934,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02019279": {
 "company": {
@@ -42456,7 +42950,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02019394": {
 "company": {
@@ -42472,7 +42966,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02019747": {
 "company": {
@@ -42488,7 +42982,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02020266": {
 "company": {
@@ -42504,7 +42998,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02020424": {
 "company": {
@@ -42520,7 +43014,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02020512": {
 "company": {
@@ -42536,7 +43030,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02022255": {
 "company": {
@@ -42552,7 +43046,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02022404": {
 "company": {
@@ -42568,7 +43062,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02022583": {
 "company": {
@@ -42584,7 +43078,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02022909": {
 "company": {
@@ -42600,7 +43094,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02022990": {
 "company": {
@@ -42616,7 +43110,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02023032": {
 "company": {
@@ -42632,7 +43126,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02023218": {
 "company": {
@@ -42648,7 +43142,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02025094": {
 "company": {
@@ -42664,7 +43158,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02025164": {
 "company": {
@@ -42680,7 +43174,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02026668": {
 "company": {
@@ -42696,7 +43190,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02027597": {
 "company": {
@@ -42712,7 +43206,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02028107": {
 "company": {
@@ -42728,7 +43222,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02032793": {
 "company": {
@@ -42744,7 +43238,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02036984": {
 "company": {
@@ -42760,7 +43254,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02041180": {
 "company": {
@@ -42776,7 +43270,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02046088": {
 "company": {
@@ -42792,7 +43286,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02047087": {
 "company": {
@@ -42808,7 +43302,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02048642": {
 "company": {
@@ -42824,7 +43318,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02048819": {
 "company": {
@@ -42840,7 +43334,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02049030": {
 "company": {
@@ -42856,7 +43350,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02052168": {
 "company": {
@@ -42872,7 +43366,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02052432": {
 "company": {
@@ -42888,7 +43382,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02052733": {
 "company": {
@@ -42904,7 +43398,7 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 },
 "02053370": {
 "company": {
@@ -42920,6 +43414,6 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
-"v": 2
+"v": 3
 }
 }
