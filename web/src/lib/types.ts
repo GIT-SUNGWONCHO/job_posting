@@ -149,6 +149,8 @@ export interface DartBasics {
     year: number
     basis: '연결' | '별도'
     rceptNo: string | null
+    /** 매출 자리에 쓴 계정: 매출액, 또는 영업수익(증권사·일부 플랫폼) */
+    revenueName?: string
     years: { year: number; revenue?: number | null; operating?: number | null; net?: number | null }[]
   } | null
   /** 사업보고서 직원 현황. salary는 1인 평균(원), tenure는 평균 근속(년) */

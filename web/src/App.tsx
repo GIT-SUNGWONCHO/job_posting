@@ -176,8 +176,8 @@ function Main({ screen }: { screen: Screen }) {
     case 'company':
       detail = !wide
       body = wide
-        ? <div className="split">{jobs('companies')}<CompanyPage screen={screen} companyKey={route.key} today={today} filters={filters} panel /></div>
-        : <CompanyPage screen={screen} companyKey={route.key} today={today} filters={filters} />
+        ? <div className="split">{jobs('companies')}<CompanyPage key={route.key} screen={screen} companyKey={route.key} today={today} filters={filters} panel /></div>
+        : <CompanyPage key={route.key} screen={screen} companyKey={route.key} today={today} filters={filters} />
       break
     case 'career':
       body = <Career screen={screen} seg={route.seg} filters={filters} matches={matches} today={today} />

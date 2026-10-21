@@ -274,9 +274,10 @@ def _amount(s: Any) -> int | None:
     return -v if neg else v
 
 
-# 주요 계정 이름(회사·해마다 조금씩 다르다). 금융사는 매출액이 없는데, 다른 계정(영업수익 등)으로 바꿔 넣지 않는다
+# 주요 계정 이름(회사·해마다 조금씩 다르다). 매출액 대신 영업수익으로 적는 회사(증권사, NAVER·두나무 같은 플랫폼)가 있어
+# 영업수익도 받되 어느 계정인지 revenue_name에 남겨 화면이 그 이름 그대로 보여준다. 은행은 둘 다 없다
 ACCOUNTS = {
-    "revenue": ["매출액", "수익(매출액)"],
+    "revenue": ["매출액", "수익(매출액)", "영업수익"],
     "operating": ["영업이익", "영업이익(손실)", "영업손익"],
     "net": ["당기순이익(손실)", "당기순이익", "연결당기순이익"],
 }
@@ -294,16 +295,21 @@ def parse_finance(rows: list[dict[str, Any]], bsns_year: int) -> dict[str, Any] 
         by_name.setdefault((r.get("account_nm") or "").replace(" ", ""), r)
     years: dict[int, dict[str, int | None]] = {}
     terms = [("bfefrmtrm", bsns_year - 2), ("frmtrm", bsns_year - 1), ("thstrm", bsns_year)]
+    revenue_name = None
     for field, names in ACCOUNTS.items():
-        r = next((by_name[n.replace(" ", "")] for n in names if n.replace(" ", "") in by_name), None)
-        if not r:
+        name = next((n for n in names if n.replace(" ", "") in by_name), None)
+        if not name:
             continue
+        r = by_name[name.replace(" ", "")]
+        if field == "revenue":
+            revenue_name = "영업수익" if name == "영업수익" else "매출액"
         for term, y in terms:
             years.setdefault(y, {"year": y})[field] = _amount(r.get(f"{term}_amount"))
     rows_out = [years[y] for y in sorted(years) if any(v is not None for k, v in years[y].items() if k != "year")]
     if not rows_out:
         return None
-    return {"year": bsns_year, "basis": "연결" if cfs else "별도", "rcept_no": use[0].get("rcept_no"), "years": rows_out}
+    return {"year": bsns_year, "basis": "연결" if cfs else "별도", "rcept_no": use[0].get("rcept_no"),
+            "revenue_name": revenue_name, "years": rows_out}
 
 
 def _number(s: Any) -> float | None:
@@ -439,7 +445,19 @@ def annual_year(today: date) -> int:
 
 MATCH_VERSION = 3  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다
 # 2: 공고 이름의 한글 읽기·괄호 빼기, 지금 상장된 곳 고르기 3: DART 이름의 한글 읽기, 최근 공시를 낸 곳 고르기
-BASICS_VERSION = 2  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다(2: 공시를 거르지 않고 40건)
+BASICS_VERSION = 3  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다
+# 2: 공시를 거르지 않고 40건 3: 영업수익도 매출 자리에(revenue_name). 2에서 매출액이 있던 회사는 다시 받지 않는다
+
+
+def _upgrade(got: dict[str, Any]) -> None:
+    """받아 둔 기본정보를 다시 받지 않고 새 판으로 올릴 수 있으면 올린다(2 → 3: 매출액이 있었거나 실적이 없던 회사)."""
+    if got.get("v") == 2:
+        fin = got.get("finance")
+        if not fin:
+            got["v"] = 3
+        elif any(y.get("revenue") is not None for y in fin.get("years") or []):
+            fin["revenue_name"] = "매출액"
+            got["v"] = 3
 
 
 def fetch(client: Client, corp_code: str, today: date) -> dict[str, Any]:
@@ -600,6 +618,8 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                     corps[key] = {"corp_code": None, "why": how, "checked": day, "mv": MATCH_VERSION}
                     summary["unmatched_new"] += 1
 
+        for got in basics.values():
+            _upgrade(got)
         refresh = timedelta(days=cfg.get("refresh_days", 30))
         seen: set[str] = set()
         for key, _ in todo:

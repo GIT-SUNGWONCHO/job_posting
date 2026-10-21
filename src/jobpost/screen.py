@@ -224,7 +224,7 @@ def _dart_item(code: str, m: dict[str, Any], b: dict[str, Any]) -> dict[str, Any
         "founded": c.get("founded"),
         "homepage": c.get("homepage"),
         "finance": fin and {"year": fin["year"], "basis": fin["basis"], "rceptNo": fin.get("rcept_no"),
-                            "years": fin["years"]},
+                            "revenueName": fin.get("revenue_name") or "매출액", "years": fin["years"]},
         "employees": emp and {"count": emp["count"], "tenure": emp.get("tenure"), "salary": emp.get("salary"),
                               "rceptNo": emp.get("rcept_no")},
         "disclosures": [{"date": d["date"], "title": d["title"], "rceptNo": d.get("rcept_no")}

@@ -9,6 +9,7 @@ import type { CompaniesFile, CompanyBasics, DartBasics, Filters, PastPosting, Sc
 
 const t = copy.company
 const PAST_SHOWN = 5
+const OPEN_SHOWN = 10
 
 // 회사 화면(와이어프레임 M4의 기본정보): 회사 개요(DART 공시 사실만) + 채용(열린 공고, 지난 공고).
 // 심층분석 모듈은 아직 없다. 숫자마다 출처 줄(종류 · 문서 · 날짜 ↗)을 단다(docs/content-rules.md)
@@ -22,6 +23,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
   const c = screen.companies[companyKey]
   const open = screen.postings.filter((p) => p.company === companyKey && !p.noise)
   const [file, setFile] = useState<CompaniesFile | null | 'failed'>(null)
+  const [allOpen, setAllOpen] = useState(false)
   useEffect(() => {
     let alive = true
     loadCompanies().then((f) => alive && setFile(f), () => alive && setFile('failed'))
@@ -61,8 +63,11 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
         <SectionTitle right={<span className="count">{t.daily}</span>}>{t.hiring}</SectionTitle>
         <div className="sub-head">{copy.jobs.openCount(open.length)}</div>
         <div className="rows">
-          {open.map((p) => <JobRow key={p.id} p={p} c={c} today={today} showCompany={false} />)}
+          {(allOpen ? open : open.slice(0, OPEN_SHOWN)).map((p) => <JobRow key={p.id} p={p} c={c} today={today} showCompany={false} />)}
         </div>
+        {!allOpen && open.length > OPEN_SHOWN && (
+          <button type="button" className="text-link" onClick={() => setAllOpen(true)}>{copy.jobs.more(open.length - OPEN_SHOWN)}</button>
+        )}
         {file && file !== 'failed' && <Past past={basics?.past ?? []} byJob={basics?.pastByJob ?? {}} since={file.since}
           jobs={filters.job_types ?? []} />}
       </section>
@@ -92,6 +97,8 @@ function DartOverview({ d }: { d: DartBasics }) {
   const prev = years[years.length - 2]
   const hasRevenue = cur?.revenue !== null && cur?.revenue !== undefined
   const chartField = hasRevenue ? 'revenue' : 'operating'
+  // 영업수익으로 적는 회사는 그 이름 그대로(매출로 바꿔 부르지 않는다)
+  const revenueLabel = fin?.revenueName === '영업수익' ? t.operatingRevenue : t.revenue
   const margin = (y: typeof cur | undefined) =>
     y && y.revenue && y.operating !== null && y.operating !== undefined ? (y.operating / y.revenue) * 100 : null
   const emp = d.employees
@@ -110,7 +117,7 @@ function DartOverview({ d }: { d: DartBasics }) {
           {/* 금융사처럼 매출액 줄이 없으면 영업이익·순이익만(다른 계정으로 바꿔 넣지 않는다) */}
           {hasRevenue ? (
             <div className="tiles three">
-              <Tile label={t.yearOf(t.revenue, cur.year)} value={cur.revenue} delta={growth(cur.revenue, prev?.revenue)} fmt={money} />
+              <Tile label={t.yearOf(revenueLabel, cur.year)} value={cur.revenue} delta={growth(cur.revenue, prev?.revenue)} fmt={money} />
               <Tile label={t.operating} value={cur.operating} delta={growth(cur.operating, prev?.operating)} fmt={money} />
               <Tile label={t.margin} value={margin(cur)} delta={pointChange(margin(cur), margin(prev))} fmt={(v) => `${v.toFixed(1)}%`} />
             </div>
@@ -122,9 +129,9 @@ function DartOverview({ d }: { d: DartBasics }) {
           )}
           {years.filter((y) => y[chartField] !== null && y[chartField] !== undefined).length > 1 && (
             <>
-              <h3 className="chart-title">{hasRevenue ? t.revenueByYear : t.operatingByYear}</h3>
+              <h3 className="chart-title">{t.byYear(hasRevenue ? revenueLabel : t.operating)}</h3>
               <YearBars data={years.map((y) => ({ year: y.year, value: y[chartField] }))}
-                label={hasRevenue ? t.revenueByYear : t.operatingByYear} format={money} />
+                label={t.byYear(hasRevenue ? revenueLabel : t.operating)} format={money} />
             </>
           )}
           {!hasRevenue && <p className="note small">{t.noRevenue}</p>}

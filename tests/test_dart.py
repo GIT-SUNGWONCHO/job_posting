@@ -75,7 +75,11 @@ def test_parse_finance_prefers_consolidated_and_orders_years():
         {"fs_div": "CFS", "account_nm": "당기순이익(손실)", "thstrm_amount": "4,000"},
         {"fs_div": "CFS", "account_nm": "당기순이익", "thstrm_amount": "4,000"},
     ], 2025)
-    assert bank["years"][-1] == {"year": 2025, "operating": 6000, "net": 4000}
+    assert bank["years"][-1] == {"year": 2025, "operating": 6000, "net": 4000} and bank["revenue_name"] is None
+    # 영업수익으로 적는 회사는 그 이름을 남긴다
+    platform = dart.parse_finance([{"fs_div": "CFS", "account_nm": "영업수익", "thstrm_amount": "10"}], 2025)
+    assert platform["years"][-1]["revenue"] == 10 and platform["revenue_name"] == "영업수익"
+    assert dart.parse_finance(FIN_ROWS, 2025)["revenue_name"] == "매출액"
     assert dart.parse_finance([], 2025) is None
 
 
@@ -128,6 +132,15 @@ def test_pick_disclosures_filters_at_screen_time():
     items = [{"date": "2026-09-01", "title": "정기주주총회결과"}, {"date": "2026-08-01", "title": "단일판매ㆍ공급계약체결"},
              {"date": "2026-07-01", "title": "대표이사변경"}]
     assert [d["title"] for d in dart.pick_disclosures(items, ["주주총회"], 1)] == ["단일판매ㆍ공급계약체결"]
+
+
+def test_upgrade_keeps_basics_that_do_not_change():
+    had = {"v": 2, "finance": {"years": [{"year": 2025, "revenue": 1}]}}
+    dart._upgrade(had)
+    assert had["v"] == 3 and had["finance"]["revenue_name"] == "매출액"
+    missing = {"v": 2, "finance": {"years": [{"year": 2025, "operating": 1}]}}
+    dart._upgrade(missing)
+    assert missing["v"] == 2  # 영업수익일 수 있어 다시 받는다
 
 
 def test_annual_year():
