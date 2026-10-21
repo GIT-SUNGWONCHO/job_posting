@@ -9,7 +9,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from . import ai, config, db, facts, feedback, kakao, notify, pipeline, publish, recommend, screen
+from . import ai, config, db, facts, feedback, notify, pipeline, publish, recommend, screen
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -39,10 +39,12 @@ def main(argv: list[str] | None = None) -> int:
     r = sub.add_parser("feedback", help="회차 리포트: 내 평가와 그때의 AI 판단 근거를 로그로 낸다")
     r.add_argument("--data-dir", type=Path, default=Path("data"))
 
-    n = sub.add_parser("notify", help="아침 카톡: 카톡을 연결한 사람마다 새 공고 요약을 보낸다")
+    n = sub.add_parser("notify", help="아침 알림: 연결한 사람마다 새 공고 요약을 보낸다(채널은 config/notify.yaml)")
     n.add_argument("--data-dir", type=Path, default=Path("data"))
-    n.add_argument("--connect", metavar="CODE", help="카톡 연결: 인가 코드로 토큰을 받아 저장한 뒤 바로 보낸다")
-    n.add_argument("--user-id", help="카톡 연결할 사람(프로필이 여럿일 때)")
+    n.add_argument("--telegram-connect", action="store_true",
+                   help="텔레그램 연결: 봇에게 최근에 /start를 보낸 대화방을 저장한 뒤 바로 보낸다")
+    n.add_argument("--kakao-code", metavar="CODE", help="카톡 연결: 인가 코드로 토큰을 받아 저장한 뒤 바로 보낸다")
+    n.add_argument("--user-id", help="연결할 사람(프로필이 여럿일 때)")
 
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
@@ -95,14 +97,15 @@ def main(argv: list[str] | None = None) -> int:
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
     if args.cmd == "notify":
-        if not (db.configured() and kakao.configured()):
-            logging.info("Supabase나 카카오 설정이 없어 아침 카톡을 건너뜀")
+        if not db.configured() or not (notify.channels() or args.telegram_connect or args.kakao_code):
+            logging.info("Supabase나 알림 채널 키가 없어 아침 알림을 건너뜀")
             return 0
         store = db.DB()
         store.check_server_key()
-        if args.connect:
-            user = notify.connect(store, args.connect, args.user_id)
-            logging.info("카톡 연결: 사람 %s", user[:8])
+        if args.telegram_connect:
+            logging.info("텔레그램 연결: 사람 %s", notify.connect_telegram(store, args.user_id)[:8])
+        if args.kakao_code:
+            logging.info("카톡 연결: 사람 %s", notify.connect_kakao(store, args.kakao_code, args.user_id)[:8])
         built, _ = screen.build(args.data_dir)
         summary = notify.run(built, store, date.today())
         json.dump(summary, sys.stdout, ensure_ascii=False)

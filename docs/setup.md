@@ -1,6 +1,6 @@
 # 운영 설정
 
-계정을 만들고 키를 넣는 순서. 키 값은 이 문서에도, 코드와 커밋에도 적지 않는다. 넣을 곳은 GitHub Secrets와 Cloudflare 빌드 변수뿐이다. 사람마다 받는 카카오 연결 토큰만 Supabase의 서버 전용 표에 둔다(아래 4).
+계정을 만들고 키를 넣는 순서. 키 값은 이 문서에도, 코드와 커밋에도 적지 않는다. 넣을 곳은 GitHub Secrets와 Cloudflare 빌드 변수뿐이다. 사람마다 받는 카카오 연결 토큰만 Supabase의 서버 전용 표에 둔다(아래 5).
 
 ## 1. Supabase (저장소, 로그인)
 
@@ -77,14 +77,29 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 | `SUPABASE_URL` | Project URL |
 | `SUPABASE_SECRET_KEY` | secret key |
 | `GEMINI_API_KEY` | aistudio.google.com > Get API key. 직무 유형 분류에 쓴다. 없으면 분류만 건너뛴다 |
-| `KAKAO_REST_KEY` | 카카오 앱 REST API 키(아래 4). 없으면 아침 카톡만 건너뛴다 |
+| `TELEGRAM_BOT_TOKEN` | 텔레그램 봇 토큰(아래 4). 없으면 아침 알림만 건너뛴다 |
+| `KAKAO_REST_KEY` | 카카오 앱 REST API 키(아래 5, 지금은 꺼 둠) |
 | `KAKAO_CLIENT_SECRET` | 카카오 앱 REST API 키의 클라이언트 시크릿 |
 
 넣은 뒤 Actions > collect > Run workflow로 한 번 돌려 "Supabase 저장소에 올림" 줄이 나오는지 본다(2026.10.13 확인. 새 secret 키는 `apikey` 헤더만으로 올라간다). 키가 없으면 화면용 파일은 만들기만 하고 올리지 않는다.
 
-## 4. 카카오 (아침 카톡)
+## 4. 텔레그램 (아침 알림)
 
-매일 수집·매칭이 끝나면 카톡 "나와의 채팅"으로 새 공고 요약이 온다(카카오 "나에게 보내기", 무료). 처음 한 번만 연결한다. 메뉴 이름은 2026.10 developers.kakao.com 문서 기준이다.
+매일 수집·매칭이 끝나면 텔레그램 봇과의 대화방으로 새 공고 요약이 온다(무료). 처음 한 번만 연결한다.
+
+1. 텔레그램 앱에서 **@BotFather**를 찾아 `/newbot`을 보낸다. 봇 이름(예: `careermap 알림`)과 아이디(`..._bot`으로 끝나는 것)를 정하면 봇 토큰(`123456:ABC…`)을 준다. 토큰은 채팅이나 문서에 붙이지 않는다.
+2. GitHub Secrets에 `TELEGRAM_BOT_TOKEN`으로 넣는다(위 3의 표).
+3. Supabase SQL Editor에서 `supabase/migrations/006_telegram.sql`을 실행한다.
+4. BotFather가 준 링크(`t.me/<봇 아이디>`)로 봇 대화방을 열고 **시작**(`/start`)을 누른다.
+5. 24시간 안에 GitHub > Actions > **telegram** > Run workflow(connect 켬)를 실행한다. 봇에게 가장 최근에 말을 건 1:1 대화방을 내 알림 받을 곳으로 저장하고, 오늘 알림을 바로 보낸다.
+
+- 그 뒤로는 매일 collect 마지막 단계(아침 알림)가 보낸다. 같은 날 두 번 보내지 않는다. 오늘 것을 다시 받고 싶으면 telegram을 connect 끄고 실행한다(오늘 아직 못 받은 사람에게만 간다).
+- 봇을 차단하거나 대화방을 지우면 보내기 단계가 실패하고 GitHub가 메일로 알린다. 4~5를 다시 한다.
+- 보낼 곳은 `config/notify.yaml`의 `channels`에서 고른다. 2026-10-21부터 `[telegram]`이고 카톡은 꺼 두었다.
+
+## 5. 카카오 (아침 알림, 꺼 둠)
+
+카톡 "나와의 채팅"으로 받는 방식이다(카카오 "나에게 보내기", 무료). 2026-10-21 텔레그램으로 바꾸며 껐다. 다시 쓰려면 `config/notify.yaml` `channels`에 `kakao`를 넣는다. 메뉴 이름은 2026.10 developers.kakao.com 문서 기준이다.
 
 1. developers.kakao.com에 카카오 계정으로 로그인하고 **앱 만들기**(이름 예: `careermap`).
 2. 앱 설정
@@ -97,9 +112,8 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 5. 브라우저에서 `https://careermap-web.oroloov.workers.dev/kakao`를 열고 REST API 키를 붙여 넣은 뒤 **카카오로 연결**을 누른다(키는 그 화면에서만 쓰고 저장하지 않는다). 카카오 로그인과 동의를 마치면 같은 화면에 인가 코드가 나온다. 코드는 한 번만, 받은 직후에만 쓸 수 있다.
    - KOE101(앱 관리자 설정 오류)은 카카오가 앱 키를 못 알아본 것이다(2026.10.21 처음 연결 때 겪음). 흔한 원인은 `<>`가 남은 키, REST API 키가 아닌 다른 키(JavaScript·네이티브 앱·어드민 키, 시크릿), 앞뒤 공백이다. 화면은 `<>`와 공백을 지우고, 32자리 영문·숫자가 아니면 막는다.
    - KOE004는 [카카오 로그인] > [사용 설정]의 상태가 OFF인 것이다(2026.10.21 겪음). ON으로 바꾸고 다시 누른다.
-6. 바로 GitHub > Actions > **kakao** > Run workflow의 `code` 칸에 붙여 넣고 실행한다. 1~2분 뒤 오늘의 아침 카톡이 오면 끝이다.
+6. 바로 GitHub > Actions > **kakao** > Run workflow의 `code` 칸에 붙여 넣고 실행한다. 카톡이 `channels`에 켜져 있으면 1~2분 뒤 오늘 알림이 온다(2026-10-21 연결 확인).
 
-- 그 뒤로는 매일 collect 마지막 단계(아침 카톡)가 보낸다. 같은 날 두 번 보내지 않는다. 오늘 것을 다시 받고 싶으면 kakao를 code 없이 실행한다(오늘 아직 못 받은 사람에게만 간다).
 - 연결 토큰은 60일짜리인데, 카카오가 1개월 미만 남았을 때 새 토큰을 주면 매일 작업이 바꿔 저장한다. 그래서 매일 돌기만 하면 다시 연결할 일이 없다. 끊기면(보내기 단계가 실패하고 GitHub가 메일로 알림) 5~6을 다시 한다.
 - 카톡에서 링크를 누르면 휴대폰 기본 브라우저로 다시 열린다. 카톡 안 브라우저에서는 구글 로그인이 막혀서다. 기본 브라우저에서 한 번 로그인해 두면 계속 쓴다.
 

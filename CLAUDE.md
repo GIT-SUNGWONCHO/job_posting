@@ -1,6 +1,6 @@
 # 채용공고 수집·매칭 앱
 
-데이터·AI 경력 공고를 매일 모아 정리하고, 회사를 조사하고, 내 경력과 매칭해 웹 대시보드와 아침 카톡으로 보고하는 앱이다. 공고(시장 수요)로 내 커리어 방향을 점검하는 것도 큰 축이다. 처음 사용자는 데이터 엔지니어 경력 약 10년이고, 지인도 다른 직무로 쓸 수 있게 만든다.
+데이터·AI 경력 공고를 매일 모아 정리하고, 회사를 조사하고, 내 경력과 매칭해 웹 대시보드와 아침 알림(텔레그램)으로 보고하는 앱이다. 공고(시장 수요)로 내 커리어 방향을 점검하는 것도 큰 축이다. 처음 사용자는 데이터 엔지니어 경력 약 10년이고, 지인도 다른 직무로 쓸 수 있게 만든다.
 
 이 파일은 안내판이다. 기준과 이유는 아래 문서에 있고, 같은 내용을 여기에 베끼지 않는다.
 
@@ -18,7 +18,7 @@
 | 대시보드 | https://careermap-web.oroloov.workers.dev (초대한 사람만 로그인) |
 | 운영 설정: Supabase, Cloudflare, 키 넣는 곳 | `docs/setup.md` |
 | 개발 흐름(다른 프로젝트에도 쓰는 진행 방식) | `docs/dev-workflow.md` |
-| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수·지침·기준 샘플, 프로필 목록(업종·직무), 아침 카톡, AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
+| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수·지침·기준 샘플, 프로필 목록(업종·직무), 아침 알림, AI 모델, 그룹 규칙, 회사 별칭 | `config/*.yaml` |
 | 수집 데이터 | `data` 브랜치(형식은 그 브랜치 README) |
 
 ## 지금 단계
@@ -30,7 +30,7 @@
 | 2 | 수집, 아키텍처, 디자인 스타일, 대시보드 | 진행 중: 수집(매일 04:17 자동), 아키텍처·디자인 스타일 확정, 대시보드 첫 버전 배포. 남은 것: 실제로 써 보며 다듬기 |
 | 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | 진행 중: 프로필 v2, 공고 정리, AI 매칭(판단 근거) + 내 평가로 지침을 고치는 회차 진행 중. 기준이 서면 규칙화와 기준 샘플(3-5) |
 | 4 | 분석: 회사 리서치, 커리어 탭 | |
-| 5 | 보고: 오늘의 리포트, 아침 카톡 | 초안: 아침 카톡(카톡 연결 뒤 매일 매칭 끝에 보냄). 매칭 고도화보다 나머지 단계 초안을 먼저 끝낸다(2026-10-17) |
+| 5 | 보고: 오늘의 리포트, 아침 알림 | 초안: 아침 알림(매일 매칭 끝에 텔레그램으로, 카톡은 꺼 둠). 매칭 고도화보다 나머지 단계 초안을 먼저 끝낸다(2026-10-17) |
 | 6 | 확장: 지원 상태, 지인 계정, 나머지 수집처 | |
 
 ## 꼭 지킬 것
@@ -65,8 +65,9 @@ src/jobpost/
   matching.py      규칙 점수(비교용, config/matching.yaml + 스킬 사전 config/skills.yaml)
   recommend.py     사람마다 매칭: 후보 공고를 AI가 매기고 판단 근거를 남김(지침 config/match_guide.yaml), Supabase matches에 씀
   feedback.py      회차 리포트: 내 평가와 판단 근거 모음(feedback.yml)
-  notify.py        아침 카톡: 사람마다 새 공고 요약 메시지를 만들어 보냄, 카톡 연결(설정 config/notify.yaml)
-  kakao.py         카카오 "나에게 보내기"·토큰. 카카오는 여기서만 부른다
+  notify.py        아침 알림: 사람마다 새 공고 요약을 만들어 켜 둔 채널로 보냄, 알림 연결(설정 config/notify.yaml)
+  telegram.py      텔레그램 봇 보내기·대화방 찾기. 텔레그램은 여기서만 부른다
+  kakao.py         카카오 "나에게 보내기"·토큰(꺼 둠). 카카오는 여기서만 부른다
   db.py            Supabase DB 읽기·쓰기(서버 키)
   ai.py            AI 호출(Gemini). 외부 AI는 여기서만 부른다
   screen.py        화면용 파일 만들기(형식은 web/src/lib/types.ts와 같게)
@@ -85,4 +86,4 @@ web/src/
 - 수집: `uv run jobpost collect --data-dir data` (시험은 `--max-pages 2 --detail-budget 5`)
 - 검사: `uv run ruff check src tests` 와 `uv run pytest -q`, 화면은 `cd web && npm test && npm run lint && npm run build`
 - 화면 개발: `uv run jobpost screen --data-dir <data> --out .dev-data/screen.json.gz` 후 `cd web && npm run dev`(Supabase 값이 없으면 로그인 없이 이 파일을 읽는다)
-- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회차 리포트는 `feedback.yml`, 카톡 연결·다시 보내기는 `kakao.yml`. 매칭 뒤 아침 카톡을 보낸다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
+- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회차 리포트는 `feedback.yml`, 알림 연결·다시 보내기는 `telegram.yml`(카톡은 `kakao.yml`). 매칭 뒤 아침 알림을 보낸다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.

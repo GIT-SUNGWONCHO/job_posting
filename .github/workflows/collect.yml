@@ -1,4 +1,4 @@
-# 매일 새벽 공고를 수집해 data 브랜치에 쌓고, 화면용 파일을 만들어 Supabase 저장소에 올리고, 매칭한 뒤 아침 카톡을 보낸다.
+# 매일 새벽 공고를 수집해 data 브랜치에 쌓고, 화면용 파일을 만들어 Supabase 저장소에 올리고, 매칭한 뒤 아침 알림을 보낸다.
 # 수동 실행: GitHub > Actions > collect > Run workflow
 name: collect
 
@@ -69,13 +69,14 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: uv run jobpost match --data-dir data
 
-      - name: 아침 카톡
+      - name: 아침 알림
         if: ${{ !cancelled() }}  # 매칭이 실패해도 새 공고는 알린다
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           KAKAO_REST_KEY: ${{ secrets.KAKAO_REST_KEY }}
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: uv run jobpost notify --data-dir data
 
       - name: 실행 요약

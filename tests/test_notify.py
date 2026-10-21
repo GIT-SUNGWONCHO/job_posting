@@ -1,6 +1,9 @@
 from datetime import date
 
-from jobpost import kakao, notify
+import pytest
+import requests
+
+from jobpost import config, kakao, notify, telegram
 
 TODAY = date(2026, 10, 17)
 
@@ -14,7 +17,7 @@ def posting(pid, company="a", first="2026-10-17", deadline=None, title="Data Eng
 SCREEN = {
     "companies": {"a": {"name": "가나다", "type": "대기업"}, "b": {"name": "라마바", "type": "그 외"}},
     "postings": [
-        posting("z:1"), posting("z:2", deadline="2026-10-29"), posting("z:3"), posting("z:4"),
+        posting("z:1"), posting("z:2", deadline="2026-10-29"), posting("z:3", title="A&amp;B <ML>"), posting("z:4"),
         posting("z:5", company="b"),  # 기업 구분 필터에서 빠짐
         posting("z:6", first="2026-10-10", deadline="2026-10-19"),  # 지난 공고, 마감 임박
     ],
@@ -25,35 +28,52 @@ MATCHES = {"z:1": {"score": 70, "verdict": "고려", "kind": "ai"}, "z:2": {"sco
            "z:6": {"score": 81, "verdict": "지원 추천", "kind": "ai"}}
 
 
-def test_list_message_shows_top_new_postings_that_pass_filters():
-    msg = notify.message(SCREEN, FILTERS, MATCHES, TODAY)
-    assert msg["object_type"] == "list"
-    assert msg["header_title"] == "10/17(토) 새 공고 5건 · 필터 통과 4건 · 마감 임박 1건"
-    assert [c["title"] for c in msg["contents"]] == ["가나다 · Data Engineer"] * 3
-    assert [c["description"] for c in msg["contents"]] == ["92점 지원 추천 · D-12", "규칙 88점 · 상시", "70점 고려 · 상시"]
-    assert msg["contents"][0]["link"]["web_url"] == "https://careermap-web.oroloov.workers.dev/#/job/z%3A2"
-    assert len(msg["buttons"]) == 2
+def test_digest_counts_and_orders_new_postings_that_pass_filters():
+    d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY)
+    assert d["head"] == "10/17(토) 새 공고 5건 · 필터 통과 4건 · 마감 임박 1건"
+    assert [it["id"] for it in d["new"]] == ["z:2", "z:4", "z:1", "z:3"]
+    assert [it["info"] for it in d["new"][:2]] == ["92점 지원 추천 · D-12", "규칙 88점 · 상시"]
+    assert d["new"][0]["url"] == "https://careermap-web.oroloov.workers.dev/#/job/z%3A2"
+    assert [it["id"] for it in d["soon"]] == ["z:6"]
 
 
 def test_new_postings_since_the_last_message_count_when_a_day_was_missed():
     screen = {**SCREEN, "postings": [posting("y:1", first="2026-10-16"), *SCREEN["postings"]]}
-    assert "새 공고 5건" in notify.message(screen, FILTERS, MATCHES, TODAY)["header_title"]
-    assert "새 공고 6건" in notify.message(screen, FILTERS, MATCHES, TODAY, since=date(2026, 10, 15))["header_title"]
+    assert "새 공고 5건" in notify.digest(screen, FILTERS, MATCHES, TODAY)["head"]
+    assert "새 공고 6건" in notify.digest(screen, FILTERS, MATCHES, TODAY, since=date(2026, 10, 15))["head"]
 
 
-def test_one_new_posting_is_padded_with_an_urgent_one_and_none_becomes_text():
+def test_telegram_message_lists_new_and_urgent_postings_as_escaped_html():
+    text = notify.telegram_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))
+    assert text.startswith("<b>10/17(토) 새 공고 5건 · 필터 통과 4건 · 마감 임박 1건</b>")
+    assert '1. <a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">가나다 · Data Engineer</a>\n    92점 지원 추천 · D-12' in text
+    assert "가나다 · A&amp;B &lt;ML&gt;" in text  # 태그가 아닌 <, >, &는 바꾼다
+    assert "<b>마감 임박</b> (70점 이상)\n· " in text and "81점 지원 추천 · D-2" in text
+    assert len(text) <= telegram.TEXT_MAX
+
+
+def test_telegram_message_says_so_when_nothing_new_passes_and_stays_under_the_limit(monkeypatch):
+    none = {**SCREEN, "postings": [SCREEN["postings"][4]]}
+    assert "필터를 통과한 새 공고가 없어요." in notify.telegram_message(notify.digest(none, FILTERS, MATCHES, TODAY))
+    many = {**SCREEN, "postings": [posting(f"m:{i}", title="데이터 엔지니어 " * 60) for i in range(10)]}
+    assert len(notify.telegram_message(notify.digest(many, FILTERS, {}, TODAY))) <= telegram.TEXT_MAX
+
+
+def test_kakao_message_uses_the_list_template_and_falls_back_to_text():
+    msg = notify.kakao_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))
+    assert msg["object_type"] == "list" and len(msg["contents"]) == 3
     one = {**SCREEN, "postings": [SCREEN["postings"][1], SCREEN["postings"][5]]}
-    msg = notify.message(one, FILTERS, MATCHES, TODAY)
-    assert msg["object_type"] == "list"
+    msg = notify.kakao_message(notify.digest(one, FILTERS, MATCHES, TODAY))
     assert msg["contents"][1]["description"] == "마감 임박 · 81점 지원 추천 · D-2"
     none = {**SCREEN, "postings": [SCREEN["postings"][4]]}
-    msg = notify.message(none, FILTERS, MATCHES, TODAY)
-    assert msg["object_type"] == "text" and "필터를 통과한 새 공고가 없어요" in msg["text"] and len(msg["text"]) <= 200
+    msg = notify.kakao_message(notify.digest(none, FILTERS, MATCHES, TODAY))
+    assert msg["object_type"] == "text" and len(msg["text"]) <= 200
 
 
 class FakeDB:
-    def __init__(self, links):
-        self.rows = {"settings": [], "kakao_links": links, "profiles": [{"user_id": "u1"}],
+    def __init__(self, telegram_links=(), kakao_links=()):
+        self.rows = {"settings": [], "telegram_links": list(telegram_links), "kakao_links": list(kakao_links),
+                     "profiles": [{"user_id": "u1"}],
                      "matches": [{"posting_id": "z:2", "score": 92, "parts": {"kind": "ai", "verdict": "지원 추천"}}]}
         self.updates, self.inserted = [], []
 
@@ -67,42 +87,74 @@ class FakeDB:
         self.inserted += rows
 
 
-def test_run_refreshes_saves_a_rotated_token_and_sends_once_a_day(monkeypatch):
+@pytest.fixture
+def keys(monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "123:secret")
+    monkeypatch.setenv("KAKAO_REST_KEY", "k")
+
+
+def test_run_sends_telegram_once_a_day_and_kakao_only_when_switched_on(monkeypatch, keys):
     sent = []
+    monkeypatch.setattr(telegram, "send", lambda chat, text, s=None: sent.append((chat, text)))
+    db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 42, "last_sent_on": "2026-10-16"},
+                                {"user_id": "u2", "chat_id": 43, "last_sent_on": "2026-10-17"}],
+                kakao_links=[{"user_id": "u1", "refresh_token": "RT", "last_sent_on": None}])
+    s = notify.run(SCREEN, db, TODAY)
+    assert s == {"telegram": {"linked": 2, "sent": 1, "skipped": 1}}  # 카톡은 config에서 꺼 둠
+    assert sent[0][0] == 42 and sent[0][1].startswith("<b>10/17(토)")
+    assert db.updates == [("telegram_links", "user_id=eq.u1", {"last_sent_on": "2026-10-17"})]
+
+
+def test_run_keeps_kakao_working_and_saves_a_rotated_token(monkeypatch, keys):
+    monkeypatch.setitem(config.load("notify"), "channels", ["kakao"])
     monkeypatch.setattr(kakao, "refresh", lambda rt, s=None: {"access_token": "AT", "refresh_token": "RT2",
                                                               "refresh_token_expires_in": 5184000})
-    monkeypatch.setattr(kakao, "send", lambda at, msg, s=None: sent.append((at, msg)))
-    db = FakeDB([{"user_id": "u1", "refresh_token": "RT1", "last_sent_on": "2026-10-16"},
-                 {"user_id": "u2", "refresh_token": "RT9", "last_sent_on": "2026-10-17"}])
+    sent = []
+    monkeypatch.setattr(kakao, "send", lambda at, msg, s=None: sent.append(msg))
+    db = FakeDB(kakao_links=[{"user_id": "u1", "refresh_token": "RT1", "last_sent_on": None}])
+    assert notify.run(SCREEN, db, TODAY) == {"kakao": {"linked": 1, "sent": 1, "skipped": 0}}
+    assert db.updates[0][2]["refresh_token"] == "RT2" and sent[0]["object_type"] == "list"
+
+
+def test_run_reports_errors_without_stopping_other_people(monkeypatch, keys):
+    def send(chat, text, s=None):
+        if chat == 1:
+            raise telegram.TelegramError("텔레그램 sendMessage 403 Forbidden: bot was blocked by the user")
+    monkeypatch.setattr(telegram, "send", send)
+    db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 1, "last_sent_on": None},
+                                {"user_id": "u2", "chat_id": 2, "last_sent_on": None}])
     s = notify.run(SCREEN, db, TODAY)
-    assert s == {"linked": 2, "sent": 1, "skipped": 1}
-    assert sent[0][0] == "AT" and sent[0][1]["object_type"] in ("list", "text")
-    assert db.updates[0][2]["refresh_token"] == "RT2"  # 바뀐 토큰은 바로 저장
-    assert db.updates[-1] == ("kakao_links", "user_id=eq.u1", {"last_sent_on": "2026-10-17"})
+    assert s["telegram"]["sent"] == 1
+    assert s["errors"] == ["telegram u1: 텔레그램 sendMessage 403 Forbidden: bot was blocked by the user"]
 
 
-def test_run_reports_errors_without_stopping_other_people(monkeypatch):
-    def refresh(rt, s=None):
-        if rt == "bad":
-            raise kakao.KakaoError("카카오 토큰 401 KOE322 만료")
-        return {"access_token": "AT"}
-    monkeypatch.setattr(kakao, "refresh", refresh)
-    monkeypatch.setattr(kakao, "send", lambda at, msg, s=None: None)
-    db = FakeDB([{"user_id": "u1", "refresh_token": "bad", "last_sent_on": None},
-                 {"user_id": "u2", "refresh_token": "ok", "last_sent_on": None}])
-    s = notify.run(SCREEN, db, TODAY)
-    assert s["sent"] == 1 and s["errors"] == ["u1: 카카오 토큰 401 KOE322 만료"]
+def test_telegram_request_errors_do_not_carry_the_token(monkeypatch, keys):
+    class Boom:
+        def post(self, url, **kw):
+            raise requests.ConnectionError(f"Max retries exceeded with url: {url}")
+    with pytest.raises(telegram.TelegramError) as e:
+        telegram.send(1, "hi", Boom())
+    assert "secret" not in str(e.value) and e.value.__cause__ is None
 
 
-def test_connect_stores_the_token_for_the_only_profile(monkeypatch):
+def test_connect_telegram_saves_the_latest_private_chat(monkeypatch, keys):
+    monkeypatch.setattr(telegram, "latest_chat", lambda s=None: {"id": 777, "type": "private"})
+    db = FakeDB()
+    assert notify.connect_telegram(db) == "u1"
+    assert db.inserted[0]["chat_id"] == 777 and db.inserted[0]["last_sent_on"] is None
+    monkeypatch.setattr(telegram, "latest_chat", lambda s=None: {"id": -5, "type": "group"})
+    with pytest.raises(ValueError):
+        notify.connect_telegram(db)
+
+
+def test_connect_kakao_stores_the_token_for_the_only_profile(monkeypatch):
     seen = {}
 
     def exchange(code, redirect_uri, s=None):
         seen.update(code=code, redirect_uri=redirect_uri)
         return {"access_token": "AT", "refresh_token": "RT", "refresh_token_expires_in": 5184000}
     monkeypatch.setattr(kakao, "exchange", exchange)
-    db = FakeDB([])
-    assert notify.connect(db, " CODE \n") == "u1"
+    db = FakeDB()
+    assert notify.connect_kakao(db, " CODE \n") == "u1"
     assert seen == {"code": "CODE", "redirect_uri": "https://careermap-web.oroloov.workers.dev/kakao"}
-    assert db.inserted[0]["user_id"] == "u1" and db.inserted[0]["refresh_token"] == "RT"
-    assert db.inserted[0]["last_sent_on"] is None
+    assert db.inserted[0]["refresh_token"] == "RT" and db.inserted[0]["last_sent_on"] is None

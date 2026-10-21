@@ -1,6 +1,7 @@
-# 카톡 연결과 아침 카톡 다시 보내기. 처음 한 번 연결하는 순서는 docs/setup.md "4. 카카오".
-# code를 넣으면: 인가 코드로 토큰을 받아 Supabase에 저장하고 오늘 아침 카톡을 바로 보낸다(시험 메시지).
-# code를 비우면: 오늘 아침 카톡을 아직 못 받은 사람에게만 보낸다.
+# 카톡 연결과 아침 알림 다시 보내기. 2026-10-21부터 알림은 텔레그램으로 받고 카톡은 꺼 두었다(config/notify.yaml channels).
+# 카톡을 다시 켤 때 연결 순서는 docs/setup.md "5. 카카오".
+# code를 넣으면: 인가 코드로 토큰을 받아 Supabase에 저장하고 오늘 알림을 바로 보낸다(켜 둔 채널로).
+# code를 비우면: 오늘 알림을 아직 못 받은 사람에게만 보낸다.
 # 수동 실행: GitHub > Actions > kakao > Run workflow
 name: kakao
 
@@ -31,6 +32,7 @@ jobs:
       SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
       KAKAO_REST_KEY: ${{ secrets.KAKAO_REST_KEY }}
       KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -54,6 +56,6 @@ jobs:
           CODE=$(jq -r '.inputs.code // ""' "$GITHUB_EVENT_PATH")
           if [ -n "$CODE" ]; then echo "::add-mask::$CODE"; fi
           args=(--data-dir data)
-          if [ -n "$CODE" ]; then args+=(--connect "$CODE"); fi
+          if [ -n "$CODE" ]; then args+=(--kakao-code "$CODE"); fi
           if [ -n "$USER_ID" ]; then args+=(--user-id "$USER_ID"); fi
           uv run --no-dev jobpost notify "${args[@]}"
