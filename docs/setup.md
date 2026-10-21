@@ -124,7 +124,8 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 
 1. opendart.fss.or.kr에서 인증키를 받아 GitHub Secrets에 `DART_API_KEY`로 넣는다(위 3의 표). 2026-10-21에 넣음.
 2. 처음 한 번 GitHub > Actions > **dart** > Run workflow(budget 기본 5000)로 크게 받는다. 회사 1곳에 요청 5건쯤이라 약 1,000곳이다. 다 못 받으면 매일 collect가 `config/dart.yaml` budget만큼 이어서 받는다.
-3. 못 찾았거나 잘못 이은 회사는 `config/dart.yaml` overrides에 회사 키와 DART 고유번호를 적고 dart를 다시 돌린다. 회사 키는 대시보드 회사 주소(`#/company/<키>`)에 보이는 값, 고유번호는 DART 회사 검색 결과의 8자리다.
+3. 못 찾았거나 잘못 이은 회사는 `config/dart.yaml` overrides에 회사 키와 DART 고유번호(8자리) 또는 DART 회사 이름을 적고 dart를 다시 돌린다. 회사 키는 대시보드 회사 주소(`#/company/<키>`)에 보이는 값이다. DART에서 어떤 이름인지 모르면 dart의 find 칸에 말(예: `고영,올리브영`)을 넣어 돌리면 그 말이 든 DART 회사 이름·고유번호가 로그에 나온다.
+4. DART 회사 목록 파일(약 3.6MB)은 GitHub에서 받는 데 4분쯤 걸려(2026-10-21) Actions 캐시에 두고 7일 동안 다시 쓴다.
 
 ## 개발할 때
 

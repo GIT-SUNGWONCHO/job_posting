@@ -14,7 +14,7 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-from . import career, config, facts, jobtypes
+from . import career, config, dart, facts, jobtypes
 from .companies import CompanyRegistry
 from .normalize import career_text, clean_company
 from .store import Store
@@ -212,6 +212,7 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 
 def _dart_item(code: str, m: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
+    cfg = config.load("dart")
     c = b.get("company") or {}
     fin = b.get("finance")
     emp = b.get("employees")
@@ -227,6 +228,7 @@ def _dart_item(code: str, m: dict[str, Any], b: dict[str, Any]) -> dict[str, Any
         "employees": emp and {"count": emp["count"], "tenure": emp.get("tenure"), "salary": emp.get("salary"),
                               "rceptNo": emp.get("rcept_no")},
         "disclosures": [{"date": d["date"], "title": d["title"], "rceptNo": d.get("rcept_no")}
-                        for d in b.get("disclosures") or []],
+                        for d in dart.pick_disclosures(b.get("disclosures") or [], cfg.get("disclosure_skip") or [],
+                                                       cfg.get("disclosure_max", 8))],
         "fetched": b.get("fetched"),
     }

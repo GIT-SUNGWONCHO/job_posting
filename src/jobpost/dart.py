@@ -74,8 +74,11 @@ class Client:
     class Budget(Exception):
         pass
 
-    def __init__(self, budget: int, interval: float, session: requests.Session | None = None, raw: int = 0):
+    def __init__(self, budget: int, interval: float, session: requests.Session | None = None, raw: int = 0,
+                 minutes: float | None = None):
         self.budget = budget
+        # 이 시간이 지나면 요청 수가 남아도 멈춘다(매일 수집에서 아침 알림이 늦지 않게)
+        self.deadline = time.monotonic() + minutes * 60 if minutes else None
         self.raw = raw  # 처음 이만큼의 응답을 로그에 남긴다(해석이 맞는지 볼 때. 응답에 키는 없다)
         self.interval = interval
         self.session = session or requests.Session()
@@ -84,16 +87,19 @@ class Client:
         self.used = 0
         self._last = 0.0
 
-    def get(self, name: str, params: dict[str, Any]) -> requests.Response:
+    def get(self, name: str, params: dict[str, Any], stream: bool = False) -> requests.Response:
         if self.used >= self.budget:
+            raise Client.Budget
+        if self.deadline is not None and time.monotonic() > self.deadline:
             raise Client.Budget
         wait = self._last + self.interval - time.monotonic()
         if wait > 0:
             time.sleep(wait)
         self.used += 1
         try:
+            # (연결, 읽기) 초. 읽기 시간은 바이트 사이 간격이라 느리게 오는 큰 파일은 corp_codes가 따로 끊는다
             resp = self.session.get(API.format(name=name), params={"crtfc_key": os.environ["DART_API_KEY"], **params},
-                                    timeout=60)
+                                    timeout=(10, 30), stream=stream)
             resp.raise_for_status()
         except requests.RequestException as e:
             # 오류 문장에 키가 든 주소가 들어 있어 종류만 남긴다
@@ -137,15 +143,56 @@ def parse_corp_codes(xml_bytes: bytes) -> list[dict[str, str]]:
     return [c for c in out if c["corp_code"] and c["corp_name"]]
 
 
-def corp_codes(client: Client) -> list[dict[str, str]]:
-    """DART 고유번호 전체. zip 안 XML 하나."""
-    resp = client.get("corpCode.xml", {})
+CORPCODE_SECONDS = 480  # 고유번호 파일(약 3.6MB)을 받는 데 쓸 최대 시간. GitHub에서 4분쯤 걸렸다(2026-10-21)
+CORPCODE_DAYS = 7  # 받아 둔 고유번호 파일을 이만큼 다시 쓴다(GitHub Actions 캐시, 폴더는 DART_CACHE)
+
+
+def corp_codes(client: Client, cache: Path | None = None, today: date | None = None) -> list[dict[str, str]]:
+    """DART 고유번호 전체. zip 안 XML 하나. cache 폴더에 받은 지 CORPCODE_DAYS일 안 된 파일이 있으면 그것을 쓴다."""
+    today = today or date.today()
+    zpath = cache / "corpCode.zip" if cache else None
+    dpath = cache / "corpCode.date" if cache else None
+    if zpath and dpath and zpath.exists() and dpath.exists():
+        try:
+            got = date.fromisoformat(dpath.read_text(encoding="utf-8").strip())
+            if got + timedelta(days=CORPCODE_DAYS) > today:
+                with zipfile.ZipFile(zpath) as z:
+                    corps = parse_corp_codes(z.read(z.namelist()[0]))
+                log.info("DART 고유번호 파일: %s에 받은 것을 다시 씀(%d곳)", got, len(corps))
+                return corps
+        except (ValueError, zipfile.BadZipFile, ElementTree.ParseError):
+            pass
+    data = _download_corp_codes(client)
     try:
-        with zipfile.ZipFile(io.BytesIO(resp.content)) as z:
-            return parse_corp_codes(z.read(z.namelist()[0]))
+        with zipfile.ZipFile(io.BytesIO(data)) as z:
+            corps = parse_corp_codes(z.read(z.namelist()[0]))
     except zipfile.BadZipFile:
-        # 오류면 zip 대신 JSON이나 XML 메시지가 온다
-        raise DartError(f"DART 고유번호 파일을 받지 못함: {resp.content[:120]!r}") from None
+        # 오류면 zip 대신 XML 메시지(<status>, <message>)가 온다
+        raise DartError(f"DART 고유번호 파일을 받지 못함: {data[:160]!r}") from None
+    if zpath and dpath:
+        zpath.parent.mkdir(parents=True, exist_ok=True)
+        zpath.write_bytes(data)
+        dpath.write_text(today.isoformat(), encoding="utf-8")
+    return corps
+
+
+def _download_corp_codes(client: Client) -> bytes:
+    """느리게 오면 CORPCODE_SECONDS에서 끊는다."""
+    started = time.monotonic()
+    resp = client.get("corpCode.xml", {}, stream=True)
+    buf = io.BytesIO()
+    try:
+        for chunk in resp.iter_content(64 * 1024):
+            buf.write(chunk)
+            if time.monotonic() - started > CORPCODE_SECONDS:
+                raise DartError(f"DART 고유번호 파일이 느려 {CORPCODE_SECONDS}초에서 끊음({buf.tell() // 1024} KB 받음)")
+    except requests.RequestException as e:
+        raise DartError(f"DART 고유번호 파일 받기 실패({type(e).__name__})") from None
+    finally:
+        resp.close()
+    data = buf.getvalue()
+    log.info("DART 고유번호 파일 받음 %d KB, %.1f초", len(data) // 1024, time.monotonic() - started)
+    return data
 
 
 def index(corps: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
@@ -160,10 +207,35 @@ def _compact(name: str) -> str:
     return PUNCT.sub("", clean_company(name)).lower()
 
 
+_LETTERS = dict(zip("abcdefghijklmnopqrstuvwxyz", [
+    "에이", "비", "씨", "디", "이", "에프", "지", "에이치", "아이", "제이", "케이", "엘", "엠", "엔", "오", "피", "큐", "알",
+    "에스", "티", "유", "브이", "더블유", "엑스", "와이", "제트"], strict=True))
+_LATIN = re.compile(r"[A-Za-z]+")
+
+
+def variants(key: str, name: str) -> list[str]:
+    """DART 이름과 맞춰 볼 회사 키들. 공고 키, 괄호 속 다른 이름을 뺀 것(카카오스타일(Kakao Style) → 카카오스타일),
+    영문 약자(5글자까지)를 한글 읽기로 바꾼 것(CJ올리브영 → 씨제이올리브영). 법인명은 보통 영문 약자를 한글로 쓴다."""
+    cleaned = clean_company(name)
+    bare = re.sub(r"\([^)]*\)", "", cleaned).strip() or cleaned
+    out = [key]
+    for n in (bare, _LATIN.sub(lambda m: "".join(_LETTERS[c] for c in m.group().lower()) if len(m.group()) <= 5
+                               else m.group(), bare)):
+        k = company_key(n)
+        if k and k not in out:
+            out.append(k)
+    return out
+
+
 def match(key: str, name: str, idx: dict[str, list[dict[str, str]]]) -> tuple[dict[str, str] | None, str]:
-    """(DART 회사, 어떻게). 같은 이름이 하나면 그것, 여럿이면 상장사가 하나일 때 그것,
-    그래도 여럿이면 이름이 글자까지 같은 것이 하나일 때 그것. 아니면 잇지 않는다(잘못 잇는 것보다 낫다)."""
-    cands = idx.get(key) or []
+    """(DART 회사, 어떻게). 이름(variants 차례로)이 같은 회사가 하나면 그것, 여럿이면 상장사가 하나일 때 그것,
+    그래도 여럿이면 이름이 글자까지 같은 것이 하나일 때 그것. 아니면 잇지 않는다(잘못 잇는 것보다 낫다).
+    여럿이라 못 고른 것("ambiguous")은 run이 기업개황으로 지금 상장된 회사를 한 번 더 고른다."""
+    cands: list[dict[str, str]] = []
+    for k in variants(key, name):
+        cands = idx.get(k) or []
+        if cands:
+            break
     if not cands:
         return None, "none"
     if len(cands) == 1:
@@ -301,12 +373,13 @@ def parse_employees(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
 
 
 def parse_disclosures(rows: list[dict[str, Any]], skip: list[str], limit: int) -> list[dict[str, str]]:
-    """list.json 응답 → [{"date", "title", "rcept_no"}] 최근 순. 정정·정기적인 공시는 뺀다."""
+    """list.json 응답 → [{"date", "title", "rcept_no"}] 최근 순. 정기적인 공시(skip)는 빼고 같은 공시는 하나만."""
     out = []
     seen = set()
     squash = [s.replace(" ", "") for s in skip]
     for r in sorted(rows, key=lambda r: (r.get("rcept_dt") or "", r.get("rcept_no") or ""), reverse=True):
-        title = re.sub(r"\s+", " ", (r.get("report_nm") or "")).strip()
+        # [기재정정] 같은 머리는 뗀다(last_reprt_at=Y라 정정된 최종본만 온다)
+        title = re.sub(r"^\[[^\]]*\]\s*", "", re.sub(r"\s+", " ", (r.get("report_nm") or "")).strip())
         flat = title.replace(" ", "")
         if not title or any(s in flat for s in squash):
             continue
@@ -319,6 +392,15 @@ def parse_disclosures(rows: list[dict[str, Any]], skip: list[str], limit: int) -
         if len(out) >= limit:
             break
     return out
+
+
+DISCLOSURES_KEPT = 40  # 회사마다 남길 최근 공시 수(거르기 전)
+
+
+def pick_disclosures(items: list[dict[str, Any]], skip: list[str], limit: int) -> list[dict[str, Any]]:
+    """받아 둔 공시(최근 순)에서 이름에 skip의 말이 든 것을 빼고 limit개."""
+    squash = [w.replace(" ", "") for w in skip]
+    return [d for d in items if not any(w in (d.get("title") or "").replace(" ", "") for w in squash)][:limit]
 
 
 def parse_company(body: dict[str, Any]) -> dict[str, Any]:
@@ -345,9 +427,13 @@ def annual_year(today: date) -> int:
     return today.year - 1 if (today.month, today.day) >= (4, 10) else today.year - 2
 
 
+MATCH_VERSION = 2  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다(2: 한글 읽기·괄호 빼기, 지금 상장된 곳 고르기)
+BASICS_VERSION = 2  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다(2: 공시를 거르지 않고 40건)
+
+
 def fetch(client: Client, corp_code: str, today: date) -> dict[str, Any]:
     cfg = config.load("dart")
-    out: dict[str, Any] = {"fetched": today.isoformat()}
+    out: dict[str, Any] = {"fetched": today.isoformat(), "v": BASICS_VERSION}
     body = client.json("company.json", {"corp_code": corp_code})
     out["company"] = parse_company(body) if body else None
 
@@ -369,7 +455,8 @@ def fetch(client: Client, corp_code: str, today: date) -> dict[str, Any]:
         found = client.json("list.json", {"corp_code": corp_code, "bgn_de": begin, "end_de": today.strftime("%Y%m%d"),
                                           "pblntf_ty": ty, "last_reprt_at": "Y", "page_count": 100})
         rows += (found or {}).get("list") or []
-    out["disclosures"] = parse_disclosures(rows, cfg.get("disclosure_skip") or [], cfg.get("disclosure_max", 8))
+    # 거르기(disclosure_skip)는 화면용 파일을 만들 때 한다(pick_disclosures). 거를 말을 고쳐도 다시 받지 않게 다 둔다
+    out["disclosures"] = parse_disclosures(rows, [], DISCLOSURES_KEPT)
     return out
 
 
@@ -401,13 +488,51 @@ def targets(state: dict[str, dict[str, Any]], registry_type: Any) -> list[tuple[
                   key=lambda kn: (rank.get(registry_type(kn[0], kn[1]), 3), -counts[kn[0]], kn[0]))
 
 
+def _override(value: Any, idx: dict[str, list[dict[str, str]]], by_code: dict[str, dict[str, str]]) -> dict[str, str] | None:
+    """손으로 잇기: 8자리 고유번호, 또는 DART 이름(같은 이름이 하나일 때). null이면 잇지 않는다."""
+    if not value:
+        return None
+    v = str(value).strip()
+    if re.fullmatch(r"\d{8}", v):
+        return by_code.get(v)
+    cands = idx.get(company_key(v)) or []
+    return cands[0] if len(cands) == 1 else None
+
+
+def _listed_now(client: Client, key: str, name: str,
+                idx: dict[str, list[dict[str, str]]]) -> tuple[dict[str, str] | None, str]:
+    """같은 이름이 여럿일 때(예: 합병 전후 삼성물산) 종목코드가 있는 후보가 4곳 이하면 기업개황을 받아
+    지금 상장된(corp_cls Y·K·N) 곳이 하나일 때 그것. 상장 폐지돼도 종목코드는 남아서 고유번호 파일만으로는 못 고른다."""
+    cands: list[dict[str, str]] = []
+    for k in variants(key, name):
+        cands = idx.get(k) or []
+        if cands:
+            break
+    listed = [c for c in cands if c["stock_code"]]
+    if not 1 < len(listed) <= 4:
+        return None, "ambiguous"
+    now = []
+    for c in listed:
+        body = client.json("company.json", {"corp_code": c["corp_code"]})
+        if body and body.get("corp_cls") in ("Y", "K", "N"):
+            now.append(c)
+    return (now[0], "listed_now") if len(now) == 1 else (None, "ambiguous")
+
+
 def run(data_dir: Path, today: date, budget: int | None = None, session: requests.Session | None = None,
-        raw: int = 0) -> dict[str, Any]:
+        raw: int = 0, minutes: float | None = None, find: list[str] | None = None,
+        cache: Path | None = None) -> dict[str, Any]:
+    """find: 고유번호 파일에서 이 말이 들어간 회사 이름을 로그에 남긴다(못 이은 회사를 손으로 이을 때).
+    cache: 고유번호 파일을 받아 두는 폴더(비우면 환경 변수 DART_CACHE)."""
     from .companies import CompanyRegistry
     from .store import Store
 
     cfg = config.load("dart")
-    client = Client(budget if budget is not None else cfg.get("budget", 800), cfg.get("interval", 0.2), session, raw)
+    started = time.monotonic()
+    if cache is None and os.environ.get("DART_CACHE"):
+        cache = Path(os.environ["DART_CACHE"])
+    client = Client(budget if budget is not None else cfg.get("budget", 800), cfg.get("interval", 0.2), session, raw,
+                    minutes if minutes is not None else cfg.get("max_minutes"))
     corps_path = data_dir / "dart" / "corps.json"
     basics_path = data_dir / "dart" / "basics.json"
     corps: dict[str, Any] = _load(corps_path)
@@ -424,27 +549,36 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
     def due_match(key: str) -> bool:
         m = corps.get(key)
         if key in overrides:
-            return not m or m.get("corp_code") != overrides[key]
-        return not m or (not m.get("corp_code") and date.fromisoformat(m["checked"]) + retry <= today)
+            return not m or m.get("how") != "override" or m.get("override") != overrides[key]
+        return (not m or m.get("mv") != MATCH_VERSION
+                or (not m.get("corp_code") and date.fromisoformat(m["checked"]) + retry <= today))
 
     try:
         need = [(k, n) for k, n in todo if due_match(k)]
-        if need:
-            idx = index(corp_codes(client))
-            by_code = {c["corp_code"]: c for cs in idx.values() for c in cs}
+        if need or find:
+            corps_all = corp_codes(client, cache, today)
+            idx = index(corps_all)
+            by_code = {c["corp_code"]: c for c in corps_all}
+            for word in find or []:
+                hits = [c for c in corps_all if word.replace(" ", "").lower() in c["corp_name"].replace(" ", "").lower()]
+                log.info("DART 이름 찾기 %r: %d곳 %s", word, len(hits),
+                         [(c["corp_name"], c["corp_code"], c["stock_code"]) for c in hits[:15]])
             for key, name in need:
                 if key in overrides:
-                    code = overrides[key]
-                    c = by_code.get(code) if code else None
+                    c = _override(overrides[key], idx, by_code)
                     how = "override" if c else "none"
                 else:
                     c, how = match(key, name, idx)
+                    if how == "ambiguous":
+                        c, how = _listed_now(client, key, name, idx)
                 if c:
                     corps[key] = {"corp_code": c["corp_code"], "corp_name": c["corp_name"],
-                                  "stock_code": c["stock_code"] or None, "how": how, "checked": day}
+                                  "stock_code": c["stock_code"] or None, "how": how, "checked": day, "mv": MATCH_VERSION}
+                    if how == "override":
+                        corps[key]["override"] = overrides[key]
                     summary["matched_new"] += 1
                 else:
-                    corps[key] = {"corp_code": None, "why": how, "checked": day}
+                    corps[key] = {"corp_code": None, "why": how, "checked": day, "mv": MATCH_VERSION}
                     summary["unmatched_new"] += 1
 
         refresh = timedelta(days=cfg.get("refresh_days", 30))
@@ -455,7 +589,7 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                 continue
             seen.add(code)
             got = basics.get(code)
-            if got and date.fromisoformat(got["fetched"]) + refresh > today:
+            if got and got.get("v") == BASICS_VERSION and date.fromisoformat(got["fetched"]) + refresh > today:
                 continue
             try:
                 basics[code] = fetch(client, code, today)
@@ -469,8 +603,11 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                     summary["stopped"] = "실패가 많아 멈춤"
                     break
     except Client.Budget:
-        summary["stopped"] = "오늘 요청 수를 다 씀"
+        summary["stopped"] = "오늘 요청 수나 시간을 다 씀"
     except LimitReached as e:
+        summary["stopped"] = str(e)
+    except DartError as e:
+        # 고유번호 파일을 못 받은 날: 이미 이은 회사는 그대로 두고 멈춘다
         summary["stopped"] = str(e)
     finally:
         _save(corps_path, corps)
@@ -478,6 +615,7 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
     linked = [k for k, _ in todo if (corps.get(k) or {}).get("corp_code")]
     summary.update({
         "requests": client.used,
+        "seconds": round(time.monotonic() - started),
         "linked": len(linked),
         "with_basics": sum(1 for k in linked if corps[k]["corp_code"] in basics),
     })

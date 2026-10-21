@@ -51,6 +51,8 @@ def main(argv: list[str] | None = None) -> int:
     d.add_argument("--data-dir", type=Path, default=Path("data"))
     d.add_argument("--budget", type=int, help="이번 실행에서 쓸 최대 요청 수(비우면 config/dart.yaml)")
     d.add_argument("--raw", type=int, default=0, help="처음 이만큼의 DART 응답을 로그에 남긴다(해석 확인용)")
+    d.add_argument("--minutes", type=float, help="이 시간(분)이 지나면 멈춘다(비우면 config/dart.yaml max_minutes)")
+    d.add_argument("--find", help="쉼표로 구분한 말: DART 회사 목록에서 이 말이 들어간 이름을 로그에 남긴다(손으로 이을 때)")
 
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stderr,
@@ -85,7 +87,8 @@ def main(argv: list[str] | None = None) -> int:
         if not dart.configured():
             logging.info("DART 키(DART_API_KEY)가 없어 회사 기본정보를 건너뜀")
             return 0
-        summary = dart.run(args.data_dir, date.today(), budget=args.budget, raw=args.raw)
+        summary = dart.run(args.data_dir, date.today(), budget=args.budget, raw=args.raw, minutes=args.minutes,
+                           find=[w.strip() for w in (args.find or '').split(',') if w.strip()])
         json.dump(summary, sys.stdout, ensure_ascii=False, indent=1)
         print()
         # 한도·실패로 멈춰도 받은 만큼은 저장했으니 다음 단계(화면용 파일)는 계속한다

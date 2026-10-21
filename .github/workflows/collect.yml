@@ -57,10 +57,18 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: uv run jobpost facts --data-dir data
 
+      - name: DART 고유번호 파일 캐시(받는 데 4분쯤 걸려 7일 동안 다시 쓴다)
+        uses: actions/cache@v4
+        with:
+          path: .cache/dart
+          key: dart-corpcode-${{ github.run_id }}
+          restore-keys: dart-corpcode-
+
       - name: 회사 기본정보(DART)
         continue-on-error: true  # DART가 막힌 날에도 화면용 파일·매칭·알림은 계속한다
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          DART_CACHE: .cache/dart
         run: uv run jobpost dart --data-dir data | tee dart.json
 
       - name: 화면용 파일 만들기·올리기

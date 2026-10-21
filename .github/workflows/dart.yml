@@ -11,6 +11,14 @@ on:
         description: 이번에 쓸 최대 요청 수(DART는 하루 2만 건, 회사 1곳에 5건쯤)
         required: false
         default: "5000"
+      minutes:
+        description: 이 시간(분)이 지나면 멈춘다
+        required: false
+        default: "90"
+      find:
+        description: 쉼표로 구분한 말. DART 회사 목록에서 이 말이 든 이름을 로그에 남긴다(손으로 이을 때, 보통 비움)
+        required: false
+        default: ""
       raw:
         description: 처음 이만큼의 DART 응답을 로그에 남긴다(해석이 맞는지 볼 때, 보통 0)
         required: false
@@ -44,13 +52,23 @@ jobs:
       - name: 의존성 설치
         run: uv sync --locked --no-dev
 
+      - name: DART 고유번호 파일 캐시(받는 데 4분쯤 걸려 7일 동안 다시 쓴다)
+        uses: actions/cache@v4
+        with:
+          path: .cache/dart
+          key: dart-corpcode-${{ github.run_id }}
+          restore-keys: dart-corpcode-
+
       - name: 회사 기본정보(DART)
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          DART_CACHE: .cache/dart
+          FIND: ${{ inputs.find }}
           BUDGET: ${{ inputs.budget }}
           RAW: ${{ inputs.raw }}
+          MINUTES: ${{ inputs.minutes }}
         run: |
-          uv run --no-dev jobpost dart --data-dir data --budget "${BUDGET:-5000}" --raw "${RAW:-0}" | tee dart.json
+          uv run --no-dev jobpost dart --data-dir data --budget "${BUDGET:-5000}" --raw "${RAW:-0}" --minutes "${MINUTES:-90}" --find "${FIND:-}" | tee dart.json
           echo '### 회사 기본정보(DART)' >> "$GITHUB_STEP_SUMMARY"
           echo '```json' >> "$GITHUB_STEP_SUMMARY"
           cat dart.json >> "$GITHUB_STEP_SUMMARY"

@@ -18,7 +18,17 @@ CORPCODE_XML = """<?xml version="1.0" encoding="UTF-8"?>
 <list><corp_code>03333333</corp_code><corp_name>(주)한빛</corp_name><stock_code> </stock_code><modify_date>20240101</modify_date></list>
 <list><corp_code>04444444</corp_code><corp_name>카카오</corp_name><stock_code>035720</stock_code><modify_date>20240101</modify_date></list>
 <list><corp_code>05555555</corp_code><corp_name>카카오</corp_name><stock_code> </stock_code><modify_date>20240101</modify_date></list>
+<list><corp_code>06666666</corp_code><corp_name>씨제이올리브영</corp_name><stock_code> </stock_code><modify_date>20240101</modify_date></list>
+<list><corp_code>07777777</corp_code><corp_name>삼성물산</corp_name><stock_code>000830</stock_code><modify_date>20240101</modify_date></list>
+<list><corp_code>08888888</corp_code><corp_name>삼성물산</corp_name><stock_code>028260</stock_code><modify_date>20240101</modify_date></list>
 </result>""".encode()
+
+
+def test_variants_try_korean_reading_of_acronyms():
+    assert dart.variants("cj올리브영", "CJ올리브영(주)") == ["cj올리브영", "씨제이올리브영"]
+    assert dart.variants("카카오스타일kakaostyle", "카카오스타일(Kakao Style)")[1] == "카카오스타일"
+    # 긴 영어 단어는 그대로 둔다
+    assert dart.variants("ktcloud", "ktcloud") == ["ktcloud"]
 
 
 def test_match_by_same_rules_as_postings():
@@ -32,6 +42,8 @@ def test_match_by_same_rules_as_postings():
     assert dart.match("카카오", "카카오", idx)[0]["corp_code"] == "04444444"
     assert dart.match("한빛", "한빛", idx) == (None, "ambiguous")
     assert dart.match("없는회사", "없는회사", idx) == (None, "none")
+    assert dart.match("cj올리브영", "CJ올리브영(주)", idx)[0]["corp_code"] == "06666666"
+    assert dart.match("삼성물산", "삼성물산", idx) == (None, "ambiguous")
 
 
 FIN_ROWS = [
@@ -106,6 +118,13 @@ def test_parse_disclosures_skips_routine_and_dedupes():
     ]
     out = dart.parse_disclosures(rows, ["기업설명회"], 5)
     assert [(d["date"], d["rcept_no"]) for d in out] == [("2026-08-05", "2"), ("2026-03-01", "3")]
+    assert out[0]["title"] == "타법인주식및출자증권취득결정"
+
+
+def test_pick_disclosures_filters_at_screen_time():
+    items = [{"date": "2026-09-01", "title": "정기주주총회결과"}, {"date": "2026-08-01", "title": "단일판매ㆍ공급계약체결"},
+             {"date": "2026-07-01", "title": "대표이사변경"}]
+    assert [d["title"] for d in dart.pick_disclosures(items, ["주주총회"], 1)] == ["단일판매ㆍ공급계약체결"]
 
 
 def test_annual_year():
@@ -122,13 +141,14 @@ class FakeSession:
         self.responses = responses
         self.calls = []
 
-    def get(self, url, params=None, timeout=None):
+    def get(self, url, params=None, timeout=None, stream=False):
         name = url.rsplit("/", 1)[-1]
         self.calls.append((name, dict(params or {})))
         resp = requests.Response()
         resp.status_code = 200
         body = self.responses(name, params or {})
         resp._content = body if isinstance(body, bytes) else json.dumps(body).encode()
+        resp._content_consumed = True  # 다 받은 응답처럼(iter_content가 _content를 나눠 준다)
         return resp
 
 
@@ -149,11 +169,13 @@ def _state(tmp_path: Path, companies: list[tuple[str, str]]):
 def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
     monkeypatch.setenv("DART_API_KEY", "test-key")
     monkeypatch.setattr(dart.time, "sleep", lambda s: None)
-    _state(tmp_path, [("삼성전자", "삼성전자"), ("한빛", "한빛"), ("없는회사", "없는회사")])
+    _state(tmp_path, [("삼성전자", "삼성전자"), ("한빛", "한빛"), ("없는회사", "없는회사"), ("삼성물산", "삼성물산")])
 
     def respond(name, params):
         if name == "corpCode.xml":
             return _zip(CORPCODE_XML)
+        if name == "company.json" and params["corp_code"] == "07777777":
+            return {"status": "000", "corp_name": "삼성물산(주)", "corp_cls": "E"}  # 합병 전 회사(상장 폐지)
         if name == "company.json":
             return {"status": "000", "corp_name": "삼성전자", "stock_code": "005930", "corp_cls": "Y", "ceo_nm": "대표",
                     "est_dt": "19690113", "hm_url": "www.samsung.com/sec"}
@@ -166,12 +188,14 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
         raise AssertionError(name)
 
     s = FakeSession(respond)
-    summary = dart.run(tmp_path, date(2026, 10, 21), session=s)
-    assert summary["matched_new"] == 1 and summary["unmatched_new"] == 2 and summary["fetched"] == 1
+    summary = dart.run(tmp_path, date(2026, 10, 21), session=s, cache=tmp_path / "cache")
+    assert summary["matched_new"] == 2 and summary["unmatched_new"] == 2 and summary["fetched"] == 2
     assert all(p.get("crtfc_key") == "test-key" for _, p in s.calls)
     corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
     assert corps["삼성전자"]["corp_code"] == "00126380"
-    assert corps["한빛"] == {"corp_code": None, "why": "ambiguous", "checked": "2026-10-21"}
+    assert corps["한빛"] == {"corp_code": None, "why": "ambiguous", "checked": "2026-10-21", "mv": dart.MATCH_VERSION}
+    # 같은 이름이 여럿이면 지금 상장된 쪽(기업개황 corp_cls)으로 고른다
+    assert corps["삼성물산"]["corp_code"] == "08888888" and corps["삼성물산"]["how"] == "listed_now"
     basics = json.loads((tmp_path / "dart" / "basics.json").read_text(encoding="utf-8"))
     got = basics["00126380"]
     assert got["company"]["market"] == "유가증권" and got["company"]["homepage"] == "https://www.samsung.com/sec"
@@ -180,21 +204,36 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
 
     # 다음 날: 이미 이은 회사·받은 기본정보는 다시 요청하지 않는다
     s2 = FakeSession(respond)
-    again = dart.run(tmp_path, date(2026, 10, 22), session=s2)
-    assert s2.calls == [] and again["linked"] == 1 and again["with_basics"] == 1
+    again = dart.run(tmp_path, date(2026, 10, 22), session=s2, cache=tmp_path / "cache")
+    assert s2.calls == [] and again["linked"] == 2 and again["with_basics"] == 2
+
+    # 손으로 잇기(DART 이름): 받아 둔 고유번호 파일을 다시 쓰고 요청하지 않는다
+    monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": "(주)한빛"}})
+    s4 = FakeSession(respond)
+    dart.run(tmp_path, date(2026, 10, 22), session=s4, cache=tmp_path / "cache", budget=0)
+    corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
+    assert corps["한빛"]["corp_code"] is None  # 같은 이름이 둘이라 이름으로는 못 잇는다
+    monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": "03333333"}})
+    dart.run(tmp_path, date(2026, 10, 22), session=s4, cache=tmp_path / "cache", budget=0)
+    corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
+    assert corps["한빛"]["corp_code"] == "03333333" and corps["한빛"]["how"] == "override"
+    assert s4.calls == []
+    monkeypatch.undo()
+    monkeypatch.setenv("DART_API_KEY", "test-key")
+    monkeypatch.setattr(dart.time, "sleep", lambda s: None)
 
     # 요청 수를 다 쓰면 받은 데까지 저장하고 멈춘다
     (tmp_path / "dart" / "basics.json").unlink()
     s3 = FakeSession(respond)
-    stopped = dart.run(tmp_path, date(2026, 10, 23), budget=2, session=s3)
-    assert stopped["stopped"] == "오늘 요청 수를 다 씀" and len(s3.calls) == 2
+    stopped = dart.run(tmp_path, date(2026, 10, 23), budget=2, session=s3, cache=tmp_path / "cache")
+    assert stopped["stopped"] == "오늘 요청 수나 시간을 다 씀" and len(s3.calls) == 2
 
 
 def test_errors_do_not_leak_the_key(monkeypatch):
     monkeypatch.setenv("DART_API_KEY", "secret-key-123")
 
     class Boom:
-        def get(self, url, params=None, timeout=None):
+        def get(self, url, params=None, timeout=None, stream=False):
             raise requests.ConnectionError(f"failed {url}?crtfc_key={params['crtfc_key']}")
 
     client = dart.Client(5, 0, Boom())
