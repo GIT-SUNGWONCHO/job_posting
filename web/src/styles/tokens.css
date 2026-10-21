@@ -24,6 +24,7 @@
   --fw-item: 600;
   --fw-body: 400;
   --font: "Noto Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;  /* 키·코드처럼 한 글자씩 확인할 값 */
 
   /* 모서리 */
   --r-card: 16px;

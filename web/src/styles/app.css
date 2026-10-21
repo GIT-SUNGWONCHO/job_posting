@@ -183,6 +183,7 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .account { margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
 .account span { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--sub); }
 .note { margin: 0; font-size: var(--fs-sub); color: var(--sub); }
+.note.urgent { color: var(--urgent); }
 
 /* 관리 메뉴 */
 .menu { border-top: 1px solid var(--line); }
@@ -279,5 +280,10 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .kakao-code { display: flex; gap: 8px; align-items: stretch; }
 .kakao-code code {
   flex: 1; min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: var(--r-control);
-  background: var(--band); font-size: var(--fs-sub); overflow-wrap: anywhere; user-select: all;
+  background: var(--band); font-family: var(--font-mono); font-size: var(--fs-sub); overflow-wrap: anywhere; user-select: all;
+}
+.kakao-key { display: flex; flex-direction: column; gap: 6px; font-weight: var(--fw-item); }
+.kakao-key input {
+  height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: var(--r-control);
+  font-family: var(--font-mono); font-weight: var(--fw-body);
 }

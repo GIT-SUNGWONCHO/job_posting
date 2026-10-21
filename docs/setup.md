@@ -94,13 +94,8 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
    - [카카오 로그인] > [동의항목] > [접근권한]: **카카오톡 메시지 전송**(`talk_message`)을 선택 동의로 설정.
 3. GitHub Secrets에 넣는다(위 3의 표): `KAKAO_REST_KEY`, `KAKAO_CLIENT_SECRET`.
 4. Supabase SQL Editor에서 `supabase/migrations/005_kakao.sql`을 실행한다(토큰을 서버만 읽는 표).
-5. 휴대폰이나 PC 브라우저에서 아래 주소를 연다. `<REST API 키>`만 바꾼다.
-
-   ```
-   https://kauth.kakao.com/oauth/authorize?response_type=code&scope=talk_message&client_id=<REST API 키>&redirect_uri=https://careermap-web.oroloov.workers.dev/kakao
-   ```
-
-   카카오 로그인과 동의를 마치면 "카톡 연결" 화면에 인가 코드가 나온다. 코드는 한 번만, 받은 직후에만 쓸 수 있다.
+5. 브라우저에서 `https://careermap-web.oroloov.workers.dev/kakao`를 열고 REST API 키를 붙여 넣은 뒤 **카카오로 연결**을 누른다(키는 그 화면에서만 쓰고 저장하지 않는다). 카카오 로그인과 동의를 마치면 같은 화면에 인가 코드가 나온다. 코드는 한 번만, 받은 직후에만 쓸 수 있다.
+   - KOE101(앱 관리자 설정 오류)은 카카오가 앱 키를 못 알아본 것이다(2026.10.21 처음 연결 때 겪음). 흔한 원인은 `<>`가 남은 키, REST API 키가 아닌 다른 키(JavaScript·네이티브 앱·어드민 키, 시크릿), 앞뒤 공백이다. 화면은 `<>`와 공백을 지우고, 32자리 영문·숫자가 아니면 막는다.
 6. 바로 GitHub > Actions > **kakao** > Run workflow의 `code` 칸에 붙여 넣고 실행한다. 1~2분 뒤 오늘의 아침 카톡이 오면 끝이다.
 
 - 그 뒤로는 매일 collect 마지막 단계(아침 카톡)가 보낸다. 같은 날 두 번 보내지 않는다. 오늘 것을 다시 받고 싶으면 kakao를 code 없이 실행한다(오늘 아직 못 받은 사람에게만 간다).

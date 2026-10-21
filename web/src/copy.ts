@@ -104,7 +104,11 @@ export const copy = {
     copy: '복사',
     copied: '복사했어요',
     failed: (msg: string) => `카카오 연결이 안 됐어요: ${msg}`,
-    none: '코드가 없어요. 카카오 연결 주소로 다시 들어와 주세요',
+    none: '카카오 REST API 키를 넣고 연결을 누르면 카카오 로그인으로 가요',
+    keyLabel: '카카오 REST API 키',
+    keyHint: '카카오 앱 [앱] > [플랫폼 키] > [REST API 키]의 32자리 키예요. 이 화면에서만 쓰고 저장하지 않아요',
+    keyWrong: '32자리 영문·숫자가 아니에요. JavaScript 키, 네이티브 앱 키, 클라이언트 시크릿이 아닌지 확인해 주세요',
+    connect: '카카오로 연결',
     dashboard: '대시보드로',
   },
   admin: {
