@@ -48,8 +48,9 @@ def test_weak_fallback_names_need_a_listed_company():
     # 대기업 계열의 한글 읽기, 일반 회사의 괄호 빼기는 그대로 잇는다
     assert dart.match("sk쉴더스", "SK쉴더스(주)", idx, "대기업")[0]["corp_code"] == "3"
     assert dart.match("구다이글로벌조선미녀", "구다이글로벌(조선미녀)", idx, "그 외")[0]["corp_code"] == "4"
-    # 한글 읽기로만 같은 상장사(CS)가 글자 그대로 같은 회사(씨에스)를 이기지 않는다
-    assert dart.match("씨에스", "(주)씨에스", idx, "그 외")[0]["corp_code"] == "5"
+    # 글자 그대로 같은 회사(씨에스)와 한글 읽기로 같은 상장사(CS)가 함께 있으면 어느 쪽도 고르지 않는다
+    assert dart.match("씨에스", "(주)씨에스", idx, "그 외") == (None, "mixed")
+    assert dart.match("씨에스", "(주)씨에스", idx, "대기업") == (None, "mixed")
 
 
 def test_clean_url():

@@ -199,7 +199,7 @@ def _download_corp_codes(client: Client) -> bytes:
 class Index:
     """DART 회사를 공고 회사와 같은 규칙(company_key: 법인 표기·공백·기호를 지우고 별칭 적용)으로 묶는다.
     literal은 DART 이름 그대로, hangul은 영문 약자가 든 DART 이름(HDC랩스)의 한글 읽기(에이치디씨랩스).
-    한글 읽기로만 같은 회사가 글자 그대로 같은 회사를 이기지 않게 둘을 나눠 찾는다."""
+    둘을 나눠 두고, 같은 이름이 양쪽에서 서로 다른 회사로 나오면 고르지 않는다(Index.find "mixed")."""
 
     def __init__(self, corps: list[dict[str, str]]):
         self.literal: dict[str, list[dict[str, str]]] = {}
@@ -217,14 +217,22 @@ class Index:
         return self.literal.get(key) or self.hangul.get(key) or []
 
     def find(self, key: str, name: str) -> tuple[list[dict[str, str]], str]:
-        """(후보, 어떻게 찾았나). 공고 키로 글자 그대로 찾은 것은 "key", 괄호 빼기는 "bare", 그 밖(한글 읽기)은 "reading"."""
+        """(후보, 어떻게 찾았나). 공고 키로 글자 그대로 찾은 것은 "key", 괄호 빼기는 "bare", 그 밖(한글 읽기)은 "reading".
+        글자 그대로 같은 회사와 한글 읽기로 같은 다른 회사가 함께 있으면 "mixed"(둘 다 후보로).
+        상장사는 DART 이름이 짧은 종목명(RFHIC, TP)이라 한글 읽기가 곧 법인명일 때가 많아 어느 쪽이 맞는지
+        이름만으로는 모른다(2026-10-22: 알에프에이치아이씨 공고는 상장사 RFHIC, 티피(주) 공고는 상장사 TP가 아니었다)."""
         vs = variants(key, name)
-        for book in (self.literal, self.hangul):
-            for k, kind in vs:
-                cands = book.get(k) or []
-                if cands:
-                    return cands, ("key" if kind == "key" and book is self.literal else
-                                   "bare" if kind == "bare" else "reading")
+        for k, kind in vs:
+            lit = self.literal.get(k) or []
+            if lit:
+                other = [c for c in self.hangul.get(k) or [] if c not in lit]
+                if other:
+                    return lit + other, "mixed"
+                return lit, ("key" if kind == "key" else "bare" if kind == "bare" else "reading")
+        for k, kind in vs:
+            han = self.hangul.get(k) or []
+            if han:
+                return han, ("bare" if kind == "bare" else "reading")
         return [], "none"
 
 
@@ -279,10 +287,13 @@ def _weak(name: str, ctype: str, how: str) -> bool:
 def match(key: str, name: str, idx: Index, ctype: str = "그 외") -> tuple[dict[str, str] | None, str]:
     """(DART 회사, 어떻게). 이름이 같은 회사(Index.find)가 하나면 그것, 여럿이면 종목코드가 있는 곳이 하나일 때 그것.
     아니면 잇지 않는다(잘못 잇는 것보다 낫다). 공고 키가 아닌 이름으로만 찾았고 믿기 어려우면(_weak) 종목코드가 있는
-    후보만 본다. 여럿이라 못 고른 것("ambiguous")은 run이 _resolve로 한 번 더 고른다."""
+    후보만 본다. 여럿이라 못 고른 것("ambiguous")은 run이 _resolve로 한 번 더 고른다. 글자 그대로와 한글 읽기가
+    다른 회사를 가리키면("mixed") 고르지 않는다."""
     cands, how = idx.find(key, name)
     if not cands:
         return None, "none"
+    if how == "mixed":
+        return None, "mixed"  # 손으로 잇기로(config/dart.yaml overrides)
     if _weak(name, ctype, how):
         cands = [c for c in cands if c["stock_code"]]
         if not cands:
@@ -485,9 +496,10 @@ def annual_year(today: date) -> int:
     return today.year - 1 if (today.month, today.day) >= (4, 10) else today.year - 2
 
 
-MATCH_VERSION = 4  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다
+MATCH_VERSION = 5  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다
 # 2: 공고 이름의 한글 읽기·괄호 빼기, 지금 상장된 곳 고르기 3: DART 이름의 한글 읽기, 최근 공시를 낸 곳 고르기
 # 4: 리뷰(2026-10-22) — 믿기 어려운 대체 이름(_weak) 거르기, 최근 공시로 고르기는 대기업·공기업만, 글자까지 같은 이름 규칙 뺌
+# 5: 글자 그대로와 한글 읽기가 다른 회사면 잇지 않음(4의 "글자 그대로 먼저"가 RFHIC를 옛 법인으로 바꿨다)
 BASICS_VERSION = 3  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다
 # 2: 공시를 거르지 않고 40건 3: 영업수익도 매출 자리에(revenue_name). 2에서 매출액이 있던 회사는 다시 받지 않는다
 

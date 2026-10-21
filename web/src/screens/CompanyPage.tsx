@@ -98,7 +98,7 @@ function Source({ text, date, rceptNo }: { text: string; date?: string | null; r
 function Overview({ basics }: { basics: CompanyBasics | undefined }) {
   const dart = basics?.dart
   if (!dart) return <p className="note">{t.notChecked}</p>
-  if ('none' in dart) return <p className="not-found">{t.notFound(dart.none === 'ambiguous' ? t.ambiguous : t.noDart)}</p>
+  if ('none' in dart) return <p className="not-found">{t.notFound(dart.none === 'ambiguous' || dart.none === 'mixed' ? t.ambiguous : t.noDart)}</p>
   if ('pending' in dart) return <p className="note">{t.pending(dart.corpName)}</p>
   return <DartOverview d={dart} />
 }

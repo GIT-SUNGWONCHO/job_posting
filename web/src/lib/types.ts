@@ -171,7 +171,7 @@ export interface DartPending {
   pending: true
 }
 
-/** DART에서 찾지 못함: none(같은 이름 없음), ambiguous(같은 이름 여럿) */
+/** DART에서 찾지 못함: none(같은 이름 없음), ambiguous·mixed(같은 이름 여럿), weak(믿기 어려운 이름이라 상장사만 봤는데 없음) */
 export interface DartNone {
   none: string
   checked: string
