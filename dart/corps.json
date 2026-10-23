@@ -18328,9 +18328,12 @@
 },
 "현대엔지니어링": {
 "checked": "2026-10-23",
-"corp_code": null,
+"corp_code": "00349927",
+"corp_name": "현대엔지니어링",
+"how": "override",
 "mv": 6,
-"why": "ambiguous"
+"override": "00349927",
+"stock_code": null
 },
 "현대엘리베이터": {
 "checked": "2026-10-23",
