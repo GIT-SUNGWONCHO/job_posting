@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 import requests
 
-from jobpost import dart
+from jobpost import companies, dart
 
 CORPCODE_XML = """<?xml version="1.0" encoding="UTF-8"?>
 <result>
@@ -302,6 +302,7 @@ def test_errors_do_not_leak_the_key(monkeypatch):
 def test_one_failing_company_does_not_stop_the_day(tmp_path, monkeypatch):
     # 같은 이름 고르기(_resolve)에서 난 오류는 그 회사만 실패로 세고 다음 회사로 간다
     monkeypatch.setenv("DART_API_KEY", "test-key")
+    monkeypatch.setattr(companies, "major_candidates", lambda listed: [])  # 공고 회사만 본다
     monkeypatch.setattr(dart.time, "sleep", lambda s: None)
     _state(tmp_path, [("삼성물산", "삼성물산"), ("삼성전자", "삼성전자")])
     (tmp_path / "companies.json").write_text("{}", encoding="utf-8")
@@ -342,3 +343,38 @@ def test_listed_file_is_written_once_a_week(tmp_path, monkeypatch):
     assert not dart.listed_due(path, date(2026, 10, 27)) and dart.listed_due(path, date(2026, 10, 28))
     out = dart.run(tmp_path, date(2026, 10, 22), session=FakeSession(respond), cache=tmp_path / "cache")
     assert "listed" not in out and calls.count("corpCode.xml") == 1
+
+
+def test_major_companies_are_fetched_after_posting_companies(tmp_path, monkeypatch):
+    # 공고가 없어도 주요 기업(그룹 규칙에 맞는 상장사)의 기본정보를 받는다. 상장 폐지된 곳은 기업개황만
+    monkeypatch.setenv("DART_API_KEY", "test-key")
+    monkeypatch.setattr(dart.time, "sleep", lambda s: None)
+    _state(tmp_path, [])
+    (tmp_path / "companies.json").write_text("{}", encoding="utf-8")
+    calls = []
+
+    def respond(name, params):
+        calls.append((name, params.get("corp_code")))
+        if name == "corpCode.xml":
+            return _zip(CORPCODE_XML)
+        if name == "company.json":
+            gone = params["corp_code"] == "07777777"  # 합병 전 삼성물산
+            return {"status": "000", "corp_name": "x", "corp_cls": "E" if gone else "Y"}
+        return {"status": "013"}
+
+    out = dart.run(tmp_path, date(2026, 10, 21), session=FakeSession(respond), cache=tmp_path / "cache")
+    basics = json.loads((tmp_path / "dart" / "basics.json").read_text(encoding="utf-8"))
+    # 삼성전자·삼성생명보험·카카오·삼성물산 둘(종목코드가 있고 그룹 규칙에 맞는 곳)
+    assert out["major"] == 5 and out["major_fetched"] == 5 and out["fetched"] == 0
+    assert basics["07777777"].get("unlisted") and basics["07777777"]["finance"] is None
+    assert [n for n, c in calls if c == "07777777"] == ["company.json"]
+    assert not basics["00126380"].get("unlisted")
+
+
+def test_major_candidates_skip_namesakes_and_funds():
+    rows = [["1", "삼성전자", "005930"], ["2", "롯데관광개발", "032350"], ["3", "SK리츠", "395400"],
+            ["4", "메리츠금융지주", "138040"], ["5", "HDC현대EP", "089470"], ["6", "한국전력공사", "015760"],
+            ["7", "키움제10호스팩", "487720"], ["8", "태광", "023160"], ["9", "태광산업", "003240"]]
+    got = {c["name"]: (c["group"], c["type"]) for c in companies.major_candidates(rows)}
+    assert got == {"삼성전자": ("삼성", "대기업"), "메리츠금융지주": ("메리츠", "대기업"), "HDC현대EP": ("HDC", "대기업"),
+                   "한국전력공사": (None, "공기업·공공기관"), "태광산업": ("태광", "대기업")}

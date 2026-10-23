@@ -515,11 +515,19 @@ def _upgrade(got: dict[str, Any]) -> None:
             got["v"] = 3
 
 
-def fetch(client: Client, corp_code: str, today: date) -> dict[str, Any]:
+LISTED_MARKETS = ("유가증권", "코스닥", "코넥스")
+
+
+def fetch(client: Client, corp_code: str, today: date, listed_only: bool = False) -> dict[str, Any]:
+    """기업개황·주요 계정·직원 현황·주요 공시. listed_only: 지금 상장된 회사가 아니면 기업개황만 받고 멈춘다
+    (주요 기업 후보에 섞인 상장 폐지 회사에 요청을 쓰지 않게)."""
     cfg = config.load("dart")
     out: dict[str, Any] = {"fetched": today.isoformat(), "v": BASICS_VERSION}
     body = client.json("company.json", {"corp_code": corp_code})
     out["company"] = parse_company(body) if body else None
+    if listed_only and (out["company"] or {}).get("market") not in LISTED_MARKETS:
+        out.update({"finance": None, "employees": None, "disclosures": [], "unlisted": True})
+        return out
 
     year = annual_year(today)
     finance = employees = None
@@ -647,7 +655,7 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
         cache: Path | None = None) -> dict[str, Any]:
     """find: 고유번호 파일에서 이 말이 들어간 회사 이름을 로그에 남긴다(못 이은 회사를 손으로 이을 때).
     cache: 고유번호 파일을 받아 두는 폴더(비우면 환경 변수 DART_CACHE)."""
-    from .companies import CompanyRegistry
+    from .companies import CompanyRegistry, major_candidates
     from .store import Store
 
     cfg = config.load("dart")
@@ -725,8 +733,11 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
             _upgrade(got)
         refresh = timedelta(days=cfg.get("refresh_days", 30))
         seen: set[str] = set()
-        for key, _ in todo:
-            code = (corps.get(key) or {}).get("corp_code")
+        # 공고가 들어온 회사 먼저, 그다음 공고가 없어도 회사 목록에 두는 주요 기업(상장 폐지된 곳은 기업개황만)
+        queue = [(key, (corps.get(key) or {}).get("corp_code"), False) for key, _ in todo]
+        queue += [(c["name"], c["code"], True) for c in major_candidates(_load(listed_path).get("corps") or [])]
+        summary.update({"major": sum(1 for _, _, major in queue if major), "major_fetched": 0})
+        for key, code, major in queue:
             if not code or code in seen:
                 continue
             seen.add(code)
@@ -734,8 +745,8 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
             if got and got.get("v") == BASICS_VERSION and date.fromisoformat(got["fetched"]) + refresh > today:
                 continue
             try:
-                basics[code] = fetch(client, code, today)
-                summary["fetched"] += 1
+                basics[code] = fetch(client, code, today, listed_only=major)
+                summary["major_fetched" if major else "fetched"] += 1
             except DartError as e:
                 if isinstance(e, LimitReached):
                     raise

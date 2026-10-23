@@ -84,3 +84,32 @@ def test_body_shard_matches_the_web_hash(tmp_path):
     assert len(paths) == screen.BODY_SHARDS
     with gzip.open(tmp_path / "bodies" / "04.json.gz", "rt", encoding="utf-8") as f:
         assert json.load(f)["bodies"] == {"zighang:a": {"text": "x", "source": "zighang"}}
+
+
+def test_major_companies_without_postings_join_the_company_list(tmp_path):
+    # 공고가 없어도 지금 상장된 주요 기업은 회사 목록에 둔다. 공고 회사와 같은 DART 회사·상장 폐지된 곳은 빼고
+    s = Store(tmp_path)
+    day = date(2026, 10, 23)
+    s.ingest(day, [Posting(source=Source.ZIGHANG, source_id="a", url="https://z/a", company="네이버",
+                           title="데이터 엔지니어")], {"zighang"}, {"zighang:a": {"company_key": "네이버"}})
+    s.save()
+    dart_dir = tmp_path / "dart"
+    dart_dir.mkdir()
+    (dart_dir / "listed.json").write_text(json.dumps({"updated": "2026-10-23", "corps": [
+        ["00266961", "NAVER", "035420"], ["00126256", "삼성생명보험", "032830"],
+        ["00159023", "삼성디지털이미징", "108070"], ["00381364", "케이티", "030200"], ["99", "하나투어", "039130"]]}),
+        encoding="utf-8")
+    (dart_dir / "corps.json").write_text(json.dumps({"네이버": {"corp_code": "00266961", "corp_name": "NAVER"}}),
+                                         encoding="utf-8")
+    listed = {"company": {"market": "유가증권"}, "finance": None, "employees": None, "disclosures": [],
+              "fetched": "2026-10-23", "v": 3}
+    (dart_dir / "basics.json").write_text(json.dumps({
+        "00266961": listed, "00126256": listed, "00381364": listed, "99": listed,
+        "00159023": {**listed, "company": {"market": "기타"}, "unlisted": True}}), encoding="utf-8")
+
+    built, _ = screen.build(tmp_path, today=day)
+    assert built["companies"]["삼성생명"] == {"name": "삼성생명", "type": "대기업", "group": "삼성"}
+    assert built["companies"]["kt"] == {"name": "KT", "type": "대기업", "group": "KT"}
+    assert set(built["companies"]) == {"네이버", "삼성생명", "kt"} and built["counts"]["companies"] == 1
+    basics = screen.build_companies(tmp_path, built, today=day)
+    assert basics["companies"]["삼성생명"]["dart"]["corpCode"] == "00126256"

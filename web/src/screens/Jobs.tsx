@@ -72,9 +72,26 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
     for (const p of shown) by.set(p.company, [...(by.get(p.company) ?? []), p])
     return [...by.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
   }, [shown])
+  // 필터 통과 공고가 없는 회사: 기업 구분이 맞는 나머지 회사(공고가 없는 주요 기업 포함), 열린 공고가 많은 순
+  const others = useMemo(() => {
+    if (ui.sample || seg !== 'companies') return []
+    const listed = new Set(companies.map(([key]) => key))
+    const open = new Map<string, number>()
+    for (const p of screen.postings) if (!p.noise) open.set(p.company, (open.get(p.company) ?? 0) + 1)
+    const types = filters.company_types ?? []
+    const q = ui.query.trim().toLowerCase()
+    return Object.entries(c)
+      .filter(([key, co]) => !listed.has(key)
+        && (types.length === 0 || types.includes(co.type))
+        && !(filters.exclude_companies ?? []).some((x) => x && co.name.includes(x))
+        && (!q || co.name.toLowerCase().includes(q)))
+      .map(([key, co]) => ({ key, co, open: open.get(key) ?? 0 }))
+      .sort((a, b) => b.open - a.open || a.co.name.localeCompare(b.co.name, 'ko'))
+  }, [ui.sample, ui.query, seg, companies, screen.postings, c, filters])
 
-  const total = seg === 'jobs' ? shown.length : companies.length
+  const total = seg === 'jobs' ? shown.length : companies.length + others.length
   const rest = Math.max(total - ui.limit, 0)
+  const othersShown = others.slice(0, Math.max(ui.limit - companies.length, 0))
 
   return (
     <div className="page">
@@ -115,7 +132,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
       </header>
 
       <div className="rows list">
-        {total === 0 && <Empty>{copy.jobs.empty}</Empty>}
+        {total === 0 && <Empty>{seg === 'jobs' ? copy.jobs.empty : copy.jobs.emptyCompanies}</Empty>}
         {seg === 'jobs' && shown.slice(0, ui.limit).map((p) => (
           <JobRow key={p.id} p={p} c={c[p.company]} today={today} active={p.id === activeId} match={matches.get(p.id)} />
         ))}
@@ -125,6 +142,16 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
               <span className="row-title">{c[key]?.name ?? key}</span>
               <span className="row-company">{[c[key]?.group && `${c[key]?.group} 계열`, c[key]?.type].filter(Boolean).join(' · ')}</span>
               <span className="row-meta"><span>{copy.jobs.openCount(list.length)}</span><span className="row-top">{list[0].title}</span></span>
+            </span>
+          </a>
+        ))}
+        {othersShown.length > 0 && <h2 className="sub-head list-sub">{copy.jobs.otherCompanies(others.length)}</h2>}
+        {othersShown.map(({ key, co, open }) => (
+          <a key={key} className="row" href={href.company(key)}>
+            <span className="row-main">
+              <span className="row-title">{co.name}</span>
+              <span className="row-company">{[co.group && `${co.group} 계열`, co.type].filter(Boolean).join(' · ')}</span>
+              <span className="row-meta"><span>{open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen}</span></span>
             </span>
           </a>
         ))}

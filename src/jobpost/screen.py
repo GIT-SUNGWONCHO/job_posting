@@ -15,8 +15,8 @@ from pathlib import Path
 from typing import Any
 
 from . import career, config, dart, facts, jobtypes
-from .companies import CompanyRegistry
-from .normalize import career_text, clean_company
+from .companies import CompanyRegistry, major_candidates
+from .normalize import career_text, clean_company, common_name, company_key
 from .store import Store
 
 VERSION = 5  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career)
@@ -141,7 +141,30 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         "companies": companies,
         "postings": postings,
     }
+    # 공고가 없어도 회사 목록에 두는 주요 기업(커리어 지표·공고 수에는 들어가지 않는다)
+    for key, m in major_companies(data_dir, set(companies)).items():
+        companies[key] = {"name": m["name"], "type": m["type"], "group": m["group"]}
     return screen, {"version": VERSION, "date": today.isoformat(), "bodies": bodies}
+
+
+def major_companies(data_dir: Path, posting_keys: set[str]) -> dict[str, dict[str, Any]]:
+    """주요 기업(companies.major_candidates) 중 지금 상장된 곳: 기본정보를 받았고 상장 구분이 유가증권·코스닥·코넥스.
+    공고가 들어온 회사와 키가 같거나 같은 DART 회사로 이어진 곳은 빼서 한 회사가 두 번 나오지 않게 한다.
+    키 → {code, name, type, group}."""
+    corps = _read_json(data_dir / "dart" / "corps.json")
+    basics = _read_json(data_dir / "dart" / "basics.json")
+    listed = _read_json(data_dir / "dart" / "listed.json").get("corps") or []
+    taken = {(corps.get(k) or {}).get("corp_code") for k in posting_keys} - {None}
+    out: dict[str, dict[str, Any]] = {}
+    for c in major_candidates(listed):
+        b = basics.get(c["code"]) or {}
+        if b.get("unlisted") or (b.get("company") or {}).get("market") not in dart.LISTED_MARKETS:
+            continue
+        key = company_key(c["name"])
+        if not key or key in posting_keys or key in out or c["code"] in taken:
+            continue
+        out[key] = {"code": c["code"], "name": common_name(c["name"]), "type": c["type"], "group": c["group"]}
+    return out
 
 
 def write(screen: dict[str, Any], out: Path) -> Path:  # 본문 파일도 같은 함수로 쓴다
@@ -168,6 +191,7 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
     basics = _read_json(data_dir / "dart" / "basics.json")
     store = Store(data_dir)
     keys = set(screen["companies"])
+    majors = major_companies(data_dir, {p["company"] for p in screen["postings"]})
     past: dict[str, list[dict[str, Any]]] = {}
     for r in store.state.values():
         if not r.get("closed_on") or r.get("overseas") or r.get("dup_of") or r.get("noise"):
@@ -185,6 +209,8 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
     for key in sorted(keys):
         item: dict[str, Any] = {}
         m = corps.get(key)
+        if not m and key in majors:
+            m = {"corp_code": majors[key]["code"], "corp_name": majors[key]["name"], "how": "major"}
         if m:
             code = m.get("corp_code")
             b = basics.get(code) if code else None

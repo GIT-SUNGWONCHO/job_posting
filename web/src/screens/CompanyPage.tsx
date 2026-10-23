@@ -72,7 +72,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
       <section className="section">
         <SectionTitle right={<span className="count">{t.daily}</span>}>{t.hiring}</SectionTitle>
         <div className="sub-head">
-          <span>{copy.jobs.openCount(open.length)}</span>
+          <span>{open.length > 0 ? copy.jobs.openCount(open.length) : copy.jobs.noOpen}</span>
           {passed.length < open.length && <span className="count">{t.openPassed(passed.length)}</span>}
         </div>
         <div className="rows">

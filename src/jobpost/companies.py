@@ -35,12 +35,39 @@ def _group_rules() -> list[tuple[str, re.Pattern]]:
     return rules
 
 
+@cache
+def _not_members() -> list[re.Pattern]:
+    return [re.compile(p) for p in config.load("groups").get("not_members") or []]
+
+
 def match_group(name: str) -> str | None:
+    """이름 규칙(config/groups.yaml)으로 정한 그룹 이름. 이름만 같은 다른 회사(not_members)는 None."""
     cleaned = clean_company(name)
+    if any(p.search(cleaned) for p in _not_members()):
+        return None
     for group, pattern in _group_rules():
         if pattern.search(cleaned):
             return group
     return None
+
+
+def major_candidates(listed: list[list[str]]) -> list[dict[str, str | None]]:
+    """주요 기업 후보: DART 상장사 목록(dart/listed.json의 [고유번호, DART 이름, 종목코드])에서 그룹 규칙에 맞는 곳(대기업)과
+    config/groups.yaml major.extra에 적은 곳. 상장 폐지된 곳도 섞여 있어 지금 상장 여부는 기업개황으로 따로 본다."""
+    cfg = config.load("groups").get("major") or {}
+    skip = re.compile(cfg["skip"]) if cfg.get("skip") else None
+    extra = {name: ctype for ctype, names in (cfg.get("extra") or {}).items() for name in names or []}
+    out: list[dict[str, str | None]] = []
+    for code, name, _stock in listed:
+        if skip and skip.search(name):
+            continue
+        if name in extra:
+            out.append({"code": code, "name": name, "type": extra[name], "group": None})
+            continue
+        group = match_group(name)
+        if group:
+            out.append({"code": code, "name": name, "type": CompanyType.LARGE.value, "group": group})
+    return out
 
 
 class CompanyRegistry:

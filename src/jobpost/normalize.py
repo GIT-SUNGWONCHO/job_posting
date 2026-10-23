@@ -23,6 +23,16 @@ def clean_company(name: str) -> str:
     return s or (name or "").strip()
 
 
+def common_name(name: str) -> str:
+    """화면에 보여줄 보통 부르는 이름. 별칭(config/company_aliases.yaml)에 있으면 그 이름(케이티 → KT), 아니면 clean_company."""
+    cleaned = clean_company(name)
+    compact = PUNCT.sub("", cleaned)
+    for raw, canon in config.load("company_aliases").get("aliases", {}).items():
+        if compact == PUNCT.sub("", raw):
+            return canon
+    return cleaned
+
+
 def company_key(name: str) -> str:
     """중복 판단용 회사 키. 법인 표기, 공백, 기호를 지우고 별칭을 적용한다."""
     cleaned = clean_company(name)
