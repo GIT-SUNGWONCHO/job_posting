@@ -15,6 +15,59 @@
 "finance": null,
 "v": 3
 },
+"00100814": {
+"company": {
+"ceo": "송치영",
+"founded": "1994-12-01",
+"homepage": "https://www.poscoenc.com",
+"industry_code": "41229",
+"market": "기타",
+"name": "(주)포스코이앤씨",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-07-16",
+"rcept_no": "20260716000511",
+"title": "[기재정정]주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 5816,
+"date": "2025-12-31",
+"rcept_no": "20260318001089",
+"salary": 97075997,
+"tenure": 13.9
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318001089",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 176617903575,
+"operating": 201413155708,
+"revenue": 10165708357357,
+"year": 2023
+},
+{
+"net": 50985781859,
+"operating": 61846163146,
+"revenue": 9468701385516,
+"year": 2024
+},
+{
+"net": -477566018404,
+"operating": -451459950329,
+"revenue": 6903145028269,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00102760": {
 "company": {
 "ceo": "이정환, 이강홍 (각자 대표이사)",
@@ -696,6 +749,53 @@
 {
 "net": 1007226734146,
 "operating": 1375673177021,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00105174": {
+"company": {
+"ceo": "송명준, 정임주",
+"founded": "1964-11-14",
+"homepage": "https://www.hd-hyundaioilbank.co.kr",
+"industry_code": "19210",
+"market": "기타",
+"name": "에이치디현대오일뱅크 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 2145,
+"date": "2025-12-31",
+"rcept_no": "20260330000992",
+"salary": 133799534,
+"tenure": 14.4
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260330000992",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 155618681000,
+"operating": 616699307000,
+"revenue": 28107830060000,
+"year": 2023
+},
+{
+"net": -299743004000,
+"operating": 258008764000,
+"revenue": 30468551161000,
+"year": 2024
+},
+{
+"net": 53140498000,
+"operating": 474013702000,
+"revenue": 28024923701000,
 "year": 2025
 }
 ]
@@ -3625,6 +3725,61 @@
 },
 "v": 3
 },
+"00112882": {
+"company": {
+"ceo": "신창재",
+"founded": "1958-06-30",
+"homepage": "https://www.kyobo.com",
+"industry_code": "65110",
+"market": "기타",
+"name": "교보생명보험주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-09-16",
+"rcept_no": "20260916000359",
+"title": "[첨부정정]주요사항보고서(회사합병결정)"
+},
+{
+"date": "2026-04-22",
+"rcept_no": "20260422000691",
+"title": "주요사항보고서(자기주식처분결정)"
+}
+],
+"employees": {
+"count": 3537,
+"date": "2025-12-31",
+"rcept_no": "20260813001068",
+"salary": 114307040,
+"tenure": null
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260813001068",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 630982898420,
+"operating": 810890159335,
+"year": 2023
+},
+{
+"net": 686298564538,
+"operating": 902530413293,
+"year": 2024
+},
+{
+"net": 773072194559,
+"operating": 1051129234880,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00113058": {
 "company": {
 "ceo": "권혁웅, 이경근",
@@ -4095,6 +4250,64 @@
 "net": 258742959823,
 "operating": 508080820628,
 "revenue": 12284652471280,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00113465": {
+"company": {
+"ceo": "강성묵",
+"founded": "1977-01-18",
+"homepage": "https://www.hanaw.com",
+"industry_code": "66121",
+"market": "기타",
+"name": "하나증권 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-10-01",
+"rcept_no": "20261001000407",
+"title": "[기재정정]주요사항보고서(자본으로인정되는채무증권발행결정)"
+},
+{
+"date": "2026-06-12",
+"rcept_no": "20260612000648",
+"title": "[기재정정]주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 1746,
+"date": "2025-12-31",
+"rcept_no": "20260316001131",
+"salary": 147040664,
+"tenure": 10.9
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260316001131",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -288944424697,
+"operating": -366754136655,
+"revenue": 12256091941798,
+"year": 2023
+},
+{
+"net": 223971848555,
+"operating": 141957655049,
+"revenue": 12643502823858,
+"year": 2024
+},
+{
+"net": 205955931564,
+"operating": 166480097085,
+"revenue": 14970222312631,
 "year": 2025
 }
 ]
@@ -7158,6 +7371,111 @@
 "fetched": "2026-10-23",
 "finance": null,
 "unlisted": true,
+"v": 3
+},
+"00120438": {
+"company": {
+"ceo": "오일근",
+"founded": "1952-02-04",
+"homepage": "https://www.lottecon.co.kr",
+"industry_code": "41112",
+"market": "기타",
+"name": "롯데건설주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2025-11-27",
+"rcept_no": "20251127001339",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+},
+{
+"date": "2025-11-27",
+"rcept_no": "20251127001337",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 3676,
+"date": "2025-12-31",
+"rcept_no": "20260331004727",
+"salary": 95159956,
+"tenure": 11.9
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004727",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 55363303428,
+"operating": 259509225144,
+"revenue": 6811104509031,
+"year": 2023
+},
+{
+"net": 56794661500,
+"operating": 169539839241,
+"revenue": 7863237717914,
+"year": 2024
+},
+{
+"net": 11420611609,
+"operating": 105431629117,
+"revenue": 7909900572178,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00120483": {
+"company": {
+"ceo": "장재훈",
+"founded": "1982-06-15",
+"homepage": "https://www.lottepnd.com",
+"industry_code": "681",
+"market": "기타",
+"name": "롯데물산주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 269,
+"date": "2025-12-31",
+"rcept_no": "20260608000270",
+"salary": 90635688,
+"tenure": 5.7
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260608000270",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 215569255796,
+"operating": 96534331137,
+"revenue": 470608643518,
+"year": 2023
+},
+{
+"net": -242499645286,
+"operating": 94001853936,
+"revenue": 440872197830,
+"year": 2024
+},
+{
+"net": -316014421526,
+"operating": 131637787842,
+"revenue": 486381035799,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "00120508": {
@@ -13833,6 +14151,50 @@
 },
 "v": 3
 },
+"00137456": {
+"company": {
+"ceo": "전필환",
+"founded": "1991-04-19",
+"homepage": "https://www.shcap.co.kr",
+"industry_code": "64911",
+"market": "기타",
+"name": "신한캐피탈(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 274,
+"date": "2025-12-31",
+"rcept_no": "20260331003674",
+"salary": 108791971,
+"tenure": 9.4
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331003674",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 304024000000,
+"operating": 397613000000,
+"year": 2023
+},
+{
+"net": 116948000000,
+"operating": 147591000000,
+"year": 2024
+},
+{
+"net": 108273000000,
+"operating": 137855000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00137517": {
 "company": {
 "ceo": "천상영",
@@ -14041,6 +14403,53 @@
 {
 "net": 57735000000,
 "operating": 72252000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00138020": {
+"company": {
+"ceo": "정광진",
+"founded": "1983-04-25",
+"homepage": "https://www.sksiltron.com",
+"industry_code": "2612",
+"market": "기타",
+"name": "SK실트론 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 3624,
+"date": "2025-12-31",
+"rcept_no": "20260331003949",
+"salary": 93081678,
+"tenure": 13.0
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331003949",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 233991597000,
+"operating": 280628110000,
+"revenue": 2025590278000,
+"year": 2023
+},
+{
+"net": 248048989000,
+"operating": 315522998000,
+"revenue": 2126812964000,
+"year": 2024
+},
+{
+"net": -293620586000,
+"operating": 193104307000,
+"revenue": 2057485935000,
 "year": 2025
 }
 ]
@@ -18535,6 +18944,119 @@
 "net": -200362805739,
 "operating": 3650749780,
 "revenue": 2684430963154,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00152923": {
+"company": {
+"ceo": "권영훈",
+"founded": "1987-03-25",
+"homepage": "https://www.kolonglotech.co.kr",
+"industry_code": "22299",
+"market": "기타",
+"name": "코오롱글로텍(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-09-01",
+"rcept_no": "20260901000276",
+"title": "[첨부정정]주요사항보고서(타법인주식및출자증권양도결정)"
+},
+{
+"date": "2026-08-31",
+"rcept_no": "20260831001500",
+"title": "주요사항보고서(회사분할결정)"
+},
+{
+"date": "2026-05-08",
+"rcept_no": "20260508000518",
+"title": "[첨부정정]주요사항보고서(주식교환ㆍ이전결정)"
+}
+],
+"employees": {
+"count": 132,
+"date": "2025-12-31",
+"rcept_no": "20260402000735",
+"salary": 57666667,
+"tenure": 8.8
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260402000735",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 6598216991,
+"operating": 31272646273,
+"revenue": 782735828376,
+"year": 2023
+},
+{
+"net": 21435374823,
+"operating": 29668727507,
+"revenue": 816805432111,
+"year": 2024
+},
+{
+"net": -3771601373,
+"operating": -2777037433,
+"revenue": 246719015249,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00152932": {
+"company": {
+"ceo": "김용석",
+"founded": "1987-02-13",
+"homepage": "https://www.hanacapital.co.kr",
+"industry_code": "64913",
+"market": "기타",
+"name": "하나캐피탈(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-07-29",
+"rcept_no": "20260729000188",
+"title": "[기재정정]주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 465,
+"date": "2025-12-31",
+"rcept_no": "20260316000663",
+"salary": 88761290,
+"tenure": 8.4
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260316000663",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 206899455515,
+"operating": 276182377278,
+"year": 2023
+},
+{
+"net": 114630553380,
+"operating": 155597851755,
+"year": 2024
+},
+{
+"net": 54274071475,
+"operating": 73899996515,
 "year": 2025
 }
 ]
@@ -25900,6 +26422,53 @@
 },
 "v": 3
 },
+"00165459": {
+"company": {
+"ceo": "허세홍",
+"founded": "1967-05-19",
+"homepage": "https://www.gscaltex.co.kr",
+"industry_code": "19210",
+"market": "기타",
+"name": "GS칼텍스(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 3120,
+"date": "2025-12-31",
+"rcept_no": "20260331004120",
+"salary": 127568077,
+"tenure": 16.0
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004120",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1152731000000,
+"operating": 1683792000000,
+"revenue": 48607546000000,
+"year": 2023
+},
+{
+"net": 109009000000,
+"operating": 548042000000,
+"revenue": 47614246000000,
+"year": 2024
+},
+{
+"net": 705890000000,
+"operating": 884050000000,
+"revenue": 44630197000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00165680": {
 "company": {
 "ceo": "이부진",
@@ -26205,6 +26774,138 @@
 "net": 1204628626,
 "operating": 44269957,
 "revenue": 46501236360,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00167068": {
+"company": {
+"ceo": "김형표",
+"founded": "1950-01-28",
+"homepage": "https://www.heungkuklife.co.kr",
+"industry_code": "65110",
+"market": "기타",
+"name": "흥국생명보험주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 550,
+"date": "2025-12-31",
+"rcept_no": "20260331004251",
+"salary": 102860000,
+"tenure": 9.8
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004251",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 249864695006,
+"operating": 178519173677,
+"year": 2023
+},
+{
+"net": 164414941346,
+"operating": 171975865373,
+"year": 2024
+},
+{
+"net": 384137029665,
+"operating": 364512720956,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00168933": {
+"company": {
+"ceo": "김영만",
+"founded": "1989-04-14",
+"homepage": "https://www.idblife.co.kr",
+"industry_code": "65110",
+"market": "기타",
+"name": "DB생명보험(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 582,
+"date": "2025-12-31",
+"rcept_no": "20260327000191",
+"salary": 93395100,
+"tenure": 12.4
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260327000191",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 141695028453,
+"operating": 145034689230,
+"year": 2023
+},
+{
+"net": 145822755083,
+"operating": 157672611211,
+"year": 2024
+},
+{
+"net": 181636937140,
+"operating": 266808202459,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00170442": {
+"company": {
+"ceo": "이은배",
+"founded": "1989-09-11",
+"homepage": "https://www.hanafni.com",
+"industry_code": "64209",
+"market": "기타",
+"name": "하나에프앤아이 (주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 58,
+"date": "2025-12-31",
+"rcept_no": "20260330001829",
+"salary": 99034483,
+"tenure": 6.7
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260330001829",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 50264013854,
+"operating": 71965438629,
+"year": 2023
+},
+{
+"net": 28024579028,
+"operating": 46236513441,
+"year": 2024
+},
+{
+"net": 37081459157,
+"operating": 47240888312,
 "year": 2025
 }
 ]
@@ -26958,6 +27659,59 @@
 "unlisted": true,
 "v": 3
 },
+"00189653": {
+"company": {
+"ceo": "이용호",
+"founded": "1977-01-18",
+"homepage": "https://www.lxpantos.com",
+"industry_code": "5299",
+"market": "기타",
+"name": "(주)엘엑스판토스",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-03-16",
+"rcept_no": "20260316000970",
+"title": "[기재정정]타인을위한채무보증결정"
+}
+],
+"employees": {
+"count": 1986,
+"date": "2025-12-31",
+"rcept_no": "20260318000917",
+"salary": 80633556,
+"tenure": 10.4
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318000917",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 96314405440,
+"operating": 156016954499,
+"revenue": 6879346838527,
+"year": 2023
+},
+{
+"net": 154137874485,
+"operating": 221870372041,
+"revenue": 8063339457044,
+"year": 2024
+},
+{
+"net": 81826376520,
+"operating": 152152212954,
+"revenue": 7983549087101,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00190321": {
 "company": {
 "ceo": "박윤영",
@@ -27293,6 +28047,53 @@
 },
 "v": 3
 },
+"00200938": {
+"company": {
+"ceo": "박주형",
+"founded": "1977-11-03",
+"homepage": null,
+"industry_code": "52912",
+"market": "기타",
+"name": "주식회사신세계센트럴",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 939,
+"date": "2025-12-31",
+"rcept_no": "20260331003907",
+"salary": 55906283,
+"tenure": 5.5
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331003907",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 47923737600,
+"operating": 79391368129,
+"revenue": 349820283259,
+"year": 2023
+},
+{
+"net": 45564708291,
+"operating": 85692538379,
+"revenue": 375364032378,
+"year": 2024
+},
+{
+"net": 24334762136,
+"operating": 88736302214,
+"revenue": 393152625056,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00203290": {
 "company": {
 "ceo": "윤상현",
@@ -27587,6 +28388,106 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"00207108": {
+"company": {
+"ceo": "최종양, 조동주",
+"founded": "1982-02-16",
+"homepage": "https://www.eland.co.kr",
+"industry_code": "471",
+"market": "기타",
+"name": "(주)이랜드월드",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 2802,
+"date": "2025-12-31",
+"rcept_no": "20260331004473",
+"salary": 30658101,
+"tenure": 4.3
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004473",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 16060000000,
+"operating": 288428000000,
+"revenue": 5294956000000,
+"year": 2023
+},
+{
+"net": -150607000000,
+"operating": 271346000000,
+"revenue": 5451983000000,
+"year": 2024
+},
+{
+"net": -261845000000,
+"operating": 333323000000,
+"revenue": 5543376000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00207676": {
+"company": {
+"ceo": "강병구",
+"founded": "1988-06-13",
+"homepage": "https://www.lotteglogis.com",
+"industry_code": "5299",
+"market": "기타",
+"name": "롯데글로벌로지스(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-03-27",
+"rcept_no": "20260327001235",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 2252,
+"date": "2025-12-31",
+"rcept_no": "20260331004385",
+"salary": 72064009,
+"tenure": 10.3
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004385",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 14826314831,
+"operating": 63921641157,
+"revenue": 3614144731318,
+"year": 2023
+},
+{
+"net": 40521876947,
+"operating": 90205793043,
+"revenue": 3573333522567,
+"year": 2024
+},
+{
+"net": 13374655727,
+"operating": 81705259713,
+"revenue": 3401497086476,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "00207755": {
@@ -28471,6 +29372,50 @@
 "finance": null,
 "v": 3
 },
+"00222295": {
+"company": {
+"ceo": "추광식",
+"founded": "1995-11-28",
+"homepage": "https://www.lottecap.com",
+"industry_code": "64913",
+"market": "기타",
+"name": "롯데캐피탈주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 441,
+"date": "2025-12-31",
+"rcept_no": "20260331001823",
+"salary": 100891156,
+"tenure": 12.1
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331001823",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 105241321588,
+"operating": 139087227437,
+"year": 2023
+},
+{
+"net": 106380929172,
+"operating": 137800162013,
+"year": 2024
+},
+{
+"net": 94367147306,
+"operating": 123980482188,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00222374": {
 "company": {
 "ceo": "정태영, 조창현(각자대표이사)",
@@ -29069,6 +30014,22 @@
 },
 "v": 3
 },
+"00229058": {
+"company": {
+"ceo": "박재범",
+"founded": "1995-12-08",
+"homepage": "https://dbcapital.co.kr",
+"industry_code": "64913",
+"market": "기타",
+"name": "DB캐피탈 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-23",
+"finance": null,
+"v": 3
+},
 "00231105": {
 "company": {
 "ceo": "최용석",
@@ -29349,6 +30310,53 @@
 "net": 509226000000,
 "operating": 892131000000,
 "revenue": 15451745000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00231929": {
+"company": {
+"ceo": "김석환",
+"founded": "1996-10-09",
+"homepage": "https://www.gseps.com",
+"industry_code": "35113",
+"market": "기타",
+"name": "지에스이피에스(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 279,
+"date": "2025-12-31",
+"rcept_no": "20260318000150",
+"salary": 110849462,
+"tenure": null
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318000150",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 349810452148,
+"operating": 459228177007,
+"revenue": 1984279078768,
+"year": 2023
+},
+{
+"net": 194246090129,
+"operating": 252923153215,
+"revenue": 1643265545912,
+"year": 2024
+},
+{
+"net": 90053615830,
+"operating": 121852297092,
+"revenue": 1314719476785,
 "year": 2025
 }
 ]
@@ -30122,6 +31130,53 @@
 "finance": null,
 "v": 3
 },
+"00251738": {
+"company": {
+"ceo": "정지광",
+"founded": "1997-06-04",
+"homepage": "https://capital.miraeasset.com",
+"industry_code": "64919",
+"market": "기타",
+"name": "미래에셋캐피탈주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 122,
+"date": "2025-12-31",
+"rcept_no": "20260331004191",
+"salary": 125393443,
+"tenure": 5.2
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004191",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 337436000000,
+"operating": -119000000,
+"revenue": 12598954000000,
+"year": 2023
+},
+{
+"net": 947520000000,
+"operating": 1218988000000,
+"revenue": 27923749000000,
+"year": 2024
+},
+{
+"net": 1780478000000,
+"operating": 2327641000000,
+"revenue": 35410827000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00252135": {
 "company": {
 "ceo": "황철주, 황은석(각자대표이사)",
@@ -30849,6 +31904,59 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"00259776": {
+"company": {
+"ceo": "최창훈, 이준용",
+"founded": "1997-08-01",
+"homepage": "https://investments.miraeasset.com",
+"industry_code": "64201",
+"market": "기타",
+"name": "미래에셋자산운용(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-05-26",
+"rcept_no": "20260526800767",
+"title": "불성실공시(의결권공시)"
+}
+],
+"employees": {
+"count": 542,
+"date": "2025-12-31",
+"rcept_no": "20260323001202",
+"salary": 148503690,
+"tenure": 7.0
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260323001202",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 470709442612,
+"operating": 364826259477,
+"revenue": 1144897678555,
+"year": 2023
+},
+{
+"net": 456154976482,
+"operating": 410385694391,
+"revenue": 1284140740052,
+"year": 2024
+},
+{
+"net": 772057815302,
+"operating": 723555784864,
+"revenue": 1653258085898,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "00260082": {
@@ -33507,6 +34615,53 @@
 "finance": null,
 "v": 3
 },
+"00302634": {
+"company": {
+"ceo": "백철승",
+"founded": "1999-12-28",
+"homepage": "https://www.hyundai-transys.com",
+"industry_code": "30",
+"market": "기타",
+"name": "현대트랜시스주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 4061,
+"date": "2025-12-31",
+"rcept_no": "20260331003163",
+"salary": 109800049,
+"tenure": 13.1
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331003163",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 96745000000,
+"operating": 116988000000,
+"revenue": 11693980000000,
+"year": 2023
+},
+{
+"net": 23086000000,
+"operating": 78662000000,
+"revenue": 12746390000000,
+"year": 2024
+},
+{
+"net": 115284000000,
+"operating": 336042000000,
+"revenue": 14839047000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00302926": {
 "company": {
 "ceo": "이용배",
@@ -34228,6 +35383,53 @@
 "finance": null,
 "v": 3
 },
+"00325185": {
+"company": {
+"ceo": "유재영",
+"founded": "2000-06-07",
+"homepage": "https://www.gspower.co.kr",
+"industry_code": "3511",
+"market": "기타",
+"name": "GS파워(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 320,
+"date": "2025-12-31",
+"rcept_no": "20260327001158",
+"salary": 125825000,
+"tenure": 13.1
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260327001158",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 130456837762,
+"operating": 185864137079,
+"revenue": 1651478789671,
+"year": 2023
+},
+{
+"net": 238469877991,
+"operating": 255446140872,
+"revenue": 1535283433626,
+"year": 2024
+},
+{
+"net": 152740315955,
+"operating": 199435108525,
+"revenue": 1380864217994,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00330406": {
 "company": {
 "ceo": "박동호",
@@ -34540,6 +35742,53 @@
 "net": 10045577451,
 "operating": 10663123187,
 "revenue": 35401545538,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00332468": {
+"company": {
+"ceo": "김재을",
+"founded": "1998-11-04",
+"homepage": "https://www.hshi.co.kr",
+"industry_code": "3111",
+"market": "기타",
+"name": "에이치디현대삼호 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 4005,
+"date": "2025-12-31",
+"rcept_no": "20260316000855",
+"salary": 131295883,
+"tenure": 18.5
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260316000855",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 211164938000,
+"operating": 301692564000,
+"revenue": 5958697334000,
+"year": 2023
+},
+{
+"net": 684107436000,
+"operating": 723571404000,
+"revenue": 7003139212000,
+"year": 2024
+},
+{
+"net": 1001459730000,
+"operating": 1362760297000,
+"revenue": 8071350946000,
 "year": 2025
 }
 ]
@@ -35196,6 +36445,64 @@
 "employees": null,
 "fetched": "2026-10-23",
 "finance": null,
+"v": 3
+},
+"00349927": {
+"company": {
+"ceo": "주우정",
+"founded": "2001-01-17",
+"homepage": "https://www.hec.co.kr",
+"industry_code": "72121",
+"market": "기타",
+"name": "현대엔지니어링(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-08-24",
+"rcept_no": "20260824000017",
+"title": "[첨부정정]주요사항보고서(회사합병결정)"
+},
+{
+"date": "2026-07-29",
+"rcept_no": "20260729000529",
+"title": "[기재정정]주요사항보고서(영업정지)"
+}
+],
+"employees": {
+"count": 6770,
+"date": "2025-12-31",
+"rcept_no": "20260331003081",
+"salary": 103203988,
+"tenure": 10.6
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331003081",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 201999000000,
+"operating": 255177000000,
+"revenue": 13063327000000,
+"year": 2023
+},
+{
+"net": -990640000000,
+"operating": -1240068000000,
+"revenue": 14760411000000,
+"year": 2024
+},
+{
+"net": 295053000000,
+"operating": 277859000000,
+"revenue": 13896504000000,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "00350163": {
@@ -38677,6 +39984,53 @@
 "unlisted": true,
 "v": 3
 },
+"00394583": {
+"company": {
+"ceo": "장영근",
+"founded": "2000-06-15",
+"homepage": "https://www.celltrionmall.com",
+"industry_code": "46443",
+"market": "기타",
+"name": "(주)셀트리온스킨큐어",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 106,
+"date": "2025-12-31",
+"rcept_no": "20260331001535",
+"salary": 49311321,
+"tenure": 3.9
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260331001535",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 49095720566,
+"operating": -6318889100,
+"revenue": 27781675341,
+"year": 2023
+},
+{
+"net": -18190067797,
+"operating": -10987739565,
+"revenue": 32741239518,
+"year": 2024
+},
+{
+"net": -12141092001,
+"operating": -4580666446,
+"revenue": 40796156077,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00398701": {
 "company": {
 "ceo": "허제홍",
@@ -40938,6 +42292,59 @@
 },
 "v": 3
 },
+"00429889": {
+"company": {
+"ceo": "황병소",
+"founded": "2002-01-01",
+"homepage": "https://www.gsenr.com",
+"industry_code": "35300",
+"market": "기타",
+"name": "(주)지에스이앤알",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2025-10-31",
+"rcept_no": "20251031000231",
+"title": "타인을위한채무보증결정"
+}
+],
+"employees": {
+"count": 100,
+"date": "2025-12-31",
+"rcept_no": "20260318000336",
+"salary": 98231800,
+"tenure": 11.7
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318000336",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 93052985495,
+"operating": 175304371154,
+"revenue": 1921889902550,
+"year": 2023
+},
+{
+"net": 74765580823,
+"operating": 164657065958,
+"revenue": 1476365736657,
+"year": 2024
+},
+{
+"net": 63545752500,
+"operating": 140443592403,
+"revenue": 1398220684827,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00432102": {
 "company": {
 "ceo": "김남구",
@@ -42101,6 +43508,59 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"00461593": {
+"company": {
+"ceo": "나상섭, 도미닉 빈센트",
+"founded": "2003-08-01",
+"homepage": "https://www.htpchem.com",
+"industry_code": "20111",
+"market": "기타",
+"name": "한화토탈에너지스 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2025-12-03",
+"rcept_no": "20251203000258",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 1848,
+"date": "2025-12-31",
+"rcept_no": "20260331004100",
+"salary": 117554113,
+"tenure": 14.2
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004100",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -79998735854,
+"operating": -2788563367,
+"revenue": 11481660877783,
+"year": 2023
+},
+{
+"net": -271302432757,
+"operating": -204711449220,
+"revenue": 11797662262098,
+"year": 2024
+},
+{
+"net": -490678856218,
+"operating": -531270681269,
+"revenue": 10776022494781,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "00472021": {
@@ -47109,6 +48569,50 @@
 "finance": null,
 "v": 3
 },
+"00595298": {
+"company": {
+"ceo": "서영수",
+"founded": "2006-11-17",
+"homepage": "https://www.kttelecop.co.kr",
+"industry_code": "75310",
+"market": "기타",
+"name": "케이티텔레캅 (주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 2970,
+"date": "2025-12-31",
+"rcept_no": "20260331002388",
+"salary": 48076768,
+"tenure": 6.6
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260331002388",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 5728053127,
+"operating": 15498596773,
+"year": 2023
+},
+{
+"net": 8792874554,
+"operating": 20130722308,
+"year": 2024
+},
+{
+"net": 15858955384,
+"operating": 28108421633,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00599285": {
 "company": {
 "ceo": "김정웅",
@@ -49010,6 +50514,64 @@
 },
 "v": 3
 },
+"00645432": {
+"company": {
+"ceo": "이승수",
+"founded": "2006-10-18",
+"homepage": "https://www.shinhantrust.kr",
+"industry_code": "64999",
+"market": "기타",
+"name": "신한자산신탁 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-07-30",
+"rcept_no": "20260730000533",
+"title": "주요사항보고서(회사합병결정)"
+},
+{
+"date": "2026-01-29",
+"rcept_no": "20260129000756",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 157,
+"date": "2025-12-31",
+"rcept_no": "20260327001629",
+"salary": 83592357,
+"tenure": 5.2
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260327001629",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 53429807625,
+"operating": 69576657147,
+"revenue": 148979812039,
+"year": 2023
+},
+{
+"net": -320601149755,
+"operating": -250444997669,
+"revenue": 100626428167,
+"year": 2024
+},
+{
+"net": 19637728059,
+"operating": 24533650376,
+"revenue": 196934578096,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00646495": {
 "company": {
 "ceo": "이재규",
@@ -50058,6 +51620,69 @@
 "net": 75556928643,
 "operating": 112042532460,
 "revenue": 1211599795389,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00683283": {
+"company": {
+"ceo": "구본규",
+"founded": "2008-07-02",
+"homepage": null,
+"industry_code": "2830",
+"market": "기타",
+"name": "LS전선(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-09-11",
+"rcept_no": "20260911000411",
+"title": "주요사항보고서(교환사채권발행결정)"
+},
+{
+"date": "2025-11-17",
+"rcept_no": "20251117000165",
+"title": "[기재정정]주요사항보고서(교환사채권발행결정)"
+},
+{
+"date": "2025-10-29",
+"rcept_no": "20251029000264",
+"title": "주요사항보고서(유상증자결정)"
+}
+],
+"employees": {
+"count": 2210,
+"date": "2025-12-31",
+"rcept_no": "20260317000719",
+"salary": 86250679,
+"tenure": 10.6
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260317000719",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 105411000000,
+"operating": 232522000000,
+"revenue": 6217054000000,
+"year": 2023
+},
+{
+"net": 44732000000,
+"operating": 274534000000,
+"revenue": 6765269000000,
+"year": 2024
+},
+{
+"net": 100571000000,
+"operating": 279845000000,
+"revenue": 7588160000000,
 "year": 2025
 }
 ]
@@ -51686,6 +53311,106 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"00852078": {
+"company": {
+"ceo": "김종화",
+"founded": "2011-01-01",
+"homepage": "https://www.skgeocentric.com",
+"industry_code": "20111",
+"market": "기타",
+"name": "에스케이지오센트릭 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-07-08",
+"rcept_no": "20260708000280",
+"title": "타인을위한채무보증결정"
+}
+],
+"employees": {
+"count": 1145,
+"date": "2025-12-31",
+"rcept_no": "20260316000965",
+"salary": 142038428,
+"tenure": 18.6
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260316000965",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 8638560000,
+"operating": 170436306000,
+"revenue": 13015621558000,
+"year": 2023
+},
+{
+"net": -388552084000,
+"operating": -27450419000,
+"revenue": 12746221521000,
+"year": 2024
+},
+{
+"net": -870714735000,
+"operating": -148394633000,
+"revenue": 11501381588000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00852175": {
+"company": {
+"ceo": "김종화",
+"founded": "2011-01-01",
+"homepage": "https://www.skenergy.com",
+"industry_code": "19210",
+"market": "기타",
+"name": "SK에너지 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 2383,
+"date": "2025-12-31",
+"rcept_no": "20260316001108",
+"salary": 149511120,
+"tenure": 18.5
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260316001108",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 155052386000,
+"operating": 409219373000,
+"revenue": 43625464878000,
+"year": 2023
+},
+{
+"net": -462549181000,
+"operating": 53759889000,
+"revenue": 43419439257000,
+"year": 2024
+},
+{
+"net": -163368232000,
+"operating": -171721749000,
+"revenue": 39288074349000,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "00855084": {
@@ -53761,6 +55486,106 @@
 },
 "v": 3
 },
+"00903503": {
+"company": {
+"ceo": "허용수",
+"founded": "2012-01-03",
+"homepage": "https://www.gsenergy.co.kr",
+"industry_code": "64992",
+"market": "기타",
+"name": "GS에너지주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-06-30",
+"rcept_no": "20260630000564",
+"title": "타인을위한채무보증결정"
+}
+],
+"employees": {
+"count": 192,
+"date": "2025-12-31",
+"rcept_no": "20260317000699",
+"salary": 156494792,
+"tenure": 7.1
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260317000699",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1014223000000,
+"operating": 2641487000000,
+"revenue": 6519023000000,
+"year": 2023
+},
+{
+"net": 476522000000,
+"operating": 2201960000000,
+"revenue": 5957721000000,
+"year": 2024
+},
+{
+"net": 761383000000,
+"operating": 2288288000000,
+"revenue": 5940699000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00904663": {
+"company": {
+"ceo": "김태민",
+"founded": "2011-12-01",
+"homepage": "https://www.lotte-autolease.net",
+"industry_code": "6491",
+"market": "기타",
+"name": "롯데오토리스 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 68,
+"date": "2025-12-31",
+"rcept_no": "20260330000281",
+"salary": 79823529,
+"tenure": 6.2
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260330000281",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 13003967170,
+"operating": 16350326273,
+"revenue": 127307828551,
+"year": 2023
+},
+{
+"net": 14067016797,
+"operating": 17365703194,
+"revenue": 150127530849,
+"year": 2024
+},
+{
+"net": 9430467347,
+"operating": 11003607321,
+"revenue": 142428215514,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00904672": {
 "company": {
 "ceo": "김병규",
@@ -53939,6 +55764,61 @@
 },
 "v": 3
 },
+"00908021": {
+"company": {
+"ceo": "이찬우",
+"founded": "2012-03-02",
+"homepage": "https://www.nhfngroup.com",
+"industry_code": "64992",
+"market": "기타",
+"name": "농협금융지주 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-05-29",
+"rcept_no": "20260529002036",
+"title": "주요사항보고서(유상증자결정)"
+},
+{
+"date": "2025-11-06",
+"rcept_no": "20251106000379",
+"title": "[기재정정]주요사항보고서(상각형조건부자본증권발행결정)"
+}
+],
+"employees": {
+"count": 200,
+"date": "2025-12-31",
+"rcept_no": "20260331004252",
+"salary": 146800000,
+"tenure": null
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331004252",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 2509785000000,
+"operating": 3805908000000,
+"year": 2023
+},
+{
+"net": 2828318000000,
+"operating": 4509243000000,
+"year": 2024
+},
+{
+"net": 3028546000000,
+"operating": 4895956000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00908155": {
 "company": {
 "ceo": "송춘수",
@@ -53977,6 +55857,50 @@
 {
 "net": 82394773698,
 "operating": 146568917254,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00909349": {
+"company": {
+"ceo": "박병희",
+"founded": "2012-03-02",
+"homepage": null,
+"industry_code": "65110",
+"market": "기타",
+"name": "농협생명보험주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 1033,
+"date": "2025-12-31",
+"rcept_no": "20260331002277",
+"salary": 129322362,
+"tenure": 12.5
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260331002277",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 181706724534,
+"operating": 308635146179,
+"year": 2023
+},
+{
+"net": 246054415651,
+"operating": 477266752647,
+"year": 2024
+},
+{
+"net": 215548544039,
+"operating": 454083647634,
 "year": 2025
 }
 ]
@@ -54240,6 +56164,138 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00933504": {
+"company": {
+"ceo": "권태길",
+"founded": "2012-03-20",
+"homepage": "https://www.meritzcapital.co.kr",
+"industry_code": "6491",
+"market": "기타",
+"name": "메리츠캐피탈(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-06-23",
+"rcept_no": "20260623000321",
+"title": "[기재정정]주요사항보고서(자본으로인정되는채무증권발행결정)"
+},
+{
+"date": "2026-06-11",
+"rcept_no": "20260611000500",
+"title": "주요사항보고서(유상증자결정)"
+},
+{
+"date": "2026-04-27",
+"rcept_no": "20260427000741",
+"title": "[기재정정]주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 360,
+"date": "2025-12-31",
+"rcept_no": "20260331002201",
+"salary": 108825000,
+"tenure": 6.7
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331002201",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 217575054193,
+"operating": 262380740994,
+"revenue": 891267372654,
+"year": 2023
+},
+{
+"net": 134853495210,
+"operating": 189894515992,
+"revenue": 847116676820,
+"year": 2024
+},
+{
+"net": 116251651862,
+"operating": 160394419536,
+"revenue": 846364117966,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00935821": {
+"company": {
+"ceo": "권영식",
+"founded": "2012-06-08",
+"homepage": "https://neo.netmarble.com",
+"industry_code": "5821",
+"market": "기타",
+"name": "넷마블네오(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-03-26",
+"rcept_no": "20260326000928",
+"title": "[첨부정정]주요사항보고서(주식교환ㆍ이전결정)"
+}
+],
+"employees": {
+"count": 685,
+"date": "2025-12-31",
+"rcept_no": "20260325000608",
+"salary": 81183942,
+"tenure": 4.4
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260325000608",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1775454944,
+"operating": -3629729909,
+"revenue": 55271282420,
+"year": 2023
+},
+{
+"net": 36673594295,
+"operating": 46825234974,
+"revenue": 121000656857,
+"year": 2024
+},
+{
+"net": 24071529304,
+"operating": 31926579564,
+"revenue": 123606023734,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00936361": {
+"company": {
+"ceo": "주기영",
+"founded": "2000-03-01",
+"homepage": "https://www.g-sl.co.kr",
+"industry_code": "10897",
+"market": "기타",
+"name": "(주)지에스엘",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-23",
 "finance": null,
 "v": 3
 },
@@ -55187,6 +57243,50 @@
 },
 "v": 3
 },
+"00958822": {
+"company": {
+"ceo": "진성원",
+"founded": "2013-04-01",
+"homepage": "https://www.wooricard.com",
+"industry_code": "64913",
+"market": "기타",
+"name": "주식회사 우리카드",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 1053,
+"date": "2025-12-31",
+"rcept_no": "20260312000533",
+"salary": 109560304,
+"tenure": 8.9
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260312000533",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 112065000000,
+"operating": 139866000000,
+"year": 2023
+},
+{
+"net": 148051000000,
+"operating": 185594000000,
+"year": 2024
+},
+{
+"net": 151132000000,
+"operating": 207410000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00959016": {
 "company": {
 "ceo": "김승범",
@@ -55661,6 +57761,59 @@
 "net": 18297579241,
 "operating": 55167605120,
 "revenue": 847802376763,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00979074": {
+"company": {
+"ceo": "최윤석",
+"founded": "2013-07-01",
+"homepage": "https://www.skincheonpetrochem.com",
+"industry_code": "19210",
+"market": "기타",
+"name": "SK인천석유화학(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-10-08",
+"rcept_no": "20261008700505",
+"title": "상장채권관련기타주요사항"
+}
+],
+"employees": {
+"count": 614,
+"date": "2025-12-31",
+"rcept_no": "20260316000998",
+"salary": 145416938,
+"tenure": 21.2
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260316000998",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -72041666000,
+"operating": 101615063000,
+"revenue": 10116535044000,
+"year": 2023
+},
+{
+"net": -113150731000,
+"operating": 28083955000,
+"revenue": 10728379214000,
+"year": 2024
+},
+{
+"net": -158853996000,
+"operating": -148723417000,
+"revenue": 9381961604000,
 "year": 2025
 }
 ]
@@ -56215,6 +58368,53 @@
 "finance": null,
 "v": 3
 },
+"01003031": {
+"company": {
+"ceo": "최진일",
+"founded": "2006-03-15",
+"homepage": "https://www.emart24.co.kr",
+"industry_code": "47122",
+"market": "기타",
+"name": "주식회사 이마트24",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 971,
+"date": "2025-12-31",
+"rcept_no": "20260318001123",
+"salary": 52674562,
+"tenure": 6.9
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260318001123",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -33806029461,
+"operating": -23021956161,
+"revenue": 2225135318621,
+"year": 2023
+},
+{
+"net": -40872966100,
+"operating": -29838415674,
+"revenue": 2163056159145,
+"year": 2024
+},
+{
+"net": -56220182288,
+"operating": -46297689105,
+"revenue": 2052985049051,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "01004298": {
 "company": {
 "ceo": "패트릭 롤프 요한슨",
@@ -56229,6 +58429,97 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"01004553": {
+"company": {
+"ceo": "박진호",
+"founded": "2013-12-31",
+"homepage": "https://www.ls-ind.co.kr",
+"industry_code": "68112",
+"market": "기타",
+"name": "엘에스아이앤디 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 11,
+"date": "2025-12-31",
+"rcept_no": "20260331000916",
+"salary": 116818182,
+"tenure": 4.7
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331000916",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 34566000000,
+"operating": 78828000000,
+"revenue": 3826706000000,
+"year": 2023
+},
+{
+"net": 63800000000,
+"operating": 83247000000,
+"revenue": 4412965000000,
+"year": 2024
+},
+{
+"net": 37555000000,
+"operating": 105186000000,
+"revenue": 4858723000000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"01004775": {
+"company": {
+"ceo": "정삼두",
+"founded": "2013-12-31",
+"homepage": null,
+"industry_code": "71531",
+"market": "기타",
+"name": "DL에너지(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 32,
+"date": "2025-12-31",
+"rcept_no": "20260317000437",
+"salary": 118562500,
+"tenure": 6.8
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260317000437",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 124689319864,
+"operating": 132937809439,
+"year": 2023
+},
+{
+"net": 113210339486,
+"operating": 145446225919,
+"year": 2024
+},
+{
+"net": 81184709993,
+"operating": 135934713513,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "01009789": {
@@ -58047,6 +60338,74 @@
 },
 "v": 3
 },
+"01043844": {
+"company": {
+"ceo": "김한조",
+"founded": "2014-09-12",
+"homepage": null,
+"industry_code": "20111",
+"market": "기타",
+"name": "에스케이어드밴스드주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-08-27",
+"rcept_no": "20260827000742",
+"title": "[첨부정정]주요사항보고서(회사합병결정)"
+},
+{
+"date": "2026-08-26",
+"rcept_no": "20260826000765",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+},
+{
+"date": "2025-12-23",
+"rcept_no": "20251223000390",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+},
+{
+"date": "2025-11-27",
+"rcept_no": "20251127000722",
+"title": "주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 104,
+"date": "2025-12-31",
+"rcept_no": "20260331003374",
+"salary": 112463481,
+"tenure": 8.9
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260331003374",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -112359076675,
+"operating": -82525349493,
+"revenue": 599093459988,
+"year": 2023
+},
+{
+"net": -165712198318,
+"operating": -116132947695,
+"revenue": 688077721725,
+"year": 2024
+},
+{
+"net": -244813278032,
+"operating": -140047256708,
+"revenue": 610098449522,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "01047734": {
 "company": {
 "ceo": "박재홍",
@@ -58508,6 +60867,53 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"01064272": {
+"company": {
+"ceo": "오우택",
+"founded": "2014-11-03",
+"homepage": "https://www.kicf.co.kr",
+"industry_code": "6491",
+"market": "기타",
+"name": "한국투자캐피탈 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 150,
+"date": "2025-12-31",
+"rcept_no": "20260330000990",
+"salary": 87453333,
+"tenure": 3.6
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260330000990",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 110490948746,
+"operating": 131199135214,
+"revenue": 370427325343,
+"year": 2023
+},
+{
+"net": 20642631692,
+"operating": 30829058759,
+"revenue": 371228813976,
+"year": 2024
+},
+{
+"net": 96857076210,
+"operating": 53825031171,
+"revenue": 433977512088,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "01065013": {
@@ -59392,6 +61798,59 @@
 "net": -5187786171,
 "operating": 752107883,
 "revenue": 59111769968,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"01086867": {
+"company": {
+"ceo": "이석구",
+"founded": "2015-04-15",
+"homepage": null,
+"industry_code": "47",
+"market": "기타",
+"name": "(주)신세계디에프",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2025-11-06",
+"rcept_no": "20251106000230",
+"title": "비유동자산처분결정"
+}
+],
+"employees": {
+"count": 375,
+"date": "2025-12-31",
+"rcept_no": "20260313001298",
+"salary": 69866667,
+"tenure": 7.8
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260313001298",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 61709267147,
+"operating": 86631373912,
+"revenue": 1916545469500,
+"year": 2023
+},
+{
+"net": -87128246638,
+"operating": -37362644359,
+"revenue": 2005960287084,
+"year": 2024
+},
+{
+"net": -133528420531,
+"operating": -7438123347,
+"revenue": 2305022464438,
 "year": 2025
 }
 ]
@@ -66369,6 +68828,79 @@
 "finance": null,
 "v": 3
 },
+"01291016": {
+"company": {
+"ceo": "구도형",
+"founded": "2014-03-05",
+"homepage": null,
+"industry_code": "5821",
+"market": "기타",
+"name": "넷마블에프앤씨 주식회사 ",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-06-11",
+"rcept_no": "20260611000326",
+"title": "비유동자산취득결정"
+},
+{
+"date": "2026-06-11",
+"rcept_no": "20260611000323",
+"title": "[기재정정]비유동자산취득결정"
+},
+{
+"date": "2025-12-31",
+"rcept_no": "20251231000108",
+"title": "증여결정"
+},
+{
+"date": "2025-12-31",
+"rcept_no": "20251231000101",
+"title": "[기재정정]타법인주식및출자증권취득결정"
+},
+{
+"date": "2025-11-10",
+"rcept_no": "20251110000219",
+"title": "비유동자산취득결정"
+}
+],
+"employees": {
+"count": 586,
+"date": "2025-12-31",
+"rcept_no": "20260330001607",
+"salary": 73284983,
+"tenure": 5.0
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260330001607",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -90324098395,
+"operating": -67456363264,
+"revenue": 65081811214,
+"year": 2023
+},
+{
+"net": -43202721238,
+"operating": -13135550698,
+"revenue": 81316340165,
+"year": 2024
+},
+{
+"net": -28917784841,
+"operating": -10933023792,
+"revenue": 69690227669,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "01292291": {
 "company": {
 "ceo": "남이현",
@@ -68581,6 +71113,59 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"01339389": {
+"company": {
+"ceo": "최창민",
+"founded": "2018-08-09",
+"homepage": "https://kiwoomcapital.com",
+"industry_code": "64919",
+"market": "기타",
+"name": "키움캐피탈 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-04-09",
+"rcept_no": "20260409002578",
+"title": "주요사항보고서(유상증자결정)"
+}
+],
+"employees": {
+"count": 59,
+"date": "2025-12-31",
+"rcept_no": "20260327001677",
+"salary": 112881356,
+"tenure": 5.1
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260327001677",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 25950665318,
+"operating": 33476983675,
+"revenue": 167018523235,
+"year": 2023
+},
+{
+"net": 30445827848,
+"operating": 41731827094,
+"revenue": 209223912826,
+"year": 2024
+},
+{
+"net": 54355239611,
+"operating": 71864575417,
+"revenue": 249839439037,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "01344831": {
@@ -73457,6 +76042,59 @@
 },
 "v": 3
 },
+"01511521": {
+"company": {
+"ceo": "박대성",
+"founded": "2020-10-27",
+"homepage": null,
+"industry_code": "64999",
+"market": "기타",
+"name": "키움에프앤아이 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-04-21",
+"rcept_no": "20260421000329",
+"title": "주요사항보고서(유상증자결정)"
+}
+],
+"employees": {
+"count": 37,
+"date": "2025-12-31",
+"rcept_no": "20260330001696",
+"salary": 103297297,
+"tenure": 2.3
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260330001696",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 7237975298,
+"operating": 10616428006,
+"revenue": 48747495391,
+"year": 2023
+},
+{
+"net": 13047100290,
+"operating": 16514190766,
+"revenue": 94320006447,
+"year": 2024
+},
+{
+"net": 20701199696,
+"operating": 25586295109,
+"revenue": 140426956266,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "01511743": {
 "company": {
 "ceo": "윤정훈",
@@ -76536,6 +79174,69 @@
 "finance": null,
 "v": 3
 },
+"01592447": {
+"company": {
+"ceo": "이석희, 이용욱, 김원기",
+"founded": "2021-10-01",
+"homepage": "https://www.sk-on.com",
+"industry_code": "28202",
+"market": "기타",
+"name": "에스케이온 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-09-29",
+"rcept_no": "20260929000464",
+"title": "채무인수결정"
+},
+{
+"date": "2026-05-21",
+"rcept_no": "20260521000466",
+"title": "[기재정정]타인을위한채무보증결정"
+},
+{
+"date": "2026-01-14",
+"rcept_no": "20260114000348",
+"title": "타인을위한채무보증결정"
+}
+],
+"employees": {
+"count": 3822,
+"date": "2025-12-31",
+"rcept_no": "20260316001423",
+"salary": 93362114,
+"tenure": 7.3
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260316001423",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -748136534000,
+"operating": -581824145000,
+"revenue": 12897212418000,
+"year": 2023
+},
+{
+"net": -2061685204000,
+"operating": -1086562303000,
+"revenue": 14034741024000,
+"year": 2024
+},
+{
+"net": -5364667636000,
+"operating": -273740603000,
+"revenue": 56747611548000,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "01593622": {
 "company": {
 "ceo": "유명호",
@@ -76928,6 +79629,53 @@
 "finance": null,
 "v": 3
 },
+"01602124": {
+"company": {
+"ceo": "김양택",
+"founded": "2021-12-01",
+"homepage": "https://www.skspecialty.com",
+"industry_code": "2012",
+"market": "기타",
+"name": "에스케이스페셜티 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 764,
+"date": "2025-12-31",
+"rcept_no": "20260331001813",
+"salary": 161243455,
+"tenure": 3.7
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331001813",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 82755285300,
+"operating": 147117123921,
+"revenue": 681745351648,
+"year": 2023
+},
+{
+"net": 31784246968,
+"operating": 119048066091,
+"revenue": 708408883050,
+"year": 2024
+},
+{
+"net": 41875593518,
+"operating": 84466557036,
+"revenue": 749391482881,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "01602452": {
 "company": {
 "ceo": "김병태",
@@ -77166,6 +79914,53 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"01620971": {
+"company": {
+"ceo": "이희근",
+"founded": "2022-03-02",
+"homepage": "https://www.posco.co.kr",
+"industry_code": "2411",
+"market": "기타",
+"name": "주식회사 포스코",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 17641,
+"date": "2025-12-31",
+"rcept_no": "20260312001382",
+"salary": 118125050,
+"tenure": 17.4
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260312001382",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1422212042252,
+"operating": 2305324664067,
+"revenue": 43135165095988,
+"year": 2023
+},
+{
+"net": 1078744000299,
+"operating": 1732152968970,
+"revenue": 44644092226032,
+"year": 2024
+},
+{
+"net": 1300557567229,
+"operating": 2226704111529,
+"revenue": 43559136166228,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "01622331": {
@@ -78759,6 +81554,50 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"01717903": {
+"company": {
+"ceo": "김건호",
+"founded": "2022-01-07",
+"homepage": "https://woorifni.co.kr",
+"industry_code": "64999",
+"market": "기타",
+"name": "우리금융에프앤아이 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 35,
+"date": "2025-12-31",
+"rcept_no": "20260327000927",
+"salary": 102885714,
+"tenure": 2.0
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260327000927",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 3866420752,
+"operating": 3851026702,
+"year": 2023
+},
+{
+"net": 13306232002,
+"operating": 12342709996,
+"year": 2024
+},
+{
+"net": 3594420669,
+"operating": 4818699807,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "01718762": {
@@ -82053,6 +84892,53 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"01857593": {
+"company": {
+"ceo": "홍순재",
+"founded": "2024-07-01",
+"homepage": "https://www.hanwhamomentum.com",
+"industry_code": "29299",
+"market": "기타",
+"name": "한화모멘텀 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-04-20",
+"rcept_no": "20260420000319",
+"title": "타인을위한채무보증결정"
+}
+],
+"employees": {
+"count": 632,
+"date": "2025-12-31",
+"rcept_no": "20260318000691",
+"salary": 94867089,
+"tenure": 9.7
+},
+"fetched": "2026-10-23",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318000691",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 378930204,
+"operating": 17350892405,
+"revenue": 307892541933,
+"year": 2024
+},
+{
+"net": -25278703344,
+"operating": -13321778351,
+"revenue": 397332981699,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "01859500": {
