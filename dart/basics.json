@@ -27659,6 +27659,22 @@
 "unlisted": true,
 "v": 3
 },
+"00187488": {
+"company": {
+"ceo": "김윤호",
+"founded": "1979-01-23",
+"homepage": "https://www.ksm.co.kr",
+"industry_code": "29199",
+"market": "기타",
+"name": "한국씰마스타주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
+"finance": null,
+"v": 3
+},
 "00189653": {
 "company": {
 "ceo": "이용호",
@@ -28094,6 +28110,129 @@
 },
 "v": 3
 },
+"00201733": {
+"company": {
+"ceo": "윤나라",
+"founded": "1991-04-18",
+"homepage": "https://www.tjmedia.co.kr",
+"industry_code": "265",
+"market": "코스닥",
+"name": "티제이미디어(주)",
+"stock_code": "032540"
+},
+"disclosures": [
+{
+"date": "2026-09-23",
+"rcept_no": "20260923900432",
+"title": "임시주주총회결과"
+},
+{
+"date": "2026-08-14",
+"rcept_no": "20260814901199",
+"title": "주주총회소집결의 (임시주주총회)"
+},
+{
+"date": "2026-08-14",
+"rcept_no": "20260814901143",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2026-07-09",
+"rcept_no": "20260709900349",
+"title": "투자판단관련주요경영사항 (신규 수익원 확보를 위한 알루미늄 원자재 사업 투자 계약체결)"
+},
+{
+"date": "2026-07-09",
+"rcept_no": "20260709900298",
+"title": "단기차입금증가결정"
+},
+{
+"date": "2026-03-24",
+"rcept_no": "20260324900216",
+"title": "기업가치제고계획(자율공시)"
+},
+{
+"date": "2026-03-23",
+"rcept_no": "20260323900919",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319901564",
+"title": "권리락 (무상증자)"
+},
+{
+"date": "2026-03-13",
+"rcept_no": "20260313900623",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-04",
+"rcept_no": "20260304900886",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2026-03-04",
+"rcept_no": "20260304900865",
+"title": "주권매매거래정지 (무상증자)"
+},
+{
+"date": "2026-03-04",
+"rcept_no": "20260304000946",
+"title": "주요사항보고서(무상증자결정)"
+},
+{
+"date": "2026-02-20",
+"rcept_no": "20260220900397",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-20",
+"rcept_no": "20260220900391",
+"title": "주주총회소집결의"
+},
+{
+"date": "2025-12-15",
+"rcept_no": "20251215901506",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 228,
+"date": "2025-12-31",
+"rcept_no": "20260313001177",
+"salary": 57710526,
+"tenure": 8.9
+},
+"fetched": "2026-10-24",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260313001177",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 4704446606,
+"operating": 6331171872,
+"revenue": 96398616294,
+"year": 2023
+},
+{
+"net": 4645604047,
+"operating": 4664208620,
+"revenue": 91871741553,
+"year": 2024
+},
+{
+"net": 3987130396,
+"operating": 3288098329,
+"revenue": 94434815353,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00203290": {
 "company": {
 "ceo": "윤상현",
@@ -28355,6 +28494,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00203874": {
+"company": {
+"ceo": "윤재홍",
+"founded": "1992-09-01",
+"homepage": null,
+"industry_code": "29132",
+"market": "기타",
+"name": "에드워드 코리아 (주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
 "finance": null,
 "v": 3
 },
@@ -36200,6 +36355,59 @@
 "unlisted": true,
 "v": 3
 },
+"00341916": {
+"company": {
+"ceo": "김해성",
+"founded": "1997-01-08",
+"homepage": "https://www.osstem.com",
+"industry_code": "27191",
+"market": "기타",
+"name": "오스템임플란트(주)",
+"stock_code": "048260"
+},
+"disclosures": [
+{
+"date": "2026-10-22",
+"rcept_no": "20261022000022",
+"title": "[첨부정정]주요사항보고서(자본으로인정되는채무증권발행결정)"
+}
+],
+"employees": {
+"count": 2981,
+"date": "2025-12-31",
+"rcept_no": "20260331003297",
+"salary": 64563234,
+"tenure": 5.5
+},
+"fetched": "2026-10-24",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331003297",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 159963716828,
+"operating": 242831271092,
+"revenue": 1208284611653,
+"year": 2023
+},
+{
+"net": 51624048885,
+"operating": 159836296972,
+"revenue": 1315548597918,
+"year": 2024
+},
+{
+"net": -14093777854,
+"operating": 80058383601,
+"revenue": 1332709719385,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00343224": {
 "company": {
 "ceo": "홍창선",
@@ -38677,6 +38885,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00369143": {
+"company": {
+"ceo": "조용수",
+"founded": "1992-10-28",
+"homepage": "https://www.kisvan.co.kr",
+"industry_code": "61299",
+"market": "기타",
+"name": "KIS정보통신주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
 "finance": null,
 "v": 3
 },
@@ -46495,6 +46719,22 @@
 },
 "v": 3
 },
+"00536383": {
+"company": {
+"ceo": "손병두",
+"founded": "2005-01-27",
+"homepage": "https://www.krx.co.kr",
+"industry_code": "66110",
+"market": "기타",
+"name": "(주)한국거래소",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
+"finance": null,
+"v": 3
+},
 "00536541": {
 "company": {
 "ceo": "최상운",
@@ -47423,6 +47663,22 @@
 },
 "v": 3
 },
+"00549192": {
+"company": {
+"ceo": "박용순",
+"founded": "2004-07-30",
+"homepage": null,
+"industry_code": "2622",
+"market": "기타",
+"name": "(주) 플렉시스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
+"finance": null,
+"v": 3
+},
 "00550994": {
 "company": {
 "ceo": "차근식, 남학현(각자 대표이사)",
@@ -48100,6 +48356,22 @@
 }
 ]
 },
+"v": 3
+},
+"00566269": {
+"company": {
+"ceo": "안재봉",
+"founded": "1999-05-17",
+"homepage": "https://www.cimon.com",
+"industry_code": "27216",
+"market": "기타",
+"name": "(주)싸이몬",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
+"finance": null,
 "v": 3
 },
 "00570846": {
@@ -65813,6 +66085,22 @@
 "finance": null,
 "v": 3
 },
+"01212213": {
+"company": {
+"ceo": "강석린",
+"founded": "2003-11-01",
+"homepage": null,
+"industry_code": "63120",
+"market": "기타",
+"name": "(주)커리어넷",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
+"finance": null,
+"v": 3
+},
 "01212921": {
 "company": {
 "ceo": "이승건",
@@ -74773,6 +75061,22 @@
 "finance": null,
 "v": 3
 },
+"01462960": {
+"company": {
+"ceo": "김홍선",
+"founded": "2000-07-04",
+"homepage": "https://www.geosr.com",
+"industry_code": "72129",
+"market": "기타",
+"name": "(주)지오시스템리서치",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
+"finance": null,
+"v": 3
+},
 "01463419": {
 "company": {
 "ceo": "나영채, 이진호",
@@ -75102,6 +75406,154 @@
 "employees": null,
 "fetched": "2026-10-21",
 "finance": null,
+"v": 3
+},
+"01472930": {
+"company": {
+"ceo": "전배문, 유용희",
+"founded": "2000-04-28",
+"homepage": "https://obzen.com",
+"industry_code": "58222",
+"market": "코스닥",
+"name": "오브젠 주식회사",
+"stock_code": "417860"
+},
+"disclosures": [
+{
+"date": "2026-09-28",
+"rcept_no": "20260928900308",
+"title": "[기재정정]감사보고서제출"
+},
+{
+"date": "2026-08-19",
+"rcept_no": "20260819900143",
+"title": "전환가액의조정 (제1회차)"
+},
+{
+"date": "2026-07-13",
+"rcept_no": "20260713900424",
+"title": "신주인수권행사가액의조정 (제2회차)"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327901533",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319902166",
+"title": "소속부변경"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312902269",
+"title": "[기재정정]주주총회소집결의"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312901275",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-03-06",
+"rcept_no": "20260306901621",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226900500",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2026-01-22",
+"rcept_no": "20260122900398",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2025-12-17",
+"rcept_no": "20251217900412",
+"title": "증권발행결과(자율공시) (제3자배정 유상증자)"
+},
+{
+"date": "2025-12-17",
+"rcept_no": "20251217000294",
+"title": "[첨부정정]주요사항보고서(회사합병결정)"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216900169",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-12-15",
+"rcept_no": "20251215901102",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-12-11",
+"rcept_no": "20251211900318",
+"title": "증권발행결과(자율공시) (제2회차 BW)"
+},
+{
+"date": "2025-12-10",
+"rcept_no": "20251210900328",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2025-12-02",
+"rcept_no": "20251202000294",
+"title": "[기재정정]주요사항보고서(타법인주식및출자증권양수결정)"
+},
+{
+"date": "2025-12-02",
+"rcept_no": "20251202000187",
+"title": "주요사항보고서(유상증자결정)"
+},
+{
+"date": "2025-12-02",
+"rcept_no": "20251202000182",
+"title": "주요사항보고서(신주인수권부사채권발행결정)"
+},
+{
+"date": "2025-11-19",
+"rcept_no": "20251119900341",
+"title": "전환청구권행사 (제1회차)"
+}
+],
+"employees": {
+"count": 183,
+"date": "2025-12-31",
+"rcept_no": "20260928000253",
+"salary": 68030328,
+"tenure": 5.7
+},
+"fetched": "2026-10-24",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260928000253",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -5409311254,
+"operating": -5830265264,
+"revenue": 16986316908,
+"year": 2023
+},
+{
+"net": -3283326948,
+"operating": -4149694322,
+"revenue": 15201656072,
+"year": 2024
+},
+{
+"net": -3427176644,
+"operating": 6365380,
+"revenue": 23411536664,
+"year": 2025
+}
+]
+},
 "v": 3
 },
 "01473717": {
@@ -75657,6 +76109,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01497540": {
+"company": {
+"ceo": "이재원,김승일",
+"founded": "2013-10-15",
+"homepage": null,
+"industry_code": "62021",
+"market": "기타",
+"name": "케이네트웍스(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
 "finance": null,
 "v": 3
 },
@@ -78669,6 +79137,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01582130": {
+"company": {
+"ceo": "김병석",
+"founded": "2017-08-03",
+"homepage": null,
+"industry_code": "47592",
+"market": "기타",
+"name": "주식회사 보탬",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
 "finance": null,
 "v": 3
 },
@@ -85634,6 +86118,22 @@
 "finance": null,
 "v": 3
 },
+"01900497": {
+"company": {
+"ceo": "송연실",
+"founded": "2016-05-11",
+"homepage": null,
+"industry_code": "46315",
+"market": "기타",
+"name": "주식회사 이앤케이",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
+"finance": null,
+"v": 3
+},
 "01901566": {
 "company": {
 "ceo": "황동연,김형준",
@@ -85746,6 +86246,22 @@
 "finance": null,
 "v": 3
 },
+"01912164": {
+"company": {
+"ceo": "한정현",
+"founded": "2013-03-05",
+"homepage": "https://www.epidgames.com",
+"industry_code": "582",
+"market": "기타",
+"name": "주식회사 에피드게임즈",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
+"finance": null,
+"v": 3
+},
 "01912979": {
 "company": {
 "ceo": "이수완",
@@ -85775,6 +86291,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01916063": {
+"company": {
+"ceo": "권기준",
+"founded": "2019-01-17",
+"homepage": "https://www.glowuprizz.com",
+"industry_code": "59111",
+"market": "기타",
+"name": "글로우업리즈 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-24",
 "finance": null,
 "v": 3
 },
