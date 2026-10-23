@@ -67,31 +67,27 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
     () => sortPostings((ui.sample ? sample : passed).filter((p) => matchesQuery(p, c[p.company], ui.query)), ui.sort, matches),
     [passed, sample, c, ui.query, ui.sort, ui.sample, matches],
   )
+  // 회사 목록: 기업 구분 필터에 맞는 회사 전부(공고가 없는 주요 기업 포함). 필터 통과 공고가 많은 순, 그다음 열린 공고가 많은 순.
+  // 검색은 회사 이름, 또는 필터 통과 공고 제목. 평가할 공고만 볼 때는 그 공고의 회사만
   const companies = useMemo(() => {
-    const by = new Map<string, Posting[]>()
-    for (const p of shown) by.set(p.company, [...(by.get(p.company) ?? []), p])
-    return [...by.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
-  }, [shown])
-  // 필터 통과 공고가 없는 회사: 기업 구분이 맞는 나머지 회사(공고가 없는 주요 기업 포함), 열린 공고가 많은 순
-  const others = useMemo(() => {
-    if (ui.sample || seg !== 'companies') return []
-    const listed = new Set(companies.map(([key]) => key))
+    if (seg !== 'companies') return []
+    const passedBy = new Map<string, Posting[]>()
+    for (const p of shown) passedBy.set(p.company, [...(passedBy.get(p.company) ?? []), p])
     const open = new Map<string, number>()
     for (const p of screen.postings) if (!p.noise) open.set(p.company, (open.get(p.company) ?? 0) + 1)
     const types = filters.company_types ?? []
     const q = ui.query.trim().toLowerCase()
     return Object.entries(c)
-      .filter(([key, co]) => !listed.has(key)
+      .filter(([key, co]) => passedBy.has(key) || (!ui.sample
         && (types.length === 0 || types.includes(co.type))
         && !(filters.exclude_companies ?? []).some((x) => x && co.name.includes(x))
-        && (!q || co.name.toLowerCase().includes(q)))
-      .map(([key, co]) => ({ key, co, open: open.get(key) ?? 0 }))
-      .sort((a, b) => b.open - a.open || a.co.name.localeCompare(b.co.name, 'ko'))
-  }, [ui.sample, ui.query, seg, companies, screen.postings, c, filters])
+        && (!q || co.name.toLowerCase().includes(q))))
+      .map(([key, co]) => ({ key, co, passed: passedBy.get(key) ?? [], open: open.get(key) ?? 0 }))
+      .sort((a, b) => b.passed.length - a.passed.length || b.open - a.open || a.co.name.localeCompare(b.co.name, 'ko'))
+  }, [seg, shown, screen.postings, c, filters, ui.query, ui.sample])
 
-  const total = seg === 'jobs' ? shown.length : companies.length + others.length
+  const total = seg === 'jobs' ? shown.length : companies.length
   const rest = Math.max(total - ui.limit, 0)
-  const othersShown = others.slice(0, Math.max(ui.limit - companies.length, 0))
 
   return (
     <div className="page">
@@ -136,22 +132,16 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
         {seg === 'jobs' && shown.slice(0, ui.limit).map((p) => (
           <JobRow key={p.id} p={p} c={c[p.company]} today={today} active={p.id === activeId} match={matches.get(p.id)} />
         ))}
-        {seg === 'companies' && companies.slice(0, ui.limit).map(([key, list]) => (
-          <a key={key} className="row" href={href.company(key)}>
-            <span className="row-main">
-              <span className="row-title">{c[key]?.name ?? key}</span>
-              <span className="row-company">{[c[key]?.group && `${c[key]?.group} 계열`, c[key]?.type].filter(Boolean).join(' · ')}</span>
-              <span className="row-meta"><span>{copy.jobs.openCount(list.length)}</span><span className="row-top">{list[0].title}</span></span>
-            </span>
-          </a>
-        ))}
-        {othersShown.length > 0 && <h2 className="sub-head list-sub">{copy.jobs.otherCompanies(others.length)}</h2>}
-        {othersShown.map(({ key, co, open }) => (
+        {seg === 'companies' && companies.slice(0, ui.limit).map(({ key, co, passed: list, open }) => (
           <a key={key} className="row" href={href.company(key)}>
             <span className="row-main">
               <span className="row-title">{co.name}</span>
               <span className="row-company">{[co.group && `${co.group} 계열`, co.type].filter(Boolean).join(' · ')}</span>
-              <span className="row-meta"><span>{open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen}</span></span>
+              <span className="row-meta">
+                <span>{[open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen, list.length > 0 && copy.jobs.passedCount(list.length)]
+                  .filter(Boolean).join(' · ')}</span>
+                {list.length > 0 && <span className="row-top">{list[0].title}</span>}
+              </span>
             </span>
           </a>
         ))}

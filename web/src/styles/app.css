@@ -118,7 +118,6 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .chip.selected { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
 .list-head { display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-sub); color: var(--sub); }
-.list-sub { margin: 20px 0 0; padding-bottom: 2px; }
 .list-head select { border: 0; background: transparent; color: var(--sub); font-size: var(--fs-sub); cursor: pointer; }
 
 .more-btn {
