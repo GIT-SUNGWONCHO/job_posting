@@ -284,8 +284,28 @@ def _weak(name: str, ctype: str, how: str) -> bool:
     return short_latin or (ctype == "외국계" and how == "bare")
 
 
+def _korea(key: str, name: str, idx: Index) -> list[dict[str, str]]:
+    """외국계의 한국 법인: 이름 + 코리아, 한국 + 이름(구글 → 구글코리아, 마이크로소프트 → 한국마이크로소프트).
+    2026-10-23 dart find로 본 외국계 한국 법인 이름이 대부분 이 두 모양이었다."""
+    out: list[dict[str, str]] = []
+    for base in dict.fromkeys(k for k in (company_key(_bare(name)), key) if k):
+        for k in (f"{base}코리아", f"한국{base}"):
+            out += [c for c in idx.literal.get(k) or [] if c not in out]
+    return out
+
+
 def match(key: str, name: str, idx: Index, ctype: str = "그 외") -> tuple[dict[str, str] | None, str]:
-    """(DART 회사, 어떻게). 이름이 같은 회사(Index.find)가 하나면 그것, 여럿이면 종목코드가 있는 곳이 하나일 때 그것.
+    """(DART 회사, 어떻게). 외국계는 이름으로 못 고르면 한국 법인 이름(_korea)이 하나일 때 그것("korea")."""
+    c, how = _match_name(key, name, idx, ctype)
+    if c is None and ctype == "외국계":
+        korea = _korea(key, name, idx)
+        if len(korea) == 1:
+            return korea[0], "korea"
+    return c, how
+
+
+def _match_name(key: str, name: str, idx: Index, ctype: str) -> tuple[dict[str, str] | None, str]:
+    """이름이 같은 회사(Index.find)가 하나면 그것, 여럿이면 종목코드가 있는 곳이 하나일 때 그것.
     아니면 잇지 않는다(잘못 잇는 것보다 낫다). 공고 키가 아닌 이름으로만 찾았고 믿기 어려우면(_weak) 종목코드가 있는
     후보만 본다. 여럿이라 못 고른 것("ambiguous")은 run이 _resolve로 한 번 더 고른다. 글자 그대로와 한글 읽기가
     다른 회사를 가리키면("mixed") 고르지 않는다."""
@@ -496,10 +516,11 @@ def annual_year(today: date) -> int:
     return today.year - 1 if (today.month, today.day) >= (4, 10) else today.year - 2
 
 
-MATCH_VERSION = 5  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다
+MATCH_VERSION = 6  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회사를 다시 잇는다
 # 2: 공고 이름의 한글 읽기·괄호 빼기, 지금 상장된 곳 고르기 3: DART 이름의 한글 읽기, 최근 공시를 낸 곳 고르기
 # 4: 리뷰(2026-10-22) — 믿기 어려운 대체 이름(_weak) 거르기, 최근 공시로 고르기는 대기업·공기업만, 글자까지 같은 이름 규칙 뺌
 # 5: 글자 그대로와 한글 읽기가 다른 회사면 잇지 않음(4의 "글자 그대로 먼저"가 RFHIC를 옛 법인으로 바꿨다)
+# 6: 외국계는 한국 법인 이름(구글코리아, 한국마이크로소프트)으로도 찾는다
 BASICS_VERSION = 3  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다
 # 2: 공시를 거르지 않고 40건 3: 영업수익도 매출 자리에(revenue_name). 2에서 매출액이 있던 회사는 다시 받지 않는다
 

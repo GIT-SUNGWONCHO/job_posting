@@ -66,7 +66,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
             <button type="button" className="text-link" onClick={() => { setFile(null); setAttempt((a) => a + 1) }}>{copy.load.retry}</button>
           </div>
         )}
-        {file && file !== 'failed' && <Overview basics={basics} />}
+        {file && file !== 'failed' && <Overview basics={basics} isPublic={c?.type === '공기업·공공기관'} />}
       </section>
 
       <section className="section">
@@ -95,10 +95,14 @@ function Source({ text, date, rceptNo }: { text: string; date?: string | null; r
     : <span className="source">{label}</span>
 }
 
-function Overview({ basics }: { basics: CompanyBasics | undefined }) {
+function Overview({ basics, isPublic }: { basics: CompanyBasics | undefined; isPublic: boolean }) {
   const dart = basics?.dart
   if (!dart) return <p className="note">{t.notChecked}</p>
-  if ('none' in dart) return <p className="not-found">{t.notFound(dart.none === 'ambiguous' || dart.none === 'mixed' ? t.ambiguous : t.noDart)}</p>
+  if ('none' in dart) {
+    // 공공기관은 대부분 DART가 아니라 알리오(공공기관 경영정보 공개)에 공시한다
+    const topic = dart.none === 'ambiguous' || dart.none === 'mixed' ? t.ambiguous : isPublic ? t.noDartPublic : t.noDart
+    return <p className="not-found">{t.notFound(topic)}</p>
+  }
   if ('pending' in dart) return <p className="note">{t.pending(dart.corpName)}</p>
   return <DartOverview d={dart} />
 }

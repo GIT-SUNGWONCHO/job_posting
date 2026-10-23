@@ -378,3 +378,20 @@ def test_major_candidates_skip_namesakes_and_funds():
     got = {c["name"]: (c["group"], c["type"]) for c in companies.major_candidates(rows)}
     assert got == {"삼성전자": ("삼성", "대기업"), "메리츠금융지주": ("메리츠", "대기업"), "HDC현대EP": ("HDC", "대기업"),
                    "한국전력공사": (None, "공기업·공공기관"), "태광산업": ("태광", "대기업")}
+
+
+def test_foreign_companies_try_korean_entity_names():
+    xml = """<result>
+<list><corp_code>1</corp_code><corp_name>구글코리아</corp_name><stock_code> </stock_code></list>
+<list><corp_code>2</corp_code><corp_name>한국마이크로소프트</corp_name><stock_code> </stock_code></list>
+<list><corp_code>3</corp_code><corp_name>테슬라</corp_name><stock_code> </stock_code></list>
+<list><corp_code>4</corp_code><corp_name>테슬라코리아</corp_name><stock_code> </stock_code></list>
+<list><corp_code>5</corp_code><corp_name>구글</corp_name><stock_code> </stock_code></list>
+</result>""".encode()
+    idx = dart.index(dart.parse_corp_codes(xml))
+    assert dart.match("구글google", "구글(Google)", idx, "외국계") == (idx.get("구글코리아")[0], "korea")
+    assert dart.match("마이크로소프트microsoft", "마이크로소프트(Microsoft)", idx, "외국계")[0]["corp_code"] == "2"
+    # 국내 동명 법인(주식회사 테슬라)이 아니라 한국 법인으로
+    assert dart.match("테슬라tesla", "테슬라(Tesla)", idx, "외국계")[0]["corp_code"] == "4"
+    # 외국계가 아니면 한국 법인 이름으로 찾지 않는다
+    assert dart.match("마이크로소프트", "마이크로소프트", idx, "그 외") == (None, "none")

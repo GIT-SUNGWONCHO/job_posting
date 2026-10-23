@@ -123,6 +123,7 @@ export const copy = {
     notFound: (topic: string) => `찾지 못함 · ${topic}`,
     noFinance: '실적, 직원 현황',
     noDart: 'DART 공시 정보',
+    noDartPublic: 'DART 공시 정보(공공기관은 알리오에 공시)',
     ambiguous: 'DART 공시 정보(같은 이름의 회사가 여럿)',
     pending: (name: string) => `DART에서 ${name}(으)로 찾았어요. 기본정보는 다음 수집 때 받아요`,
     notChecked: '아직 DART에서 찾아보지 않았어요. 다음 수집 때 찾아요',
