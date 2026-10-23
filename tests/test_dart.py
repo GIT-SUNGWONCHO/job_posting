@@ -319,3 +319,26 @@ def test_one_failing_company_does_not_stop_the_day(tmp_path, monkeypatch):
     corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
     assert out["failed"] == 1 and corps["삼성물산"]["corp_code"] is None
     assert corps["삼성전자"]["corp_code"] == "00126380" and out["fetched"] == 1
+
+
+def test_listed_file_is_written_once_a_week(tmp_path, monkeypatch):
+    # 상장사 목록은 고유번호 파일에서 종목코드가 있는 회사만, 7일마다 다시 쓴다(요청 없이 받아 둔 파일로)
+    monkeypatch.setenv("DART_API_KEY", "test-key")
+    monkeypatch.setattr(dart.time, "sleep", lambda s: None)
+    _state(tmp_path, [])
+    (tmp_path / "companies.json").write_text("{}", encoding="utf-8")
+    calls = []
+
+    def respond(name, params):
+        calls.append(name)
+        return _zip(CORPCODE_XML) if name == "corpCode.xml" else {"status": "013"}
+
+    out = dart.run(tmp_path, date(2026, 10, 21), session=FakeSession(respond), cache=tmp_path / "cache")
+    path = tmp_path / "dart" / "listed.json"
+    got = json.loads(path.read_text(encoding="utf-8"))
+    codes = {c for c, _, _ in got["corps"]}
+    assert got["updated"] == "2026-10-21" and out["listed"] == len(got["corps"])
+    assert "00126380" in codes and all(s for _, _, s in got["corps"])
+    assert not dart.listed_due(path, date(2026, 10, 27)) and dart.listed_due(path, date(2026, 10, 28))
+    out = dart.run(tmp_path, date(2026, 10, 22), session=FakeSession(respond), cache=tmp_path / "cache")
+    assert "listed" not in out and calls.count("corpCode.xml") == 1

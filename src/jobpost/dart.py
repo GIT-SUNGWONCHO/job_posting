@@ -558,6 +558,32 @@ def _save(path: Path, data: dict[str, Any]) -> None:
     os.replace(tmp, path)
 
 
+LISTED_DAYS = 7  # 상장사 목록(dart/listed.json)을 다시 쓰는 간격. 고유번호 파일을 받아 두는 기간과 같다
+
+
+def listed_due(path: Path, today: date) -> bool:
+    """상장사 목록 파일이 없거나 LISTED_DAYS일이 지났으면 다시 쓴다."""
+    try:
+        got = date.fromisoformat(json.loads(path.read_text(encoding="utf-8"))["updated"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return True
+    return got + timedelta(days=LISTED_DAYS) <= today
+
+
+def save_listed(path: Path, corps_all: list[dict[str, str]], today: date) -> int:
+    """고유번호 파일에서 종목코드가 있는 회사만 [고유번호, DART 이름, 종목코드]로 한 줄씩 남긴다.
+    상장 폐지돼도 종목코드가 남아 있어 지금 상장 여부는 기업개황(corp_cls)으로 따로 본다.
+    주요 기업(공고가 없어도 회사 목록에 두는 대기업 그룹 상장사)을 고르는 데 쓴다(companies.major_seeds)."""
+    rows = sorted(([c["corp_code"], c["corp_name"], c["stock_code"]] for c in corps_all if c["stock_code"]),
+                  key=lambda r: (r[1], r[0]))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    body = ",\n".join(json.dumps(r, ensure_ascii=False) for r in rows)
+    tmp.write_text(f'{{"updated": "{today.isoformat()}", "corps": [\n{body}\n]}}\n', encoding="utf-8")
+    os.replace(tmp, path)
+    return len(rows)
+
+
 def targets(state: dict[str, dict[str, Any]], registry_type: Any) -> list[tuple[str, str]]:
     """오늘 열린 국내 공고의 회사(키, 이름). 대기업·공기업·외국계 먼저, 그다음 공고가 많은 순."""
     counts: dict[str, int] = {}
@@ -632,6 +658,7 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                     minutes if minutes is not None else cfg.get("max_minutes"))
     corps_path = data_dir / "dart" / "corps.json"
     basics_path = data_dir / "dart" / "basics.json"
+    listed_path = data_dir / "dart" / "listed.json"
     corps: dict[str, Any] = _load(corps_path)
     basics: dict[str, Any] = _load(basics_path)
     store = Store(data_dir)
@@ -654,8 +681,11 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
 
     try:
         need = [(k, n) for k, n in todo if due_match(k)]
-        if need or find:
+        listed_old = listed_due(listed_path, today)
+        if need or find or listed_old:
             corps_all = corp_codes(client, cache, today)
+            if listed_old:
+                summary["listed"] = save_listed(listed_path, corps_all, today)
             idx = index(corps_all)
             by_code = {c["corp_code"]: c for c in corps_all}
             for word in find or []:
