@@ -128,6 +128,20 @@ export interface CompanyBasics {
   past?: PastPosting[]
   /** 마감된 공고 전체의 직무 유형별 수(분류 전은 none) */
   pastByJob?: Record<string, number>
+  /** 심층분석 중 가진 데이터로 만드는 모듈(src/jobpost/research.py) */
+  research?: { competitors?: Competitors; tools?: ToolsFound }
+}
+
+/** 경쟁사: DART 업종 코드가 같은 회사 중 매출이 큰 곳. rows 맨 앞은 이 회사(self) */
+export interface Competitors {
+  industry: string
+  rows: { name: string; key: string | null; self: boolean; year: number | null; revenue: number | null; margin: number | null }[]
+}
+
+/** 직무 환경·도구: 이 회사 공고 본문(postings건)에서 찾은 도구, 칸마다 공고 수 */
+export interface ToolsFound {
+  postings: number
+  slots: { name: string; items: { skill: string; count: number }[] }[]
 }
 
 export interface PastPosting {

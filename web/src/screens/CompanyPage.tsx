@@ -6,7 +6,8 @@ import { passes } from '../lib/filter'
 import { dartUrl, dateText, growth, money, pointChange, yearMonth } from '../lib/format'
 import { loadCompanies } from '../lib/load'
 import { goBack, href } from '../lib/route'
-import type { CompaniesFile, CompanyBasics, DartBasics, Filters, PastPosting, Screen } from '../lib/types'
+import { isStarred, useStars } from '../lib/stars'
+import type { CompaniesFile, CompanyBasics, Competitors, DartBasics, Filters, PastPosting, Screen, ToolsFound } from '../lib/types'
 
 const t = copy.company
 const PAST_SHOWN = 5
@@ -39,6 +40,8 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
   const basics: CompanyBasics | undefined = file && file !== 'failed' ? file.companies[companyKey] : undefined
   const dart = basics?.dart
   const listed = dart && 'market' in dart && dart.market ? t.market(dart.market) : null
+  const stars = useStars()
+  const on = isStarred(stars.state, companyKey)
 
   return (
     <div className={panel ? 'page detail panel' : 'page detail'}>
@@ -53,6 +56,12 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
           <h1>{c?.name ?? companyKey}</h1>
           <div className="page-sub">{[c?.group && `${c.group} 계열`, c?.type, listed].filter(Boolean).join(' · ')}</div>
         </div>
+        {stars.state !== undefined && stars.state !== 'failed' && (
+          <button type="button" className={on ? 'star-btn on' : 'star-btn'} aria-pressed={on}
+            aria-label={stars.state === 'missing' ? t.starsMissing : on ? t.unstar : t.star}
+            title={stars.state === 'missing' ? t.starsMissing : undefined}
+            disabled={stars.state === 'missing'} onClick={() => stars.toggle(companyKey)}>{on ? '★' : '☆'}</button>
+        )}
       </header>
 
       <section className="section">
@@ -84,6 +93,14 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
         {file && file !== 'failed' && <Past past={basics?.past ?? []} byJob={basics?.pastByJob ?? {}} since={file.since}
           jobs={filters.job_types ?? []} />}
       </section>
+
+      {file && file !== 'failed' && (
+        <section className="section deep">
+          <h2 className="group-title">{t.deep}</h2>
+          <CompetitorsView data={basics?.research?.competitors} hasDart={!!dart && 'corpCode' in dart} />
+          <ToolsView data={basics?.research?.tools} since={file.since} />
+        </section>
+      )}
     </div>
   )
 }
@@ -209,6 +226,62 @@ function Tile({ label, value, delta, fmt }: {
       <span className="tile-label">{label}</span>
       <b className="tile-value">{value === null || value === undefined ? '-' : fmt(value)}</b>
       {delta && <span className="tile-delta">{t.vsLastYear} {delta}</span>}
+    </div>
+  )
+}
+
+/** 경쟁사: 이 회사(굵게)와 같은 업종에서 매출이 큰 곳. 화면에 있는 회사는 회사 화면으로 */
+function CompetitorsView({ data, hasDart }: { data: Competitors | undefined; hasDart: boolean }) {
+  const h = t.competitorsHead
+  const others = data?.rows.filter((r) => !r.self) ?? []
+  return (
+    <div className="module">
+      <h3 className="sub-head">{t.competitors}</h3>
+      {!data || others.length === 0 ? (
+        <p className="not-found">{t.notFound(data || hasDart ? t.noCompetitors : t.noIndustry)}</p>
+      ) : (
+        <>
+          <table className="peer-table">
+            <thead><tr><th>{h.name}</th><th>{h.revenue}</th><th>{h.margin}</th></tr></thead>
+            <tbody>
+              {data.rows.map((r) => (
+                <tr key={r.name + (r.self ? '*' : '')} className={r.self ? 'self' : undefined}>
+                  <td>{r.key && !r.self ? <a className="plain-link" href={href.company(r.key)}>{r.name}</a> : r.name}</td>
+                  <td>{r.revenue === null ? '-' : `${money(r.revenue)}${r.year ? ` (${r.year})` : ''}`}</td>
+                  <td>{r.margin === null ? '-' : `${r.margin.toFixed(1)}%`}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Source text={t.sourceCompetitors(data.industry)} />
+        </>
+      )}
+    </div>
+  )
+}
+
+/** 직무 환경·도구: 칸(클라우드, 데이터 플랫폼, BI, AI 도구)마다 공고에 많이 나온 도구와 공고 수 */
+function ToolsView({ data, since }: { data: ToolsFound | undefined; since: string }) {
+  const any = data?.slots.some((s) => s.items.length > 0)
+  return (
+    <div className="module">
+      <h3 className="sub-head">{t.tools}</h3>
+      {!data || !any ? <p className="not-found">{t.notFound(t.noTools)}</p> : (
+        <>
+          <dl className="kv">
+            {data.slots.map((slot) => (
+              <div key={slot.name}>
+                <dt>{slot.name}</dt>
+                <dd className="tool-list">
+                  {slot.items.length === 0 ? <span className="muted">{t.toolsEmpty}</span>
+                    : slot.items.map((i) => <span key={i.skill} className="tool-chip">{i.skill} <b>{i.count}</b></span>)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <Source text={t.sourceTools(data.postings, dateText(since, true))} />
+        </>
+      )}
     </div>
   )
 }

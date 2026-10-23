@@ -1,0 +1,14 @@
+# 회사 리서치 심층분석 설정. 코드는 src/jobpost/research.py, 기준과 이유는 docs/content-rules.md "회사 리서치 모듈".
+
+# 경쟁사: DART 업종 코드(기업개황 induty_code)가 같은 회사 중 최근 매출이 큰 순으로 몇 곳.
+# 이 앱이 DART 기본정보를 받은 회사(공고 회사 + 주요 기업) 안에서만 찾는다.
+competitors: 2
+
+# 직무 환경·도구: 그 회사 공고 본문(열린 공고와 지난 공고)에서 찾은 도구. 이름은 스킬 사전(config/skills.yaml) 그대로.
+# 칸마다 공고에 많이 나온 순으로 max_per_slot개까지. 개념(ETL, 데이터 레이크, LLM 같은 것)은 도구가 아니라 넣지 않는다.
+max_per_slot: 6
+tools:
+  클라우드: [AWS, GCP, Azure, Kubernetes, Docker, Terraform]
+  데이터 플랫폼: [Spark, Kafka, Flink, Airflow, dbt, Hadoop, Databricks, Snowflake, BigQuery, Redshift, Trino, PostgreSQL, MySQL, Oracle, Elasticsearch]
+  BI: [Tableau, Power BI, Looker, Superset]
+  AI 도구: [PyTorch, TensorFlow, LangChain]

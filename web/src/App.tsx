@@ -9,6 +9,7 @@ import { useRoute } from './lib/route'
 import { AppsContext, loadApplications, type Application } from './lib/applications'
 import { loadFeedback, type Feedback } from './lib/feedback'
 import { loadMatches, type Match } from './lib/matches'
+import { StarsContext, loadStars, saveStar, type StarsState } from './lib/stars'
 import { loadFilters, saveFilters as saveRemoteFilters } from './lib/settings'
 import { readLocal, writeLocal } from './lib/storage'
 import { supabase } from './lib/supabase'
@@ -78,10 +79,11 @@ function Main({ screen }: { screen: Screen }) {
   const defaults = screen.defaultFilters
   // 예전에 저장한 필터에 없는 항목(새로 생긴 직무 유형 등)은 기본값으로 채운다
   const [filters, setFilters] = useState<Filters>(() => ({ ...defaults, ...(readLocal<Filters>(FILTER_KEY) ?? {}) }))
-  const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE, sample: false })
+  const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE, sample: false, starred: false })
   const [scored, setScored] = useState<Map<string, Match>>(new Map())
   const [feedback, setFeedback] = useState<Map<string, Feedback>>(new Map())
   const [apps, setApps] = useState<Map<string, Application>>(new Map())
+  const [stars, setStars] = useState<StarsState>(undefined)
   useEffect(() => {
     let alive = true
     loadMatches().then((m) => {
@@ -91,6 +93,7 @@ function Main({ screen }: { screen: Screen }) {
     })
     loadFeedback().then((f) => alive && setFeedback(f))
     loadApplications().then((a) => alive && setApps(a))
+    loadStars().then((s) => alive && setStars(s))
     return () => {
       alive = false
     }
@@ -102,6 +105,22 @@ function Main({ screen }: { screen: Screen }) {
     return out
   }, [scored, feedback])
   const onFeedback = (id: string, f: Feedback) => setFeedback((prev) => new Map(prev).set(id, f))
+  const starsValue = useMemo(() => ({
+    state: stars,
+    toggle: (key: string) => {
+      if (!(stars instanceof Set)) return
+      const on = !stars.has(key)
+      const flip = (prev: StarsState) => {
+        if (!(prev instanceof Set)) return prev
+        const next = new Set(prev)
+        if (next.has(key)) next.delete(key)
+        else next.add(key)
+        return next
+      }
+      setStars(flip)
+      saveStar(key, on).then((ok) => !ok && setStars(flip))
+    },
+  }), [stars])
   const onApp = (id: string, a: Application | null) => setApps((prev) => {
     const next = new Map(prev)
     if (a) next.set(id, a)
@@ -196,11 +215,13 @@ function Main({ screen }: { screen: Screen }) {
 
   return (
     <AppsContext.Provider value={apps}>
+      <StarsContext.Provider value={starsValue}>
       <div className={wide ? 'shell wide' : detail ? 'shell detail-only' : 'shell'}>
         {wide && <SideNav route={route} />}
         <main className="content">{body}</main>
         {!wide && !detail && <TabBar route={route} />}
       </div>
+      </StarsContext.Provider>
     </AppsContext.Provider>
   )
 }

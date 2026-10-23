@@ -14,7 +14,7 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-from . import career, config, dart, facts, jobtypes
+from . import career, config, dart, facts, jobtypes, research
 from .companies import CompanyRegistry, major_candidates
 from .normalize import career_text, clean_company, common_name, company_key
 from .store import Store
@@ -188,14 +188,24 @@ PAST_MAX = 50  # 회사마다 남길 지난 공고 수(최근 마감 순). 수�
 
 
 def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None = None) -> dict[str, Any]:
-    """회사 기본정보 파일: 오늘 화면에 있는 회사마다 DART 기본정보(dart.py가 data/dart/에 쌓은 것)와
-    이 앱이 수집한 지난 공고(마감된 국내 공고). 회사 화면을 열 때 한 번 받는다."""
+    """회사 기본정보 파일: 오늘 화면에 있는 회사마다 DART 기본정보(dart.py가 data/dart/에 쌓은 것),
+    이 앱이 수집한 지난 공고(마감된 국내 공고), 심층분석 중 가진 데이터로 만드는 모듈(research.py: 경쟁사, 직무 환경·도구).
+    회사 화면을 열 때 한 번 받는다."""
     today = today or date.today()
     corps = _read_json(data_dir / "dart" / "corps.json")
     basics = _read_json(data_dir / "dart" / "basics.json")
     store = Store(data_dir)
     keys = set(screen["companies"])
     majors = major_companies(data_dir, {p["company"] for p in screen["postings"]})
+    # DART 고유번호 → 화면 회사(경쟁사 줄에서 회사 화면으로 잇는다)
+    code_key: dict[str, str] = {}
+    for key in keys:
+        code = (corps.get(key) or {}).get("corp_code") or (majors.get(key) or {}).get("code")
+        if code:
+            code_key.setdefault(code, key)
+    code_name = {code: screen["companies"][key]["name"] for code, key in code_key.items()}
+    peers = research.Peers(basics)
+    texts = _company_texts(store, keys)
     past: dict[str, list[dict[str, Any]]] = {}
     for r in store.state.values():
         if not r.get("closed_on") or r.get("overseas") or r.get("dup_of") or r.get("noise"):
@@ -231,11 +241,43 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
             for x in rows:
                 by_job[x["jobType"] or "none"] = by_job.get(x["jobType"] or "none", 0) + 1
             item["pastByJob"] = by_job
+        deep: dict[str, Any] = {}
+        code = (item.get("dart") or {}).get("corpCode")
+        if code and code in basics:
+            comp = peers.competitors(code, code_name, code_key)
+            if comp:
+                deep["competitors"] = comp
+        found = research.tools(texts.get(key, []))
+        if found:
+            deep["tools"] = found
+        if deep:
+            item["research"] = deep
         if item:
             out[key] = item
     return {"version": COMPANIES_VERSION, "date": today.isoformat(), "since": min(
         (r.get("first_seen") for r in store.state.values() if r.get("first_seen")), default=today.isoformat()),
         "companies": out}
+
+
+def _company_texts(store: Store, keys: set[str]) -> dict[str, list[str]]:
+    """회사마다 이 앱이 모은 국내 공고(열린 것과 지난 것, 잡음 제외)의 본문. 같은 공고 묶음은 하나로."""
+    originals = store.load_postings()
+    details = store.load_details()
+    members: dict[str, list[dict[str, Any]]] = {}
+    for r in store.state.values():
+        if r.get("dup_of"):
+            members.setdefault(r["dup_of"], []).append(r)
+    out: dict[str, list[str]] = {}
+    for r in store.state.values():
+        if r.get("dup_of") or r.get("overseas") or r.get("noise"):
+            continue
+        key = r.get("company_key") or r.get("company", "")
+        if key not in keys:
+            continue
+        body = _body([r, *members.get(r["uid"], [])], originals, details)
+        if body:
+            out.setdefault(key, []).append(body["text"])
+    return out
 
 
 def _read_json(path: Path) -> dict[str, Any]:

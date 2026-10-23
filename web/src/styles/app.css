@@ -411,3 +411,22 @@ a.source:hover { text-decoration: underline; }
 .past-row + .past-row { border-top: 1px solid var(--line); }
 .past-date { width: 72px; }
 .past-actions { display: flex; gap: 16px; }
+
+/* 심층분석: 성격이 바뀌는 큰 묶음이라 위에 회색 띠 + 큰 제목 */
+.section.deep { border-top: var(--band-h) solid var(--band); display: flex; flex-direction: column; gap: 20px; }
+.group-title { margin: 0; padding-bottom: 12px; border-bottom: 1px solid var(--line); font-size: var(--fs-group); font-weight: var(--fw-title); }
+.module { display: flex; flex-direction: column; gap: 10px; }
+.module .sub-head { margin: 0; }
+.peer-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sub); font-variant-numeric: tabular-nums; }
+.peer-table th { text-align: left; font-weight: var(--fw-body); color: var(--sub); padding: 0 0 6px; }
+.peer-table td { padding: 8px 0; border-top: 1px solid var(--line); }
+.peer-table th:not(:first-child), .peer-table td:not(:first-child) { text-align: right; white-space: nowrap; padding-left: 12px; }
+.peer-table tr.self td { font-weight: var(--fw-item); }
+.tool-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.tool-chip { padding: 2px 8px; border-radius: 6px; background: var(--band); font-size: var(--fs-sub); }
+.tool-chip b { font-weight: var(--fw-body); color: var(--sub); }
+.star-btn { margin-left: auto; align-self: flex-start; width: 44px; height: 44px; border: 0; background: none; font-size: 26px; line-height: 1; color: var(--muted); cursor: pointer; }
+.star-btn.on { color: var(--accent); }
+.star-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+.star-mark { color: var(--accent); }
+
