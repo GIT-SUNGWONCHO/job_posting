@@ -602,9 +602,35 @@ def listed_due(path: Path, today: date) -> bool:
 def save_listed(path: Path, corps_all: list[dict[str, str]], today: date) -> int:
     """고유번호 파일에서 종목코드가 있는 회사만 [고유번호, DART 이름, 종목코드]로 한 줄씩 남긴다.
     상장 폐지돼도 종목코드가 남아 있어 지금 상장 여부는 기업개황(corp_cls)으로 따로 본다.
-    주요 기업(공고가 없어도 회사 목록에 두는 대기업 그룹 상장사)을 고르는 데 쓴다(companies.major_seeds)."""
-    rows = sorted(([c["corp_code"], c["corp_name"], c["stock_code"]] for c in corps_all if c["stock_code"]),
-                  key=lambda r: (r[1], r[0]))
+    주요 기업(공고가 없어도 회사 목록에 두는 대기업 그룹 회사)을 고르는 데 쓴다(companies.major_candidates)."""
+    rows = [[c["corp_code"], c["corp_name"], c["stock_code"]] for c in corps_all if c["stock_code"]]
+    return _save_rows(path, rows, today)
+
+
+def unlisted_filers(client: Client, today: date) -> list[list[str]]:
+    """사업보고서를 낸 비상장 회사(corp_cls E): 회사채를 낸 큰 비상장사 등(포스코이앤씨, SK에코플랜트).
+    사업보고서를 내므로 주요 계정이 있다. 회사 없이 공시를 찾으면 기간이 3개월까지라 3~5월(12월 결산 회사가 내는 때)만 본다.
+    [고유번호, DART 이름, ""]."""
+    year = annual_year(today) + 1
+    found: dict[str, str] = {}
+    page = 1
+    while page <= FILER_PAGES:
+        body = client.json("list.json", {"bgn_de": f"{year}0301", "end_de": f"{year}0531", "corp_cls": "E",
+                                         "pblntf_detail_ty": "A001", "page_no": page, "page_count": 100})
+        for r in (body or {}).get("list") or []:
+            if r.get("corp_code") and r.get("corp_name"):
+                found[r["corp_code"]] = r["corp_name"]
+        if page >= int((body or {}).get("total_page") or 0):
+            break
+        page += 1
+    return [[code, name, ""] for code, name in found.items()]
+
+
+FILER_PAGES = 40  # 비상장 사업보고서 목록을 받을 최대 쪽 수(쪽마다 100건)
+
+
+def _save_rows(path: Path, rows: list[list[str]], today: date) -> int:
+    rows = sorted(rows, key=lambda r: (r[1], r[0]))
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
     body = ",\n".join(json.dumps(r, ensure_ascii=False) for r in rows)
@@ -688,6 +714,7 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
     corps_path = data_dir / "dart" / "corps.json"
     basics_path = data_dir / "dart" / "basics.json"
     listed_path = data_dir / "dart" / "listed.json"
+    filers_path = data_dir / "dart" / "filers.json"
     corps: dict[str, Any] = _load(corps_path)
     basics: dict[str, Any] = _load(basics_path)
     store = Store(data_dir)
@@ -711,6 +738,8 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
     try:
         need = [(k, n) for k, n in todo if due_match(k)]
         listed_old = listed_due(listed_path, today)
+        if listed_due(filers_path, today):
+            summary["filers"] = _save_rows(filers_path, unlisted_filers(client, today), today)
         if need or find or listed_old:
             corps_all = corp_codes(client, cache, today)
             if listed_old:
@@ -756,9 +785,11 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
         seen: set[str] = set()
         # 공고가 들어온 회사 먼저, 그다음 공고가 없어도 회사 목록에 두는 주요 기업(상장 폐지된 곳은 기업개황만)
         queue = [(key, (corps.get(key) or {}).get("corp_code"), False) for key, _ in todo]
-        queue += [(c["name"], c["code"], True) for c in major_candidates(_load(listed_path).get("corps") or [])]
-        summary.update({"major": sum(1 for _, _, major in queue if major), "major_fetched": 0})
-        for key, code, major in queue:
+        rows = (_load(listed_path).get("corps") or []) + (_load(filers_path).get("corps") or [])
+        queue += [(c["name"], c["code"], bool(c["stock"])) for c in major_candidates(rows)]
+        summary.update({"major": len(queue) - len(todo), "major_fetched": 0})
+        for i, (key, code, listed_only) in enumerate(queue):
+            major = i >= len(todo)
             if not code or code in seen:
                 continue
             seen.add(code)
@@ -766,7 +797,7 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
             if got and got.get("v") == BASICS_VERSION and date.fromisoformat(got["fetched"]) + refresh > today:
                 continue
             try:
-                basics[code] = fetch(client, code, today, listed_only=major)
+                basics[code] = fetch(client, code, today, listed_only=major and listed_only)
                 summary["major_fetched" if major else "fetched"] += 1
             except DartError as e:
                 if isinstance(e, LimitReached):

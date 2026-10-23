@@ -230,7 +230,7 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
             return {"status": "000", "list": FIN_ROWS} if params["bsns_year"] == 2025 else {"status": "013"}
         if name == "empSttus.json":
             return {"status": "000", "list": [{"fo_bbm": "전체", "sexdstn": "남", "sm": "10"}]}
-        if name == "list.json" and params["corp_code"] == "02222222":
+        if name == "list.json" and params.get("corp_code") == "02222222":
             return {"status": "000", "list": [{"rcept_dt": "20260301", "report_nm": "감사보고서", "rcept_no": "1"}]}
         if name == "list.json":
             return {"status": "013", "message": "조회된 데이타가 없습니다."}
@@ -395,3 +395,35 @@ def test_foreign_companies_try_korean_entity_names():
     assert dart.match("테슬라tesla", "테슬라(Tesla)", idx, "외국계")[0]["corp_code"] == "4"
     # 외국계가 아니면 한국 법인 이름으로 찾지 않는다
     assert dart.match("마이크로소프트", "마이크로소프트", idx, "그 외") == (None, "none")
+
+
+def test_unlisted_filers_join_major_companies(tmp_path, monkeypatch):
+    # 사업보고서를 낸 비상장 회사도 그룹 규칙에 맞으면 주요 기업(포스코이앤씨). 상장 여부와 상관없이 기본정보를 다 받는다
+    monkeypatch.setenv("DART_API_KEY", "test-key")
+    monkeypatch.setattr(dart.time, "sleep", lambda s: None)
+    _state(tmp_path, [])
+    (tmp_path / "companies.json").write_text("{}", encoding="utf-8")
+    calls = []
+
+    def respond(name, params):
+        calls.append((name, params.get("corp_code"), params.get("corp_cls")))
+        if name == "corpCode.xml":
+            return _zip(CORPCODE_XML)
+        if name == "list.json" and params.get("corp_cls") == "E":
+            assert (params["bgn_de"], params["end_de"]) == ("20260301", "20260531")
+            return {"status": "000", "total_page": 1, "list": [
+                {"corp_code": "00111111", "corp_name": "포스코이앤씨"},
+                {"corp_code": "00222222", "corp_name": "작은회사"},
+                {"corp_code": "00333333", "corp_name": "삼성제일차유동화전문"}]}
+        if name == "company.json":
+            return {"status": "000", "corp_name": "x", "corp_cls": "E"}
+        return {"status": "013"}
+
+    out = dart.run(tmp_path, date(2026, 10, 23), session=FakeSession(respond), cache=tmp_path / "cache")
+    filers = json.loads((tmp_path / "dart" / "filers.json").read_text(encoding="utf-8"))["corps"]
+    assert out["filers"] == 3 and ["00111111", "포스코이앤씨", ""] in filers
+    basics = json.loads((tmp_path / "dart" / "basics.json").read_text(encoding="utf-8"))
+    # 비상장이어도 주요 계정까지 받는다(상장 폐지 회사처럼 기업개황에서 멈추지 않는다)
+    assert "00111111" in basics and not basics["00111111"].get("unlisted")
+    assert ("fnlttSinglAcnt.json", "00111111", None) in calls
+    assert "00222222" not in basics and "00333333" not in basics

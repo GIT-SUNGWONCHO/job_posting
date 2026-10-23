@@ -148,17 +148,21 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
 
 
 def major_companies(data_dir: Path, posting_keys: set[str]) -> dict[str, dict[str, Any]]:
-    """주요 기업(companies.major_candidates) 중 지금 상장된 곳: 기본정보를 받았고 상장 구분이 유가증권·코스닥·코넥스.
+    """주요 기업(companies.major_candidates) 중 기본정보를 받은 곳. 상장사 목록에서 온 곳은 지금 상장된 곳만(유가증권·코스닥·코넥스).
     공고가 들어온 회사와 키가 같거나 같은 DART 회사로 이어진 곳은 빼서 한 회사가 두 번 나오지 않게 한다.
     키 → {code, name, type, group}."""
     corps = _read_json(data_dir / "dart" / "corps.json")
     basics = _read_json(data_dir / "dart" / "basics.json")
-    listed = _read_json(data_dir / "dart" / "listed.json").get("corps") or []
+    rows = ((_read_json(data_dir / "dart" / "listed.json").get("corps") or [])
+            + (_read_json(data_dir / "dart" / "filers.json").get("corps") or []))
     taken = {(corps.get(k) or {}).get("corp_code") for k in posting_keys} - {None}
     out: dict[str, dict[str, Any]] = {}
-    for c in major_candidates(listed):
+    for c in major_candidates(rows):
         b = basics.get(c["code"]) or {}
-        if b.get("unlisted") or (b.get("company") or {}).get("market") not in dart.LISTED_MARKETS:
+        if not b or b.get("unlisted"):
+            continue
+        # 상장사 목록에서 온 곳은 지금 상장된 곳만. 사업보고서를 낸 비상장 회사는 그대로
+        if c["stock"] and (b.get("company") or {}).get("market") not in dart.LISTED_MARKETS:
             continue
         key = company_key(c["name"])
         if not key or key in posting_keys or key in out or c["code"] in taken:

@@ -52,21 +52,26 @@ def match_group(name: str) -> str | None:
 
 
 def major_candidates(listed: list[list[str]]) -> list[dict[str, str | None]]:
-    """주요 기업 후보: DART 상장사 목록(dart/listed.json의 [고유번호, DART 이름, 종목코드])에서 그룹 규칙에 맞는 곳(대기업)과
-    config/groups.yaml major.extra에 적은 곳. 상장 폐지된 곳도 섞여 있어 지금 상장 여부는 기업개황으로 따로 본다."""
+    """주요 기업 후보: DART 상장사 목록(dart/listed.json)과 사업보고서를 낸 비상장 회사(dart/filers.json, 종목코드 "")의
+    [고유번호, DART 이름, 종목코드]에서 그룹 규칙에 맞는 곳(대기업)과 config/groups.yaml major.extra에 적은 곳.
+    상장사 목록에는 상장 폐지된 곳도 섞여 있어 지금 상장 여부는 기업개황으로 따로 본다."""
     cfg = config.load("groups").get("major") or {}
     skip = re.compile(cfg["skip"]) if cfg.get("skip") else None
     extra = {name: ctype for ctype, names in (cfg.get("extra") or {}).items() for name in names or []}
     out: list[dict[str, str | None]] = []
-    for code, name, _stock in listed:
+    seen: set[str] = set()
+    for code, name, stock in listed:
+        if code in seen:
+            continue
+        seen.add(code)
         if skip and skip.search(name):
             continue
         if name in extra:
-            out.append({"code": code, "name": name, "type": extra[name], "group": None})
+            out.append({"code": code, "name": name, "type": extra[name], "group": None, "stock": stock})
             continue
         group = match_group(name)
         if group:
-            out.append({"code": code, "name": name, "type": CompanyType.LARGE.value, "group": group})
+            out.append({"code": code, "name": name, "type": CompanyType.LARGE.value, "group": group, "stock": stock})
     return out
 
 
