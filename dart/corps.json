@@ -718,6 +718,12 @@
 "mv": 6,
 "why": "none"
 },
+"skax애커튼파트너스": {
+"checked": "2026-10-25",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "sk바이오사이언스": {
 "checked": "2026-10-23",
 "corp_code": "01319899",
@@ -1174,6 +1180,12 @@
 },
 "공간인소프트": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"공간정보품질관리원": {
+"checked": "2026-10-25",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -5518,9 +5530,9 @@
 "why": "none"
 },
 "몽키소프트": {
-"checked": "2026-10-22",
+"checked": "2026-10-25",
 "corp_code": null,
-"mv": 5,
+"mv": 6,
 "why": "none"
 },
 "몽타": {
@@ -5799,6 +5811,12 @@
 },
 "바바와이에스": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"바삭": {
+"checked": "2026-10-25",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -9450,6 +9468,12 @@
 "mv": 6,
 "why": "none"
 },
+"아이피엘엠에스": {
+"checked": "2026-10-25",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "아임웹": {
 "checked": "2026-10-23",
 "corp_code": "01638590",
@@ -10415,6 +10439,14 @@
 "corp_code": null,
 "mv": 6,
 "why": "none"
+},
+"에쓰핀테크놀로지": {
+"checked": "2026-10-25",
+"corp_code": "01757381",
+"corp_name": "에쓰핀테크놀로지",
+"how": "name",
+"mv": 6,
+"stock_code": null
 },
 "에어빌리티": {
 "checked": "2026-10-23",
@@ -12389,6 +12421,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": "065370"
+},
+"위쉬정보기술": {
+"checked": "2026-10-25",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "위시드": {
 "checked": "2026-10-23",
@@ -15470,6 +15508,12 @@
 "mv": 6,
 "stock_code": null
 },
+"큐팁": {
+"checked": "2026-10-25",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "큐피스트": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -16994,11 +17038,11 @@
 "why": "none"
 },
 "포원시스템": {
-"checked": "2026-10-22",
+"checked": "2026-10-25",
 "corp_code": "01924938",
 "corp_name": "포원시스템",
 "how": "name",
-"mv": 5,
+"mv": 6,
 "stock_code": null
 },
 "포인드": {
@@ -17415,9 +17459,9 @@
 "why": "ambiguous"
 },
 "플렉스로직": {
-"checked": "2026-10-22",
+"checked": "2026-10-25",
 "corp_code": null,
-"mv": 5,
+"mv": 6,
 "why": "none"
 },
 "플렉시스": {

@@ -83299,6 +83299,22 @@
 "finance": null,
 "v": 3
 },
+"01757381": {
+"company": {
+"ceo": "이승근",
+"founded": "2020-07-07",
+"homepage": "https://spintech.co.kr",
+"industry_code": "46510",
+"market": "기타",
+"name": "주식회사 에쓰핀테크놀로지",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-25",
+"finance": null,
+"v": 3
+},
 "01759981": {
 "company": {
 "ceo": "김성환,고현석",
