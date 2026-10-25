@@ -83567,6 +83567,22 @@
 "finance": null,
 "v": 3
 },
+"01775226": {
+"company": {
+"ceo": "유해진, 홍승민",
+"founded": "2023-05-23",
+"homepage": null,
+"industry_code": "6202",
+"market": "기타",
+"name": "애커튼파트너스 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-26",
+"finance": null,
+"v": 3
+},
 "01782004": {
 "company": {
 "ceo": "빈준길, 김동현",
@@ -87233,6 +87249,22 @@
 ],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01988024": {
+"company": {
+"ceo": "정우석",
+"founded": "2021-03-22",
+"homepage": "https://spaceplanning.co.kr",
+"industry_code": "424",
+"market": "기타",
+"name": "주식회사 스페이스플래닝",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-26",
 "finance": null,
 "v": 3
 },

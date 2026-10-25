@@ -8297,6 +8297,14 @@
 "mv": 6,
 "why": "none"
 },
+"스페이스플래닝": {
+"checked": "2026-10-26",
+"corp_code": "01988024",
+"corp_name": "스페이스플래닝",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "스펙터": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -8899,6 +8907,12 @@
 "how": "name",
 "mv": 5,
 "stock_code": null
+},
+"씨피에스테크": {
+"checked": "2026-10-26",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "씨피엑스시스템즈": {
 "checked": "2026-10-23",
@@ -9804,6 +9818,14 @@
 "mv": 6,
 "stock_code": null
 },
+"애커튼파트너스": {
+"checked": "2026-10-26",
+"corp_code": "01775226",
+"corp_name": "애커튼파트너스",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "애플apple": {
 "checked": "2026-10-23",
 "corp_code": "00349200",
@@ -10058,6 +10080,12 @@
 },
 "에니아이": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"에듀메타": {
+"checked": "2026-10-26",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -11810,6 +11838,12 @@
 "mv": 6,
 "stock_code": null
 },
+"오릭슨": {
+"checked": "2026-10-26",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "오모션": {
 "checked": "2026-10-23",
 "corp_code": "01724161",
@@ -12161,6 +12195,14 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"우리은행": {
+"checked": "2026-10-26",
+"corp_code": "00254045",
+"corp_name": "우리은행",
+"how": "name",
+"mv": 6,
+"stock_code": "000030"
 },
 "우림아이씨티": {
 "checked": "2026-10-23",
@@ -17368,6 +17410,12 @@
 },
 "프리더스": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"프리미엄멀티샵": {
+"checked": "2026-10-26",
 "corp_code": null,
 "mv": 6,
 "why": "none"
