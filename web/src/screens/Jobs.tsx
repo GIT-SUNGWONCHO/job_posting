@@ -79,18 +79,23 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
     for (const p of screen.postings) if (!p.noise) open.set(p.company, (open.get(p.company) ?? 0) + 1)
     const types = filters.company_types ?? []
     const q = ui.query.trim().toLowerCase()
+    const nameHit = (name: string) => !q || name.toLowerCase().includes(q)
     return Object.entries(c)
-      .filter(([key]) => !ui.starred || isStarred(stars, key))
-      .filter(([key, co]) => passedBy.has(key) || (!ui.sample
-        && (types.length === 0 || types.includes(co.type))
-        && !(filters.exclude_companies ?? []).some((x) => x && co.name.includes(x))
-        && (!q || co.name.toLowerCase().includes(q))))
+      // 관심 회사만 볼 때는 기업 구분과 상관없이 ★한 회사 전부(칩의 수와 같게)
+      .filter(([key, co]) => ui.starred
+        ? isStarred(stars, key) && (passedBy.has(key) || nameHit(co.name))
+        : passedBy.has(key) || (!ui.sample
+          && (types.length === 0 || types.includes(co.type))
+          && !(filters.exclude_companies ?? []).some((x) => x && co.name.includes(x))
+          && nameHit(co.name)))
       .map(([key, co]) => ({ key, co, passed: passedBy.get(key) ?? [], open: open.get(key) ?? 0 }))
       .sort((a, b) => b.passed.length - a.passed.length || b.open - a.open || a.co.name.localeCompare(b.co.name, 'ko'))
   }, [seg, shown, screen.postings, c, filters, ui.query, ui.sample, ui.starred, stars])
 
   const total = seg === 'jobs' ? shown.length : companies.length
   const rest = Math.max(total - ui.limit, 0)
+  // 칩의 수는 화면에 있는 회사 중 ★한 곳(목록에서 빠진 회사의 ★는 세지 않는다)
+  const starredCount = stars instanceof Set ? [...stars].filter((key) => key in c).length : 0
 
   return (
     <div className="page">
@@ -109,7 +114,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
             </Chip>
           )}
           {seg === 'companies' && stars instanceof Set && (
-            <Chip selected={ui.starred} onClick={() => setUi({ ...ui, starred: !ui.starred, limit: PAGE })}>{copy.jobs.starredChip(stars.size)}</Chip>
+            <Chip selected={ui.starred} onClick={() => setUi({ ...ui, starred: !ui.starred, limit: PAGE })}>{copy.jobs.starredChip(starredCount)}</Chip>
           )}
           {!ui.sample && (
             <>
@@ -144,7 +149,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
               <span className="row-title">{isStarred(stars, key) && <span className="star-mark" aria-label={copy.company.starred}>★ </span>}{co.name}</span>
               <span className="row-company">{[co.group && `${co.group} 계열`, co.type].filter(Boolean).join(' · ')}</span>
               <span className="row-meta">
-                <span>{[open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen, list.length > 0 && copy.jobs.passedCount(list.length)]
+                <span>{[open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen, list.length > 0 && (ui.sample ? copy.jobs.sampleCount(list.length) : copy.jobs.passedCount(list.length))]
                   .filter(Boolean).join(' · ')}</span>
                 {list.length > 0 && <span className="row-top">{list[0].title}</span>}
               </span>

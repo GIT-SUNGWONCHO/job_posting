@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { copy } from './copy'
 import { SideNav, TabBar } from './components/Nav'
@@ -105,20 +105,24 @@ function Main({ screen }: { screen: Screen }) {
     return out
   }, [scored, feedback])
   const onFeedback = (id: string, f: Feedback) => setFeedback((prev) => new Map(prev).set(id, f))
+  // 저장 중인 회사의 ★는 다시 눌러도 무시한다(켜기·끄기 요청이 엇갈려 화면과 저장이 어긋나지 않게)
+  const starSaving = useRef(new Set<string>())
   const starsValue = useMemo(() => ({
     state: stars,
     toggle: (key: string) => {
-      if (!(stars instanceof Set)) return
+      if (!(stars instanceof Set) || starSaving.current.has(key)) return
       const on = !stars.has(key)
-      const flip = (prev: StarsState) => {
+      const put = (value: boolean) => setStars((prev) => {
         if (!(prev instanceof Set)) return prev
         const next = new Set(prev)
-        if (next.has(key)) next.delete(key)
-        else next.add(key)
+        if (value) next.add(key)
+        else next.delete(key)
         return next
-      }
-      setStars(flip)
-      saveStar(key, on).then((ok) => !ok && setStars(flip))
+      })
+      starSaving.current.add(key)
+      put(on)
+      // 실패하면 누르기 전 값으로 되돌린다(그사이 바뀐 상태를 한 번 더 뒤집지 않는다)
+      saveStar(key, on).then((ok) => { if (!ok) put(!on) }).finally(() => starSaving.current.delete(key))
     },
   }), [stars])
   const onApp = (id: string, a: Application | null) => setApps((prev) => {

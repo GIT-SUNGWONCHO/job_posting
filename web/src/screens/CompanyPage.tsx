@@ -55,6 +55,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
         <div>
           <h1>{c?.name ?? companyKey}</h1>
           <div className="page-sub">{[c?.group && `${c.group} 계열`, c?.type, listed].filter(Boolean).join(' · ')}</div>
+          {stars.state === 'missing' && <p className="note small">{t.starsMissing}</p>}
         </div>
         {stars.state !== undefined && stars.state !== 'failed' && (
           <button type="button" className={on ? 'star-btn on' : 'star-btn'} aria-pressed={on}

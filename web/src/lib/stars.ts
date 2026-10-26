@@ -18,7 +18,7 @@ export async function loadStars(): Promise<Exclude<StarsState, undefined>> {
   return new Set((data ?? []).map((r) => r.company_key as string))
 }
 
-/** ★를 켜거나 끈다. 저장되면 true */
+/** ★를 켜거나 끈다. 저장되면 true. 켜기는 insert만 쓴다(upsert는 UPDATE 권한이 필요하다). 이미 있으면(23505) 성공 */
 export async function saveStar(key: string, on: boolean): Promise<boolean> {
   if (!supabase) {
     const keys = new Set(readLocal<string[]>(LOCAL_KEY) ?? [])
@@ -31,10 +31,8 @@ export async function saveStar(key: string, on: boolean): Promise<boolean> {
     const { error } = await supabase.from('company_stars').delete().eq('company_key', key)
     return !error
   }
-  const { data } = await supabase.auth.getUser()
-  if (!data.user) return false
-  const { error } = await supabase.from('company_stars').upsert({ user_id: data.user.id, company_key: key })
-  return !error
+  const { error } = await supabase.from('company_stars').insert({ company_key: key })  // user_id는 표 기본값 auth.uid()
+  return !error || error.code === '23505'
 }
 
 export interface Stars {

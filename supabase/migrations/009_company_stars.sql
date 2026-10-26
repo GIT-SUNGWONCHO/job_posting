@@ -12,6 +12,7 @@ create table if not exists public.company_stars (
 alter table public.company_stars enable row level security;
 
 grant select, insert, delete on public.company_stars to authenticated;
+grant select on public.company_stars to service_role;
 
 drop policy if exists "본인 관심 회사 읽기" on public.company_stars;
 create policy "본인 관심 회사 읽기" on public.company_stars
