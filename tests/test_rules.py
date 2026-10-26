@@ -146,3 +146,13 @@ def test_group_rules():
     assert match_group("삼성제약") is None
     assert match_group("롯데이노베이트") == "롯데"
     assert match_group("롯데카드") is None
+
+
+def test_common_name_turns_korean_readings_of_group_names_into_latin():
+    from jobpost.normalize import common_name
+    assert common_name("에스케이온") == "SK온"
+    assert common_name("케이티앤지") == "KT&G" and common_name("케이티스카이라이프") == "KT스카이라이프"
+    assert common_name("에이치디씨랩스") == "HDC랩스" and common_name("에이치디현대오일뱅크") == "HD현대오일뱅크"
+    assert common_name("케이티") == "KT"  # 별칭이 먼저
+    assert common_name("삼성에스디에스") == "삼성SDS"
+    assert common_name("삼성생명보험") == "삼성생명" and common_name("현대엔지니어링") == "현대엔지니어링"

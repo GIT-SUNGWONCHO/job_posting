@@ -101,7 +101,7 @@ export const copy = {
     competitorsHead: { name: '회사', revenue: '매출', margin: '영업이익률' },
     noCompetitors: '같은 업종 회사(이 앱이 DART 정보를 받은 회사 안에서)',
     noIndustry: '경쟁사(DART 업종 정보 없음)',
-    sourceCompetitors: (industry: string) => `공시 · DART 업종 코드가 같은 회사(코드 ${industry}), 각 회사 최근 사업보고서`,
+    sourceCompetitors: (industry: string) => `공시 · DART 업종 코드가 같거나 그 안에 드는 회사(코드 ${industry}), 각 회사 최근 사업보고서`,
     tools: '직무 환경·도구',
     noTools: '공고 본문에 나온 도구',
     toolsEmpty: '공고에 없음',

@@ -248,7 +248,14 @@ function CompetitorsView({ data, hasDart }: { data: Competitors | undefined; has
               {data.rows.map((r) => (
                 <tr key={r.name + (r.self ? '*' : '')} className={r.self ? 'self' : undefined}>
                   <td>{r.key && !r.self ? <a className="plain-link" href={href.company(r.key)}>{r.name}</a> : r.name}</td>
-                  <td>{r.revenue === null ? '-' : `${money(r.revenue)}${r.year ? ` (${r.year})` : ''}`}</td>
+                  <td>
+                    {r.revenue === null ? '-' : r.rceptNo
+                      ? <a className="plain-link" href={dartUrl(r.rceptNo)} target="_blank" rel="noreferrer noopener">{money(r.revenue)}</a>
+                      : money(r.revenue)}
+                    {r.revenue !== null && (
+                      <span className="peer-sub">{[r.year, r.basis, r.revenueName === '영업수익' && t.operatingRevenue].filter(Boolean).join(' · ')}</span>
+                    )}
+                  </td>
                   <td>{r.margin === null ? '-' : `${r.margin.toFixed(1)}%`}</td>
                 </tr>
               ))}

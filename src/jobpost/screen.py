@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import logging
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,8 @@ from . import career, config, dart, facts, jobtypes, research
 from .companies import CompanyRegistry, major_candidates
 from .normalize import career_text, clean_company, common_name, company_key
 from .store import Store
+
+log = logging.getLogger(__name__)
 
 VERSION = 5  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career)
 BODY_MAX = 4000  # 본문 최대 글자 수
@@ -141,8 +144,14 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         "companies": companies,
         "postings": postings,
     }
-    # 공고가 없어도 회사 목록에 두는 주요 기업(커리어 지표·공고 수에는 들어가지 않는다)
-    for key, m in major_companies(data_dir, set(companies)).items():
+    # 공고가 없어도 회사 목록에 두는 주요 기업(커리어 지표·공고 수에는 들어가지 않는다).
+    # data/dart/ 파일이 깨진 날에도 공고·매칭·알림은 계속되게, 실패하면 주요 기업 없이 간다
+    try:
+        majors = major_companies(data_dir, set(companies))
+    except (OSError, ValueError) as e:
+        log.warning("주요 기업을 넣지 못함(data/dart/): %s", e)
+        majors = {}
+    for key, m in majors.items():
         companies[key] = {"name": m["name"], "type": m["type"], "group": m["group"]}
     return screen, {"version": VERSION, "date": today.isoformat(), "bodies": bodies}
 
@@ -153,21 +162,34 @@ def major_companies(data_dir: Path, posting_keys: set[str]) -> dict[str, dict[st
     키 → {code, name, type, group}."""
     corps = _read_json(data_dir / "dart" / "corps.json")
     basics = _read_json(data_dir / "dart" / "basics.json")
-    rows = ((_read_json(data_dir / "dart" / "listed.json").get("corps") or [])
-            + (_read_json(data_dir / "dart" / "filers.json").get("corps") or []))
     taken = {(corps.get(k) or {}).get("corp_code") for k in posting_keys} - {None}
+    # 예전에 공고로 들어와 같은 DART 회사와 이어진 회사 키(지금은 열린 공고가 없는 곳)가 있으면 그 키와 이름을 쓴다.
+    # 그래야 지난 공고와 ★가 한 회사에 모인다(BC카드 = 비씨카드). 키가 여럿이면 공고가 많은 키
+    registry = CompanyRegistry(data_dir / "companies.json")
+    counts: dict[str, int] = {}
+    for r in Store(data_dir).state.values():
+        k = r.get("company_key")
+        if k:
+            counts[k] = counts.get(k, 0) + 1
+    known: dict[str, str] = {}
+    for k, m in corps.items():
+        code = (m or {}).get("corp_code")
+        if code and counts.get(k, 0) > counts.get(known.get(code, ""), -1):
+            known[code] = k
     out: dict[str, dict[str, Any]] = {}
-    for c in major_candidates(rows):
+    for c in major_candidates(dart.major_rows(data_dir / "dart")):
         b = basics.get(c["code"]) or {}
         if not b or b.get("unlisted"):
             continue
         # 상장사 목록에서 온 곳은 지금 상장된 곳만. 사업보고서를 낸 비상장 회사는 그대로
         if c["stock"] and (b.get("company") or {}).get("market") not in dart.LISTED_MARKETS:
             continue
-        key = company_key(c["name"])
+        old = known.get(c["code"])
+        key = old or company_key(c["name"])
         if not key or key in posting_keys or key in out or c["code"] in taken:
             continue
-        out[key] = {"code": c["code"], "name": common_name(c["name"]), "type": c["type"], "group": c["group"]}
+        name = clean_company((registry.data.get(old) or {}).get("name") or "") if old else ""
+        out[key] = {"code": c["code"], "name": name or common_name(c["name"]), "type": c["type"], "group": c["group"]}
     return out
 
 
@@ -197,9 +219,13 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
     store = Store(data_dir)
     keys = set(screen["companies"])
     majors = major_companies(data_dir, {p["company"] for p in screen["postings"]})
-    # DART 고유번호 → 화면 회사(경쟁사 줄에서 회사 화면으로 잇는다)
+    # DART 고유번호 → 화면 회사(경쟁사 줄에서 회사 화면으로 잇는다). 같은 DART 회사에 이어진 회사 키가 여럿이면
+    # (기아·기아자동차) 열린 공고가 많은 키, 같으면 이름 순으로 정해 실행마다 바뀌지 않게
+    open_count: dict[str, int] = {}
+    for p in screen["postings"]:
+        open_count[p["company"]] = open_count.get(p["company"], 0) + 1
     code_key: dict[str, str] = {}
-    for key in keys:
+    for key in sorted(keys, key=lambda k: (-open_count.get(k, 0), k)):
         code = (corps.get(key) or {}).get("corp_code") or (majors.get(key) or {}).get("code")
         if code:
             code_key.setdefault(code, key)
@@ -244,7 +270,7 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
         deep: dict[str, Any] = {}
         code = (item.get("dart") or {}).get("corpCode")
         if code and code in basics:
-            comp = peers.competitors(code, code_name, code_key)
+            comp = peers.competitors(code, code_name, code_key, self_name=screen["companies"][key]["name"])
             if comp:
                 deep["competitors"] = comp
         found = research.tools(texts.get(key, []))
@@ -260,7 +286,8 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
 
 
 def _company_texts(store: Store, keys: set[str]) -> dict[str, list[str]]:
-    """회사마다 이 앱이 모은 국내 공고(열린 것과 지난 것, 잡음 제외)의 본문. 같은 공고 묶음은 하나로."""
+    """회사마다 이 앱이 모은 국내 공고(열린 것과 지난 것, 잡음·헤드헌터 공고 제외)의 본문. 같은 공고 묶음은 하나로.
+    헤드헌터 공고는 고객사 공고라 그 헤드헌터 회사의 환경이 아니다."""
     originals = store.load_postings()
     details = store.load_details()
     members: dict[str, list[dict[str, Any]]] = {}
@@ -269,7 +296,7 @@ def _company_texts(store: Store, keys: set[str]) -> dict[str, list[str]]:
             members.setdefault(r["dup_of"], []).append(r)
     out: dict[str, list[str]] = {}
     for r in store.state.values():
-        if r.get("dup_of") or r.get("overseas") or r.get("noise"):
+        if r.get("dup_of") or r.get("overseas") or r.get("noise") or r.get("headhunter"):
             continue
         key = r.get("company_key") or r.get("company", "")
         if key not in keys:

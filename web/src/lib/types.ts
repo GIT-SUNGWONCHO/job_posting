@@ -135,7 +135,11 @@ export interface CompanyBasics {
 /** 경쟁사: DART 업종 코드가 같은 회사 중 매출이 큰 곳. rows 맨 앞은 이 회사(self) */
 export interface Competitors {
   industry: string
-  rows: { name: string; key: string | null; self: boolean; year: number | null; revenue: number | null; margin: number | null }[]
+  rows: {
+    name: string; key: string | null; self: boolean; year: number | null; revenue: number | null; margin: number | null
+    /** 연결 · 별도, 매출 자리 계정(매출액 · 영업수익), 사업보고서 접수번호. 예전 파일에는 없다 */
+    basis?: string | null; revenueName?: string | null; rceptNo?: string | null
+  }[]
 }
 
 /** 직무 환경·도구: 이 회사 공고 본문(postings건)에서 찾은 도구, 칸마다 공고 수 */

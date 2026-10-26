@@ -252,10 +252,11 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
     assert got["finance"]["years"][-1]["revenue"] == 300870903000000
     assert got["employees"]["count"] == 10 and got["disclosures"] == []
 
-    # 다음 날: 이미 이은 회사·받은 기본정보는 다시 요청하지 않는다
+    # 다음 날: 이미 이은 회사·받은 기본정보는 다시 요청하지 않는다. 비상장 사업보고서 목록은 비어 있어(013) 쓰지 않았으니 다시 묻는다
     s2 = FakeSession(respond)
     again = dart.run(tmp_path, date(2026, 10, 22), session=s2, cache=tmp_path / "cache")
-    assert s2.calls == [] and again["linked"] == 2 and again["with_basics"] == 2
+    assert [(n, p.get("corp_cls")) for n, p in s2.calls] == [("list.json", "E")]
+    assert again["linked"] == 2 and again["with_basics"] == 2 and not (tmp_path / "dart" / "filers.json").exists()
 
     # 손으로 잇기: 받아 둔 고유번호 파일을 다시 쓰고 요청하지 않는다
     monkeypatch.setattr(dart.config, "load", lambda name: {"overrides": {"한빛": "(주)한빛", "없는회사": "카카오"}})
@@ -427,3 +428,57 @@ def test_unlisted_filers_join_major_companies(tmp_path, monkeypatch):
     assert "00111111" in basics and not basics["00111111"].get("unlisted")
     assert ("fnlttSinglAcnt.json", "00111111", None) in calls
     assert "00222222" not in basics and "00333333" not in basics
+
+
+def test_delisted_filers_and_empty_records_are_fetched_in_full(tmp_path, monkeypatch):
+    # 상장 폐지됐지만 사업보고서를 내는 회사(신한은행)는 상장사 목록과 비상장 목록에 다 있다. 비상장 줄을 먼저 써서 다 받는다.
+    # 상장 폐지로 보고 기업개황만 받아 둔 기록(unlisted)은 다시 받는다(2026-10-26 리뷰)
+    monkeypatch.setenv("DART_API_KEY", "test-key")
+    monkeypatch.setattr(dart.time, "sleep", lambda s: None)
+    _state(tmp_path, [])
+    (tmp_path / "companies.json").write_text("{}", encoding="utf-8")
+    dart_dir = tmp_path / "dart"
+    dart_dir.mkdir()
+    (dart_dir / "listed.json").write_text(json.dumps({"updated": "2026-10-26", "corps": [["00999999", "신한은행", "055550"]]}),
+                                         encoding="utf-8")
+    (dart_dir / "filers.json").write_text(json.dumps({"updated": "2026-10-26", "corps": [["00999999", "신한은행", ""]]}),
+                                         encoding="utf-8")
+    (dart_dir / "basics.json").write_text(json.dumps({"00999999": {
+        "company": {"market": "기타"}, "finance": None, "employees": None, "disclosures": [], "unlisted": True,
+        "fetched": "2026-10-25", "v": dart.BASICS_VERSION}}), encoding="utf-8")
+    calls = []
+
+    def respond(name, params):
+        calls.append((name, params.get("corp_code")))
+        if name == "corpCode.xml":
+            return _zip(CORPCODE_XML)
+        if name == "company.json":
+            return {"status": "000", "corp_name": "신한은행", "corp_cls": "E"}
+        return {"status": "013"}
+
+    dart.run(tmp_path, date(2026, 10, 26), session=FakeSession(respond), cache=tmp_path / "cache")
+    basics = json.loads((dart_dir / "basics.json").read_text(encoding="utf-8"))
+    assert not basics["00999999"].get("unlisted")
+    assert ("fnlttSinglAcnt.json", "00999999") in calls
+
+
+def test_filers_list_error_does_not_stop_the_day(tmp_path, monkeypatch):
+    monkeypatch.setenv("DART_API_KEY", "test-key")
+    monkeypatch.setattr(dart.time, "sleep", lambda s: None)
+    monkeypatch.setattr(companies, "major_candidates", lambda listed: [])
+    _state(tmp_path, [("삼성전자", "삼성전자")])
+    (tmp_path / "companies.json").write_text("{}", encoding="utf-8")
+
+    def respond(name, params):
+        if name == "corpCode.xml":
+            return _zip(CORPCODE_XML)
+        if name == "list.json" and params.get("corp_cls") == "E":
+            return {"status": "800", "message": "점검 중"}
+        if name == "company.json":
+            return {"status": "000", "corp_name": "삼성전자", "corp_cls": "Y"}
+        return {"status": "013"}
+
+    out = dart.run(tmp_path, date(2026, 10, 26), session=FakeSession(respond), cache=tmp_path / "cache")
+    corps = json.loads((tmp_path / "dart" / "corps.json").read_text(encoding="utf-8"))
+    assert out["stopped"] is None and out["failed"] == 1
+    assert corps["삼성전자"]["corp_code"] == "00126380" and out["fetched"] == 1

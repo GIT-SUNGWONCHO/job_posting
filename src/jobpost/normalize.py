@@ -24,12 +24,19 @@ def clean_company(name: str) -> str:
 
 
 def common_name(name: str) -> str:
-    """화면에 보여줄 보통 부르는 이름. 별칭(config/company_aliases.yaml)에 있으면 그 이름(케이티 → KT), 아니면 clean_company."""
+    """화면에 보여줄 보통 부르는 이름. 별칭(config/company_aliases.yaml)에 있으면 그 이름(케이티 → KT),
+    아니면 그룹 이름 앞부분의 한글 읽기를 영문으로(에스케이온 → SK온, display_prefixes), 그것도 아니면 clean_company."""
+    cfg = config.load("company_aliases")
     cleaned = clean_company(name)
     compact = PUNCT.sub("", cleaned)
-    for raw, canon in config.load("company_aliases").get("aliases", {}).items():
+    for raw, canon in (cfg.get("aliases") or {}).items():
         if compact == PUNCT.sub("", raw):
             return canon
+    if cleaned in (cfg.get("display_names") or {}):
+        return cfg["display_names"][cleaned]
+    for prefix, latin in (cfg.get("display_prefixes") or {}).items():
+        if cleaned.startswith(prefix):
+            return latin + cleaned[len(prefix):]
     return cleaned
 
 

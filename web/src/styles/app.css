@@ -422,6 +422,7 @@ a.source:hover { text-decoration: underline; }
 .peer-table td { padding: 8px 0; border-top: 1px solid var(--line); }
 .peer-table th:not(:first-child), .peer-table td:not(:first-child) { text-align: right; white-space: nowrap; padding-left: 12px; }
 .peer-table tr.self td { font-weight: var(--fw-item); }
+.peer-sub { display: block; font-size: var(--fs-min); font-weight: var(--fw-body); color: var(--sub); }
 .tool-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .tool-chip { padding: 2px 8px; border-radius: 6px; background: var(--band); font-size: var(--fs-sub); }
 .tool-chip b { font-weight: var(--fw-body); color: var(--sub); }

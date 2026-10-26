@@ -55,7 +55,8 @@ class Gemini:
             )
             if resp.status_code == 429 or resp.status_code >= 500:
                 last_error = f"{resp.status_code}"
-                time.sleep(20 * (attempt + 1))
+                if attempt < retries - 1:  # 마지막 시도 뒤에는 기다리지 않는다
+                    time.sleep(20 * (attempt + 1))
                 continue
             if resp.status_code != 200:
                 # 응답 본문에는 키가 없지만 길이는 줄인다
@@ -88,7 +89,8 @@ class Gemini:
             if resp.status_code == 429 or resp.status_code >= 500:
                 # 한도 오류 본문에 어느 한도(quotaMetric)인지 적혀 있다. 키는 들어 있지 않다
                 last_error = f"{resp.status_code} {resp.text[:2000]}"
-                time.sleep(20 * (attempt + 1))
+                if attempt < retries - 1:  # 마지막 시도 뒤에는 기다리지 않는다
+                    time.sleep(20 * (attempt + 1))
                 continue
             if resp.status_code != 200:
                 raise AIError(f"{resp.status_code} {resp.text[:300]}")

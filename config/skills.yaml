@@ -50,9 +50,9 @@ groups:
     - {name: ClickHouse, aliases: []}
     - {name: 벡터 DB, aliases: [Vector DB, Vector Database, 벡터 데이터베이스, Milvus, Pinecone, Qdrant, pgvector]}
   클라우드·인프라:
-    - {name: AWS, aliases: [S3, EMR, Glue, Athena, Kinesis, SageMaker]}
-    - {name: GCP, aliases: [Google Cloud, Dataflow, Dataproc, Vertex AI]}
-    - {name: Azure, aliases: [Synapse, Microsoft Fabric]}
+    - {name: AWS, aliases: [S3, Amazon EMR, AWS EMR, AWS Glue, Athena, Kinesis, SageMaker]}  # EMR·Glue 혼자는 다른 뜻(전자의무기록 등)이 많다(2026-10-26 리뷰)
+    - {name: GCP, aliases: [Google Cloud, Cloud Dataflow, Dataproc, Vertex AI]}
+    - {name: Azure, aliases: [Azure Synapse, Microsoft Fabric]}
     - {name: Kubernetes, aliases: [K8s, 쿠버네티스]}
     - {name: Docker, aliases: [도커, 컨테이너]}
     - {name: Terraform, aliases: [IaC]}

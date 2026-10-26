@@ -6,6 +6,7 @@ data/
   details/YYYY/MM/DD.jsonl.gz     그날 받은 공고 상세(본문). 한 번 쓰면 고치지 않는다
   companies.json                  회사별 기업 구분
   dart/corps.json, basics.json    회사 기본정보: DART 잇기 결과와 받은 기본정보(dart.py)
+  dart/listed.json, filers.json   주요 기업 후보: 상장사 목록, 사업보고서를 낸 비상장 회사(dart.py, 7일마다)
   runs/YYYY-MM-DD.json            실행 요약
 
 지난 공고는 소급해서 모을 수 없어서, 추이 분석은 이 파일들이 쌓인 날부터 가능하다.

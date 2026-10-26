@@ -37,3 +37,31 @@ def test_tools_count_postings_per_tool_by_slot():
     assert slots["데이터 플랫폼"] == [("Spark", 1), ("Airflow", 1)]  # 같은 수면 설정 순서
     assert slots["BI"] == [("Tableau", 1)] and slots["AI 도구"] == []  # Excel은 도구 칸에 없다
     assert research.tools([]) is None
+
+
+def test_competitors_match_industry_codes_of_different_lengths():
+    basics = {
+        "kt": _basics("(주)케이티", "612", 26, 1),
+        "skt": _basics("SK텔레콤(주)", "61220", 17, 1),
+        "lgu": _basics("(주)LG유플러스", "61220", 15, 1, basis="별도"),
+        "x": _basics("통신기타", "6", 99, 1),       # 짧은 코드(1자리)는 접두어로 맞추지 않는다
+        "y": _basics("다른업종", "61310", 50, 1),   # 612로 시작하지 않는다
+    }
+    got = research.Peers(basics).competitors("kt", {}, {}, n=2, self_name="KT")
+    assert [r["name"] for r in got["rows"]] == ["KT", "SK텔레콤", "LG유플러스"]
+    assert got["rows"][2]["basis"] == "별도" and got["rows"][1]["revenueName"] == "매출액"
+    # 화면 이름을 모르면 기업개황 법인명에서 법인 표기만 지운다
+    assert [r["name"] for r in research.Peers(basics).competitors("skt", {}, {}, n=2)["rows"]] == ["SK텔레콤", "케이티", "LG유플러스"]
+
+
+def test_tools_use_exact_product_names_not_dictionary_aliases():
+    texts = [
+        "EMR(전자의무기록) 데이터 분석, 임상 GCP 준수",        # 의료 문맥: AWS·GCP가 아니다
+        "Redash와 Metabase로 대시보드, OpenSearch 운영",       # 비슷한 도구를 묶지 않고 이름 그대로
+        "컨테이너 기반 IaC 경험, 스파크플러스 근무",             # 개념·주소는 도구가 아니다
+        "GCP BigQuery와 Docker",
+    ]
+    got = research.tools(texts)
+    found = {i["skill"]: i["count"] for s in got["slots"] for i in s["items"]}
+    assert found == {"GCP": 1, "Docker": 1, "BigQuery": 1, "Redash": 1, "Metabase": 1, "OpenSearch": 1}
+    assert research.tools(["엑셀 보고서"]) is None  # 찾은 도구가 없으면 모듈을 비운다

@@ -4,6 +4,7 @@ from datetime import date
 
 from jobpost import screen
 from jobpost.models import Posting, Source
+from jobpost.normalize import company_key
 from jobpost.store import Store
 
 
@@ -113,3 +114,61 @@ def test_major_companies_without_postings_join_the_company_list(tmp_path):
     assert set(built["companies"]) == {"네이버", "삼성생명", "kt"} and built["counts"]["companies"] == 1
     basics = screen.build_companies(tmp_path, built, today=day)
     assert basics["companies"]["삼성생명"]["dart"]["corpCode"] == "00126256"
+
+
+
+def _major_data(tmp_path, basics, listed, filers=(), corps=None, state=()):
+    s = Store(tmp_path)
+    s.ingest(date(2026, 10, 26), list(state), {"zighang"},
+             {f"zighang:{p.source_id}": {"company_key": company_key(p.company)} for p in state})
+    s.save()
+    d = tmp_path / "dart"
+    d.mkdir(exist_ok=True)
+    (d / "listed.json").write_text(json.dumps({"updated": "2026-10-26", "corps": list(listed)}), encoding="utf-8")
+    (d / "filers.json").write_text(json.dumps({"updated": "2026-10-26", "corps": list(filers)}), encoding="utf-8")
+    (d / "basics.json").write_text(json.dumps(basics), encoding="utf-8")
+    (d / "corps.json").write_text(json.dumps(corps or {}), encoding="utf-8")
+
+
+def _basic(market):
+    return {"company": {"market": market}, "finance": None, "employees": None, "disclosures": [], "fetched": "2026-10-26", "v": 3}
+
+
+def test_major_companies_keep_listed_and_filers_and_reuse_known_keys(tmp_path):
+    # 상장 폐지(기타)는 unlisted 표시가 없어도 뺀다. 사업보고서를 낸 비상장 회사는 그대로 넣는다.
+    # 예전 공고로 같은 DART 회사와 이어진 키가 있으면 그 키와 이름을 쓴다(지난 공고·★가 한 회사에 모이게)
+    old = Posting(source=Source.ZIGHANG, source_id="o", url="u", company="BC카드", title="데이터 분석")
+    _major_data(tmp_path,
+                {"1": _basic("기타"), "2": _basic("기타"), "3": _basic("유가증권")},
+                listed=[["1", "삼성디지털이미징", "108070"], ["3", "비씨카드", "999999"]],
+                filers=[["2", "포스코이앤씨", ""]],
+                corps={"bc카드": {"corp_code": "3", "corp_name": "비씨카드"}}, state=[old])
+    s = Store(tmp_path)
+    s.state["zighang:o"]["closed_on"] = "2026-10-25"
+    s.save()
+    built, _ = screen.build(tmp_path, today=date(2026, 10, 26))
+    assert "삼성디지털이미징" not in built["companies"]
+    assert built["companies"]["포스코이앤씨"]["group"] == "포스코"
+    assert built["companies"]["bc카드"]["name"] == "BC카드" and "비씨카드" not in built["companies"]
+    basics = screen.build_companies(tmp_path, built, today=date(2026, 10, 26))
+    assert len(basics["companies"]["bc카드"]["past"]) == 1
+
+
+def test_broken_dart_files_do_not_stop_the_screen_file(tmp_path):
+    p = Posting(source=Source.ZIGHANG, source_id="a", url="u", company="회사", title="데이터 엔지니어")
+    _major_data(tmp_path, {}, listed=[], state=[p])
+    (tmp_path / "dart" / "listed.json").write_text('{"updated": "2026-10-26", "corps": [', encoding="utf-8")
+    built, _ = screen.build(tmp_path, today=date(2026, 10, 26))
+    assert list(built["companies"]) == ["회사"]
+
+
+def test_company_texts_skip_headhunter_noise_and_overseas(tmp_path):
+    ps = [Posting(source=Source.ZIGHANG, source_id=i, url="u", company="회사", title="데이터",
+                  description="AWS와 Spark로 데이터 파이프라인을 만듭니다. " * 3) for i in "abcd"]
+    s = Store(tmp_path)
+    s.ingest(date(2026, 10, 26), ps, {"zighang"}, {f"zighang:{p.source_id}": {"company_key": "회사"} for p in ps})
+    s.state["zighang:b"]["headhunter"] = True
+    s.state["zighang:c"]["noise"] = "잡음"
+    s.state["zighang:d"]["overseas"] = True
+    s.save()
+    assert len(screen._company_texts(Store(tmp_path), {"회사"})["회사"]) == 1

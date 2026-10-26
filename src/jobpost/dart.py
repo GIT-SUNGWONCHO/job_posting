@@ -8,6 +8,9 @@ data 폴더(data 브랜치)
   dart/corps.json   회사 키 → DART 고유번호 잇기 결과 {"corp_code", "corp_name", "stock_code", "how", "checked"}
                     못 찾았으면 corp_code null과 why(none: 같은 이름 없음, ambiguous: 같은 이름 여럿)
   dart/basics.json  DART 고유번호 → 받은 기본정보 {"fetched", "company", "finance", "employees", "disclosures"}
+                    주요 기업 후보 중 상장 폐지된 곳은 기업개황만 받고 "unlisted": true
+  dart/listed.json  종목코드가 있는 회사 [고유번호, 이름, 종목코드](상장 폐지 포함), 7일마다
+  dart/filers.json  사업보고서를 낸 비상장 회사 [고유번호, 이름, ""](그해 3~5월 제출분), 7일마다
 
 opendart.fss.or.kr 개발가이드·FAQ와 공개된 실제 응답에서 확인한 것(2026-10-21):
 - 요청: https://opendart.fss.or.kr/api/<이름>.json?crtfc_key=<키>&... (GET). 오류도 HTTP 200에 {"status", "message"}.
@@ -629,6 +632,13 @@ def unlisted_filers(client: Client, today: date) -> list[list[str]]:
 FILER_PAGES = 40  # 비상장 사업보고서 목록을 받을 최대 쪽 수(쪽마다 100건)
 
 
+def major_rows(dart_dir: Path) -> list[list[str]]:
+    """주요 기업 후보를 고를 [고유번호, 이름, 종목코드] 줄: 사업보고서를 낸 비상장 회사(filers.json) 먼저, 그다음 상장사(listed.json).
+    상장 폐지됐지만 사업보고서를 내는 회사(신한은행, 국민은행)는 두 파일에 다 있다. 비상장 줄(종목코드 "")을 먼저 써야
+    상장 폐지로 보고 기업개황만 받는 일이 없다(2026-10-26 리뷰)."""
+    return (_load(dart_dir / "filers.json").get("corps") or []) + (_load(dart_dir / "listed.json").get("corps") or [])
+
+
 def _save_rows(path: Path, rows: list[list[str]], today: date) -> int:
     rows = sorted(rows, key=lambda r: (r[1], r[0]))
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -738,8 +748,6 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
     try:
         need = [(k, n) for k, n in todo if due_match(k)]
         listed_old = listed_due(listed_path, today)
-        if listed_due(filers_path, today):
-            summary["filers"] = _save_rows(filers_path, unlisted_filers(client, today), today)
         if need or find or listed_old:
             corps_all = corp_codes(client, cache, today)
             if listed_old:
@@ -779,23 +787,49 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                     corps[key] = {"corp_code": None, "why": how, "checked": day, "mv": MATCH_VERSION}
                     summary["unmatched_new"] += 1
 
+        if listed_due(filers_path, today):
+            # 공고 회사를 이은 뒤에 받는다. 이 목록을 못 받아도 기본정보 받기는 계속한다. 빈 결과로 쓸 만한 목록을 덮지 않는다(다음 실행에서 다시)
+            try:
+                rows = unlisted_filers(client, today)
+                if rows:
+                    summary["filers"] = _save_rows(filers_path, rows, today)
+            except LimitReached:
+                raise
+            except DartError as e:
+                summary["failed"] += 1
+                log.warning("DART 비상장 사업보고서 목록: %s", e)
         for got in basics.values():
             _upgrade(got)
         refresh = timedelta(days=cfg.get("refresh_days", 30))
         seen: set[str] = set()
         # 공고가 들어온 회사 먼저, 그다음 공고가 없어도 회사 목록에 두는 주요 기업(상장 폐지된 곳은 기업개황만)
         queue = [(key, (corps.get(key) or {}).get("corp_code"), False) for key, _ in todo]
-        rows = (_load(listed_path).get("corps") or []) + (_load(filers_path).get("corps") or [])
-        queue += [(c["name"], c["code"], bool(c["stock"])) for c in major_candidates(rows)]
+        queue += [(c["name"], c["code"], bool(c["stock"])) for c in major_candidates(major_rows(listed_path.parent))]
         summary.update({"major": len(queue) - len(todo), "major_fetched": 0})
+
+        def due(code: str, major: bool, listed_only: bool) -> int | None:
+            """받을 차례: 0 = 아직 없음(먼저), 1 = 오래됨, None = 받지 않음. 상장 폐지로 보고 기업개황만 받은 기록을
+            공고 회사나 비상장 사업보고서 회사로 다시 만나면 다시 받는다."""
+            got = basics.get(code)
+            if not got:
+                return 0
+            if got.get("unlisted") and not (major and listed_only):
+                return 0
+            if got.get("v") != BASICS_VERSION or date.fromisoformat(got["fetched"]) + refresh <= today:
+                return 1
+            return None
+
+        order = []
         for i, (key, code, listed_only) in enumerate(queue):
             major = i >= len(todo)
             if not code or code in seen:
                 continue
             seen.add(code)
-            got = basics.get(code)
-            if got and got.get("v") == BASICS_VERSION and date.fromisoformat(got["fetched"]) + refresh > today:
-                continue
+            rank = due(code, major, listed_only)
+            if rank is not None:
+                order.append((rank, i, key, code, major, listed_only))
+        # 처음 받는 회사를 갱신보다 먼저(30일마다 갱신이 몰리는 날 새 공고 회사가 밀리지 않게). 같은 차례 안에서는 큐 순서
+        for _, _, key, code, major, listed_only in sorted(order):
             try:
                 basics[code] = fetch(client, code, today, listed_only=major and listed_only)
                 summary["major_fetched" if major else "fetched"] += 1
