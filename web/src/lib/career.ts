@@ -2,7 +2,7 @@
 // 계산법은 docs/content-rules.md "커리어 지표"에 적은 것과 같게 둔다(바꾸면 그 문서도 고친다).
 import { months, type Profile } from './profile'
 import type { Match } from './matches'
-import type { CareerBucket, CareerMetrics, JobType, Posting, ProfileOptions } from './types'
+import type { CareerBucket, CareerMetrics, Filters, JobType, Posting, ProfileOptions } from './types'
 
 export const BUCKETS: CareerBucket[] = ['0-3', '3-7', '7-12', '12+', 'any']
 /** 스킬 적합도를 셀 때 보는 요구 스킬 수(공고 수 많은 순) */
@@ -20,6 +20,14 @@ const WEEKLY_OVER = 60
 export interface Slice {
   jobs: string[] | null
   ctypes: string[] | null
+}
+
+/** 내 직무(필터의 직무 유형 중 커리어 방향인 것, 비면 방향 전부)와 내 기업 구분(비면 전부).
+ * 아침 알림의 이번 주 커리어와 같은 기준(src/jobpost/career.py my_slice) */
+export function mySlice(jobTypes: JobType[], filters: Pick<Filters, 'job_types' | 'company_types'>): { jobs: string[]; ctypes: string[] | null } {
+  const direction = jobTypes.filter((j) => j.direction !== false).map((j) => j.id)
+  const mine = (filters.job_types ?? []).filter((id) => direction.includes(id))
+  return { jobs: mine.length ? mine : direction, ctypes: filters.company_types?.length ? filters.company_types : null }
 }
 
 function inSlice(key: string, s: Slice): boolean {

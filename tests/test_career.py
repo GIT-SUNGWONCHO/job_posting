@@ -50,3 +50,19 @@ def test_duplicate_group_uses_earliest_first_seen_and_stays_open_while_any_membe
     out = career.build(state, Registry(), [], {}, {}, date(2026, 10, 15))
     assert out["series"]["data_eng|대기업"] == {"open": [1, 1, 1], "new": [None, 0, 0]}
     assert "Airflow" in out["dictionary"]
+
+
+def test_weekly_compares_the_last_seven_days_with_the_seven_before_once_both_are_whole():
+    days = [f"2026-10-{d:02d}" for d in range(13, 28)]  # 15일: 첫날을 빼고 7일 + 7일
+    metrics = {"days": days, "series": {
+        "data_eng|대기업": {"new": [None] + [1] * 7 + [2] * 7, "open": [5] * 15},
+        "data_eng|그 외": {"new": [None] + [9] * 14, "open": [9] * 15},  # 기업 구분 밖
+        "labeling|대기업": {"new": [None] + [9] * 14, "open": [9] * 15},  # 커리어 방향이 아닌 직무
+    }}
+    types = [{"id": "data_eng"}, {"id": "ai_eng"}, {"id": "labeling", "direction": False}]
+    jobs, ctypes = career.my_slice({"job_types": ["data_eng", "labeling"], "company_types": ["대기업"]}, types)
+    assert (jobs, ctypes) == (["data_eng"], ["대기업"])
+    assert career.weekly(metrics, jobs, ctypes) == {"days": 7, "new": 14, "prev": 7, "open": 5}
+    short = {"days": days[:14], "series": {k: {"new": v["new"][:14], "open": v["open"][:14]} for k, v in metrics["series"].items()}}
+    assert career.weekly(short, jobs, ctypes)["prev"] is None  # 앞 7일이 첫날에 걸리면 비교하지 않는다
+    assert career.my_slice({}, types) == (["data_eng", "ai_eng"], None)  # 필터가 없으면 커리어 방향 직무 전부

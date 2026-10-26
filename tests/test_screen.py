@@ -44,6 +44,16 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
     assert p["sources"][1]["url"] == "https://r/1"
     assert built["companies"]["회사"] == {"name": "회사", "type": "그 외", "group": None}
     assert built["counts"] == {"open": 1, "new": 1, "companies": 1}
+    assert built["career"]["days"] == ["2026-10-13"] and "current" not in built["career"]  # 날짜별 공고 수만(아침 알림)
+    assert built["collection"] is None  # 수집 요약이 아직 없다
+
+    s.save_run(day, {"date": "2026-10-13", "finished": "2026-10-13T04:40:00", "new": 3, "closed": 1, "open_unique": 2,
+                     "sources": {"zighang": {"in_scope": 10, "complete": True, "new": 2, "closed": 1, "error_count": 0},
+                                 "saramin": {"in_scope": 5, "complete": False, "new": 1, "closed": 0, "errors": ["x"]}}})
+    built, _ = screen.build(tmp_path, today=day)
+    assert built["collection"]["finished"] == "2026-10-13T04:40:00"
+    assert built["collection"]["sources"][1] == {"id": "saramin", "name": "사람인", "inScope": 5, "complete": False,
+                                                 "new": 1, "closed": 0, "errors": 1}
 
     out = screen.write(built, tmp_path / "out" / "screen.json.gz")
     with gzip.open(out, "rt", encoding="utf-8") as f:

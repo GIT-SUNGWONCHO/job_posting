@@ -3,7 +3,7 @@ import { copy } from '../copy'
 import { BarList, ColumnChart, PositionMap } from '../components/charts'
 import { Chip, Empty, SectionTitle } from '../components/ui'
 import {
-  BUCKETS, bins, bucketOf, currentOf, gaps, jobYears, matchAverages, mySkills, otherDirections, periods, periodStats,
+  BUCKETS, bins, bucketOf, currentOf, gaps, jobYears, matchAverages, mySkills, mySlice, otherDirections, periods, periodStats,
   positions, roleToJob, strengths, sumSeries, targetJobs, type Position, type Slice,
 } from '../lib/career'
 import { dateText, monthOf, signed } from '../lib/format'
@@ -52,8 +52,7 @@ export function Career({ screen, seg, filters, matches, today }: {
   const direction = screen.jobTypes.filter((j) => j.direction !== false)
   const myJobs = (filters.job_types ?? []).filter((id) => direction.some((j) => j.id === id))
   // 직무 필터가 비면 커리어 방향인 직무 전부(라벨링·데이터 아닌 직무는 뺀다)
-  const myJobsOrAll = myJobs.length ? myJobs : direction.map((j) => j.id)
-  const ctypes = filters.company_types?.length ? filters.company_types : null
+  const { jobs: myJobsOrAll, ctypes } = mySlice(screen.jobTypes, filters)
   const mine = useMemo(() => mySkills(profile ?? null), [profile])
   const toJob = useMemo(() => roleToJob(screen.profileOptions, screen.jobTypes), [screen])
   const pos = useMemo(() => {

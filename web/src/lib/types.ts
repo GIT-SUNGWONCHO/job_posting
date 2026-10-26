@@ -92,8 +92,30 @@ export interface Screen {
   sample?: string[]
   /** 커리어 탭 시장 지표(src/jobpost/career.py). 예전 파일에는 없다 */
   career?: CareerMetrics | null
+  /** 마지막 수집 요약(관리 화면 수집 현황, v6부터). 아직 없으면 null */
+  collection?: Collection | null
+  /** 아침 알림 기본값과 고를 수 있는 값(config/notify.yaml, v6부터) */
+  notify?: NotifyDefaults
   companies: Record<string, Company>
   postings: Posting[]
+}
+
+export interface Collection {
+  date: string
+  /** 끝난 시각(한국 시간, 2026-10-26T06:58:08) */
+  finished: string | null
+  new: number | null
+  closed: number | null
+  openUnique: number | null
+  /** complete: 끝까지 받았는지(일부만 받은 날은 그 수집처 공고를 내려간 공고로 처리하지 않는다) */
+  sources: { id: string; name: string; inScope: number | null; complete: boolean; new: number | null; closed: number | null; errors: number }[]
+}
+
+export interface NotifyDefaults {
+  channels: string[]
+  top: number
+  soonMinScore: number
+  choices: { top: number[]; soonMinScore: number[] }
 }
 
 /** 연차 구간: 최소 경력 0~3년 미만, 3~7, 7~12, 12년 이상, 연차 무관 */

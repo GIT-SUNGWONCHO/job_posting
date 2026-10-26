@@ -181,7 +181,7 @@ function Main({ screen }: { screen: Screen }) {
   let detail = false
   switch (route.name) {
     case 'report':
-      body = <Report screen={screen} passed={passed} today={today} matches={matches} />
+      body = <Report screen={screen} passed={passed} today={today} matches={matches} filters={filters} />
       break
     case 'jobs':
       body = jobs(route.seg)
@@ -209,7 +209,7 @@ function Main({ screen }: { screen: Screen }) {
       body = <Apply screen={screen} apps={apps} today={today} onApp={onApp} />
       break
     case 'admin':
-      body = <Admin />
+      body = <Admin screen={screen} today={today} />
       break
     case 'profile':
       detail = !wide

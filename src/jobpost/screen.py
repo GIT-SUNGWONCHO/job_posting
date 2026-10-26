@@ -15,14 +15,14 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-from . import career, config, dart, facts, jobtypes, research
+from . import career, config, dart, facts, jobtypes, notify, research
 from .companies import CompanyRegistry, major_candidates
 from .normalize import career_text, clean_company, common_name, company_key
 from .store import Store
 
 log = logging.getLogger(__name__)
 
-VERSION = 5  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career)
+VERSION = 6  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값(collection, notify)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
 # 본문을 고르는 순서: 리멤버 원문 > 직행이 정리한 요약 > 사람인 원문
@@ -62,7 +62,8 @@ def _body(members: list[dict[str, Any]], originals: dict[str, dict[str, Any]],
 
 
 def build(data_dir: Path, today: date | None = None, with_career: bool = False) -> tuple[dict[str, Any], dict[str, Any]]:
-    """(화면용 파일, 본문 파일). with_career: 커리어 지표까지(본문 스킬을 다 찾느라 20초쯤 더 걸려 화면용 파일을 올릴 때만)."""
+    """(화면용 파일, 본문 파일). with_career: 커리어 지표의 연차·스킬까지(본문 스킬을 다 찾느라 20초쯤 더 걸려 화면용 파일을
+    올릴 때만). 아니면 커리어 지표는 날짜별 공고 수만(아침 알림의 이번 주 커리어)."""
     today = today or date.today()
     store = Store(data_dir)
     registry = CompanyRegistry(data_dir / "companies.json")
@@ -140,7 +141,10 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         # 기준 샘플(config/match_sample.yaml): 화면의 "평가할 공고"
         "sample": [p["id"] for p in config.load("match_sample").get("postings") or []],
         # 커리어 탭 시장 지표(career.py): 날짜별 공고 수, 지금 열린 공고의 연차·스킬
-        "career": career.build(store.state, registry, postings, companies, bodies, today) if with_career else None,
+        "career": career.build(store.state, registry, postings, companies, bodies, today, with_current=with_career),
+        # 관리 화면: 마지막 수집 요약(data/runs/), 아침 알림 기본값과 고를 수 있는 값(config/notify.yaml)
+        "collection": collection(data_dir),
+        "notify": notify.screen_defaults(),
         "companies": companies,
         "postings": postings,
     }
@@ -154,6 +158,23 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
     for key, m in majors.items():
         companies[key] = {"name": m["name"], "type": m["type"], "group": m["group"]}
     return screen, {"version": VERSION, "date": today.isoformat(), "bodies": bodies}
+
+
+def collection(data_dir: Path) -> dict[str, Any] | None:
+    """마지막 수집 요약(runs/날짜.json)에서 화면에 보일 것만: 날짜, 끝난 시각, 수집처마다 받은 수·끝까지 받았는지·새 공고·내려간 공고."""
+    paths = sorted((data_dir / "runs").glob("*.json"))
+    if not paths:
+        return None
+    try:
+        run = json.loads(paths[-1].read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        log.warning("수집 요약을 읽지 못함(%s): %s", paths[-1].name, e)
+        return None
+    sources = [{"id": k, "name": SOURCE_NAMES.get(k, k), "inScope": v.get("in_scope"), "complete": bool(v.get("complete")),
+                "new": v.get("new"), "closed": v.get("closed"), "errors": v.get("error_count", len(v.get("errors") or []))}
+               for k, v in (run.get("sources") or {}).items()]
+    return {"date": run.get("date") or paths[-1].stem, "finished": run.get("finished"), "sources": sources,
+            "new": run.get("new"), "closed": run.get("closed"), "openUnique": run.get("open_unique")}
 
 
 def major_companies(data_dir: Path, posting_keys: set[str]) -> dict[str, dict[str, Any]]:

@@ -189,6 +189,16 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .menu { border-top: 1px solid var(--line); }
 .menu-row { display: flex; justify-content: space-between; align-items: center; padding: 16px var(--gutter); border-bottom: 1px solid var(--line); font-size: var(--fs-item); }
 .menu-row span { color: var(--muted); }
+.admin-block { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
+.switch { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; font-size: var(--fs-item); cursor: pointer; }
+.switch input { width: 22px; height: 22px; accent-color: var(--accent); }
+.status-dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--muted); vertical-align: middle; }
+.status-dot.on { background: var(--accent); }
+.status-dot.bad { background: var(--urgent); }
+.source-rows { display: flex; flex-direction: column; }
+.source-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); min-width: 0; }
+.source-row b { font-weight: var(--fw-item); }
+.source-row .note { text-align: right; }
 
 /* 입력 화면(프로필) */
 .form { display: flex; flex-direction: column; gap: 12px; }
@@ -232,6 +242,16 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .chip.gap { color: var(--sub); border-style: dashed; }
 
 .hero-top-pick { display: block; }
+.hero-link { display: block; }
+.hero-actions { display: flex; gap: 8px; margin-top: 14px; }
+.hero-actions .btn { flex: 1; }
+
+/* 이번 주 커리어: 숫자 하나와 비교 한 줄 */
+.weekly { margin-top: 10px; display: flex; flex-direction: column; gap: 2px; }
+.weekly-label { font-size: var(--fs-sub); color: var(--sub); }
+.weekly-value { font-size: var(--fs-section); }
+.weekly-value b { font-size: var(--fs-page); font-weight: var(--fw-title); margin-right: 2px; font-variant-numeric: tabular-nums; }
+.weekly-sub { display: flex; flex-wrap: wrap; gap: 2px 12px; font-size: var(--fs-sub); color: var(--sub); }
 .hero-title { font-size: 18px; font-weight: var(--fw-title); line-height: 1.4; margin-top: 2px; }
 .hero-top-pick .row-reason { white-space: normal; }
 .match-reason { margin-top: 4px; font-size: var(--fs-body); line-height: 1.5; }

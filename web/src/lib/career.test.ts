@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  bins, bucketOf, currentOf, gaps, niceTicks, otherDirections, periodStats, periods, positions, skillFit, strengths, sumSeries,
+  bins, bucketOf, currentOf, gaps, mySlice, niceTicks, otherDirections, periodStats, periods, positions, skillFit, strengths, sumSeries,
 } from './career'
 import type { CareerMetrics, JobType } from './types'
 
@@ -103,5 +103,20 @@ describe('커리어 지표', () => {
     const { list, demandLine } = positions(noSkills, types, ['대기업'], new Map([['SQL', 3]]), new Map(), new Map())
     expect(demandLine).toBe(25) // DBA(100건, 적합도 없음)는 가운데 값에 넣지 않는다
     expect(list.find((p) => p.id === 'dba')).toMatchObject({ fit: null, quadrant: null })
+  })
+})
+
+describe('mySlice', () => {
+  const types = [
+    { id: 'data_eng', name: '데이터 엔지니어', short: '데이터 엔지니어' },
+    { id: 'ai_eng', name: 'AI 엔지니어', short: 'AI 엔지니어' },
+    { id: 'labeling', name: '라벨링', short: '라벨링', direction: false },
+  ] as JobType[]
+  it('keeps my career-direction job types and company types, like the morning alert', () => {
+    expect(mySlice(types, { job_types: ['data_eng', 'labeling'], company_types: ['대기업'] }))
+      .toEqual({ jobs: ['data_eng'], ctypes: ['대기업'] })
+  })
+  it('falls back to every direction job type and every company type', () => {
+    expect(mySlice(types, { job_types: [], company_types: [] })).toEqual({ jobs: ['data_eng', 'ai_eng'], ctypes: null })
   })
 })

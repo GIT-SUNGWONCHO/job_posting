@@ -29,8 +29,24 @@ def bucket(career_min: int | None, career_max: int | None = None) -> str:
 
 
 def build(state: dict[str, dict[str, Any]], registry: CompanyRegistry, postings: list[dict[str, Any]],
-          companies: dict[str, dict[str, Any]], bodies: dict[str, dict[str, str]], today: date) -> dict[str, Any]:
-    """state: state.jsonl의 공고별 상태, postings·companies·bodies: 화면용 파일에 들어가는 오늘 열린 공고."""
+          companies: dict[str, dict[str, Any]], bodies: dict[str, dict[str, str]], today: date,
+          with_current: bool = True) -> dict[str, Any]:
+    """state: state.jsonl의 공고별 상태, postings·companies·bodies: 화면용 파일에 들어가는 오늘 열린 공고.
+    with_current: 지금 열린 공고의 연차·스킬까지(본문 스킬을 다 찾느라 20초쯤 걸린다). 아니면 날짜별 공고 수만(아침 알림)."""
+    out = {"version": VERSION, **daily(state, registry, today)}
+    if with_current:
+        out["current"] = current(postings, companies, bodies)
+        # 스킬 사전에 있는 이름(프로필 스킬이 사전에 없으면 공고에서 셀 수 없어 화면이 "사전에 없음"으로 보여준다)
+        out["dictionary"] = sorted({name for name, _ in matching._skill_patterns()})
+    return out
+
+
+def _key(job: str | None, ctype: str) -> str:
+    return f"{job or 'none'}|{ctype}"
+
+
+def daily(state: dict[str, dict[str, Any]], registry: CompanyRegistry, today: date) -> dict[str, Any]:
+    """날짜별 열린 공고·새 공고 수(직무 유형 × 기업 구분마다): {since, days, series}."""
     recs = [r for r in state.values()
             if not r.get("overseas") and not r.get("dup_of") and not r.get("noise") and r.get("first_seen")]
     # 같은 공고 묶음(dup_of)은 하나로 센다. 처음 본 날은 묶음에서 가장 이른 날, 아직 열린 수집처가 있으면 열린 공고
@@ -54,14 +70,10 @@ def build(state: dict[str, dict[str, Any]], registry: CompanyRegistry, postings:
         days.append(d.isoformat())
         d += timedelta(days=1)
     index = {day: i for i, day in enumerate(days)}
-
-    def key_of(job: str | None, ctype: str) -> str:
-        return f"{job or 'none'}|{ctype}"
-
     series: dict[str, dict[str, list[int | None]]] = {}
     for r in recs:
         ckey = r.get("company_key") or r.get("company", "")
-        k = key_of((r.get("job_type") or {}).get("id"), registry.company_type(ckey, r.get("company", "")).value)
+        k = _key((r.get("job_type") or {}).get("id"), registry.company_type(ckey, r.get("company", "")).value)
         s = series.setdefault(k, {"open": [0] * len(days), "new": [0] * len(days)})
         first_seen, closed_on = spans[id(r)]
         first = index.get(first_seen)
@@ -73,12 +85,17 @@ def build(state: dict[str, dict[str, Any]], registry: CompanyRegistry, postings:
         s["new"][first] += 1  # type: ignore[operator]
     for s in series.values():
         s["new"][0] = None  # 수집 첫날은 새 공고로 세지 않는다
+    return {"since": start, "days": days, "series": series}
 
+
+def current(postings: list[dict[str, Any]], companies: dict[str, dict[str, Any]],
+            bodies: dict[str, dict[str, str]]) -> dict[str, Any]:
+    """지금 열린 공고의 연차 구간과 요구 스킬(직무 유형 × 기업 구분마다)."""
     groups: dict[str, dict[str, Any]] = {}
     for p in postings:
         if p.get("noise"):
             continue
-        k = key_of(p.get("jobType"), (companies.get(p["company"]) or {}).get("type", "그 외"))
+        k = _key(p.get("jobType"), (companies.get(p["company"]) or {}).get("type", "그 외"))
         g = groups.setdefault(k, {"career": Counter(), "skills": Counter(), "withBody": 0})
         g["career"][bucket(p.get("careerMin"), p.get("careerMax"))] += 1
         body = (bodies.get(p["id"]) or {}).get("text")
@@ -86,8 +103,34 @@ def build(state: dict[str, dict[str, Any]], registry: CompanyRegistry, postings:
             g["withBody"] += 1
             for skill in matching.extract_skills(body):
                 g["skills"][skill] += 1
-    current = {k: {"career": dict(g["career"]), "skills": g["skills"].most_common(), "withBody": g["withBody"]}
-               for k, g in groups.items()}
-    # 스킬 사전에 있는 이름(프로필 스킬이 사전에 없으면 공고에서 셀 수 없어 화면이 "사전에 없음"으로 보여준다)
-    dictionary = sorted({name for name, _ in matching._skill_patterns()})
-    return {"version": VERSION, "since": start, "days": days, "series": series, "current": current, "dictionary": dictionary}
+    return {k: {"career": dict(g["career"]), "skills": g["skills"].most_common(), "withBody": g["withBody"]}
+            for k, g in groups.items()}
+
+
+def my_slice(filters: dict[str, Any], types: list[dict[str, Any]]) -> tuple[list[str], list[str] | None]:
+    """내 직무(필터의 직무 유형 중 커리어 방향인 것, 없으면 방향 전부)와 내 기업 구분(없으면 전부 None).
+    커리어 탭 "내 직무"와 같은 기준(web/src/lib/career.ts mySlice)."""
+    direction = [t["id"] for t in types if t.get("direction", True)]
+    jobs = [j for j in filters.get("job_types") or [] if j in direction] or direction
+    return jobs, list(filters.get("company_types") or []) or None
+
+
+def weekly(metrics: dict[str, Any], jobs: list[str], ctypes: list[str] | None, days: int = 7) -> dict[str, Any] | None:
+    """최근 days일 새 공고와 바로 앞 days일(온전히 있을 때만, 아니면 None), 지금 열린 공고.
+    오늘의 리포트 "이번 주 커리어"와 같은 계산(web/src/lib/career.ts periodStats). 수집한 날이 모자라면 None."""
+    n = len(metrics.get("days") or [])
+    if n < 2:
+        return None
+    new = [0] * n
+    open_ = [0] * n
+    for key, v in (metrics.get("series") or {}).items():
+        job, ctype = key.split("|", 1)
+        if job not in jobs or (ctypes is not None and ctype not in ctypes):
+            continue
+        for i in range(n):
+            new[i] += v["new"][i] or 0
+            open_[i] += v["open"][i] or 0
+    new[0] = 0  # 수집 첫날은 세지 않는다
+    start = max(1, n - days)  # 첫날은 빼고
+    prev = sum(new[n - 2 * days:n - days]) if n - 2 * days >= 1 else None
+    return {"days": days, "new": sum(new[start:]), "prev": prev, "open": open_[-1]}
