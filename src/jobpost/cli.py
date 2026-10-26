@@ -47,6 +47,9 @@ def main(argv: list[str] | None = None) -> int:
     n.add_argument("--user-id", help="연결할 사람(프로필이 여럿일 때)")
     n.add_argument("--again", action="store_true", help="오늘 이미 보냈어도 다시 보낸다(모양 확인용)")
 
+    t = sub.add_parser("research-test", help="심층분석 시험: 구글 검색 근거로 회사 사실을 받아 보고 근거 수·출처를 로그로 낸다")
+    t.add_argument("--company", required=True)
+    t.add_argument("--models", default="", help="쉼표로 여러 모델(비우면 config/ai.yaml)")
     d = sub.add_parser("dart", help="회사 기본정보: 공고 회사를 DART와 잇고 기업개황·재무·직원·공시를 data/dart/에 쌓는다")
     d.add_argument("--data-dir", type=Path, default=Path("data"))
     d.add_argument("--budget", type=int, help="이번 실행에서 쓸 최대 요청 수(비우면 config/dart.yaml)")
@@ -142,6 +145,11 @@ def main(argv: list[str] | None = None) -> int:
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
         return 1 if summary.get("errors") else 0  # 실패하면 Actions가 메일로 알려 준다
+    if args.cmd == "research-test":
+        if not ai.configured():
+            logging.info("GEMINI_API_KEY가 없어 건너뜀")
+            return 0
+        return _research_test(args.company, [m.strip() for m in args.models.split(",") if m.strip()] or [None])
     if args.cmd == "feedback":
         if not db.configured():
             logging.info("Supabase 설정이 없어 건너뜀")
@@ -155,6 +163,42 @@ def main(argv: list[str] | None = None) -> int:
         rows = store.select("feedback", "select=user_id,posting_id,match_key,label,comment,updated_at&order=updated_at")
         sample = config.load("match_sample")["postings"]
         print("\n".join(feedback.report(sample, matches, rows) + feedback.sample_dump(sample, matches, rows)))
+    return 0
+
+
+def _research_test(company: str, models: list[str | None]) -> int:
+    """웹 조사 모듈을 만들기 전에 검색 근거가 되는지, 출처가 어떤 모양인지 본다(키는 로그에 남기지 않는다)."""
+    import time
+
+    import requests
+
+    prompt = (f"회사: {company}\n"
+              "공개된 웹 자료로 확인되는 사실만 한국어 문장 5개로 쓰세요. 주제: 이 회사의 데이터·AI 조직(팀 이름, 하는 일), "
+              "최근 1년의 데이터·AI 관련 발표나 투자. 추측하지 말고, 확인되지 않으면 쓰지 마세요.")
+    for model in models:
+        client = ai.Gemini(model=model)
+        started = time.monotonic()
+        try:
+            got = client.grounded(prompt)
+        except ai.AIError as e:
+            print(json.dumps({"model": client.model, "error": str(e)[:300]}, ensure_ascii=False))
+            continue
+        resolved = []
+        for c in got["chunks"][:3]:
+            try:
+                r = requests.head(c["uri"], allow_redirects=True, timeout=15)
+                resolved.append({"title": c["title"], "final": r.url[:120], "status": r.status_code})
+            except requests.RequestException as e:
+                resolved.append({"title": c["title"], "error": type(e).__name__})
+        print(json.dumps({
+            "model": client.model, "seconds": round(time.monotonic() - started), "text_chars": len(got["text"]),
+            "chunks": len(got["chunks"]), "supports": len(got["supports"]), "queries": got["queries"],
+            "uri_sample": (got["chunks"][0]["uri"] or "")[:80] if got["chunks"] else None,
+            "resolved": resolved,
+            "lines": [{"text": s["text"][:120], "sources": [got["chunks"][i]["title"] for i in s["chunks"] if i < len(got["chunks"])]}
+                      for s in got["supports"][:6]],
+            "text": got["text"][:1500],
+        }, ensure_ascii=False, indent=1))
     return 0
 
 

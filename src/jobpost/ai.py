@@ -66,3 +66,45 @@ class Gemini:
             except (KeyError, IndexError, ValueError) as e:
                 last_error = f"형식 오류: {e}"
         raise AIError(last_error or "응답 없음")
+
+    def grounded(self, prompt: str, retries: int = 2) -> dict[str, Any]:
+        """구글 검색 근거(google_search 도구)로 답을 받는다. 문장마다 근거 웹 문서를 함께 돌려준다.
+        {"text", "chunks": [{"uri", "title"}], "supports": [{"text", "chunks": [번호]}], "queries": [...]}.
+        검색 도구와 JSON 형식 지정은 함께 쓸 수 없어 글로 받는다."""
+        last_error = ""
+        for attempt in range(retries):
+            wait = self.min_interval - (time.monotonic() - self._last)
+            if wait > 0:
+                time.sleep(wait)
+            self._last = time.monotonic()
+            self.calls += 1
+            resp = self.session.post(
+                URL.format(model=self.model),
+                headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"], "Content-Type": "application/json"},
+                json={"contents": [{"parts": [{"text": prompt}]}], "tools": [{"google_search": {}}],
+                      "generationConfig": {"temperature": 0}},
+                timeout=180,
+            )
+            if resp.status_code == 429 or resp.status_code >= 500:
+                last_error = f"{resp.status_code} {resp.text[:200]}"
+                time.sleep(20 * (attempt + 1))
+                continue
+            if resp.status_code != 200:
+                raise AIError(f"{resp.status_code} {resp.text[:300]}")
+            try:
+                cand = resp.json()["candidates"][0]
+                text = "".join(part.get("text", "") for part in cand["content"]["parts"])
+            except (KeyError, IndexError, ValueError) as e:
+                last_error = f"형식 오류: {e}"
+                continue
+            meta = cand.get("groundingMetadata") or {}
+            return {
+                "text": text,
+                "chunks": [{"uri": (c.get("web") or {}).get("uri"), "title": (c.get("web") or {}).get("title")}
+                           for c in meta.get("groundingChunks") or []],
+                "supports": [{"text": (s.get("segment") or {}).get("text", ""), "chunks": s.get("groundingChunkIndices") or []}
+                             for s in meta.get("groundingSupports") or []],
+                "queries": meta.get("webSearchQueries") or [],
+            }
+        raise AIError(last_error or "응답 없음")
+

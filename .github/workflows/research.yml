@@ -1,0 +1,40 @@
+# 심층분석(AI 웹 조사). 지금은 시험만: 구글 검색 근거로 회사 사실을 받아 보고 근거 수·출처를 로그에 남긴다.
+# 수동 실행: GitHub > Actions > research > Run workflow
+name: research
+
+on:
+  workflow_dispatch:
+    inputs:
+      company:
+        description: 회사 이름
+        required: true
+        default: 네이버
+      models:
+        description: 쉼표로 여러 모델(비우면 config/ai.yaml)
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 웹 조사 시험
+        env:
+          COMPANY: ${{ inputs.company }}
+          MODELS: ${{ inputs.models }}
+        run: uv run --no-dev jobpost research-test --company "$COMPANY" --models "${MODELS:-}"
