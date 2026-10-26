@@ -3,7 +3,6 @@
 텔레그램(기본, 2026-10-21~)과 카톡 "나에게 보내기"(꺼 둠)가 같은 요약(digest)을 쓴다. 형식은 고정
 (docs/content-rules.md "아침 알림·오늘의 리포트"), 개수는 config/notify.yaml(사람마다 관리 화면에서 바꾼 값이 먼저).
 - 머리: "10/21(수) 새 공고 208건 · 필터 통과 11건 · 마감 임박 7건"
-- 이번 주 커리어: 내 직무 최근 7일 새 공고와 그 앞 7일 비교(오늘의 리포트 카드와 같은 숫자)
 - 필터 통과 새 공고를 점수 높은 순으로: "회사 · 공고 제목" / "92점 지원 추천 · D-12", 회사 이름은 회사 화면, 제목은 공고 상세 링크
 - 관심 회사(★) 새 공고: 필터와 상관없이, 위 목록에 이미 보인 공고는 빼고
 - 마감 임박(필터 통과, D-day~D-3) 중 점수 기준 이상
@@ -15,12 +14,11 @@ from __future__ import annotations
 
 import html
 import logging
-import math
 from datetime import UTC, date, datetime, timedelta
 from typing import Any
 from urllib.parse import quote
 
-from . import career, config, kakao, recommend, telegram
+from . import config, kakao, recommend, telegram
 
 log = logging.getLogger(__name__)
 
@@ -59,30 +57,14 @@ def prefs_of(raw: dict[str, Any] | None) -> dict[str, Any]:
     choices = cfg["choices"]
     raw = raw or {}
     top = raw.get("top") if raw.get("top") in choices["top"] else cfg["telegram"]["top"]
-    score = raw.get("soon_min_score") if raw.get("soon_min_score") in choices["soon_min_score"] else cfg["soon_min_score"]
-    return {"enabled": raw.get("enabled") is not False, "top": top, "soon_min_score": score}
+    return {"enabled": raw.get("enabled") is not False, "top": top}
 
 
 def screen_defaults() -> dict[str, Any]:
     """관리 화면이 보여줄 기본값과 고를 수 있는 값(화면용 파일 notify)."""
     cfg = config.load("notify")
     return {"channels": cfg["channels"], "top": cfg["telegram"]["top"], "soonMinScore": cfg["soon_min_score"],
-            "choices": {"top": cfg["choices"]["top"], "soonMinScore": cfg["choices"]["soon_min_score"]}}
-
-
-def weekly_text(w: dict[str, Any] | None) -> str | None:
-    """이번 주 커리어 한 줄(web/src/copy.ts report.weekly와 같은 문구)."""
-    if not w:
-        return None
-    head = f"내 직무 새 공고 {w['days']}일 {w['new']:,}건"
-    if w["prev"] is None:
-        return head
-    if w["prev"] == 0:
-        return f"{head} · 지난 {w['days']}일 0건"
-    pct = math.floor((w["new"] - w["prev"]) / w["prev"] * 100 + 0.5)  # 화면(Math.round)과 같게 .5는 올린다
-    if pct == 0:
-        return f"{head} · 지난 {w['days']}일과 비슷해요"
-    return f"{head} · 지난 {w['days']}일보다 {abs(pct)}% {'늘었어요' if pct > 0 else '줄었어요'}"
+            "choices": {"top": cfg["choices"]["top"]}}
 
 
 def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, dict[str, Any]], today: date,
@@ -131,15 +113,12 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
                       and stages.get(p["id"]) not in NOT_AGAIN), key=lambda p: (score(p), p["firstSeen"]), reverse=True)
     head = (f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]}) 새 공고 {len(new)}건 · "
             f"필터 통과 {len(new_passed)}건" + (f" · 마감 임박 {n_soon}건" if n_soon else ""))
-    metrics = screen.get("career")
-    weekly = career.weekly(metrics, *career.my_slice(filters, screen.get("jobTypes") or [])) if metrics else None
     return {"head": head, "date": f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]})",
             "counts": {"new": len(new), "passed": len(new_passed), "soon": len(soon) + len(interest)},
             "new": [item(p) for p in new_passed], "soon_count": len(soon) + len(interest),
             "soon": [item(p) for p in sorted(interest, key=lambda p: p.get("deadline") or "")]
-            + [item(p) for p in soon if score(p) >= prefs["soon_min_score"]],
-            "stars": [item(p) for p in starred], "weekly": weekly_text(weekly),
-            "top": prefs["top"], "soon_min_score": prefs["soon_min_score"],
+            + [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
+            "stars": [item(p) for p in starred], "top": prefs["top"],
             "report": base + "#/report", "jobs": base + "#/jobs", "career": base + "#/career"}
 
 
@@ -149,7 +128,7 @@ MARKS = {"지원 추천": "🟢", "고려": "🟡", "비추천": "⚪"}  # 판�
 def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]]:
     """텔레그램 HTML 메시지(4096자 안)와 아래 버튼.
 
-    v3(2026-10-26): 머리 두 줄(날짜 / 건수), 이번 주 커리어 한 줄, 공고마다 "판정 표시 회사 점수 · 마감" + 제목 링크 두 줄
+    v3(2026-10-26): 머리 두 줄(날짜 / 건수), 공고마다 "판정 표시 회사 점수 · 마감" + 제목 링크 두 줄
     (회사 이름은 회사 화면 링크). 위 visible건만 펼쳐 두고 나머지와 관심 회사 새 공고·마감 임박은 접힌 인용(누르면 펼침).
     대시보드 링크는 버튼으로.
     """
@@ -173,10 +152,7 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
     def build(top: int, soon_top: int) -> str:
         c = d["counts"]
         lines = [f"<b>{esc(d['date'])} 오늘의 공고</b>",
-                 f"새 공고 {c['new']} · 필터 통과 {c['passed']} · 마감 임박 {c['soon']}"]
-        if d.get("weekly"):
-            lines.append(f"이번 주 커리어: {esc(d['weekly'])}")
-        lines.append("")
+                 f"새 공고 {c['new']} · 필터 통과 {c['passed']} · 마감 임박 {c['soon']}", ""]
         shown = d["new"][:top]
         if shown:
             lines.append("<b>필터 통과 새 공고</b>")
@@ -192,7 +168,7 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
             more = f" 중 {soon_top}건" if len(stars) > soon_top else ""
             lines += ["", f"<b>관심 회사 새 공고</b> {len(stars)}건{more}", folded(stars[:soon_top])]
         if d["soon"][:soon_top]:
-            lines += ["", f"<b>마감 임박</b> ★ 관심 공고와 {d['soon_min_score']}점 이상 {len(d['soon'][:soon_top])}건",
+            lines += ["", f"<b>마감 임박</b> ★ 관심 공고와 {cfg['soon_min_score']}점 이상 {len(d['soon'][:soon_top])}건",
                       folded(d["soon"][:soon_top])]
         lines += ["", " · ".join(f"{mark} {name}" for name, mark in MARKS.items())]  # 판정 표시 설명
         return "\n".join(lines).replace("\n\n\n", "\n\n").strip()
@@ -209,7 +185,7 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
 
 
 def telegram_rich(d: dict[str, Any]) -> str:
-    """텔레그램 리치 메시지(HTML). v4(2026-10-26): 제목, 건수, 이번 주 커리어 한 줄, 공고 표(판정 · 회사와 공고 · 점수 · 마감,
+    """텔레그램 리치 메시지(HTML). v4(2026-10-26): 제목, 건수, 공고 표(판정 · 회사와 공고 · 점수 · 마감,
     회사 이름은 회사 화면 링크), 위 visible건 다음과 관심 회사 새 공고·마감 임박은 접힌 블록, 대시보드 버튼, 판정 설명은 꼬리말.
     리치 메시지는 2026년 새 기능이라 보내기가 실패하면 run()이 telegram_message(일반 메시지)로 대신 보낸다."""
     cfg = config.load("notify")
@@ -232,8 +208,6 @@ def telegram_rich(d: dict[str, Any]) -> str:
     c = d["counts"]
     parts = [f"<h3>{esc(d['date'])} 오늘의 공고</h3>",
              f"<p>새 공고 <b>{c['new']}</b> · 필터 통과 <b>{c['passed']}</b> · 마감 임박 <b>{c['soon']}</b></p>"]
-    if d.get("weekly"):
-        parts.append(f"<p>이번 주 커리어: {esc(d['weekly'])}</p>")
     top = d["top"]
     shown = d["new"][:top]
     if shown:
@@ -251,7 +225,7 @@ def telegram_rich(d: dict[str, Any]) -> str:
         parts.append(f"<details><summary>관심 회사 새 공고 {len(stars)}건{more}</summary>{table(stars[:tg['soon_top']])}</details>")
     soon = d["soon"][:tg["soon_top"]]
     if soon:
-        parts.append(f"<details><summary>마감 임박 {len(soon)}건 · ★ 관심 공고와 {d['soon_min_score']}점 이상</summary>"
+        parts.append(f"<details><summary>마감 임박 {len(soon)}건 · ★ 관심 공고와 {cfg['soon_min_score']}점 이상</summary>"
                      f"{table(soon)}</details>")
     parts.append('<tg-button-row align="center">'
                  f'<tg-button type="url" style="primary" url="{html.escape(d["report"])}">리포트</tg-button>'

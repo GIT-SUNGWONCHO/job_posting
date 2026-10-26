@@ -26,7 +26,6 @@ export async function saveFilters(filters: Filters): Promise<boolean> {
 export interface NotifyPrefs {
   enabled?: boolean
   top?: number
-  soon_min_score?: number
 }
 
 /** 010을 실행하기 전이면 'missing', 그 밖의 오류는 'failed'. 42703: 칸 없음, PGRST204: PostgREST가 칸을 찾지 못함 */

@@ -26,6 +26,11 @@ export function deadlineText(p: Pick<Posting, 'deadlineType' | 'deadline'>, toda
   return `D-${n}`
 }
 
+/** n일 뒤(앞이면 음수)의 YYYY-MM-DD */
+export function addDays(iso: string, n: number): string {
+  return new Date(Date.parse(iso) + n * DAY).toISOString().slice(0, 10)
+}
+
 /** 마감 3일 이내(D-day~D-3)면 빨강으로 표시한다. */
 export function isUrgent(p: Pick<Posting, 'deadlineType' | 'deadline'>, today: string): boolean {
   const n = daysLeft(p, today)

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dateText, deadlineText, isUrgent } from './format'
+import { addDays, dateText, deadlineText, isUrgent } from './format'
 
 describe('deadlineText', () => {
   const today = '2026-10-13'
@@ -54,5 +54,12 @@ describe('금액·증감 표기(용어집 "표기 형식")', () => {
     expect(yearMonth('20260318001394')).toBe('2026.03')
     expect(yearMonth('2026-08-01')).toBe('2026.08')
     expect(yearMonth(null)).toBeNull()
+  })
+})
+
+describe('addDays', () => {
+  it('moves across month ends', () => {
+    expect(addDays('2026-10-26', -6)).toBe('2026-10-20')
+    expect(addDays('2026-11-01', -1)).toBe('2026-10-31')
   })
 })

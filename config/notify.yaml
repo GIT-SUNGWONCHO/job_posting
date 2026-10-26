@@ -1,7 +1,7 @@
 # 아침 알림. 형식은 고정(docs/content-rules.md "아침 알림·오늘의 리포트"), 문구 틀은 notify.py.
 # 매일 수집·매칭이 끝난 뒤 보낸다(.github/workflows/collect.yml). 연결은 docs/setup.md "4. 텔레그램".
 
-version: 4  # 4(2026-10-26): 이번 주 커리어 줄, 회사 화면 링크, 관심 회사 새 공고, 사람별 설정
+version: 4  # 4(2026-10-26): 회사 화면 링크, 관심 회사 새 공고, 커리어 버튼, 사람별 설정(받기, 개수)
 
 channels: [telegram]   # 보낼 곳. kakao는 2026-10-21 텔레그램으로 바꾸며 껐다(연결 코드와 표는 남겨 둠)
 
@@ -9,10 +9,9 @@ dashboard_url: https://careermap-web.oroloov.workers.dev
 soon_days: 3           # 마감 임박: D-day~D-3(용어집)
 soon_min_score: 70     # 알림에 넣는 마감 임박 공고의 최소 점수(머리의 건수는 점수와 상관없이 전부)
 
-# 사람마다 관리 화면에서 고르는 값(Supabase settings.notify: enabled, top, soon_min_score). 고르지 않았으면 위·아래 기본값
+# 사람마다 관리 화면에서 고르는 값(Supabase settings.notify: enabled 받기, top 개수). 고르지 않았으면 받기, 아래 telegram.top
 choices:
-  top: [5, 10, 20]               # 필터 통과 새 공고 개수(기본 telegram.top)
-  soon_min_score: [0, 60, 70, 80]  # 마감 임박에 넣는 최소 점수(기본 soon_min_score, 0은 전부)
+  top: [5, 10, 20]     # 필터 통과 새 공고 개수
 
 telegram:
   format: rich         # rich: 리치 메시지(표, 2026-10-21~). 실패하면 그날은 text(일반 메시지)로 대신 보낸다

@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react'
 import { copy } from '../copy'
 import { useApps } from '../lib/applications'
-import { companyLine, deadlineText, isUrgent } from '../lib/format'
+import { companyLine, dateText, deadlineText, isUrgent } from '../lib/format'
 import { href } from '../lib/route'
 import type { Match } from '../lib/matches'
 import type { Company, Posting } from '../lib/types'
 
 export function Deadline({ p, today }: { p: Posting; today: string }) {
+  if (p.closedOn) return <span className="dday">{copy.job.closed} {dateText(p.closedOn)}</span>
   const urgent = isUrgent(p, today)
   return <span className={urgent ? 'dday urgent' : 'dday'}>{deadlineText(p, today)}</span>
 }

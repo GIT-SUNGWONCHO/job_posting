@@ -27,6 +27,8 @@ export interface Posting {
   /** 본문 파일(bodies/xx.json.gz)에 본문이 있나 */
   hasBody: boolean
   sources: SourceLink[]
+  /** 내려간 날(수집처 목록에서 사라져 마감으로 처리한 날). 화면용 파일 closed의 공고에만 있다 */
+  closedOn?: string
 }
 
 export interface Body {
@@ -98,6 +100,9 @@ export interface Screen {
   notify?: NotifyDefaults
   companies: Record<string, Company>
   postings: Posting[]
+  /** 최근 closedDays일 내려간 공고(내려간 날 최근 순, v6부터). 공고 수·커리어 지표에는 들어가지 않는다 */
+  closedDays?: number
+  closed?: Posting[]
 }
 
 export interface Collection {
@@ -114,8 +119,9 @@ export interface Collection {
 export interface NotifyDefaults {
   channels: string[]
   top: number
+  /** 마감 임박에 넣는 최소 점수(사람마다 바꾸지 않는다) */
   soonMinScore: number
-  choices: { top: number[]; soonMinScore: number[] }
+  choices: { top: number[] }
 }
 
 /** 연차 구간: 최소 경력 0~3년 미만, 3~7, 7~12, 12년 이상, 연차 무관 */

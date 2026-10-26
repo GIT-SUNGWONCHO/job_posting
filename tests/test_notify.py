@@ -58,36 +58,16 @@ def test_starred_companies_new_postings_come_regardless_of_filters_without_repea
     assert [it["id"] for it in d["stars"]] == []  # a는 위 목록에 다 보이고, b는 관심 없음
     d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY, stars=stars, prefs=notify.prefs_of({"top": 5}))
     assert [it["id"] for it in d["stars"]] == ["z:5"] and d["top"] == 5
-    d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY, stars=stars, prefs={"enabled": True, "top": 1, "soon_min_score": 70})
+    d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY, stars=stars, prefs={"enabled": True, "top": 1})
     assert [it["id"] for it in d["stars"]] == ["z:4", "z:1", "z:3", "z:5"]  # 위에 1건만 보이면 나머지 a 공고도
     assert "<summary>관심 회사 새 공고 4건</summary>" in notify.telegram_rich(d)
     assert "<b>관심 회사 새 공고</b> 4건\n<blockquote expandable>" in notify.telegram_message(d)[0]
 
 
-def test_prefs_fall_back_to_config_values_and_set_the_closing_soon_score():
-    assert notify.prefs_of(None) == {"enabled": True, "top": 10, "soon_min_score": 70}
-    assert notify.prefs_of({"enabled": False, "top": 7, "soon_min_score": 80}) == {"enabled": False, "top": 10, "soon_min_score": 80}
-    d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY, prefs=notify.prefs_of({"soon_min_score": 0}))
-    assert d["soon_min_score"] == 0 and [it["id"] for it in d["soon"]] == ["z:6"]
-    d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY, prefs=notify.prefs_of({"soon_min_score": 80}))
-    assert [it["id"] for it in d["soon"]] == ["z:6"]  # 81점
-    d = notify.digest(SCREEN, FILTERS, {**MATCHES, "z:6": {"score": 75, "kind": "ai"}}, TODAY,
-                      prefs=notify.prefs_of({"soon_min_score": 80}))
-    assert d["soon"] == [] and d["counts"]["soon"] == 1  # 건수는 점수와 상관없이
-
-
-def test_weekly_line_uses_my_job_types_and_company_types():
-    days = [f"2026-10-{d:02d}" for d in range(3, 18)]
-    metrics = {"days": days, "series": {"data_eng|대기업": {"new": [None] + [1] * 7 + [2] * 7, "open": [5] * 15},
-                                        "data_eng|그 외": {"new": [None] + [5] * 14, "open": [5] * 15}}}
-    screen = {**SCREEN, "career": metrics, "jobTypes": [{"id": "data_eng"}]}
-    d = notify.digest(screen, FILTERS, MATCHES, TODAY)
-    assert d["weekly"] == "내 직무 새 공고 7일 14건 · 지난 7일보다 100% 늘었어요"
-    assert "이번 주 커리어: 내 직무 새 공고 7일 14건" in notify.telegram_rich(d)
-    assert notify.weekly_text({"days": 7, "new": 3, "prev": 4, "open": 1}) == "내 직무 새 공고 7일 3건 · 지난 7일보다 25% 줄었어요"
-    assert notify.weekly_text({"days": 7, "new": 3, "prev": None, "open": 1}) == "내 직무 새 공고 7일 3건"
-    assert notify.digest(SCREEN, FILTERS, MATCHES, TODAY)["weekly"] is None  # 커리어 지표가 없는 화면용 파일
-
+def test_prefs_fall_back_to_config_values():
+    assert notify.prefs_of(None) == {"enabled": True, "top": 10}
+    assert notify.prefs_of({"enabled": False, "top": 7}) == {"enabled": False, "top": 10}  # 고를 수 없는 개수
+    assert notify.prefs_of({"top": 20}) == {"enabled": True, "top": 20}
 
 def test_telegram_message_lists_new_and_urgent_postings_as_escaped_html():
     text, buttons = notify.telegram_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))

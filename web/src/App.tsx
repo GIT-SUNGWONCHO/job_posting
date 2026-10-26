@@ -15,7 +15,7 @@ import { readLocal, writeLocal } from './lib/storage'
 import { supabase } from './lib/supabase'
 import type { Filters, Screen } from './lib/types'
 import { useMedia, WIDE } from './lib/useMedia'
-import { Admin } from './screens/Admin'
+import { Admin, CollectionPage, NotifyPage } from './screens/Admin'
 import { Apply } from './screens/Apply'
 import { Career } from './screens/Career'
 import { CompanyPage } from './screens/CompanyPage'
@@ -181,13 +181,14 @@ function Main({ screen }: { screen: Screen }) {
   let detail = false
   switch (route.name) {
     case 'report':
-      body = <Report screen={screen} passed={passed} today={today} matches={matches} filters={filters} />
+      body = <Report screen={screen} passed={passed} today={today} matches={matches} />
       break
     case 'jobs':
       body = jobs(route.seg)
       break
     case 'job': {
-      const p = screen.postings.find((x) => x.id === route.id)
+      // 최근 7일 안에 내려간 공고도 연다(수집 현황의 내려간 공고)
+      const p = screen.postings.find((x) => x.id === route.id) ?? screen.closed?.find((x) => x.id === route.id)
       detail = !wide
       body = wide
         ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)}
@@ -209,7 +210,15 @@ function Main({ screen }: { screen: Screen }) {
       body = <Apply screen={screen} apps={apps} today={today} onApp={onApp} />
       break
     case 'admin':
-      body = <Admin screen={screen} today={today} />
+      body = <Admin />
+      break
+    case 'notify':
+      detail = !wide
+      body = <NotifyPage defaults={screen.notify} />
+      break
+    case 'collection':
+      detail = !wide
+      body = <CollectionPage screen={screen} today={today} filters={filters} matches={matches} />
       break
     case 'profile':
       detail = !wide

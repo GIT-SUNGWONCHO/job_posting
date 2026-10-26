@@ -112,7 +112,7 @@ describe('mySlice', () => {
     { id: 'ai_eng', name: 'AI 엔지니어', short: 'AI 엔지니어' },
     { id: 'labeling', name: '라벨링', short: '라벨링', direction: false },
   ] as JobType[]
-  it('keeps my career-direction job types and company types, like the morning alert', () => {
+  it('keeps my career-direction job types and company types', () => {
     expect(mySlice(types, { job_types: ['data_eng', 'labeling'], company_types: ['대기업'] }))
       .toEqual({ jobs: ['data_eng'], ctypes: ['대기업'] })
   })

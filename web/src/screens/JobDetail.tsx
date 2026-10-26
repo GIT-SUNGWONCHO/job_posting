@@ -52,6 +52,7 @@ export function JobDetail({ screen, posting, today, match, feedback, onFeedback,
     [copy.job.regions, p.regions.join(', ') || '-'],
     [copy.job.employment, p.employment.join(', ') || '-'],
     [copy.job.firstSeen, dateText(p.firstSeen, true)],
+    ...(p.closedOn ? [[copy.job.closedOn, dateText(p.closedOn, true)] as [string, ReactNode]] : []),
   ]
   return (
     <div className={panel ? 'page detail panel' : 'page detail'}>

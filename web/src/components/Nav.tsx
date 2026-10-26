@@ -11,7 +11,7 @@ const TABS = [
 
 function activeTab(route: Route): string {
   if (route.name === 'job' || route.name === 'company') return 'jobs'
-  if (route.name === 'profile') return 'admin'
+  if (route.name === 'profile' || route.name === 'notify' || route.name === 'collection') return 'admin'
   return route.name
 }
 

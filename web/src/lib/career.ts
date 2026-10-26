@@ -22,8 +22,7 @@ export interface Slice {
   ctypes: string[] | null
 }
 
-/** 내 직무(필터의 직무 유형 중 커리어 방향인 것, 비면 방향 전부)와 내 기업 구분(비면 전부).
- * 아침 알림의 이번 주 커리어와 같은 기준(src/jobpost/career.py my_slice) */
+/** 내 직무(필터의 직무 유형 중 커리어 방향인 것, 비면 방향 전부)와 내 기업 구분(비면 전부) */
 export function mySlice(jobTypes: JobType[], filters: Pick<Filters, 'job_types' | 'company_types'>): { jobs: string[]; ctypes: string[] | null } {
   const direction = jobTypes.filter((j) => j.direction !== false).map((j) => j.id)
   const mine = (filters.job_types ?? []).filter((id) => direction.includes(id))

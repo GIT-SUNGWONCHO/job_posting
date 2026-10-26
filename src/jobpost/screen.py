@@ -11,7 +11,8 @@ from __future__ import annotations
 import gzip
 import json
 import logging
-from datetime import date, datetime
+from collections.abc import Callable
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -22,7 +23,7 @@ from .store import Store
 
 log = logging.getLogger(__name__)
 
-VERSION = 6  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값(collection, notify)
+VERSION = 6  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값·내려간 공고(collection, notify, closed)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
 # 본문을 고르는 순서: 리멤버 원문 > 직행이 정리한 요약 > 사람인 원문
@@ -62,8 +63,7 @@ def _body(members: list[dict[str, Any]], originals: dict[str, dict[str, Any]],
 
 
 def build(data_dir: Path, today: date | None = None, with_career: bool = False) -> tuple[dict[str, Any], dict[str, Any]]:
-    """(화면용 파일, 본문 파일). with_career: 커리어 지표의 연차·스킬까지(본문 스킬을 다 찾느라 20초쯤 더 걸려 화면용 파일을
-    올릴 때만). 아니면 커리어 지표는 날짜별 공고 수만(아침 알림의 이번 주 커리어)."""
+    """(화면용 파일, 본문 파일). with_career: 커리어 지표까지(본문 스킬을 다 찾느라 20초쯤 더 걸려 화면용 파일을 올릴 때만)."""
     today = today or date.today()
     store = Store(data_dir)
     registry = CompanyRegistry(data_dir / "companies.json")
@@ -82,10 +82,9 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         return {"source": r["source"], "name": SOURCE_NAMES.get(r["source"], r["source"]), "url": o.get("url")}
 
     companies: dict[str, dict[str, Any]] = {}
-    postings: list[dict[str, Any]] = []
-    for r in open_recs:
-        if r.get("dup_of"):
-            continue
+
+    def item(r: dict[str, Any], same: list[dict[str, Any]]) -> dict[str, Any]:
+        """화면의 공고 한 건(같은 공고 묶음은 대표 r과 나머지 same을 합친다). 회사와 본문도 함께 채운다."""
         o = originals.get(r["uid"], {})
         key = r.get("company_key") or r.get("company", "")
         if key not in companies:
@@ -95,13 +94,12 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
                 "type": registry.company_type(key, r.get("company", "")).value,
                 "group": registry.group(key, r.get("company", "")),
             }
-        same = sorted(dups.get(r["uid"], []), key=lambda d: d["uid"])
         job_type = next(((x.get("job_type") or {}).get("id") for x in [r, *same] if x.get("job_type")), None)
         first_seen = min([r.get("first_seen", "")] + [d.get("first_seen", "") for d in same])
         body = _body([r, *same], originals, details)
         if body:
             bodies[r["uid"]] = body
-        postings.append({
+        return {
             "id": r["uid"],
             "company": key,
             "title": r.get("title", ""),
@@ -118,7 +116,9 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
             "jobType": job_type,
             "hasBody": body is not None,
             "sources": [link(r)] + [link(d) for d in same],
-        })
+        }
+
+    postings = [item(r, sorted(dups.get(r["uid"], []), key=lambda d: d["uid"])) for r in open_recs if not r.get("dup_of")]
     postings.sort(key=lambda p: (p["firstSeen"], p["id"]), reverse=True)
 
     counts = {
@@ -127,6 +127,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         "companies": len(companies),
     }
     texts = {pid: b["text"] for pid, b in bodies.items()}
+    closed = closed_postings(store.state, today, item)
     screen = {
         "version": VERSION,
         "date": today.isoformat(),
@@ -141,12 +142,15 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         # 기준 샘플(config/match_sample.yaml): 화면의 "평가할 공고"
         "sample": [p["id"] for p in config.load("match_sample").get("postings") or []],
         # 커리어 탭 시장 지표(career.py): 날짜별 공고 수, 지금 열린 공고의 연차·스킬
-        "career": career.build(store.state, registry, postings, companies, bodies, today, with_current=with_career),
+        "career": career.build(store.state, registry, postings, companies, bodies, today) if with_career else None,
         # 관리 화면: 마지막 수집 요약(data/runs/), 아침 알림 기본값과 고를 수 있는 값(config/notify.yaml)
         "collection": collection(data_dir),
         "notify": notify.screen_defaults(),
         "companies": companies,
         "postings": postings,
+        # 최근 7일 내려간 공고(관리 화면 수집 현황, 공고 상세). 공고 수·커리어 지표에는 들어가지 않는다
+        "closedDays": CLOSED_DAYS,
+        "closed": closed,
     }
     # 공고가 없어도 회사 목록에 두는 주요 기업(커리어 지표·공고 수에는 들어가지 않는다).
     # data/dart/ 파일이 깨진 날에도 공고·매칭·알림은 계속되게, 실패하면 주요 기업 없이 간다
@@ -158,6 +162,33 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
     for key, m in majors.items():
         companies[key] = {"name": m["name"], "type": m["type"], "group": m["group"]}
     return screen, {"version": VERSION, "date": today.isoformat(), "bodies": bodies}
+
+
+CLOSED_DAYS = 7  # 수집 현황에 보여줄 내려간 공고: 오늘을 포함해 며칠 안에 내려간 것
+
+
+def closed_postings(state: dict[str, dict[str, Any]], today: date,
+                    item: Callable[[dict[str, Any], list[dict[str, Any]]], dict[str, Any]]) -> list[dict[str, Any]]:
+    """최근 CLOSED_DAYS일 안에 내려간 공고(국내, 같은 공고 묶음은 하나로, 묶음이 다 내려갔을 때만). 내려간 날 최근 순.
+    item: build()의 공고 한 건 만들기(회사·본문도 채운다)."""
+    since = (today - timedelta(days=CLOSED_DAYS - 1)).isoformat()
+    members: dict[str, list[dict[str, Any]]] = {}
+    for r in state.values():
+        if r.get("dup_of"):
+            members.setdefault(r["dup_of"], []).append(r)
+    out = []
+    for r in state.values():
+        if r.get("dup_of") or r.get("overseas") or not r.get("closed_on"):
+            continue
+        same = sorted(members.get(r["uid"], []), key=lambda d: d["uid"])
+        if any(not d.get("closed_on") for d in same):
+            continue  # 다른 수집처에 아직 열려 있다
+        closed_on = max([r["closed_on"]] + [d["closed_on"] for d in same])
+        if closed_on < since:
+            continue
+        out.append({**item(r, same), "closedOn": closed_on})
+    out.sort(key=lambda p: (p["closedOn"], p["id"]), reverse=True)
+    return out
 
 
 def collection(data_dir: Path) -> dict[str, Any] | None:

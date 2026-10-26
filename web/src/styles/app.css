@@ -245,13 +245,6 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .hero-link { display: block; }
 .hero-actions { display: flex; gap: 8px; margin-top: 14px; }
 .hero-actions .btn { flex: 1; }
-
-/* 이번 주 커리어: 숫자 하나와 비교 한 줄 */
-.weekly { margin-top: 10px; display: flex; flex-direction: column; gap: 2px; }
-.weekly-label { font-size: var(--fs-sub); color: var(--sub); }
-.weekly-value { font-size: var(--fs-section); }
-.weekly-value b { font-size: var(--fs-page); font-weight: var(--fw-title); margin-right: 2px; font-variant-numeric: tabular-nums; }
-.weekly-sub { display: flex; flex-wrap: wrap; gap: 2px 12px; font-size: var(--fs-sub); color: var(--sub); }
 .hero-title { font-size: 18px; font-weight: var(--fw-title); line-height: 1.4; margin-top: 2px; }
 .hero-top-pick .row-reason { white-space: normal; }
 .match-reason { margin-top: 4px; font-size: var(--fs-body); line-height: 1.5; }

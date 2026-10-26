@@ -1,24 +1,22 @@
 import { copy } from '../copy'
 import { Deadline, Empty, JobRow, Score, SectionTitle } from '../components/ui'
 import { NOT_AGAIN, useApps } from '../lib/applications'
-import { mySlice, periodStats, sumSeries } from '../lib/career'
-import { companyLine, dateText, isUrgent } from '../lib/format'
+import { addDays, companyLine, dateText, isUrgent } from '../lib/format'
 import type { Match } from '../lib/matches'
 import { href } from '../lib/route'
 import { useStars } from '../lib/stars'
-import type { Filters, Posting, Screen } from '../lib/types'
+import type { Posting, Screen } from '../lib/types'
 
 const SHOW = 5
 const HERO_ROWS = 3
-/** 이번 주 커리어: 최근 며칠과 그 앞 같은 기간을 비교한다(아침 알림과 같게) */
+/** 이번 주 올라온 공고: 오늘을 포함한 최근 며칠 */
 const WEEK = 7
 
-export function Report({ screen, passed, today, matches, filters }: {
+export function Report({ screen, passed, today, matches }: {
   screen: Screen
   passed: Posting[]
   today: string
   matches: Map<string, Match>
-  filters: Filters
 }) {
   const apps = useApps()
   const stars = useStars().state
@@ -49,6 +47,11 @@ export function Report({ screen, passed, today, matches, filters }: {
     .sort((a, b) => (matches.get(b.id)!.score - matches.get(a.id)!.score) || (b.firstSeen.localeCompare(a.firstSeen)))
   const top = ranked[0]
   const next = ranked.slice(1, 5)
+  // 이번 주 올라온 공고: 최근 7일 처음 본 필터 통과 공고를 점수 높은 순(점수 없는 공고는 뒤에 최신순)
+  const weekStart = addDays(screen.date, -(WEEK - 1))
+  const week = passed
+    .filter((p) => p.firstSeen >= weekStart && again(p))
+    .sort((a, b) => ((matches.get(b.id)?.score ?? -1) - (matches.get(a.id)?.score ?? -1)) || b.firstSeen.localeCompare(a.firstSeen))
 
   return (
     <div className="page">
@@ -92,8 +95,6 @@ export function Report({ screen, passed, today, matches, filters }: {
         </section>
       )}
 
-      <Weekly screen={screen} filters={filters} />
-
       <section className={top ? 'section' : 'hero'}>
         <div className="hero-top">
           <span className="hero-label">{copy.report.freshSection}</span>
@@ -105,6 +106,18 @@ export function Report({ screen, passed, today, matches, filters }: {
         ) : (
           <div className="rows">
             {fresh.slice(0, HERO_ROWS).map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} />)}
+          </div>
+        )}
+      </section>
+
+      <section className="section">
+        <SectionTitle right={<span className="count">{copy.jobs.count(week.length)}</span>}>{copy.report.weekSection}</SectionTitle>
+        <p className="note small">{copy.report.weekNote(WEEK)}</p>
+        {week.length === 0 ? (
+          <Empty>{copy.report.noWeek}</Empty>
+        ) : (
+          <div className="rows">
+            {week.slice(0, SHOW).map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} />)}
           </div>
         )}
       </section>
@@ -134,28 +147,3 @@ export function Report({ screen, passed, today, matches, filters }: {
   )
 }
 
-/** 이번 주 커리어: 내 직무·기업 구분의 최근 7일 새 공고와 그 앞 7일 비교, 지금 열린 공고. 커리어 탭으로 잇는다 */
-function Weekly({ screen, filters }: { screen: Screen; filters: Filters }) {
-  const m = screen.career
-  if (!m || m.days.length < 2) return null
-  const stats = periodStats(sumSeries(m, mySlice(screen.jobTypes, filters)), WEEK)
-  const { newSum, prevSum } = stats
-  const change = prevSum === null
-    ? copy.report.weeklyNoPrev(WEEK)
-    : prevSum === 0
-      ? copy.report.weeklyPrevZero(WEEK)
-      : copy.report.weeklyChange(Math.round(((newSum - prevSum) / prevSum) * 100), WEEK)
-  return (
-    <section className="section">
-      <SectionTitle right={<a className="more-link" href={href.career}>{copy.report.careerLink} ›</a>}>{copy.report.weekly}</SectionTitle>
-      <div className="weekly">
-        <div className="weekly-label">{copy.report.weeklyLabel(WEEK)}</div>
-        <div className="weekly-value"><b>{newSum.toLocaleString()}</b>건</div>
-        <div className="weekly-sub">
-          <span>{change}</span>
-          <span>{copy.report.weeklyOpen(stats.openNow)}</span>
-        </div>
-      </div>
-    </section>
-  )
-}
