@@ -20965,6 +20965,22 @@
 },
 "v": 3
 },
+"00157548": {
+"company": {
+"ceo": "마틴 커콜 상귀네티",
+"founded": "1976-03-01",
+"homepage": "https://www.bikr.co.kr",
+"industry_code": "21212",
+"market": "기타",
+"name": "한국베링거인겔하임주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
+"finance": null,
+"v": 3
+},
 "00157681": {
 "company": {
 "ceo": "정승원",
@@ -41754,6 +41770,22 @@
 },
 "v": 3
 },
+"00405056": {
+"company": {
+"ceo": "최종욱",
+"founded": "1999-02-13",
+"homepage": "https://www.markany.com",
+"industry_code": "58221",
+"market": "기타",
+"name": "주식회사 마크애니",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
+"finance": null,
+"v": 3
+},
 "00405676": {
 "company": {
 "ceo": "오희택",
@@ -42012,6 +42044,139 @@
 "net": 165101642055,
 "operating": 75911594792,
 "revenue": 402396221904,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00406222": {
+"company": {
+"ceo": "김종현",
+"founded": "2000-03-22",
+"homepage": "https://www.seceng.co.kr",
+"industry_code": "291",
+"market": "코스닥",
+"name": "(주)쎄크",
+"stock_code": "081180"
+},
+"disclosures": [
+{
+"date": "2026-09-15",
+"rcept_no": "20260915900455",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-08-25",
+"rcept_no": "20260825900139",
+"title": "기타경영사항(자율공시) (국책과제선정(세계 최고 능동형 선량분포 제어 방사선치료기 개발))"
+},
+{
+"date": "2026-07-06",
+"rcept_no": "20260706900467",
+"title": "투자판단관련주요경영사항 (국책과제선정(플래시 방사선 1초 암치료기 전략연구사업))"
+},
+{
+"date": "2026-06-09",
+"rcept_no": "20260609900219",
+"title": "단일판매ㆍ공급계약체결(자율공시)"
+},
+{
+"date": "2026-05-20",
+"rcept_no": "20260520900093",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-05-13",
+"rcept_no": "20260513900169",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-03-31",
+"rcept_no": "20260331901326",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-17",
+"rcept_no": "20260317901368",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-05",
+"rcept_no": "20260305901637",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-03-05",
+"rcept_no": "20260305901625",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2026-01-28",
+"rcept_no": "20260128900069",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-01-16",
+"rcept_no": "20260116900140",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2025-12-30",
+"rcept_no": "20251230900740",
+"title": "단일판매ㆍ공급계약체결(자율공시)"
+},
+{
+"date": "2025-12-29",
+"rcept_no": "20251229900883",
+"title": "[기재정정]연결재무제표기준영업실적등에대한전망(공정공시)"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216900413",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216900323",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2025-11-21",
+"rcept_no": "20251121900444",
+"title": "기업설명회(IR)개최"
+}
+],
+"employees": {
+"count": 249,
+"date": "2025-12-31",
+"rcept_no": "20260323000640",
+"salary": 48188985,
+"tenure": 4.7
+},
+"fetched": "2026-10-27",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260323000640",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -6934358155,
+"operating": 240189665,
+"revenue": 50435649742,
+"year": 2023
+},
+{
+"net": 2066870180,
+"operating": 1335945972,
+"revenue": 53931372723,
+"year": 2024
+},
+{
+"net": -3785478918,
+"operating": -3064318083,
+"revenue": 59205964528,
 "year": 2025
 }
 ]
@@ -49151,6 +49316,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00560779": {
+"company": {
+"ceo": "홍성철",
+"founded": "2001-05-16",
+"homepage": null,
+"industry_code": "42",
+"market": "기타",
+"name": "(주)알루이엔씨",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
 "finance": null,
 "v": 3
 },
@@ -61833,6 +62014,22 @@
 }
 ]
 },
+"v": 3
+},
+"01044968": {
+"company": {
+"ceo": "안석순",
+"founded": "1981-02-17",
+"homepage": null,
+"industry_code": "291",
+"market": "기타",
+"name": "클레온(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
+"finance": null,
 "v": 3
 },
 "01047734": {
@@ -77365,6 +77562,22 @@
 "finance": null,
 "v": 3
 },
+"01500279": {
+"company": {
+"ceo": "이 용",
+"founded": "2012-03-26",
+"homepage": "https://www.ses.or.kr",
+"industry_code": "75999",
+"market": "기타",
+"name": "주식회사 에스이에스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
+"finance": null,
+"v": 3
+},
 "01502107": {
 "company": {
 "ceo": "조윤성, 조성제",
@@ -81920,6 +82133,22 @@
 "finance": null,
 "v": 3
 },
+"01633586": {
+"company": {
+"ceo": "최흥섭",
+"founded": "2002-04-23",
+"homepage": null,
+"industry_code": "32029",
+"market": "기타",
+"name": "주식회사 씨맥스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
+"finance": null,
+"v": 3
+},
 "01634114": {
 "company": {
 "ceo": "김기배",
@@ -84270,6 +84499,22 @@
 "finance": null,
 "v": 3
 },
+"01745933": {
+"company": {
+"ceo": "김화규",
+"founded": "2005-03-02",
+"homepage": null,
+"industry_code": "68112",
+"market": "기타",
+"name": "(주)다솜인터내셔널",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
+"finance": null,
+"v": 3
+},
 "01746561": {
 "company": {
 "ceo": "권성택",
@@ -86516,6 +86761,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01838695": {
+"company": {
+"ceo": "손우호",
+"founded": "2002-03-25",
+"homepage": "https://www.syu.co.kr",
+"industry_code": "24321",
+"market": "기타",
+"name": "(주)신영유니크",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
 "finance": null,
 "v": 3
 },
@@ -88828,6 +89089,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-23",
+"finance": null,
+"v": 3
+},
+"02016555": {
+"company": {
+"ceo": "최대룡",
+"founded": "2006-05-30",
+"homepage": null,
+"industry_code": "58222",
+"market": "기타",
+"name": "(주)YH데이타베이스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-27",
 "finance": null,
 "v": 3
 },
