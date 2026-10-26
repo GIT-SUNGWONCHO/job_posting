@@ -86,7 +86,8 @@ class Gemini:
                 timeout=180,
             )
             if resp.status_code == 429 or resp.status_code >= 500:
-                last_error = f"{resp.status_code} {resp.text[:200]}"
+                # 한도 오류 본문에 어느 한도(quotaMetric)인지 적혀 있다. 키는 들어 있지 않다
+                last_error = f"{resp.status_code} {resp.text[:2000]}"
                 time.sleep(20 * (attempt + 1))
                 continue
             if resp.status_code != 200:

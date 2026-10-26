@@ -181,7 +181,18 @@ def _research_test(company: str, models: list[str | None]) -> int:
         try:
             got = client.grounded(prompt)
         except ai.AIError as e:
-            print(json.dumps({"model": client.model, "error": str(e)[:300]}, ensure_ascii=False))
+            import re
+
+            text = str(e)
+            # 검색 근거가 무료 등급 밖인지, 그냥 오늘 한도를 다 쓴 건지 가린다: 같은 모델로 보통 호출도 해 본다
+            try:
+                plain = client.json("1 더하기 1은? 숫자만", {"type": "object", "properties": {"a": {"type": "string"}}})
+            except ai.AIError as e2:
+                plain = f"실패 {str(e2)[:120]}"
+            print(json.dumps({"model": client.model, "error": text[:160],
+                              "quota": sorted(set(re.findall(r'"(?:quotaMetric|quotaId)": "([^"]+)"', text))),
+                              "quota_value": sorted(set(re.findall(r'"quotaValue": "([^"]+)"', text))),
+                              "plain_call": plain}, ensure_ascii=False))
             continue
         resolved = []
         for c in got["chunks"][:3]:
