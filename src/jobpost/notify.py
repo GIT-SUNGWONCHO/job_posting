@@ -1,8 +1,8 @@
 """아침 알림: 매일 수집·매칭이 끝난 뒤 사람마다 새 공고 요약을 한 통 보낸다. 보낼 곳은 config/notify.yaml channels.
 
-한 통에 세 묶음(docs/content-rules.md "아침 알림·오늘의 리포트"):
+한 통에 세 묶음, 모두 접어서 제목과 건수만 보인다(docs/content-rules.md "아침 알림·오늘의 리포트"):
 1. 필터 통과 새 공고: 전부, 점수 높은 순
-2. 필터 밖 새 공고: 참고용으로 접어서(잡음 빼고)
+2. 필터 밖 새 공고: 참고용(잡음 빼고). 필터가 안정될 때까지 공고마다 걸린 이유(config/notify.yaml others_reason)
 3. 마감 임박: D-day~D-3. 관심 공고 먼저, 그다음 필터 통과 공고 중 점수 기준(soon_min_score) 이상
 새 공고는 지난번 알림 다음 날부터 오늘까지 처음 본 공고다(하루 빠져도 놓치지 않게, 최대 1주일). 처음 보낼 때는 오늘 것만.
 지원했거나 관심 없음으로 둔 공고는 뺀다. 공고마다 "판정 표시 회사 · 점수 · 마감" + 제목(회사는 회사 화면, 제목은 공고 상세 링크).
@@ -18,6 +18,8 @@ from typing import Any
 from urllib.parse import quote
 
 from . import config, kakao, recommend, telegram
+from . import filters as personal
+from .models import CompanyType
 
 log = logging.getLogger(__name__)
 
@@ -63,6 +65,19 @@ def screen_defaults() -> dict[str, Any]:
     """관리 화면이 알림에 들어가는 것을 적을 때 쓰는 값(화면용 파일 notify)."""
     cfg = config.load("notify")
     return {"channels": cfg["channels"], "soonMinScore": cfg["soon_min_score"]}
+
+
+def why_not(p: dict[str, Any], screen: dict[str, Any], filters: dict[str, Any]) -> str:
+    """필터 밖 공고가 걸린 이유를 한 줄로: "직무 데이터 분석 · 경력 3년 이상"."""
+    c = (screen.get("companies") or {}).get(p["company"]) or {}
+    jobs = {t["id"]: t.get("short") or t["name"] for t in screen.get("jobTypes") or []}
+    found = personal.reasons(title=p["title"], company=c.get("name", ""), company_type=CompanyType(c.get("type", "그 외")),
+                             career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
+                             filters=filters, job_type=p.get("jobType"))
+    text = {"keyword": lambda v: f"제외 키워드 {v}", "company": lambda v: f"제외 회사 {v}",
+            "job": lambda v: f"직무 {jobs.get(v, v)}", "company_type": lambda v: f"기업 구분 {v}",
+            "career": lambda v: p.get("career") or "경력", "region": lambda v: f"지역 {v}"}
+    return " · ".join(text[kind](value) for kind, value in found)
 
 
 def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, dict[str, Any]], today: date,
@@ -111,7 +126,8 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
     return {"date": day,
             "head": f"{day} 새 공고 {n_new}건 · 필터 통과 {len(passed)}건" + (f" · 마감 임박 {n_soon}건" if n_soon else ""),
             "counts": {"new": n_new, "passed": len(passed), "soon": n_soon},
-            "passed": [item(p) for p in passed], "others": [item(p) for p in others],
+            "passed": [item(p) for p in passed],
+            "others": [{**item(p), "why": why_not(p, screen, filters) if cfg.get("others_reason") else None} for p in others],
             "soon": [item(p) for p in interest] + [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
             "soonMinScore": cfg["soon_min_score"],
             "report": base + "#/report", "jobs": base + "#/jobs", "career": base + "#/career"}
@@ -120,8 +136,8 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
 def _sections(d: dict[str, Any], limits: dict[str, int]) -> list[dict[str, Any]]:
     """세 묶음(제목, 보일 공고, 접을지). limits: 묶음마다 보일 개수(한도에 걸리면 줄인다). 줄인 묶음은 "외 N건"."""
     out = []
-    for key, title, folded in (("passed", "필터 통과 새 공고", False), ("others", "필터 밖 새 공고(참고)", True),
-                               ("soon", f"마감 임박 · ★ 관심 공고와 {d['soonMinScore']}점 이상", False)):
+    for key, title, folded in (("passed", "필터 통과 새 공고", True), ("others", "필터 밖 새 공고(참고)", True),
+                               ("soon", f"마감 임박 · ★ 관심 공고와 {d['soonMinScore']}점 이상", True)):
         items = d[key]
         shown = items[:limits[key]]
         out.append({"key": key, "title": title, "folded": folded, "items": shown, "total": len(items),
@@ -149,7 +165,7 @@ def _legend() -> str:
 
 def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]]:
     """텔레그램 일반 메시지(HTML, 4096자 안)와 아래 버튼. 리치 메시지가 실패한 날 대신 보낸다.
-    v4(2026-10-27): 머리 두 줄, 세 묶음(필터 밖은 접힌 인용), 판정 설명."""
+    v5(2026-10-27): 머리 두 줄, 세 묶음(모두 접힌 인용, 필터 밖은 걸린 이유), 판정 설명."""
 
     def esc(s: str) -> str:
         return html.escape(s, quote=False)
@@ -157,9 +173,10 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
     def entry(it: dict[str, Any]) -> str:
         score = "점수 없음" if it["score"] < 0 else f"{it['score']:g}점"
         star = "★ " if it["interest"] else ""
+        why = f"\n<i>필터 밖: {esc(it['why'])}</i>" if it.get("why") else ""
         return (f'{MARKS.get(it["verdict"] or "", "▫️")} <b>{star}<a href="{html.escape(it["companyUrl"])}">'
                 f'{esc(it["company"])}</a></b>  {score} · {esc(it["deadline"])}\n'
-                f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a>')
+                f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a>{why}')
 
     def render(sections: list[dict[str, Any]]) -> str:
         c = d["counts"]
@@ -186,8 +203,8 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
 
 
 def telegram_rich(d: dict[str, Any]) -> str:
-    """텔레그램 리치 메시지(HTML). v5(2026-10-27): 제목, 건수, 세 묶음을 표(판정 · 회사와 공고 · 점수 · 마감)로,
-    필터 밖은 접는 블록, 대시보드 버튼, 판정 설명은 꼬리말. 보내기가 실패하면 run()이 일반 메시지로 대신 보낸다."""
+    """텔레그램 리치 메시지(HTML). v6(2026-10-27): 제목, 건수, 세 묶음을 표(판정 · 회사와 공고 · 점수 · 마감)로
+    모두 접는 블록에(필터 밖은 걸린 이유), 대시보드 버튼, 판정 설명은 꼬리말. 보내기가 실패하면 run()이 일반 메시지로 대신 보낸다."""
 
     def esc(s: str) -> str:
         return html.escape(s, quote=False)
@@ -199,7 +216,8 @@ def telegram_rich(d: dict[str, Any]) -> str:
             rows.append(f'<tr><td>{MARKS.get(it["verdict"] or "", "▫️")}</td>'
                         f'<td align="left"><b>{"★ " if it["interest"] else ""}'
                         f'<a href="{html.escape(it["companyUrl"])}">{esc(it["company"])}</a></b><br>'
-                        f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a></td>'
+                        f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a>'
+                        + (f'<br><i>필터 밖: {esc(it["why"])}</i>' if it.get("why") else "") + '</td>'
                         f'<td align="right"><b>{score}</b></td><td align="center">{esc(it["deadline"])}</td></tr>')
         return "<table striped compact>" + "".join(rows) + "</table>"
 

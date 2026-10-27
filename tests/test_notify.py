@@ -54,31 +54,33 @@ def test_new_postings_since_the_last_message_count_when_a_day_was_missed():
     assert "새 공고 6건" in notify.digest(screen, FILTERS, MATCHES, TODAY, since=date(2026, 10, 15))["head"]
 
 
-def test_rich_message_shows_passed_postings_in_full_and_folds_the_others():
+def test_rich_message_folds_every_section_and_tells_why_others_missed_the_filter():
     screen = {**SCREEN, "postings": [*SCREEN["postings"], *(posting(f"m:{i}") for i in range(4))]}
     rich = notify.telegram_rich(notify.digest(screen, FILTERS, MATCHES, TODAY))
     assert rich.startswith("<h3>10/17(토) 오늘의 공고</h3><p>새 공고 <b>9</b> · 필터 통과 <b>8</b> · 마감 임박 <b>1</b></p>"
-                           "<h4>필터 통과 새 공고 8건</h4><table striped compact>")
-    assert rich.count("#/job/m%3A") == 4 and "더 보기" not in rich  # 필터 통과는 접지 않고 전부
+                           "<details><summary>필터 통과 새 공고 8건</summary><table striped compact>")
+    assert rich.count("#/job/m%3A") == 4  # 필터 통과는 전부
     assert ('<tr><td>🟢</td><td align="left"><b><a href="https://careermap-web.oroloov.workers.dev/#/company/a">가나다</a></b><br>'
             '<a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">Data Engineer</a></td>'
             '<td align="right"><b>92</b></td><td align="center">D-12</td></tr>') in rich
     assert "A&amp;B &lt;ML&gt;" in rich
     assert "<details><summary>필터 밖 새 공고(참고) 1건</summary><table" in rich
-    assert "<h4>마감 임박 · ★ 관심 공고와 70점 이상 1건</h4><table" in rich
+    assert "<br><i>필터 밖: 기업 구분 그 외</i></td>" in rich  # 걸린 이유
+    assert "<details><summary>마감 임박 · ★ 관심 공고와 70점 이상 1건</summary><table" in rich
     assert '<tg-button type="url" style="primary" url="https://careermap-web.oroloov.workers.dev/#/report">리포트</tg-button>' in rich
     assert rich.endswith("<footer>🟢 지원 추천 · 🟡 고려 · ⚪ 비추천</footer>")
 
 
-def test_plain_message_lists_every_passed_posting_and_folds_the_others():
+def test_plain_message_folds_every_section_and_tells_why_others_missed_the_filter():
     text, buttons = notify.telegram_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))
     a = '<a href="https://careermap-web.oroloov.workers.dev/#/company/a">가나다</a>'
     assert text.startswith("<b>10/17(토) 오늘의 공고</b>\n새 공고 5 · 필터 통과 4 · 마감 임박 1\n\n<b>필터 통과 새 공고</b> 4건\n"
-                           f"🟢 <b>{a}</b>  92점 · D-12\n<a href=\"https://careermap-web.oroloov.workers.dev/#/job/z%3A2\">Data Engineer</a>")
+                           f"<blockquote expandable>🟢 <b>{a}</b>  92점 · D-12\n<a href=\"https://careermap-web.oroloov.workers.dev/#/job/z%3A2\">Data Engineer</a>")
     assert "▫️ <b>" + a + "</b>  88점 · 상시" in text  # 규칙 점수
     assert "A&amp;B &lt;ML&gt;" in text  # 태그가 아닌 <, >, &는 바꾼다
     assert "<b>필터 밖 새 공고(참고)</b> 1건\n<blockquote expandable>" in text
-    assert "<b>마감 임박 · ★ 관심 공고와 70점 이상</b> 1건\n🟢 <b>" + a + "</b>  81점 · D-2" in text
+    assert "#/job/z%3A5\">Data Engineer</a>\n<i>필터 밖: 기업 구분 그 외</i>" in text
+    assert "<b>마감 임박 · ★ 관심 공고와 70점 이상</b> 1건\n<blockquote expandable>🟢 <b>" + a + "</b>  81점 · D-2" in text
     assert text.endswith("🟢 지원 추천 · 🟡 고려 · ⚪ 비추천")
     assert [b["text"] for b in buttons[0]] == ["리포트", "공고 목록", "커리어"]
 
@@ -254,3 +256,14 @@ def test_connect_kakao_stores_the_token_for_the_only_profile(monkeypatch):
     assert notify.connect_kakao(db, " CODE \n") == "u1"
     assert seen == {"code": "CODE", "redirect_uri": "https://careermap-web.oroloov.workers.dev/kakao"}
     assert db.inserted[0]["refresh_token"] == "RT" and db.inserted[0]["last_sent_on"] is None
+
+
+def test_reasons_name_every_filter_a_posting_missed(monkeypatch):
+    screen = {**SCREEN, "jobTypes": [{"id": "analyst", "name": "데이터 분석가", "short": "데이터 분석"}],
+              "postings": [{**posting("o:1", company="b", job="analyst"), "careerMin": 2, "careerMax": 4, "career": "경력 2~4년",
+                            "regions": ["부산"]}]}
+    filters = {**FILTERS, "career": {"min": 7, "max": 15}, "regions": ["서울"]}
+    d = notify.digest(screen, filters, {}, TODAY)
+    assert d["others"][0]["why"] == "직무 데이터 분석 · 기업 구분 그 외 · 경력 2~4년 · 지역 부산"
+    monkeypatch.setitem(config.load("notify"), "others_reason", False)  # 필터가 안정되면 끈다
+    assert notify.digest(screen, filters, {}, TODAY)["others"][0]["why"] is None
