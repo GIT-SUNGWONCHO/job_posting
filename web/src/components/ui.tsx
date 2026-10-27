@@ -19,13 +19,15 @@ export function Score({ value, solid = false, size = 52 }: { value: number; soli
   )
 }
 
-export function JobRow({ p, c, today, showCompany = true, active = false, match }: {
+export function JobRow({ p, c, today, showCompany = true, active = false, match, badge }: {
   p: Posting
   c: Company | undefined
   today: string
   showCompany?: boolean
   active?: boolean
   match?: Match
+  /** 줄 앞의 작은 표시(리포트의 "오늘") */
+  badge?: string
 }) {
   const stage = useApps().get(p.id)?.stage
   return (
@@ -35,6 +37,7 @@ export function JobRow({ p, c, today, showCompany = true, active = false, match 
         <span className="row-title">{p.title}</span>
         {match?.reason && <span className="row-reason">{match.reason}</span>}
         <span className="row-meta">
+          {badge && <span className="stage-chip">{badge}</span>}
           {stage && <span className={stage === 'dismissed' ? 'stage-chip muted' : 'stage-chip'}>{copy.apply.short[stage]}</span>}
           <Deadline p={p} today={today} />
           <span>{p.career}</span>
