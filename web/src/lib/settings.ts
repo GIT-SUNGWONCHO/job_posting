@@ -26,7 +26,12 @@ export async function saveFilters(filters: Filters): Promise<boolean> {
 export interface NotifyPrefs {
   enabled?: boolean
   top?: number
+  /** 받을 새 공고: 필터 통과만(점수 높은 순 top건) · 새 공고 전부(필터 밖은 접어서). src/jobpost/notify.py SCOPES와 같게 */
+  scope?: NotifyScope
 }
+
+export type NotifyScope = 'passed' | 'all'
+export const NOTIFY_SCOPES: NotifyScope[] = ['passed', 'all']
 
 /** 010을 실행하기 전이면 'missing', 그 밖의 오류는 'failed'. 42703: 칸 없음, PGRST204: PostgREST가 칸을 찾지 못함 */
 export type Loaded<T> = T | 'missing' | 'failed'

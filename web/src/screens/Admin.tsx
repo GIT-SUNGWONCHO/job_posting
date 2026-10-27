@@ -3,7 +3,7 @@ import { copy } from '../copy'
 import { SectionTitle } from '../components/ui'
 import { dateText } from '../lib/format'
 import { goBack, href } from '../lib/route'
-import { loadNotify, loadTelegramLink, saveNotify, type Loaded, type NotifyPrefs, type TelegramLink } from '../lib/settings'
+import { loadNotify, loadTelegramLink, NOTIFY_SCOPES, saveNotify, type Loaded, type NotifyPrefs, type NotifyScope, type TelegramLink } from '../lib/settings'
 import { supabase } from '../lib/supabase'
 import type { NotifyDefaults, Screen } from '../lib/types'
 
@@ -70,6 +70,7 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
   const enabled = cur.enabled !== false
   const choices = defaults?.choices?.top ?? []
   const top = cur.top && choices.includes(cur.top) ? cur.top : defaults?.top
+  const scope: NotifyScope = cur.scope && NOTIFY_SCOPES.includes(cur.scope) ? cur.scope : 'passed'
 
   function change(next: NotifyPrefs) {
     if (!editable) return
@@ -103,7 +104,13 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
             {copy.admin.enabled}
             <input type="checkbox" checked={enabled} disabled={!editable} onChange={(e) => change({ enabled: e.target.checked })} />
           </label>
-          {defaults && choices.length > 0 && (
+          <label className="field">
+            <span>{copy.admin.scope}</span>
+            <select value={scope} disabled={!editable || !enabled} onChange={(e) => change({ scope: e.target.value as NotifyScope })}>
+              {NOTIFY_SCOPES.map((v) => <option key={v} value={v}>{copy.admin.scopeOption[v]}</option>)}
+            </select>
+          </label>
+          {defaults && choices.length > 0 && scope === 'passed' && (
             <label className="field">
               <span>{copy.admin.top}</span>
               <select value={top} disabled={!editable || !enabled} onChange={(e) => change({ top: Number(e.target.value) })}>
@@ -113,10 +120,17 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
               </select>
             </label>
           )}
-          {defaults?.soonMinScore !== undefined && <p className="note small">{copy.admin.prefsNote(defaults.soonMinScore)}</p>}
           {saved && <p className={saved === 'ok' ? 'note' : 'note urgent'} role="status">{saved === 'ok' ? copy.admin.saved : copy.admin.saveFailed}</p>}
         </div>
       </section>
+      {defaults && (
+        <section className="section">
+          <SectionTitle>{copy.admin.contents}</SectionTitle>
+          <ul className="plain-list">
+            {copy.admin.contentLines(scope === 'all', top ?? defaults.top, defaults.soonMinScore).map((line) => <li key={line}>{line}</li>)}
+          </ul>
+        </section>
+      )}
     </div>
   )
 }

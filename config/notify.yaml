@@ -9,7 +9,9 @@ dashboard_url: https://careermap-web.oroloov.workers.dev
 soon_days: 3           # 마감 임박: D-day~D-3(용어집)
 soon_min_score: 70     # 알림에 넣는 마감 임박 공고의 최소 점수(머리의 건수는 점수와 상관없이 전부)
 
-# 사람마다 관리 화면에서 고르는 값(Supabase settings.notify: enabled 받기, top 개수). 고르지 않았으면 받기, 아래 telegram.top
+# 사람마다 관리 화면에서 고르는 값(Supabase settings.notify: enabled 받기, scope 받을 새 공고, top 개수).
+# scope는 passed(필터 통과 새 공고만, top건) · all(새 공고 전부, 필터 밖은 접어서)이고 기본은 passed(notify.py SCOPES).
+# 고르지 않았으면 받기, passed, 아래 telegram.top
 choices:
   top: [5, 10, 20]     # 필터 통과 새 공고 개수
 

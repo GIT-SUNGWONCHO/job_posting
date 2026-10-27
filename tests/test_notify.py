@@ -65,9 +65,32 @@ def test_starred_companies_new_postings_come_regardless_of_filters_without_repea
 
 
 def test_prefs_fall_back_to_config_values():
-    assert notify.prefs_of(None) == {"enabled": True, "top": 10}
-    assert notify.prefs_of({"enabled": False, "top": 7}) == {"enabled": False, "top": 10}  # 고를 수 없는 개수
-    assert notify.prefs_of({"top": 20}) == {"enabled": True, "top": 20}
+    assert notify.prefs_of(None) == {"enabled": True, "top": 10, "scope": "passed"}
+    assert notify.prefs_of({"enabled": False, "top": 7, "scope": "x"}) == {"enabled": False, "top": 10, "scope": "passed"}
+    assert notify.prefs_of({"top": 20, "scope": "all"}) == {"enabled": True, "top": 20, "scope": "all"}
+
+
+def test_all_new_postings_come_with_the_ones_outside_my_filters_folded():
+    screen = {**SCREEN, "postings": [*SCREEN["postings"], {**posting("n:1", company="b"), "noise": "잡음"}]}
+    d = notify.digest(screen, FILTERS, MATCHES, TODAY, stages={"z:3": "dismissed"}, stars={"b"},
+                      prefs=notify.prefs_of({"top": 5, "scope": "all"}))
+    assert [it["id"] for it in d["new"]] == ["z:2", "z:4", "z:1"] and d["top"] == 3  # 개수 제한 없이
+    assert [it["id"] for it in d["others"]] == ["z:5"] and d["stars"] == []  # 잡음·관심 없음은 빼고, 관심 회사는 이미 보인다
+    rich = notify.telegram_rich(d)
+    assert "<summary>필터 밖 새 공고 1건</summary>" in rich
+    assert "<b>필터 밖 새 공고</b> 1건\n<blockquote expandable>" in notify.telegram_message(d)[0]
+    assert notify.digest(SCREEN, FILTERS, MATCHES, TODAY)["others"] == []  # 기본은 필터 통과만
+
+
+def test_messages_stay_under_telegram_limits_when_every_new_posting_is_sent():
+    many = {**SCREEN, "postings": [posting(f"m:{i}", company="a" if i % 2 else "b", title="데이터 엔지니어 채용 " * 8)
+                                   for i in range(400)]}
+    d = notify.digest(many, FILTERS, {}, TODAY, prefs=notify.prefs_of({"scope": "all"}))
+    assert len(d["new"]) == 200 and len(d["others"]) == 200
+    rich = notify.telegram_rich(d)
+    assert len(rich) <= notify.RICH_MAX + 1000 and rich.count("<tr>") <= notify.RICH_ROWS
+    assert "나머지는 공고 목록에서" in rich or "공고 목록에서</p>" in rich
+    assert len(notify.telegram_message(d)[0]) <= telegram.TEXT_MAX
 
 def test_telegram_message_lists_new_and_urgent_postings_as_escaped_html():
     text, buttons = notify.telegram_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))

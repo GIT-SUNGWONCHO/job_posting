@@ -200,6 +200,7 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .source-row .note { text-align: right; }
 .note.rule { margin-top: 16px; }
 .run-status { margin: 0; font-size: var(--fs-item); }
+.plain-list { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-sub); color: var(--sub); line-height: 1.5; }
 
 /* 입력 화면(프로필) */
 .form { display: flex; flex-direction: column; gap: 12px; }

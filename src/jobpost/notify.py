@@ -5,6 +5,7 @@
 - 머리: "10/21(수) 새 공고 208건 · 필터 통과 11건 · 마감 임박 7건"
 - 필터 통과 새 공고를 점수 높은 순으로: "회사 · 공고 제목" / "92점 지원 추천 · D-12", 회사 이름은 회사 화면, 제목은 공고 상세 링크
 - 관심 회사(★) 새 공고: 필터와 상관없이, 위 목록에 이미 보인 공고는 빼고
+- "새 공고 전부"로 받는 사람(관리 화면): 필터 통과 새 공고를 개수 제한 없이, 그 밖의 새 공고는 "필터 밖 새 공고"로 접어서
 - 마감 임박(필터 통과, D-day~D-3) 중 점수 기준 이상
 - 대시보드 링크: 리포트, 공고 목록, 커리어
 새 공고는 지난번 알림 다음 날부터 오늘까지 처음 본 공고다(하루 빠져도 놓치지 않게, 최대 1주일). 처음 보낼 때는 오늘 것만.
@@ -23,6 +24,8 @@ from . import config, kakao, recommend, telegram
 log = logging.getLogger(__name__)
 
 WEEKDAYS = "월화수목금토일"
+RICH_MAX = 30000   # 리치 메시지 32768자보다 넉넉히(버튼·꼬리말 몫)
+RICH_ROWS = 450    # 리치 메시지 블록 500개(표 줄 포함)보다 넉넉히
 KAKAO_TEXT_MAX = 200
 
 
@@ -51,13 +54,18 @@ def _score_text(m: dict[str, Any] | None) -> str:
 # 다시 추천하지 않는 지원 단계: 이미 지원했거나 관심 없음(web/src/lib/applications.ts NOT_AGAIN과 같게)
 NOT_AGAIN = {"applied", "passed", "interview", "result", "dismissed"}
 
+# 받을 새 공고(관리 화면, web/src/lib/settings.ts NotifyPrefs와 같게): 필터 통과만(점수 높은 순 top건) · 새 공고 전부
+SCOPES = ("passed", "all")
+
+
 def prefs_of(raw: dict[str, Any] | None) -> dict[str, Any]:
     """사람별 알림 설정(Supabase settings.notify, 관리 화면에서 고름). 없거나 고를 수 없는 값이면 config/notify.yaml 기본값."""
     cfg = config.load("notify")
     choices = cfg["choices"]
     raw = raw or {}
     top = raw.get("top") if raw.get("top") in choices["top"] else cfg["telegram"]["top"]
-    return {"enabled": raw.get("enabled") is not False, "top": top}
+    scope = raw.get("scope") if raw.get("scope") in SCOPES else SCOPES[0]
+    return {"enabled": raw.get("enabled") is not False, "top": top, "scope": scope}
 
 
 def screen_defaults() -> dict[str, Any]:
@@ -107,8 +115,13 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
     interest = [p for p in screen["postings"] if stages.get(p["id"]) == "interest" and closing(p)]
     soon = sorted((p for p in passed.values() if closing(p) and stages.get(p["id"]) != "interest"), key=score, reverse=True)
     n_soon = len(soon) + len(interest)
-    # 관심 회사 새 공고: 필터와 상관없이(잡음, 지원했거나 관심 없음은 빼고). 위 필터 통과 목록에 보이는 것은 빼고
-    shown = {p["id"] for p in new_passed[:prefs["top"]]}
+    everything = prefs.get("scope") == "all"
+    top = len(new_passed) if everything else prefs["top"]
+    # 필터 밖 새 공고("새 공고 전부"로 받을 때만): 잡음, 지원했거나 관심 없음은 빼고 점수 높은 순
+    others = sorted((p for p in new if p["id"] not in passed and not p.get("noise") and stages.get(p["id"]) not in NOT_AGAIN),
+                    key=lambda p: (score(p), p["firstSeen"]), reverse=True) if everything else []
+    # 관심 회사 새 공고: 필터와 상관없이(잡음, 지원했거나 관심 없음은 빼고). 위 목록에 보이는 것은 빼고(전부 받으면 없다)
+    shown = {p["id"] for p in new_passed[:top]} | {p["id"] for p in others}
     starred = sorted((p for p in new if p["company"] in stars and not p.get("noise") and p["id"] not in shown
                       and stages.get(p["id"]) not in NOT_AGAIN), key=lambda p: (score(p), p["firstSeen"]), reverse=True)
     head = (f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]}) 새 공고 {len(new)}건 · "
@@ -118,7 +131,7 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
             "new": [item(p) for p in new_passed], "soon_count": len(soon) + len(interest),
             "soon": [item(p) for p in sorted(interest, key=lambda p: p.get("deadline") or "")]
             + [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
-            "stars": [item(p) for p in starred], "top": prefs["top"],
+            "stars": [item(p) for p in starred], "others": [item(p) for p in others], "top": top,
             "report": base + "#/report", "jobs": base + "#/jobs", "career": base + "#/career"}
 
 
@@ -128,9 +141,9 @@ MARKS = {"지원 추천": "🟢", "고려": "🟡", "비추천": "⚪"}  # 판�
 def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]]:
     """텔레그램 HTML 메시지(4096자 안)와 아래 버튼.
 
-    v3(2026-10-26): 머리 두 줄(날짜 / 건수), 공고마다 "판정 표시 회사 점수 · 마감" + 제목 링크 두 줄
-    (회사 이름은 회사 화면 링크). 위 visible건만 펼쳐 두고 나머지와 관심 회사 새 공고·마감 임박은 접힌 인용(누르면 펼침).
-    대시보드 링크는 버튼으로.
+    v3(2026-10-27): 머리 두 줄(날짜 / 건수), 공고마다 "판정 표시 회사 점수 · 마감" + 제목 링크 두 줄
+    (회사 이름은 회사 화면 링크). 위 visible건만 펼쳐 두고 나머지와 필터 밖 새 공고·관심 회사 새 공고·마감 임박은
+    접힌 인용(누르면 펼침). 대시보드 링크는 버튼으로. 4096자를 넘으면 뒤에서부터 줄이고 "외 N건"으로 알린다.
     """
     cfg = config.load("notify")
     tg = cfg["telegram"]
@@ -149,7 +162,7 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
     def folded(items: list[dict[str, Any]]) -> str:
         return "<blockquote expandable>" + "\n\n".join(entry(it) for it in items) + "</blockquote>"
 
-    def build(top: int, soon_top: int) -> str:
+    def build(top: int, soon_top: int, other_top: int) -> str:
         c = d["counts"]
         lines = [f"<b>{esc(d['date'])} 오늘의 공고</b>",
                  f"새 공고 {c['new']} · 필터 통과 {c['passed']} · 마감 임박 {c['soon']}", ""]
@@ -163,6 +176,10 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
                 lines.append(f"외 {len(d['new']) - top}건은 공고 목록에서")
         else:
             lines.append("필터를 통과한 새 공고가 없어요.")
+        others = d.get("others") or []
+        if others[:other_top]:
+            more = f" 중 {other_top}건" if len(others) > other_top else ""
+            lines += ["", f"<b>필터 밖 새 공고</b> {len(others)}건{more}", folded(others[:other_top])]
         stars = d.get("stars") or []
         if stars[:soon_top]:
             more = f" 중 {soon_top}건" if len(stars) > soon_top else ""
@@ -173,20 +190,24 @@ def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]
         lines += ["", " · ".join(f"{mark} {name}" for name, mark in MARKS.items())]  # 판정 표시 설명
         return "\n".join(lines).replace("\n\n\n", "\n\n").strip()
 
-    top, soon_top = d["top"], tg["soon_top"]
-    text = build(top, soon_top)
-    while len(text) > telegram.TEXT_MAX and top > 1:  # 태그까지 세어 넉넉히 줄인다
-        top -= 1
-        soon_top = min(soon_top, top)
-        text = build(top, soon_top)
+    top, soon_top, other_top = d["top"], tg["soon_top"], len(d.get("others") or [])
+    text = build(top, soon_top, other_top)
+    while len(text) > telegram.TEXT_MAX and (other_top or top > 1):  # 태그까지 세어 넉넉히 줄인다. 필터 밖부터
+        if other_top:
+            other_top -= 1
+        else:
+            top -= 1
+            soon_top = min(soon_top, top)
+        text = build(top, soon_top, other_top)
     buttons = [[{"text": "리포트", "url": d["report"]}, {"text": "공고 목록", "url": d["jobs"]},
                 {"text": "커리어", "url": d["career"]}]]
     return text, buttons
 
 
 def telegram_rich(d: dict[str, Any]) -> str:
-    """텔레그램 리치 메시지(HTML). v4(2026-10-26): 제목, 건수, 공고 표(판정 · 회사와 공고 · 점수 · 마감,
-    회사 이름은 회사 화면 링크), 위 visible건 다음과 관심 회사 새 공고·마감 임박은 접힌 블록, 대시보드 버튼, 판정 설명은 꼬리말.
+    """텔레그램 리치 메시지(HTML). v4(2026-10-27): 제목, 건수, 공고 표(판정 · 회사와 공고 · 점수 · 마감,
+    회사 이름은 회사 화면 링크), 위 visible건 다음과 필터 밖 새 공고·관심 회사 새 공고·마감 임박은 접힌 블록, 대시보드 버튼,
+    판정 설명은 꼬리말. 리치 메시지 한도(글자, 블록)를 넘으면 뒤에서부터 줄이고 "외 N건"으로 알린다.
     리치 메시지는 2026년 새 기능이라 보내기가 실패하면 run()이 telegram_message(일반 메시지)로 대신 보낸다."""
     cfg = config.load("notify")
     tg = cfg["telegram"]
@@ -205,28 +226,43 @@ def telegram_rich(d: dict[str, Any]) -> str:
                         f'<td align="right"><b>{score}</b></td><td align="center">{esc(it["deadline"])}</td></tr>')
         return "<table striped compact>" + "".join(rows) + "</table>"
 
-    c = d["counts"]
-    parts = [f"<h3>{esc(d['date'])} 오늘의 공고</h3>",
-             f"<p>새 공고 <b>{c['new']}</b> · 필터 통과 <b>{c['passed']}</b> · 마감 임박 <b>{c['soon']}</b></p>"]
-    top = d["top"]
-    shown = d["new"][:top]
-    if shown:
-        parts += ["<h4>필터 통과 새 공고</h4>", table(shown[:tg["visible"]])]
-        rest = shown[tg["visible"]:]
-        if rest:
-            parts.append(f"<details><summary>{len(rest)}건 더 보기</summary>{table(rest)}</details>")
-        if len(d["new"]) > top:
-            parts.append(f"<p>외 {len(d['new']) - top}건은 공고 목록에서</p>")
-    else:
-        parts.append("<p>필터를 통과한 새 공고가 없어요.</p>")
-    stars = d.get("stars") or []
-    if stars:
-        more = f" 중 {tg['soon_top']}건" if len(stars) > tg["soon_top"] else ""
-        parts.append(f"<details><summary>관심 회사 새 공고 {len(stars)}건{more}</summary>{table(stars[:tg['soon_top']])}</details>")
-    soon = d["soon"][:tg["soon_top"]]
-    if soon:
-        parts.append(f"<details><summary>마감 임박 {len(soon)}건 · ★ 관심 공고와 {cfg['soon_min_score']}점 이상</summary>"
-                     f"{table(soon)}</details>")
+    def build(top: int, other_top: int) -> list[str]:
+        c = d["counts"]
+        parts = [f"<h3>{esc(d['date'])} 오늘의 공고</h3>",
+                 f"<p>새 공고 <b>{c['new']}</b> · 필터 통과 <b>{c['passed']}</b> · 마감 임박 <b>{c['soon']}</b></p>"]
+        shown = d["new"][:top]
+        if shown:
+            parts += ["<h4>필터 통과 새 공고</h4>", table(shown[:tg["visible"]])]
+            rest = shown[tg["visible"]:]
+            if rest:
+                parts.append(f"<details><summary>{len(rest)}건 더 보기</summary>{table(rest)}</details>")
+            if len(d["new"]) > top:
+                parts.append(f"<p>외 {len(d['new']) - top}건은 공고 목록에서</p>")
+        else:
+            parts.append("<p>필터를 통과한 새 공고가 없어요.</p>")
+        others = d.get("others") or []
+        if others:
+            more = f" 중 {other_top}건(나머지는 공고 목록에서)" if len(others) > other_top else ""
+            parts.append(f"<details><summary>필터 밖 새 공고 {len(others)}건{more}</summary>{table(others[:other_top])}</details>")
+        stars = d.get("stars") or []
+        if stars:
+            more = f" 중 {tg['soon_top']}건" if len(stars) > tg["soon_top"] else ""
+            parts.append(f"<details><summary>관심 회사 새 공고 {len(stars)}건{more}</summary>{table(stars[:tg['soon_top']])}</details>")
+        soon = d["soon"][:tg["soon_top"]]
+        if soon:
+            parts.append(f"<details><summary>마감 임박 {len(soon)}건 · ★ 관심 공고와 {cfg['soon_min_score']}점 이상</summary>"
+                         f"{table(soon)}</details>")
+        return parts
+
+    top, other_top = d["top"], len(d.get("others") or [])
+    parts = build(top, other_top)
+    # 한도 안으로: 필터 밖부터, 다음은 필터 통과 공고를 뒤에서부터 줄인다
+    while (len("".join(parts)) > RICH_MAX or sum(x.count("<tr>") for x in parts) > RICH_ROWS) and (other_top or top > 1):
+        if other_top:
+            other_top = max(0, other_top - 5)
+        else:
+            top -= 1
+        parts = build(top, other_top)
     parts.append('<tg-button-row align="center">'
                  f'<tg-button type="url" style="primary" url="{html.escape(d["report"])}">리포트</tg-button>'
                  f'<tg-button type="url" url="{html.escape(d["jobs"])}">공고 목록</tg-button>'
