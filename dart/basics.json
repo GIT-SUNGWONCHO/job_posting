@@ -34695,6 +34695,22 @@
 },
 "v": 3
 },
+"00279929": {
+"company": {
+"ceo": "오선관",
+"founded": "1997-07-23",
+"homepage": "https://www.ocic.co.kr",
+"industry_code": "62090",
+"market": "기타",
+"name": "OCI정보통신(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
+"finance": null,
+"v": 3
+},
 "00296290": {
 "company": {
 "ceo": "엄주성",
@@ -35511,6 +35527,22 @@
 }
 ]
 },
+"v": 3
+},
+"00300867": {
+"company": {
+"ceo": "신영무",
+"founded": "1997-07-07",
+"homepage": "https://www.shinkim.com",
+"industry_code": "71101",
+"market": "기타",
+"name": "법무법인 세종",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
+"finance": null,
 "v": 3
 },
 "00301228": {
@@ -36687,6 +36719,22 @@
 }
 ]
 },
+"v": 3
+},
+"00332431": {
+"company": {
+"ceo": "박춘홍",
+"founded": "1996-01-11",
+"homepage": "https://www.zeniel.co.kr",
+"industry_code": "7512",
+"market": "기타",
+"name": "주식회사 제니엘",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
+"finance": null,
 "v": 3
 },
 "00332468": {
@@ -41770,6 +41818,22 @@
 },
 "v": 3
 },
+"00404677": {
+"company": {
+"ceo": "김석환",
+"founded": "1990-03-01",
+"homepage": "https://www.soo-sung.co.kr",
+"industry_code": "72121",
+"market": "기타",
+"name": "(주)수성엔지니어링",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
+"finance": null,
+"v": 3
+},
 "00405056": {
 "company": {
 "ceo": "최종욱",
@@ -43391,6 +43455,84 @@
 "net": 26384397732,
 "operating": 31891937098,
 "revenue": 330827395521,
+"year": 2025
+}
+]
+},
+"v": 3
+},
+"00426828": {
+"company": {
+"ceo": "김동식",
+"founded": "1997-06-17",
+"homepage": "https://www.kweather.co.kr",
+"industry_code": "291",
+"market": "코스닥",
+"name": "케이웨더(주)",
+"stock_code": "068100"
+},
+"disclosures": [
+{
+"date": "2026-03-27",
+"rcept_no": "20260327900914",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-25",
+"rcept_no": "20260325900283",
+"title": "증권발행결과(자율공시) (제3자배정 유상증자)"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319900362",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-11",
+"rcept_no": "20260311901650",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-03-11",
+"rcept_no": "20260311901505",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-27",
+"rcept_no": "20260227008541",
+"title": "[기재정정]주요사항보고서(유상증자결정)"
+}
+],
+"employees": {
+"count": 84,
+"date": "2025-12-31",
+"rcept_no": "20260319000742",
+"salary": 40742393,
+"tenure": null
+},
+"fetched": "2026-10-28",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260319000742",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -2436410266,
+"operating": -2468833010,
+"revenue": 16384768271,
+"year": 2023
+},
+{
+"net": -1877139029,
+"operating": -2062350246,
+"revenue": 15586967912,
+"year": 2024
+},
+{
+"net": -1738048120,
+"operating": -1732031425,
+"revenue": 17691551363,
 "year": 2025
 }
 ]
@@ -50443,6 +50585,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00603658": {
+"company": {
+"ceo": "이동욱",
+"founded": "2003-05-26",
+"homepage": "https://www.bridgeitc.com",
+"industry_code": "27213",
+"market": "기타",
+"name": "주식회사브리지",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
 "finance": null,
 "v": 3
 },
@@ -57761,6 +57919,22 @@
 },
 "v": 3
 },
+"00928803": {
+"company": {
+"ceo": "정현수,마성우",
+"founded": "2006-05-23",
+"homepage": null,
+"industry_code": "411",
+"market": "기타",
+"name": "엔에스종합건설(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
+"finance": null,
+"v": 3
+},
 "00929282": {
 "company": {
 "ceo": "김범수",
@@ -59038,6 +59212,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00972266": {
+"company": {
+"ceo": "이이철",
+"founded": "2000-11-07",
+"homepage": "https://www.springwave.co.kr",
+"industry_code": "58221",
+"market": "기타",
+"name": "(주)스프링웨이브",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
 "finance": null,
 "v": 3
 },
@@ -65933,6 +66123,114 @@
 "finance": null,
 "v": 3
 },
+"01190124": {
+"company": {
+"ceo": "송민규, 유영근(각자 대표이사)",
+"founded": "2000-06-20",
+"homepage": "https://www.mediazen.co.kr",
+"industry_code": "58222",
+"market": "코스닥",
+"name": "미디어젠(주)",
+"stock_code": "279600"
+},
+"disclosures": [
+{
+"date": "2026-10-12",
+"rcept_no": "20261012900758",
+"title": "기타시장안내(관리종목지정우려종목) (시가총액 200억원 미달)"
+},
+{
+"date": "2026-08-31",
+"rcept_no": "20260831900161",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-08-28",
+"rcept_no": "20260828900946",
+"title": "기타시장안내(관리종목지정우려종목) (시가총액 200억원 미달)"
+},
+{
+"date": "2026-06-18",
+"rcept_no": "20260618900228",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-04-30",
+"rcept_no": "20260430901891",
+"title": "소속부변경"
+},
+{
+"date": "2026-03-30",
+"rcept_no": "20260330901424",
+"title": "대표이사변경"
+},
+{
+"date": "2026-03-30",
+"rcept_no": "20260330901131",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319900860",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312902331",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312902175",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312901789",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-15",
+"rcept_no": "20251215900583",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 170,
+"date": "2025-12-31",
+"rcept_no": "20260320000218",
+"salary": 56905882,
+"tenure": 5.1
+},
+"fetched": "2026-10-28",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260320000218",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -5463026620,
+"operating": -5272166711,
+"revenue": 12752623418,
+"year": 2023
+},
+{
+"net": -4177465637,
+"operating": -4674361271,
+"revenue": 12016631514,
+"year": 2024
+},
+{
+"net": -2715026078,
+"operating": -2231871542,
+"revenue": 22781312554,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "01194689": {
 "company": {
 "ceo": "김성준",
@@ -72469,6 +72767,33 @@
 },
 "v": 3
 },
+"01317642": {
+"company": {
+"ceo": "김종열",
+"founded": "2018-06-01",
+"homepage": "https://www.lottecinema.co.kr",
+"industry_code": "5914",
+"market": "기타",
+"name": "롯데컬처웍스 주식회사",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-09-02",
+"rcept_no": "20260902000112",
+"title": "타인을위한채무보증결정"
+},
+{
+"date": "2026-06-22",
+"rcept_no": "20260622000005",
+"title": "타인을위한채무보증결정"
+}
+],
+"employees": null,
+"fetched": "2026-10-28",
+"finance": null,
+"v": 3
+},
 "01319899": {
 "company": {
 "ceo": "안재용",
@@ -73712,6 +74037,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01377990": {
+"company": {
+"ceo": "이도영",
+"founded": "2012-12-05",
+"homepage": "https://www.optolane.com",
+"industry_code": "26129",
+"market": "기타",
+"name": "(주)옵토레인",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
 "finance": null,
 "v": 3
 },
@@ -80049,6 +80390,22 @@
 "finance": null,
 "v": 3
 },
+"01565328": {
+"company": {
+"ceo": "최경은, 임혜연",
+"founded": "2005-10-11",
+"homepage": "https://www.eluocnc.com",
+"industry_code": "58222",
+"market": "기타",
+"name": "(주)엘루오씨앤씨",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
+"finance": null,
+"v": 3
+},
 "01566248": {
 "company": {
 "ceo": "김종섭",
@@ -82426,6 +82783,22 @@
 },
 "v": 3
 },
+"01639623": {
+"company": {
+"ceo": "최인욱",
+"founded": "2014-01-02",
+"homepage": "https://joonggonara.co.kr",
+"industry_code": "58222",
+"market": "기타",
+"name": "주식회사 중고나라",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
+"finance": null,
+"v": 3
+},
 "01640434": {
 "company": {
 "ceo": "박찬재",
@@ -82642,6 +83015,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01654640": {
+"company": {
+"ceo": "안지영",
+"founded": "2017-11-21",
+"homepage": "https://www.soulenergy.co.kr",
+"industry_code": "71531",
+"market": "기타",
+"name": "주식회사 소울에너지",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
 "finance": null,
 "v": 3
 },
@@ -84117,6 +84506,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01726415": {
+"company": {
+"ceo": "이종탁",
+"founded": "2021-08-18",
+"homepage": "https://foxedu.kr",
+"industry_code": "58222",
+"market": "기타",
+"name": "주식회사 폭스커넥트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
 "finance": null,
 "v": 3
 },
@@ -87747,6 +88152,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01910971": {
+"company": {
+"ceo": "김종윤",
+"founded": "2017-04-25",
+"homepage": "https://www.beaverworksinc.com",
+"industry_code": "46510",
+"market": "기타",
+"name": "주식회사 비버웍스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-28",
 "finance": null,
 "v": 3
 },
