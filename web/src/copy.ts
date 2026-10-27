@@ -4,7 +4,7 @@ export const copy = {
   tabs: { report: '리포트', jobs: '공고', career: '커리어', apply: '지원', admin: '관리' },
   report: {
     title: '오늘의 리포트',
-    top: '이번 주 1등',
+    top: '오늘의 1등',
     weekCount: '이번 주 새 공고',
     todayCount: '오늘',
     urgent: '마감 임박',

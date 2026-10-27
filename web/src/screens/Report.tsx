@@ -15,7 +15,7 @@ const WEEK_ROWS = 10
 const SHOW = 5
 
 // 오늘의 리포트: 이번 주 기준 네 덩어리. 위에서 보인 공고는 아래에서 뺀다(docs/content-rules.md "아침 알림·오늘의 리포트").
-// 1 이번 주 1등 · 2 이번 주 새 공고 · 3 마감 임박 · 4 관심 회사 새 공고. 전체 점수순은 공고 탭(추천순)
+// 1 오늘의 1등 · 2 이번 주 새 공고 · 3 마감 임박 · 4 관심 회사 새 공고. 전체 점수순은 공고 탭(추천순)
 export function Report({ screen, passed, today, matches }: {
   screen: Screen
   passed: Posting[]
@@ -40,7 +40,7 @@ export function Report({ screen, passed, today, matches }: {
   const weekStart = addDays(screen.date, -(WEEK - 1))
   const week = passed.filter((p) => p.firstSeen >= weekStart && again(p)).sort(byScore)
   const todayCount = week.filter((p) => p.firstSeen === screen.date).length
-  // 1 이번 주 1등: 최근 7일 새 공고 중 점수 1등(점수가 있는 공고만)
+  // 1 오늘의 1등: 최근 7일 새 공고 중 점수 1등(점수가 있는 공고만)
   const top = week[0] && matches.has(week[0].id) ? week[0] : undefined
   // 2 이번 주 새 공고: 1등을 뺀 나머지
   const rest = top ? week.slice(1) : week
