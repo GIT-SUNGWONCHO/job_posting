@@ -52,8 +52,7 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
                                  "saramin": {"in_scope": 5, "complete": False, "new": 1, "closed": 0, "errors": ["x"]}}})
     built, _ = screen.build(tmp_path, today=day)
     assert built["collection"]["finished"] == "2026-10-13T04:40:00"
-    assert built["collection"]["sources"][1] == {"id": "saramin", "name": "사람인", "inScope": 5, "complete": False,
-                                                 "new": 1, "closed": 0, "errors": 1}
+    assert built["collection"]["sources"][1] == {"id": "saramin", "name": "사람인", "complete": False}
 
     out = screen.write(built, tmp_path / "out" / "screen.json.gz")
     with gzip.open(out, "rt", encoding="utf-8") as f:

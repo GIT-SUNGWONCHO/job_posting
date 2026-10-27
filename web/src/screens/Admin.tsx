@@ -121,33 +121,36 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
   )
 }
 
-/** 수집 현황: 마지막 수집(data 브랜치 runs/)의 수집처별 결과와 내려간 공고 기준 */
+/** 수집 현황: 오늘 공고를 믿어도 되는지(마지막 수집 시각, 수집처마다 끝까지 받았는지)와 내려감 기준 */
 export function CollectionPage({ screen, today }: { screen: Screen; today: string }) {
   const run = screen.collection ?? null
+  const sources = run?.sources ?? []
+  const partial = sources.filter((s) => !s.complete).map((s) => s.name)
   return (
     <div className="page detail">
-      <SubHead title={copy.admin.collection} sub={run ? copy.admin.lastRun(dateText(run.date), run.finished?.slice(11, 16) ?? '') : undefined} />
+      <SubHead title={copy.admin.collection} sub={copy.admin.collectionWhen} />
       <section className="section">
         {!run ? (
           <p className="note">{copy.admin.noCollection}</p>
         ) : (
-          <>
-            <SectionTitle>{copy.admin.sources}</SectionTitle>
+          <div className="admin-block">
+            <p className="run-status">
+              <span className={partial.length || run.date < today ? 'status-dot bad' : 'status-dot on'} />
+              <b>{copy.admin.lastRun(dateText(run.date), run.finished?.slice(11, 16) ?? '')}</b>
+            </p>
             {run.date < today && <p className="note urgent">{copy.admin.notToday}</p>}
+            <p className={partial.length ? 'note urgent' : 'note'}>
+              {partial.length ? copy.admin.somePartial(partial.join(', ')) : copy.admin.allComplete}
+            </p>
             <div className="source-rows">
-              {(run.sources ?? []).map((s) => (
+              {sources.map((s) => (
                 <div key={s.id} className="source-row">
-                  <span>
-                    <span className={s.complete ? 'status-dot on' : 'status-dot bad'} />
-                    <b>{s.name}</b> {s.complete ? copy.admin.complete : copy.admin.partial}
-                    {s.errors > 0 && <span className="muted"> · {copy.admin.errors(s.errors)}</span>}
-                  </span>
-                  <span className="note">{copy.admin.sourceCounts(s.inScope ?? 0, s.new ?? 0, s.closed ?? 0)}</span>
+                  <span>{s.name}</span>
+                  <span className={s.complete ? 'note' : 'note urgent'}>{s.complete ? copy.admin.complete : copy.admin.partial}</span>
                 </div>
               ))}
             </div>
-            <p className="note small">{copy.admin.sourcesNote}</p>
-          </>
+          </div>
         )}
         <p className="note small rule">{copy.admin.closedRule}</p>
       </section>

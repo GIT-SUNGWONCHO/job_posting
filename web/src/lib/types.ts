@@ -100,15 +100,12 @@ export interface Screen {
   postings: Posting[]
 }
 
+/** 마지막 수집: 언제 끝났고 수집처마다 끝까지 받았는지(일부만 받은 날은 그 수집처 공고를 내리지 않는다) */
 export interface Collection {
   date: string
   /** 끝난 시각(한국 시간, 2026-10-26T06:58:08) */
   finished: string | null
-  new: number | null
-  closed: number | null
-  openUnique: number | null
-  /** complete: 끝까지 받았는지(일부만 받은 날은 그 수집처 공고를 내려간 공고로 처리하지 않는다) */
-  sources: { id: string; name: string; inScope: number | null; complete: boolean; new: number | null; closed: number | null; errors: number }[]
+  sources: { id: string; name: string; complete: boolean }[]
 }
 
 /** 화면 코드와 화면용 파일은 따로 배포되니(Cloudflare / 매일 수집) 칸이 없어도 깨지지 않게 읽는다 */

@@ -197,9 +197,9 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 .status-dot.bad { background: var(--urgent); }
 .source-rows { display: flex; flex-direction: column; }
 .source-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); min-width: 0; }
-.source-row b { font-weight: var(--fw-item); }
 .source-row .note { text-align: right; }
 .note.rule { margin-top: 16px; }
+.run-status { margin: 0; font-size: var(--fs-item); }
 
 /* 입력 화면(프로필) */
 .form { display: flex; flex-direction: column; gap: 12px; }

@@ -160,7 +160,8 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
 
 
 def collection(data_dir: Path) -> dict[str, Any] | None:
-    """마지막 수집 요약(runs/날짜.json)에서 화면에 보일 것만: 날짜, 끝난 시각, 수집처마다 받은 수·끝까지 받았는지·새 공고·내려간 공고."""
+    """마지막 수집 요약(runs/날짜.json)에서 화면에 보일 것만: 날짜, 끝난 시각, 수집처마다 끝까지 받았는지.
+    수집 현황은 "오늘 공고를 믿어도 되나"만 보여준다(건수는 해외·같은 공고가 섞여 있어 보여주지 않는다)."""
     paths = sorted((data_dir / "runs").glob("*.json"))
     if not paths:
         return None
@@ -169,11 +170,9 @@ def collection(data_dir: Path) -> dict[str, Any] | None:
     except (OSError, ValueError) as e:
         log.warning("수집 요약을 읽지 못함(%s): %s", paths[-1].name, e)
         return None
-    sources = [{"id": k, "name": SOURCE_NAMES.get(k, k), "inScope": v.get("in_scope"), "complete": bool(v.get("complete")),
-                "new": v.get("new"), "closed": v.get("closed"), "errors": v.get("error_count", len(v.get("errors") or []))}
+    sources = [{"id": k, "name": SOURCE_NAMES.get(k, k), "complete": bool(v.get("complete"))}
                for k, v in (run.get("sources") or {}).items()]
-    return {"date": run.get("date") or paths[-1].stem, "finished": run.get("finished"), "sources": sources,
-            "new": run.get("new"), "closed": run.get("closed"), "openUnique": run.get("open_unique")}
+    return {"date": run.get("date") or paths[-1].stem, "finished": run.get("finished"), "sources": sources}
 
 
 def major_companies(data_dir: Path, posting_keys: set[str]) -> dict[str, dict[str, Any]]:
