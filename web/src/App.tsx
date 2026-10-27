@@ -187,8 +187,7 @@ function Main({ screen }: { screen: Screen }) {
       body = jobs(route.seg)
       break
     case 'job': {
-      // 최근 7일 안에 내려간 공고도 연다(수집 현황의 내려간 공고)
-      const p = screen.postings.find((x) => x.id === route.id) ?? screen.closed?.find((x) => x.id === route.id)
+      const p = screen.postings.find((x) => x.id === route.id)
       detail = !wide
       body = wide
         ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)}
@@ -218,7 +217,7 @@ function Main({ screen }: { screen: Screen }) {
       break
     case 'collection':
       detail = !wide
-      body = <CollectionPage screen={screen} today={today} filters={filters} matches={matches} />
+      body = <CollectionPage screen={screen} today={today} />
       break
     case 'profile':
       detail = !wide

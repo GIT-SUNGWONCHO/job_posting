@@ -11,8 +11,7 @@ from __future__ import annotations
 import gzip
 import json
 import logging
-from collections.abc import Callable
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -23,7 +22,7 @@ from .store import Store
 
 log = logging.getLogger(__name__)
 
-VERSION = 6  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값·내려간 공고(collection, notify, closed)
+VERSION = 6  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값(collection, notify)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
 # 본문을 고르는 순서: 리멤버 원문 > 직행이 정리한 요약 > 사람인 원문
@@ -127,7 +126,6 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         "companies": len(companies),
     }
     texts = {pid: b["text"] for pid, b in bodies.items()}
-    closed = closed_postings(store.state, today, item)
     screen = {
         "version": VERSION,
         "date": today.isoformat(),
@@ -148,9 +146,6 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         "notify": notify.screen_defaults(),
         "companies": companies,
         "postings": postings,
-        # 최근 7일 내려간 공고(관리 화면 수집 현황, 공고 상세). 공고 수·커리어 지표에는 들어가지 않는다
-        "closedDays": CLOSED_DAYS,
-        "closed": closed,
     }
     # 공고가 없어도 회사 목록에 두는 주요 기업(커리어 지표·공고 수에는 들어가지 않는다).
     # data/dart/ 파일이 깨진 날에도 공고·매칭·알림은 계속되게, 실패하면 주요 기업 없이 간다
@@ -162,33 +157,6 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
     for key, m in majors.items():
         companies[key] = {"name": m["name"], "type": m["type"], "group": m["group"]}
     return screen, {"version": VERSION, "date": today.isoformat(), "bodies": bodies}
-
-
-CLOSED_DAYS = 7  # 수집 현황에 보여줄 내려간 공고: 오늘을 포함해 며칠 안에 내려간 것
-
-
-def closed_postings(state: dict[str, dict[str, Any]], today: date,
-                    item: Callable[[dict[str, Any], list[dict[str, Any]]], dict[str, Any]]) -> list[dict[str, Any]]:
-    """최근 CLOSED_DAYS일 안에 내려간 공고(국내, 같은 공고 묶음은 하나로, 묶음이 다 내려갔을 때만). 내려간 날 최근 순.
-    item: build()의 공고 한 건 만들기(회사·본문도 채운다)."""
-    since = (today - timedelta(days=CLOSED_DAYS - 1)).isoformat()
-    members: dict[str, list[dict[str, Any]]] = {}
-    for r in state.values():
-        if r.get("dup_of"):
-            members.setdefault(r["dup_of"], []).append(r)
-    out = []
-    for r in state.values():
-        if r.get("dup_of") or r.get("overseas") or not r.get("closed_on"):
-            continue
-        same = sorted(members.get(r["uid"], []), key=lambda d: d["uid"])
-        if any(not d.get("closed_on") for d in same):
-            continue  # 다른 수집처에 아직 열려 있다
-        closed_on = max([r["closed_on"]] + [d["closed_on"] for d in same])
-        if closed_on < since:
-            continue
-        out.append({**item(r, same), "closedOn": closed_on})
-    out.sort(key=lambda p: (p["closedOn"], p["id"]), reverse=True)
-    return out
 
 
 def collection(data_dir: Path) -> dict[str, Any] | None:

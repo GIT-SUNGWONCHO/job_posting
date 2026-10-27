@@ -27,8 +27,6 @@ export interface Posting {
   /** 본문 파일(bodies/xx.json.gz)에 본문이 있나 */
   hasBody: boolean
   sources: SourceLink[]
-  /** 내려간 날(수집처 목록에서 사라져 마감으로 처리한 날). 화면용 파일 closed의 공고에만 있다 */
-  closedOn?: string
 }
 
 export interface Body {
@@ -100,9 +98,6 @@ export interface Screen {
   notify?: NotifyDefaults
   companies: Record<string, Company>
   postings: Posting[]
-  /** 최근 closedDays일 내려간 공고(내려간 날 최근 순, v6부터). 공고 수·커리어 지표에는 들어가지 않는다 */
-  closedDays?: number
-  closed?: Posting[]
 }
 
 export interface Collection {
@@ -116,6 +111,7 @@ export interface Collection {
   sources: { id: string; name: string; inScope: number | null; complete: boolean; new: number | null; closed: number | null; errors: number }[]
 }
 
+/** 화면 코드와 화면용 파일은 따로 배포되니(Cloudflare / 매일 수집) 칸이 없어도 깨지지 않게 읽는다 */
 export interface NotifyDefaults {
   channels: string[]
   top: number

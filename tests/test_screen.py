@@ -44,9 +44,7 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
     assert p["sources"][1]["url"] == "https://r/1"
     assert built["companies"]["회사"] == {"name": "회사", "type": "그 외", "group": None}
     assert built["counts"] == {"open": 1, "new": 1, "companies": 1}
-    # 오늘 내려간 공고는 공고 수에 넣지 않고 따로(수집 현황, 공고 상세). 해외는 빼고
-    assert [(p["id"], p["closedOn"], p["company"]) for p in built["closed"]] == [("saramin:9", "2026-10-13", "다른회사")]
-    assert "다른회사" in built["companies"]
+    assert "closed" not in built and "다른회사" not in built["companies"]  # 내려간 공고는 화면용 파일에 넣지 않는다
     assert built["collection"] is None  # 수집 요약이 아직 없다
 
     s.save_run(day, {"date": "2026-10-13", "finished": "2026-10-13T04:40:00", "new": 3, "closed": 1, "open_unique": 2,
@@ -185,15 +183,3 @@ def test_company_texts_skip_headhunter_noise_and_overseas(tmp_path):
     s.save()
     assert len(screen._company_texts(Store(tmp_path), {"회사"})["회사"]) == 1
 
-
-def test_closed_postings_keep_the_last_week_and_wait_for_every_source_of_a_group():
-    state = {r["uid"]: r for r in [
-        {"uid": "a", "closed_on": "2026-10-20"},                       # 7일 안(오늘 포함)
-        {"uid": "b", "closed_on": "2026-10-19"},                       # 8일 전
-        {"uid": "c", "closed_on": "2026-10-25"}, {"uid": "c2", "dup_of": "c"},  # 다른 수집처에 아직 열림
-        {"uid": "d", "closed_on": "2026-10-24"}, {"uid": "d2", "dup_of": "d", "closed_on": "2026-10-26"},
-        {"uid": "e", "closed_on": "2026-10-26", "overseas": True},
-        {"uid": "f"},                                                  # 열린 공고
-    ]}
-    out = screen.closed_postings(state, date(2026, 10, 26), lambda r, same: {"id": r["uid"], "n": len(same)})
-    assert out == [{"id": "d", "n": 1, "closedOn": "2026-10-26"}, {"id": "a", "n": 0, "closedOn": "2026-10-20"}]

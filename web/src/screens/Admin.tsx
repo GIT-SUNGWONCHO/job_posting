@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 import { copy } from '../copy'
-import { Chip, Empty, JobRow, SectionTitle } from '../components/ui'
-import { passes } from '../lib/filter'
+import { SectionTitle } from '../components/ui'
 import { dateText } from '../lib/format'
-import type { Match } from '../lib/matches'
 import { goBack, href } from '../lib/route'
 import { loadNotify, loadTelegramLink, saveNotify, type Loaded, type NotifyPrefs, type TelegramLink } from '../lib/settings'
 import { supabase } from '../lib/supabase'
-import type { Filters, NotifyDefaults, Screen } from '../lib/types'
+import type { NotifyDefaults, Screen } from '../lib/types'
 
 // 관리 탭: 메뉴(프로필·이력서, 아침 알림, 수집 현황)와 로그인 계정. 메뉴를 누르면 각 화면으로 넘어간다
 export function Admin() {
@@ -70,7 +68,8 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
   const editable = !!supabase && !!defaults && typeof prefs === 'object'
   const cur = typeof prefs === 'object' ? prefs : {}
   const enabled = cur.enabled !== false
-  const top = defaults && cur.top && defaults.choices.top.includes(cur.top) ? cur.top : defaults?.top
+  const choices = defaults?.choices?.top ?? []
+  const top = cur.top && choices.includes(cur.top) ? cur.top : defaults?.top
 
   function change(next: NotifyPrefs) {
     if (!editable) return
@@ -104,17 +103,17 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
             {copy.admin.enabled}
             <input type="checkbox" checked={enabled} disabled={!editable} onChange={(e) => change({ enabled: e.target.checked })} />
           </label>
-          {defaults && (
+          {defaults && choices.length > 0 && (
             <label className="field">
               <span>{copy.admin.top}</span>
               <select value={top} disabled={!editable || !enabled} onChange={(e) => change({ top: Number(e.target.value) })}>
-                {defaults.choices.top.map((n) => (
+                {choices.map((n) => (
                   <option key={n} value={n}>{copy.admin.topOption(n)}{n === defaults.top ? copy.admin.defaultMark : ''}</option>
                 ))}
               </select>
             </label>
           )}
-          {defaults && <p className="note small">{copy.admin.prefsNote(defaults.soonMinScore)}</p>}
+          {defaults?.soonMinScore !== undefined && <p className="note small">{copy.admin.prefsNote(defaults.soonMinScore)}</p>}
           {saved && <p className={saved === 'ok' ? 'note' : 'note urgent'} role="status">{saved === 'ok' ? copy.admin.saved : copy.admin.saveFailed}</p>}
         </div>
       </section>
@@ -122,65 +121,35 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
   )
 }
 
-const CLOSED_SHOWN = 20
-
-/** 수집 현황: 마지막 수집(data 브랜치 runs/)의 수집처별 결과와 최근 내려간 공고 */
-export function CollectionPage({ screen, today, filters, matches }: {
-  screen: Screen
-  today: string
-  filters: Filters
-  matches: Map<string, Match>
-}) {
-  const [all, setAll] = useState(false)
-  const [more, setMore] = useState(false)
+/** 수집 현황: 마지막 수집(data 브랜치 runs/)의 수집처별 결과와 내려간 공고 기준 */
+export function CollectionPage({ screen, today }: { screen: Screen; today: string }) {
   const run = screen.collection ?? null
-  const days = screen.closedDays ?? 7
-  const closed = (screen.closed ?? []).filter((p) => !p.noise)
-  const passed = closed.filter((p) => passes(p, screen.companies[p.company], filters))
-  const list = all ? closed : passed
-  const shown = more ? list : list.slice(0, CLOSED_SHOWN)
-
   return (
     <div className="page detail">
       <SubHead title={copy.admin.collection} sub={run ? copy.admin.lastRun(dateText(run.date), run.finished?.slice(11, 16) ?? '') : undefined} />
-      {!run ? (
-        <section className="section"><p className="note">{copy.admin.noCollection}</p></section>
-      ) : (
-        <section className="section">
-          <SectionTitle>{copy.admin.sources}</SectionTitle>
-          {run.date < today && <p className="note urgent">{copy.admin.notToday}</p>}
-          <div className="source-rows">
-            {run.sources.map((s) => (
-              <div key={s.id} className="source-row">
-                <span>
-                  <span className={s.complete ? 'status-dot on' : 'status-dot bad'} />
-                  <b>{s.name}</b> {s.complete ? copy.admin.complete : copy.admin.partial}
-                  {s.errors > 0 && <span className="muted"> · {copy.admin.errors(s.errors)}</span>}
-                </span>
-                <span className="note">{copy.admin.sourceCounts(s.inScope ?? 0, s.new ?? 0, s.closed ?? 0)}</span>
-              </div>
-            ))}
-          </div>
-          <p className="note small">{copy.admin.sourcesNote}</p>
-        </section>
-      )}
       <section className="section">
-        <SectionTitle>{copy.admin.closedSection(days)}</SectionTitle>
-        <p className="note small">{copy.admin.closedNote(days)}</p>
-        <div className="chips">
-          <Chip selected={!all} onClick={() => { setAll(false); setMore(false) }}>{copy.admin.closedPassed(passed.length)}</Chip>
-          <Chip selected={all} onClick={() => { setAll(true); setMore(false) }}>{copy.admin.closedAll(closed.length)}</Chip>
-        </div>
-        {list.length === 0 ? (
-          <Empty>{copy.admin.noClosed}</Empty>
+        {!run ? (
+          <p className="note">{copy.admin.noCollection}</p>
         ) : (
-          <div className="rows">
-            {shown.map((p) => <JobRow key={p.id} p={p} c={screen.companies[p.company]} today={today} match={matches.get(p.id)} />)}
-          </div>
+          <>
+            <SectionTitle>{copy.admin.sources}</SectionTitle>
+            {run.date < today && <p className="note urgent">{copy.admin.notToday}</p>}
+            <div className="source-rows">
+              {(run.sources ?? []).map((s) => (
+                <div key={s.id} className="source-row">
+                  <span>
+                    <span className={s.complete ? 'status-dot on' : 'status-dot bad'} />
+                    <b>{s.name}</b> {s.complete ? copy.admin.complete : copy.admin.partial}
+                    {s.errors > 0 && <span className="muted"> · {copy.admin.errors(s.errors)}</span>}
+                  </span>
+                  <span className="note">{copy.admin.sourceCounts(s.inScope ?? 0, s.new ?? 0, s.closed ?? 0)}</span>
+                </div>
+              ))}
+            </div>
+            <p className="note small">{copy.admin.sourcesNote}</p>
+          </>
         )}
-        {list.length > shown.length && (
-          <button type="button" className="text-link" onClick={() => setMore(true)}>{copy.jobs.more(list.length - shown.length)}</button>
-        )}
+        <p className="note small rule">{copy.admin.closedRule}</p>
       </section>
     </div>
   )

@@ -40,7 +40,8 @@ export function JobDetail({ screen, posting, today, match, feedback, onFeedback,
     }
   }, [posting])
 
-  if (!posting) return <div className="page"><p className="empty">{copy.jobs.empty}</p></div>
+  // 열린 공고에 없으면 대개 수집처에서 내려간 공고다(지우지 않고 회사 화면 지난 공고에 남는다)
+  if (!posting) return <div className="page"><p className="empty">{copy.job.gone}</p></div>
   const p = posting
   const shown = body?.id === p.id ? body : null
   const c = screen.companies[p.company]
@@ -52,7 +53,6 @@ export function JobDetail({ screen, posting, today, match, feedback, onFeedback,
     [copy.job.regions, p.regions.join(', ') || '-'],
     [copy.job.employment, p.employment.join(', ') || '-'],
     [copy.job.firstSeen, dateText(p.firstSeen, true)],
-    ...(p.closedOn ? [[copy.job.closedOn, dateText(p.closedOn, true)] as [string, ReactNode]] : []),
   ]
   return (
     <div className={panel ? 'page detail panel' : 'page detail'}>
