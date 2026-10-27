@@ -1,25 +1,19 @@
-# 아침 알림. 형식은 고정(docs/content-rules.md "아침 알림·오늘의 리포트"), 문구 틀은 notify.py.
+# 아침 알림. 묶음과 문구 틀은 고정(docs/content-rules.md "아침 알림·오늘의 리포트"), 코드는 src/jobpost/notify.py.
 # 매일 수집·매칭이 끝난 뒤 보낸다(.github/workflows/collect.yml). 연결은 docs/setup.md "4. 텔레그램".
+# 한 통에 세 묶음: 필터 통과 새 공고 전부 · 필터 밖 새 공고(참고, 접어서) · 마감 임박.
+# 사람마다 바꾸는 건 받기 켜기·끄기뿐이다(관리 > 아침 알림, Supabase settings.notify.enabled).
 
-version: 4  # 4(2026-10-26): 회사 화면 링크, 관심 회사 새 공고, 커리어 버튼, 사람별 설정(받기, 개수)
+version: 5  # 5(2026-10-27): 세 묶음으로 단순하게(필터 통과 전부, 필터 밖은 접어서, 마감 임박)
 
 channels: [telegram]   # 보낼 곳. kakao는 2026-10-21 텔레그램으로 바꾸며 껐다(연결 코드와 표는 남겨 둠)
 
 dashboard_url: https://careermap-web.oroloov.workers.dev
 soon_days: 3           # 마감 임박: D-day~D-3(용어집)
-soon_min_score: 70     # 알림에 넣는 마감 임박 공고의 최소 점수(머리의 건수는 점수와 상관없이 전부)
-
-# 사람마다 관리 화면에서 고르는 값(Supabase settings.notify: enabled 받기, scope 받을 새 공고, top 개수).
-# scope는 passed(필터 통과 새 공고만, top건) · all(새 공고 전부, 필터 밖은 접어서)이고 기본은 passed(notify.py SCOPES).
-# 고르지 않았으면 받기, passed, 아래 telegram.top
-choices:
-  top: [5, 10, 20]     # 필터 통과 새 공고 개수
+soon_min_score: 70     # 마감 임박에 넣는 필터 통과 공고의 최소 점수(관심 공고는 점수와 상관없이, 머리의 건수는 전부)
 
 telegram:
-  format: rich         # rich: 리치 메시지(표, 2026-10-21~). 실패하면 그날은 text(일반 메시지)로 대신 보낸다
-  top: 10              # 필터 통과 새 공고, 점수 높은 순(메시지 한 통 4096자 안)
-  visible: 5           # 그중 펼쳐 보여 줄 개수. 나머지는 접힌 인용(누르면 펼침)
-  soon_top: 5          # 마감 임박·관심 회사 새 공고(접힌 인용)
+  format: rich         # rich: 리치 메시지(표, 2026-10-21~). 실패하면 그날은 일반 메시지로 대신 보낸다
+  soon_top: 5          # 마감 임박에 보일 개수(나머지는 "외 N건")
 
 kakao:                 # 카톡 "나에게 보내기"(channels에 kakao를 넣을 때만)
   redirect_path: /kakao  # 카톡 연결 때 인가 코드를 받는 화면(카카오 앱 리다이렉트 URI). 대시보드 주소는 카카오 앱 [웹 도메인]에도

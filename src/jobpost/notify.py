@@ -1,14 +1,12 @@
-"""아침 알림: 매일 수집·매칭이 끝난 뒤 사람마다 새 공고 요약을 보낸다. 보낼 곳은 config/notify.yaml channels.
+"""아침 알림: 매일 수집·매칭이 끝난 뒤 사람마다 새 공고 요약을 한 통 보낸다. 보낼 곳은 config/notify.yaml channels.
 
-텔레그램(기본, 2026-10-21~)과 카톡 "나에게 보내기"(꺼 둠)가 같은 요약(digest)을 쓴다. 형식은 고정
-(docs/content-rules.md "아침 알림·오늘의 리포트"), 개수는 config/notify.yaml(사람마다 관리 화면에서 바꾼 값이 먼저).
-- 머리: "10/21(수) 새 공고 208건 · 필터 통과 11건 · 마감 임박 7건"
-- 필터 통과 새 공고를 점수 높은 순으로: "회사 · 공고 제목" / "92점 지원 추천 · D-12", 회사 이름은 회사 화면, 제목은 공고 상세 링크
-- 관심 회사(★) 새 공고: 필터와 상관없이, 위 목록에 이미 보인 공고는 빼고
-- "새 공고 전부"로 받는 사람(관리 화면): 필터 통과 새 공고를 개수 제한 없이, 그 밖의 새 공고는 "필터 밖 새 공고"로 접어서
-- 마감 임박(필터 통과, D-day~D-3) 중 점수 기준 이상
-- 대시보드 링크: 리포트, 공고 목록, 커리어
+한 통에 세 묶음(docs/content-rules.md "아침 알림·오늘의 리포트"):
+1. 필터 통과 새 공고: 전부, 점수 높은 순
+2. 필터 밖 새 공고: 참고용으로 접어서(잡음 빼고)
+3. 마감 임박: D-day~D-3. 관심 공고 먼저, 그다음 필터 통과 공고 중 점수 기준(soon_min_score) 이상
 새 공고는 지난번 알림 다음 날부터 오늘까지 처음 본 공고다(하루 빠져도 놓치지 않게, 최대 1주일). 처음 보낼 때는 오늘 것만.
+지원했거나 관심 없음으로 둔 공고는 뺀다. 공고마다 "판정 표시 회사 · 점수 · 마감" + 제목(회사는 회사 화면, 제목은 공고 상세 링크).
+텔레그램(기본)과 카톡 "나에게 보내기"(꺼 둠)가 같은 요약(digest)을 쓴다.
 """
 
 from __future__ import annotations
@@ -27,6 +25,11 @@ WEEKDAYS = "월화수목금토일"
 RICH_MAX = 30000   # 리치 메시지 32768자보다 넉넉히(버튼·꼬리말 몫)
 RICH_ROWS = 450    # 리치 메시지 블록 500개(표 줄 포함)보다 넉넉히
 KAKAO_TEXT_MAX = 200
+
+# 다시 추천하지 않는 지원 단계: 이미 지원했거나 관심 없음(web/src/lib/applications.ts NOT_AGAIN과 같게)
+NOT_AGAIN = {"applied", "passed", "interview", "result", "dismissed"}
+
+MARKS = {"지원 추천": "🟢", "고려": "🟡", "비추천": "⚪"}  # 판정을 한눈에(규칙 점수·점수 없음은 ▫️)
 
 
 def days_left(p: dict[str, Any], today: date) -> int | None:
@@ -51,39 +54,21 @@ def _score_text(m: dict[str, Any] | None) -> str:
     return f"{m['score']}점 {m['verdict']}" if m.get("verdict") else f"{m['score']}점"
 
 
-# 다시 추천하지 않는 지원 단계: 이미 지원했거나 관심 없음(web/src/lib/applications.ts NOT_AGAIN과 같게)
-NOT_AGAIN = {"applied", "passed", "interview", "result", "dismissed"}
-
-# 받을 새 공고(관리 화면, web/src/lib/settings.ts NotifyPrefs와 같게): 필터 통과만(점수 높은 순 top건) · 새 공고 전부
-SCOPES = ("passed", "all")
-
-
-def prefs_of(raw: dict[str, Any] | None) -> dict[str, Any]:
-    """사람별 알림 설정(Supabase settings.notify, 관리 화면에서 고름). 없거나 고를 수 없는 값이면 config/notify.yaml 기본값."""
-    cfg = config.load("notify")
-    choices = cfg["choices"]
-    raw = raw or {}
-    top = raw.get("top") if raw.get("top") in choices["top"] else cfg["telegram"]["top"]
-    scope = raw.get("scope") if raw.get("scope") in SCOPES else SCOPES[0]
-    return {"enabled": raw.get("enabled") is not False, "top": top, "scope": scope}
+def enabled(raw: dict[str, Any] | None) -> bool:
+    """관리 화면의 "아침 알림 받기"(Supabase settings.notify.enabled). 고르지 않았으면 받는다."""
+    return (raw or {}).get("enabled") is not False
 
 
 def screen_defaults() -> dict[str, Any]:
-    """관리 화면이 보여줄 기본값과 고를 수 있는 값(화면용 파일 notify)."""
+    """관리 화면이 알림에 들어가는 것을 적을 때 쓰는 값(화면용 파일 notify)."""
     cfg = config.load("notify")
-    return {"channels": cfg["channels"], "top": cfg["telegram"]["top"], "soonMinScore": cfg["soon_min_score"],
-            "choices": {"top": cfg["choices"]["top"]}}
+    return {"channels": cfg["channels"], "soonMinScore": cfg["soon_min_score"]}
 
 
 def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, dict[str, Any]], today: date,
-           since: date | None = None, stages: dict[str, str] | None = None, stars: set[str] | None = None,
-           prefs: dict[str, Any] | None = None) -> dict[str, Any]:
-    """채널과 상관없는 요약. matches: 공고 id → {score, verdict, kind}, stages: 공고 id → 지원 단계,
-    stars: 관심 회사(★) 키, prefs: 사람별 알림 설정(prefs_of).
-    지원했거나 관심 없음인 공고는 빼고, 관심 공고는 필터와 상관없이 마감 임박에 점수보다 먼저 넣는다."""
+           since: date | None = None, stages: dict[str, str] | None = None) -> dict[str, Any]:
+    """채널과 상관없는 요약. matches: 공고 id → {score, verdict, kind}, stages: 공고 id → 지원 단계."""
     stages = stages or {}
-    stars = stars or set()
-    prefs = prefs or prefs_of(None)
     cfg = config.load("notify")
     base = cfg["dashboard_url"].rstrip("/") + "/"
     companies = screen.get("companies") or {}
@@ -93,124 +78,116 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
         m = matches.get(p["id"])
         return m["score"] if m else -1
 
+    def by_score(ps: Any) -> list[dict[str, Any]]:
+        return sorted(ps, key=lambda p: (score(p), p["firstSeen"]), reverse=True)
+
     def item(p: dict[str, Any]) -> dict[str, Any]:
         name = (companies.get(p["company"]) or {}).get("name") or p["company"]
         # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다. 글자로 풀어 두고 채널마다 다시 바꾼다
         m = matches.get(p["id"]) or {}
         return {"id": p["id"], "title": html.unescape(f"{name} · {p['title']}"),
                 "company": html.unescape(name), "name": html.unescape(p["title"]), "score": score(p),
-                "companyUrl": base + "#/company/" + quote(p["company"], safe=""),
                 "verdict": m.get("verdict") if m.get("kind") == "ai" else ("규칙 점수" if m else None),
                 "deadline": deadline_text(p, today),
                 "info": f"{_score_text(matches.get(p['id']))} · {deadline_text(p, today)}",
-                "url": base + "#/job/" + quote(p["id"], safe=""), "interest": stages.get(p["id"]) == "interest"}
+                "url": base + "#/job/" + quote(p["id"], safe=""),
+                "companyUrl": base + "#/company/" + quote(p["company"], safe=""),
+                "interest": stages.get(p["id"]) == "interest"}
 
     def closing(p: dict[str, Any]) -> bool:
         n = days_left(p, today)
         return n is not None and 0 <= n <= cfg["soon_days"]
 
-    new = [p for p in screen["postings"] if start <= p["firstSeen"] <= today.isoformat()]
-    passed = {p["id"]: p for p in recommend.candidates(screen, filters) if stages.get(p["id"]) not in NOT_AGAIN}
-    new_passed = sorted((p for p in new if p["id"] in passed), key=lambda p: (score(p), p["firstSeen"]), reverse=True)
-    interest = [p for p in screen["postings"] if stages.get(p["id"]) == "interest" and closing(p)]
-    soon = sorted((p for p in passed.values() if closing(p) and stages.get(p["id"]) != "interest"), key=score, reverse=True)
-    n_soon = len(soon) + len(interest)
-    everything = prefs.get("scope") == "all"
-    top = len(new_passed) if everything else prefs["top"]
-    # 필터 밖 새 공고("새 공고 전부"로 받을 때만): 잡음, 지원했거나 관심 없음은 빼고 점수 높은 순
-    others = sorted((p for p in new if p["id"] not in passed and not p.get("noise") and stages.get(p["id"]) not in NOT_AGAIN),
-                    key=lambda p: (score(p), p["firstSeen"]), reverse=True) if everything else []
-    # 관심 회사 새 공고: 필터와 상관없이(잡음, 지원했거나 관심 없음은 빼고). 위 목록에 보이는 것은 빼고(전부 받으면 없다)
-    shown = {p["id"] for p in new_passed[:top]} | {p["id"] for p in others}
-    starred = sorted((p for p in new if p["company"] in stars and not p.get("noise") and p["id"] not in shown
-                      and stages.get(p["id"]) not in NOT_AGAIN), key=lambda p: (score(p), p["firstSeen"]), reverse=True)
-    head = (f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]}) 새 공고 {len(new)}건 · "
-            f"필터 통과 {len(new_passed)}건" + (f" · 마감 임박 {n_soon}건" if n_soon else ""))
-    return {"head": head, "date": f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]})",
-            "counts": {"new": len(new), "passed": len(new_passed), "soon": len(soon) + len(interest)},
-            "new": [item(p) for p in new_passed], "soon_count": len(soon) + len(interest),
-            "soon": [item(p) for p in sorted(interest, key=lambda p: p.get("deadline") or "")]
-            + [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
-            "stars": [item(p) for p in starred], "others": [item(p) for p in others], "top": top,
+    wanted = [p for p in screen["postings"] if stages.get(p["id"]) not in NOT_AGAIN]
+    passing = {p["id"] for p in recommend.candidates(screen, filters)}  # 잡음은 빠져 있다
+    new = [p for p in wanted if start <= p["firstSeen"] <= today.isoformat()]
+    passed = by_score(p for p in new if p["id"] in passing)
+    others = by_score(p for p in new if p["id"] not in passing and not p.get("noise"))
+    interest = sorted((p for p in wanted if stages.get(p["id"]) == "interest" and closing(p)), key=lambda p: p.get("deadline") or "")
+    soon = by_score(p for p in wanted if p["id"] in passing and closing(p) and stages.get(p["id"]) != "interest")
+    n_new = sum(1 for p in screen["postings"] if start <= p["firstSeen"] <= today.isoformat())
+    day = f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]})"
+    n_soon = len(interest) + len(soon)
+    return {"date": day,
+            "head": f"{day} 새 공고 {n_new}건 · 필터 통과 {len(passed)}건" + (f" · 마감 임박 {n_soon}건" if n_soon else ""),
+            "counts": {"new": n_new, "passed": len(passed), "soon": n_soon},
+            "passed": [item(p) for p in passed], "others": [item(p) for p in others],
+            "soon": [item(p) for p in interest] + [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
+            "soonMinScore": cfg["soon_min_score"],
             "report": base + "#/report", "jobs": base + "#/jobs", "career": base + "#/career"}
 
 
-MARKS = {"지원 추천": "🟢", "고려": "🟡", "비추천": "⚪"}  # 판정을 한눈에(규칙 점수·점수 없음은 ▫️)
+def _sections(d: dict[str, Any], limits: dict[str, int]) -> list[dict[str, Any]]:
+    """세 묶음(제목, 보일 공고, 접을지). limits: 묶음마다 보일 개수(한도에 걸리면 줄인다). 줄인 묶음은 "외 N건"."""
+    out = []
+    for key, title, folded in (("passed", "필터 통과 새 공고", False), ("others", "필터 밖 새 공고(참고)", True),
+                               ("soon", f"마감 임박 · ★ 관심 공고와 {d['soonMinScore']}점 이상", False)):
+        items = d[key]
+        shown = items[:limits[key]]
+        out.append({"key": key, "title": title, "folded": folded, "items": shown, "total": len(items),
+                    "rest": len(items) - len(shown)})
+    return out
+
+
+def _fit(d: dict[str, Any], render: Any, too_big: Any) -> Any:
+    """한도 안에 들 때까지 필터 밖 → 마감 임박 → 필터 통과 순으로 뒤에서 줄인다."""
+    cfg = config.load("notify")["telegram"]
+    limits = {"passed": len(d["passed"]), "others": len(d["others"]), "soon": min(len(d["soon"]), cfg["soon_top"])}
+    out = render(_sections(d, limits))
+    while too_big(out):
+        key = next((k for k in ("others", "soon", "passed") if limits[k] > (1 if k == "passed" else 0)), None)
+        if key is None:
+            break
+        limits[key] = max(0, limits[key] - (5 if key == "others" else 1))
+        out = render(_sections(d, limits))
+    return out
+
+
+def _legend() -> str:
+    return " · ".join(f"{mark} {name}" for name, mark in MARKS.items())
 
 
 def telegram_message(d: dict[str, Any]) -> tuple[str, list[list[dict[str, str]]]]:
-    """텔레그램 HTML 메시지(4096자 안)와 아래 버튼.
-
-    v3(2026-10-27): 머리 두 줄(날짜 / 건수), 공고마다 "판정 표시 회사 점수 · 마감" + 제목 링크 두 줄
-    (회사 이름은 회사 화면 링크). 위 visible건만 펼쳐 두고 나머지와 필터 밖 새 공고·관심 회사 새 공고·마감 임박은
-    접힌 인용(누르면 펼침). 대시보드 링크는 버튼으로. 4096자를 넘으면 뒤에서부터 줄이고 "외 N건"으로 알린다.
-    """
-    cfg = config.load("notify")
-    tg = cfg["telegram"]
+    """텔레그램 일반 메시지(HTML, 4096자 안)와 아래 버튼. 리치 메시지가 실패한 날 대신 보낸다.
+    v4(2026-10-27): 머리 두 줄, 세 묶음(필터 밖은 접힌 인용), 판정 설명."""
 
     def esc(s: str) -> str:
         return html.escape(s, quote=False)
 
     def entry(it: dict[str, Any]) -> str:
         score = "점수 없음" if it["score"] < 0 else f"{it['score']:g}점"
-        mark = MARKS.get(it["verdict"] or "", "▫️")
         star = "★ " if it["interest"] else ""
-        return (f'{mark} <b>{star}<a href="{html.escape(it["companyUrl"])}">{esc(it["company"])}</a></b>  '
-                f"{score} · {esc(it['deadline'])}\n"
+        return (f'{MARKS.get(it["verdict"] or "", "▫️")} <b>{star}<a href="{html.escape(it["companyUrl"])}">'
+                f'{esc(it["company"])}</a></b>  {score} · {esc(it["deadline"])}\n'
                 f'<a href="{html.escape(it["url"])}">{esc(it["name"])}</a>')
 
-    def folded(items: list[dict[str, Any]]) -> str:
-        return "<blockquote expandable>" + "\n\n".join(entry(it) for it in items) + "</blockquote>"
-
-    def build(top: int, soon_top: int, other_top: int) -> str:
+    def render(sections: list[dict[str, Any]]) -> str:
         c = d["counts"]
-        lines = [f"<b>{esc(d['date'])} 오늘의 공고</b>",
-                 f"새 공고 {c['new']} · 필터 통과 {c['passed']} · 마감 임박 {c['soon']}", ""]
-        shown = d["new"][:top]
-        if shown:
-            lines.append("<b>필터 통과 새 공고</b>")
-            lines += [entry(it) + "\n" for it in shown[:tg["visible"]]]
-            if shown[tg["visible"]:]:
-                lines.append(folded(shown[tg["visible"]:]))
-            if len(d["new"]) > top:
-                lines.append(f"외 {len(d['new']) - top}건은 공고 목록에서")
-        else:
-            lines.append("필터를 통과한 새 공고가 없어요.")
-        others = d.get("others") or []
-        if others[:other_top]:
-            more = f" 중 {other_top}건" if len(others) > other_top else ""
-            lines += ["", f"<b>필터 밖 새 공고</b> {len(others)}건{more}", folded(others[:other_top])]
-        stars = d.get("stars") or []
-        if stars[:soon_top]:
-            more = f" 중 {soon_top}건" if len(stars) > soon_top else ""
-            lines += ["", f"<b>관심 회사 새 공고</b> {len(stars)}건{more}", folded(stars[:soon_top])]
-        if d["soon"][:soon_top]:
-            lines += ["", f"<b>마감 임박</b> ★ 관심 공고와 {cfg['soon_min_score']}점 이상 {len(d['soon'][:soon_top])}건",
-                      folded(d["soon"][:soon_top])]
-        lines += ["", " · ".join(f"{mark} {name}" for name, mark in MARKS.items())]  # 판정 표시 설명
-        return "\n".join(lines).replace("\n\n\n", "\n\n").strip()
+        lines = [f"<b>{esc(d['date'])} 오늘의 공고</b>", f"새 공고 {c['new']} · 필터 통과 {c['passed']} · 마감 임박 {c['soon']}"]
+        for s in sections:
+            if s["key"] == "passed" and not s["total"]:
+                lines += ["", "필터를 통과한 새 공고가 없어요."]
+                continue
+            if not s["items"] and not s["rest"]:
+                continue
+            body = "\n\n".join(entry(it) for it in s["items"])
+            lines += ["", f"<b>{esc(s['title'])}</b> {s['total']}건"]
+            if body:
+                lines.append(f"<blockquote expandable>{body}</blockquote>" if s["folded"] else body)
+            if s["rest"]:
+                lines.append(f"외 {s['rest']}건은 공고 목록에서")
+        lines += ["", _legend()]
+        return "\n".join(lines)
 
-    top, soon_top, other_top = d["top"], tg["soon_top"], len(d.get("others") or [])
-    text = build(top, soon_top, other_top)
-    while len(text) > telegram.TEXT_MAX and (other_top or top > 1):  # 태그까지 세어 넉넉히 줄인다. 필터 밖부터
-        if other_top:
-            other_top -= 1
-        else:
-            top -= 1
-            soon_top = min(soon_top, top)
-        text = build(top, soon_top, other_top)
+    text = _fit(d, render, lambda t: len(t) > telegram.TEXT_MAX)
     buttons = [[{"text": "리포트", "url": d["report"]}, {"text": "공고 목록", "url": d["jobs"]},
                 {"text": "커리어", "url": d["career"]}]]
     return text, buttons
 
 
 def telegram_rich(d: dict[str, Any]) -> str:
-    """텔레그램 리치 메시지(HTML). v4(2026-10-27): 제목, 건수, 공고 표(판정 · 회사와 공고 · 점수 · 마감,
-    회사 이름은 회사 화면 링크), 위 visible건 다음과 필터 밖 새 공고·관심 회사 새 공고·마감 임박은 접힌 블록, 대시보드 버튼,
-    판정 설명은 꼬리말. 리치 메시지 한도(글자, 블록)를 넘으면 뒤에서부터 줄이고 "외 N건"으로 알린다.
-    리치 메시지는 2026년 새 기능이라 보내기가 실패하면 run()이 telegram_message(일반 메시지)로 대신 보낸다."""
-    cfg = config.load("notify")
-    tg = cfg["telegram"]
+    """텔레그램 리치 메시지(HTML). v5(2026-10-27): 제목, 건수, 세 묶음을 표(판정 · 회사와 공고 · 점수 · 마감)로,
+    필터 밖은 접는 블록, 대시보드 버튼, 판정 설명은 꼬리말. 보내기가 실패하면 run()이 일반 메시지로 대신 보낸다."""
 
     def esc(s: str) -> str:
         return html.escape(s, quote=False)
@@ -226,58 +203,36 @@ def telegram_rich(d: dict[str, Any]) -> str:
                         f'<td align="right"><b>{score}</b></td><td align="center">{esc(it["deadline"])}</td></tr>')
         return "<table striped compact>" + "".join(rows) + "</table>"
 
-    def build(top: int, other_top: int) -> list[str]:
+    def render(sections: list[dict[str, Any]]) -> str:
         c = d["counts"]
         parts = [f"<h3>{esc(d['date'])} 오늘의 공고</h3>",
                  f"<p>새 공고 <b>{c['new']}</b> · 필터 통과 <b>{c['passed']}</b> · 마감 임박 <b>{c['soon']}</b></p>"]
-        shown = d["new"][:top]
-        if shown:
-            parts += ["<h4>필터 통과 새 공고</h4>", table(shown[:tg["visible"]])]
-            rest = shown[tg["visible"]:]
-            if rest:
-                parts.append(f"<details><summary>{len(rest)}건 더 보기</summary>{table(rest)}</details>")
-            if len(d["new"]) > top:
-                parts.append(f"<p>외 {len(d['new']) - top}건은 공고 목록에서</p>")
-        else:
-            parts.append("<p>필터를 통과한 새 공고가 없어요.</p>")
-        others = d.get("others") or []
-        if others:
-            more = f" 중 {other_top}건(나머지는 공고 목록에서)" if len(others) > other_top else ""
-            parts.append(f"<details><summary>필터 밖 새 공고 {len(others)}건{more}</summary>{table(others[:other_top])}</details>")
-        stars = d.get("stars") or []
-        if stars:
-            more = f" 중 {tg['soon_top']}건" if len(stars) > tg["soon_top"] else ""
-            parts.append(f"<details><summary>관심 회사 새 공고 {len(stars)}건{more}</summary>{table(stars[:tg['soon_top']])}</details>")
-        soon = d["soon"][:tg["soon_top"]]
-        if soon:
-            parts.append(f"<details><summary>마감 임박 {len(soon)}건 · ★ 관심 공고와 {cfg['soon_min_score']}점 이상</summary>"
-                         f"{table(soon)}</details>")
-        return parts
+        for s in sections:
+            if s["key"] == "passed" and not s["total"]:
+                parts.append("<p>필터를 통과한 새 공고가 없어요.</p>")
+                continue
+            if not s["items"] and not s["rest"]:
+                continue
+            title = f"{esc(s['title'])} {s['total']}건"
+            body = (table(s["items"]) if s["items"] else "") + (f"<p>외 {s['rest']}건은 공고 목록에서</p>" if s["rest"] else "")
+            parts.append(f"<details><summary>{title}</summary>{body}</details>" if s["folded"] else f"<h4>{title}</h4>{body}")
+        parts.append('<tg-button-row align="center">'
+                     f'<tg-button type="url" style="primary" url="{html.escape(d["report"])}">리포트</tg-button>'
+                     f'<tg-button type="url" url="{html.escape(d["jobs"])}">공고 목록</tg-button>'
+                     f'<tg-button type="url" url="{html.escape(d["career"])}">커리어</tg-button></tg-button-row>')
+        parts.append(f"<footer>{_legend()}</footer>")
+        return "".join(parts)
 
-    top, other_top = d["top"], len(d.get("others") or [])
-    parts = build(top, other_top)
-    # 한도 안으로: 필터 밖부터, 다음은 필터 통과 공고를 뒤에서부터 줄인다
-    while (len("".join(parts)) > RICH_MAX or sum(x.count("<tr>") for x in parts) > RICH_ROWS) and (other_top or top > 1):
-        if other_top:
-            other_top = max(0, other_top - 5)
-        else:
-            top -= 1
-        parts = build(top, other_top)
-    parts.append('<tg-button-row align="center">'
-                 f'<tg-button type="url" style="primary" url="{html.escape(d["report"])}">리포트</tg-button>'
-                 f'<tg-button type="url" url="{html.escape(d["jobs"])}">공고 목록</tg-button>'
-                 f'<tg-button type="url" url="{html.escape(d["career"])}">커리어</tg-button></tg-button-row>')
-    parts.append("<footer>" + " · ".join(f"{mark} {name}" for name, mark in MARKS.items()) + "</footer>")
-    return "".join(parts)
+    return _fit(d, render, lambda t: len(t) > RICH_MAX or t.count("<tr>") > RICH_ROWS)
 
 
 def kakao_message(d: dict[str, Any]) -> dict[str, Any]:
-    """카카오 template_object. 리스트 템플릿은 항목 2~3개라 새 공고 상위 3건, 모자라면 마감 임박으로 채운다."""
+    """카카오 template_object. 리스트 템플릿은 항목 2~3개라 필터 통과 새 공고 상위 3건, 모자라면 마감 임박으로 채운다."""
     cfg = config.load("notify")["kakao"]
 
     def link(url: str) -> dict[str, str]:
         return {"web_url": url, "mobile_web_url": url}
-    picks = [(it, "") for it in d["new"][:cfg["top"]]]
+    picks = [(it, "") for it in d["passed"][:cfg["top"]]]
     if len(picks) < 2:
         shown = {it["id"] for it, _ in picks}
         picks += [(it, "마감 임박 · ") for it in d["soon"] if it["id"] not in shown][:2 - len(picks)]
@@ -313,7 +268,7 @@ def run(screen: dict[str, Any], db: Any, today: date, session: Any = None, again
         out.setdefault("notes", []).append(f"알림 설정을 못 읽음: {str(e)[:120]}")
         rows = db.select("settings", "select=user_id,filters")
     settings = {r["user_id"]: r.get("filters") or {} for r in rows}
-    prefs = {r["user_id"]: prefs_of(r.get("notify")) for r in rows}
+    off = {r["user_id"] for r in rows if not enabled(r.get("notify"))}
     cache: dict[tuple[str, str | None], dict[str, Any]] = {}
 
     def summary_for(user: str, last_sent_on: str | None) -> dict[str, Any]:
@@ -325,17 +280,8 @@ def run(screen: dict[str, Any], db: Any, today: date, session: Any = None, again
             rows = db.select("matches", f"select=posting_id,score,parts&user_id=eq.{user}")
             matches = {r["posting_id"]: {"score": r["score"], "verdict": (r.get("parts") or {}).get("verdict"),
                                          "kind": (r.get("parts") or {}).get("kind")} for r in rows}
-            cache[key] = digest(screen, {**defaults, **settings.get(user, {})}, matches, today, since, stages_of(user),
-                                stars_of(user), prefs.get(user))
+            cache[key] = digest(screen, {**defaults, **settings.get(user, {})}, matches, today, since, stages_of(user))
         return cache[key]
-
-    def stars_of(user: str) -> set[str]:
-        try:
-            rows = db.select("company_stars", f"select=company_key&user_id=eq.{user}")
-        except RuntimeError as e:  # 009_company_stars.sql을 아직 안 돌렸으면 관심 회사 없이 보낸다
-            out.setdefault("notes", []).append(f"관심 회사를 못 읽음: {str(e)[:120]}")
-            return set()
-        return {r["company_key"] for r in rows}
 
     def stages_of(user: str) -> dict[str, str]:
         try:
@@ -355,7 +301,7 @@ def run(screen: dict[str, Any], db: Any, today: date, session: Any = None, again
         s = out[channel] = {"linked": len(links), "sent": 0, "skipped": 0}
         for link in links:
             user = link["user_id"]
-            if not prefs.get(user, prefs_of(None))["enabled"]:
+            if user in off:
                 s["off"] = s.get("off", 0) + 1  # 관리 화면에서 알림을 끔
                 continue
             last = link.get("last_sent_on")

@@ -21,17 +21,11 @@ export async function saveFilters(filters: Filters): Promise<boolean> {
   return !error
 }
 
-/** 아침 알림 설정(settings.notify, supabase/migrations/010_notify_settings.sql). 고르지 않은 값은 config/notify.yaml 기본값.
- * 매일 작업은 src/jobpost/notify.py prefs_of로 읽는다 */
+/** 아침 알림 설정(settings.notify, supabase/migrations/010_notify_settings.sql): 받기 켜기·끄기만.
+ * 매일 작업은 src/jobpost/notify.py enabled()로 읽는다 */
 export interface NotifyPrefs {
   enabled?: boolean
-  top?: number
-  /** 받을 새 공고: 필터 통과만(점수 높은 순 top건) · 새 공고 전부(필터 밖은 접어서). src/jobpost/notify.py SCOPES와 같게 */
-  scope?: NotifyScope
 }
-
-export type NotifyScope = 'passed' | 'all'
-export const NOTIFY_SCOPES: NotifyScope[] = ['passed', 'all']
 
 /** 010을 실행하기 전이면 'missing', 그 밖의 오류는 'failed'. 42703: 칸 없음, PGRST204: PostgREST가 칸을 찾지 못함 */
 export type Loaded<T> = T | 'missing' | 'failed'

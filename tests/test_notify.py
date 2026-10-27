@@ -28,22 +28,24 @@ MATCHES = {"z:1": {"score": 70, "verdict": "고려", "kind": "ai"}, "z:2": {"sco
            "z:6": {"score": 81, "verdict": "지원 추천", "kind": "ai"}}
 
 
-def test_digest_counts_and_orders_new_postings_that_pass_filters():
+def test_digest_has_three_sections_all_passed_others_and_closing_soon():
     d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY)
     assert d["head"] == "10/17(토) 새 공고 5건 · 필터 통과 4건 · 마감 임박 1건"
-    assert [it["id"] for it in d["new"]] == ["z:2", "z:4", "z:1", "z:3"]
-    assert [it["info"] for it in d["new"][:2]] == ["92점 지원 추천 · D-12", "규칙 88점 · 상시"]
-    assert d["new"][0]["url"] == "https://careermap-web.oroloov.workers.dev/#/job/z%3A2"
+    assert [it["id"] for it in d["passed"]] == ["z:2", "z:4", "z:1", "z:3"]  # 전부, 점수 높은 순
+    assert [it["id"] for it in d["others"]] == ["z:5"]  # 필터 밖(기업 구분)
     assert [it["id"] for it in d["soon"]] == ["z:6"]
+    assert [it["info"] for it in d["passed"][:2]] == ["92점 지원 추천 · D-12", "규칙 88점 · 상시"]
+    assert d["passed"][0]["url"] == "https://careermap-web.oroloov.workers.dev/#/job/z%3A2" and d["passed"][0]["companyUrl"] == "https://careermap-web.oroloov.workers.dev/#/company/a"
 
 
-def test_applied_and_dismissed_postings_drop_out_and_interest_ones_lead_closing_soon():
-    screen = {**SCREEN, "postings": [*SCREEN["postings"], posting("i:1", company="b", deadline="2026-10-18", first="2026-10-01")]}
-    stages = {"z:2": "applied", "z:4": "dismissed", "i:1": "interest", "z:6": "interview"}
+def test_applied_dismissed_and_noise_drop_out_and_interest_ones_lead_closing_soon():
+    screen = {**SCREEN, "postings": [*SCREEN["postings"], posting("i:1", company="b", deadline="2026-10-18", first="2026-10-01"),
+                                     {**posting("n:1", company="b"), "noise": "잡음"}]}
+    stages = {"z:2": "applied", "z:4": "dismissed", "i:1": "interest", "z:6": "interview", "z:5": "dismissed"}
     d = notify.digest(screen, FILTERS, MATCHES, TODAY, stages=stages)
-    assert [it["id"] for it in d["new"]] == ["z:1", "z:3"]  # 지원·관심 없음은 빼고
+    assert [it["id"] for it in d["passed"]] == ["z:1", "z:3"] and d["others"] == []  # 잡음·지원·관심 없음은 빼고
     assert [(it["id"], it["interest"]) for it in d["soon"]] == [("i:1", True)]  # 필터 밖이어도 관심 공고는, 면접 중인 공고는 빼고
-    assert "★ <b>" not in notify.telegram_rich(d) and '<b>★ <a href="https://careermap-web.oroloov.workers.dev/#/company/b">라마바</a></b>' in notify.telegram_rich(d)
+    assert '<b>★ <a href="https://careermap-web.oroloov.workers.dev/#/company/b">라마바</a></b>' in notify.telegram_rich(d)
 
 
 def test_new_postings_since_the_last_message_count_when_a_day_was_missed():
@@ -52,73 +54,51 @@ def test_new_postings_since_the_last_message_count_when_a_day_was_missed():
     assert "새 공고 6건" in notify.digest(screen, FILTERS, MATCHES, TODAY, since=date(2026, 10, 15))["head"]
 
 
-def test_starred_companies_new_postings_come_regardless_of_filters_without_repeating_the_list():
-    stars = {"a", "b"}
-    d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY, stages={"z:5": "dismissed"}, stars=stars)
-    assert [it["id"] for it in d["stars"]] == []  # a는 위 목록에 다 보이고, b는 관심 없음
-    d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY, stars=stars, prefs=notify.prefs_of({"top": 5}))
-    assert [it["id"] for it in d["stars"]] == ["z:5"] and d["top"] == 5
-    d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY, stars=stars, prefs={"enabled": True, "top": 1})
-    assert [it["id"] for it in d["stars"]] == ["z:4", "z:1", "z:3", "z:5"]  # 위에 1건만 보이면 나머지 a 공고도
-    assert "<summary>관심 회사 새 공고 4건</summary>" in notify.telegram_rich(d)
-    assert "<b>관심 회사 새 공고</b> 4건\n<blockquote expandable>" in notify.telegram_message(d)[0]
+def test_rich_message_shows_passed_postings_in_full_and_folds_the_others():
+    screen = {**SCREEN, "postings": [*SCREEN["postings"], *(posting(f"m:{i}") for i in range(4))]}
+    rich = notify.telegram_rich(notify.digest(screen, FILTERS, MATCHES, TODAY))
+    assert rich.startswith("<h3>10/17(토) 오늘의 공고</h3><p>새 공고 <b>9</b> · 필터 통과 <b>8</b> · 마감 임박 <b>1</b></p>"
+                           "<h4>필터 통과 새 공고 8건</h4><table striped compact>")
+    assert rich.count("#/job/m%3A") == 4 and "더 보기" not in rich  # 필터 통과는 접지 않고 전부
+    assert ('<tr><td>🟢</td><td align="left"><b><a href="https://careermap-web.oroloov.workers.dev/#/company/a">가나다</a></b><br>'
+            '<a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">Data Engineer</a></td>'
+            '<td align="right"><b>92</b></td><td align="center">D-12</td></tr>') in rich
+    assert "A&amp;B &lt;ML&gt;" in rich
+    assert "<details><summary>필터 밖 새 공고(참고) 1건</summary><table" in rich
+    assert "<h4>마감 임박 · ★ 관심 공고와 70점 이상 1건</h4><table" in rich
+    assert '<tg-button type="url" style="primary" url="https://careermap-web.oroloov.workers.dev/#/report">리포트</tg-button>' in rich
+    assert rich.endswith("<footer>🟢 지원 추천 · 🟡 고려 · ⚪ 비추천</footer>")
 
 
-def test_prefs_fall_back_to_config_values():
-    assert notify.prefs_of(None) == {"enabled": True, "top": 10, "scope": "passed"}
-    assert notify.prefs_of({"enabled": False, "top": 7, "scope": "x"}) == {"enabled": False, "top": 10, "scope": "passed"}
-    assert notify.prefs_of({"top": 20, "scope": "all"}) == {"enabled": True, "top": 20, "scope": "all"}
+def test_plain_message_lists_every_passed_posting_and_folds_the_others():
+    text, buttons = notify.telegram_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))
+    a = '<a href="https://careermap-web.oroloov.workers.dev/#/company/a">가나다</a>'
+    assert text.startswith("<b>10/17(토) 오늘의 공고</b>\n새 공고 5 · 필터 통과 4 · 마감 임박 1\n\n<b>필터 통과 새 공고</b> 4건\n"
+                           f"🟢 <b>{a}</b>  92점 · D-12\n<a href=\"https://careermap-web.oroloov.workers.dev/#/job/z%3A2\">Data Engineer</a>")
+    assert "▫️ <b>" + a + "</b>  88점 · 상시" in text  # 규칙 점수
+    assert "A&amp;B &lt;ML&gt;" in text  # 태그가 아닌 <, >, &는 바꾼다
+    assert "<b>필터 밖 새 공고(참고)</b> 1건\n<blockquote expandable>" in text
+    assert "<b>마감 임박 · ★ 관심 공고와 70점 이상</b> 1건\n🟢 <b>" + a + "</b>  81점 · D-2" in text
+    assert text.endswith("🟢 지원 추천 · 🟡 고려 · ⚪ 비추천")
+    assert [b["text"] for b in buttons[0]] == ["리포트", "공고 목록", "커리어"]
 
 
-def test_all_new_postings_come_with_the_ones_outside_my_filters_folded():
-    screen = {**SCREEN, "postings": [*SCREEN["postings"], {**posting("n:1", company="b"), "noise": "잡음"}]}
-    d = notify.digest(screen, FILTERS, MATCHES, TODAY, stages={"z:3": "dismissed"}, stars={"b"},
-                      prefs=notify.prefs_of({"top": 5, "scope": "all"}))
-    assert [it["id"] for it in d["new"]] == ["z:2", "z:4", "z:1"] and d["top"] == 3  # 개수 제한 없이
-    assert [it["id"] for it in d["others"]] == ["z:5"] and d["stars"] == []  # 잡음·관심 없음은 빼고, 관심 회사는 이미 보인다
-    rich = notify.telegram_rich(d)
-    assert "<summary>필터 밖 새 공고 1건</summary>" in rich
-    assert "<b>필터 밖 새 공고</b> 1건\n<blockquote expandable>" in notify.telegram_message(d)[0]
-    assert notify.digest(SCREEN, FILTERS, MATCHES, TODAY)["others"] == []  # 기본은 필터 통과만
-
-
-def test_messages_stay_under_telegram_limits_when_every_new_posting_is_sent():
+def test_messages_stay_under_telegram_limits_on_a_busy_day():
     many = {**SCREEN, "postings": [posting(f"m:{i}", company="a" if i % 2 else "b", title="데이터 엔지니어 채용 " * 8)
                                    for i in range(400)]}
-    d = notify.digest(many, FILTERS, {}, TODAY, prefs=notify.prefs_of({"scope": "all"}))
-    assert len(d["new"]) == 200 and len(d["others"]) == 200
+    d = notify.digest(many, FILTERS, {}, TODAY)
+    assert len(d["passed"]) == 200 and len(d["others"]) == 200
     rich = notify.telegram_rich(d)
     assert len(rich) <= notify.RICH_MAX + 1000 and rich.count("<tr>") <= notify.RICH_ROWS
-    assert "나머지는 공고 목록에서" in rich or "공고 목록에서</p>" in rich
-    assert len(notify.telegram_message(d)[0]) <= telegram.TEXT_MAX
-
-def test_telegram_message_lists_new_and_urgent_postings_as_escaped_html():
-    text, buttons = notify.telegram_message(notify.digest(SCREEN, FILTERS, MATCHES, TODAY))
-    assert text.startswith("<b>10/17(토) 오늘의 공고</b>\n새 공고 5 · 필터 통과 4 · 마감 임박 1\n\n<b>필터 통과 새 공고</b>")
-    a = '<a href="https://careermap-web.oroloov.workers.dev/#/company/a">가나다</a>'  # 회사 이름은 회사 화면으로
-    assert (f'🟢 <b>{a}</b>  92점 · D-12\n'
-            '<a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">Data Engineer</a>') in text
-    assert f"▫️ <b>{a}</b>  88점 · 상시" in text  # 규칙 점수
-    assert "A&amp;B &lt;ML&gt;" in text  # 태그가 아닌 <, >, &는 바꾼다
-    assert f"<b>마감 임박</b> ★ 관심 공고와 70점 이상 1건\n<blockquote expandable>🟢 <b>{a}</b>  81점 · D-2" in text
-    assert text.endswith("🟢 지원 추천 · 🟡 고려 · ⚪ 비추천")
-    assert buttons == [[{"text": "리포트", "url": "https://careermap-web.oroloov.workers.dev/#/report"},
-                        {"text": "공고 목록", "url": "https://careermap-web.oroloov.workers.dev/#/jobs"}, {"text": "커리어", "url": "https://careermap-web.oroloov.workers.dev/#/career"}]]
+    assert "건은 공고 목록에서" in rich  # 필터 밖부터 줄이고 외 N건
+    text = notify.telegram_message(d)[0]
+    assert len(text) <= telegram.TEXT_MAX and "건은 공고 목록에서" in text
 
 
-def test_telegram_message_folds_postings_after_the_first_five(monkeypatch):
-    screen = {**SCREEN, "postings": [posting(f"m:{i}") for i in range(12)]}
-    text, _ = notify.telegram_message(notify.digest(screen, FILTERS, {}, TODAY))
-    head, folded = text.split("<blockquote expandable>")
-    assert head.count("#/job/") == 5 and folded.count("#/job/") == 5  # 10건 중 5건은 접어 둔다
-    assert "외 2건은 공고 목록에서" in text
-
-
-def test_telegram_message_says_so_when_nothing_new_passes_and_stays_under_the_limit(monkeypatch):
+def test_says_so_when_nothing_new_passes():
     none = {**SCREEN, "postings": [SCREEN["postings"][4]]}
     assert "필터를 통과한 새 공고가 없어요." in notify.telegram_message(notify.digest(none, FILTERS, MATCHES, TODAY))[0]
-    many = {**SCREEN, "postings": [posting(f"m:{i}", title="데이터 엔지니어 " * 60) for i in range(10)]}
-    assert len(notify.telegram_message(notify.digest(many, FILTERS, {}, TODAY))[0]) <= telegram.TEXT_MAX
+    assert "필터를 통과한 새 공고가 없어요." in notify.telegram_rich(notify.digest(none, FILTERS, MATCHES, TODAY))
 
 
 def test_kakao_message_uses_the_list_template_and_falls_back_to_text():
@@ -135,7 +115,7 @@ def test_kakao_message_uses_the_list_template_and_falls_back_to_text():
 class FakeDB:
     def __init__(self, telegram_links=(), kakao_links=()):
         self.rows = {"settings": [], "telegram_links": list(telegram_links), "kakao_links": list(kakao_links),
-                     "profiles": [{"user_id": "u1"}], "applications": [], "company_stars": [],
+                     "profiles": [{"user_id": "u1"}], "applications": [],
                      "matches": [{"posting_id": "z:2", "score": 92, "parts": {"kind": "ai", "verdict": "지원 추천"}}]}
         self.updates, self.inserted = [], []
 
@@ -155,21 +135,6 @@ def keys(monkeypatch):
     monkeypatch.setenv("KAKAO_REST_KEY", "k")
 
 
-def test_rich_message_puts_postings_in_tables_with_details_and_buttons():
-    screen = {**SCREEN, "postings": [*SCREEN["postings"], *(posting(f"m:{i}") for i in range(4))]}
-    rich = notify.telegram_rich(notify.digest(screen, FILTERS, MATCHES, TODAY))
-    assert rich.startswith("<h3>10/17(토) 오늘의 공고</h3><p>새 공고 <b>9</b> · 필터 통과 <b>8</b> · 마감 임박 <b>1</b></p>"
-                           "<h4>필터 통과 새 공고</h4><table striped compact>")
-    assert ('<tr><td>🟢</td><td align="left"><b><a href="https://careermap-web.oroloov.workers.dev/#/company/a">가나다</a></b><br>'
-            '<a href="https://careermap-web.oroloov.workers.dev/#/job/z%3A2">Data Engineer</a></td>'
-            '<td align="right"><b>92</b></td><td align="center">D-12</td></tr>') in rich
-    assert "A&amp;B &lt;ML&gt;" in rich
-    assert "<details><summary>3건 더 보기</summary><table" in rich  # 8건 중 5건 다음은 접는다
-    assert "<details><summary>마감 임박 1건 · ★ 관심 공고와 70점 이상</summary>" in rich
-    assert '<tg-button type="url" style="primary" url="https://careermap-web.oroloov.workers.dev/#/report">리포트</tg-button>' in rich
-    assert rich.endswith("<footer>🟢 지원 추천 · 🟡 고려 · ⚪ 비추천</footer>")
-
-
 def test_run_sends_a_rich_message_once_a_day_and_kakao_only_when_switched_on(monkeypatch, keys):
     sent = []
     monkeypatch.setattr(telegram, "send_rich", lambda chat, rich, s=None: sent.append((chat, rich)))
@@ -184,17 +149,15 @@ def test_run_sends_a_rich_message_once_a_day_and_kakao_only_when_switched_on(mon
     assert again == {"telegram": {"linked": 2, "sent": 2, "skipped": 0}} and len(db.updates) == 2
 
 
-def test_run_skips_people_who_turned_the_alert_off_and_reads_their_stars(monkeypatch, keys):
+def test_run_skips_people_who_turned_the_alert_off(monkeypatch, keys):
     sent = []
-    monkeypatch.setattr(telegram, "send_rich", lambda chat, rich, s=None: sent.append((chat, rich)))
+    monkeypatch.setattr(telegram, "send_rich", lambda chat, rich, s=None: sent.append(chat))
     db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 42, "last_sent_on": None},
                                 {"user_id": "u2", "chat_id": 43, "last_sent_on": None}])
-    db.rows["settings"] = [{"user_id": "u1", "filters": FILTERS, "notify": {"top": 5}},
+    db.rows["settings"] = [{"user_id": "u1", "filters": FILTERS, "notify": {}},
                            {"user_id": "u2", "filters": {}, "notify": {"enabled": False}}]
-    db.rows["company_stars"] = [{"company_key": "b"}]
-    s = notify.run(SCREEN, db, TODAY)
-    assert s == {"telegram": {"linked": 2, "sent": 1, "skipped": 0, "off": 1}}
-    assert [c for c, _ in sent] == [42] and "관심 회사 새 공고 1건" in sent[0][1]
+    assert notify.run(SCREEN, db, TODAY) == {"telegram": {"linked": 2, "sent": 1, "skipped": 0, "off": 1}}
+    assert sent == [42]
 
 
 def test_run_still_sends_before_the_notify_settings_column_exists(monkeypatch, keys):
@@ -203,12 +166,12 @@ def test_run_still_sends_before_the_notify_settings_column_exists(monkeypatch, k
 
     class Old(FakeDB):
         def select(self, table, query="select=*"):
-            if "notify" in query or table == "company_stars":
+            if "notify" in query:
                 raise RuntimeError("Supabase GET 400 column settings.notify does not exist")
             return super().select(table, query)
     db = Old(telegram_links=[{"user_id": "u1", "chat_id": 42, "last_sent_on": None}])
     s = notify.run(SCREEN, db, TODAY)
-    assert sent == [42] and s["telegram"]["sent"] == 1 and len(s["notes"]) == 2
+    assert sent == [42] and s["telegram"]["sent"] == 1 and len(s["notes"]) == 1
 
 
 def test_rich_message_failure_falls_back_to_a_plain_message(monkeypatch, keys):

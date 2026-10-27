@@ -3,7 +3,7 @@ import { copy } from '../copy'
 import { SectionTitle } from '../components/ui'
 import { dateText } from '../lib/format'
 import { goBack, href } from '../lib/route'
-import { loadNotify, loadTelegramLink, NOTIFY_SCOPES, saveNotify, type Loaded, type NotifyPrefs, type NotifyScope, type TelegramLink } from '../lib/settings'
+import { loadNotify, loadTelegramLink, saveNotify, type Loaded, type NotifyPrefs, type TelegramLink } from '../lib/settings'
 import { supabase } from '../lib/supabase'
 import type { NotifyDefaults, Screen } from '../lib/types'
 
@@ -50,7 +50,7 @@ function SubHead({ title, sub }: { title: string; sub?: string }) {
   )
 }
 
-/** 아침 알림: 연결 상태와 사람별 설정(settings.notify: 받기, 개수). 고르면 바로 저장한다 */
+/** 아침 알림: 연결 상태, 받기 켜기·끄기(settings.notify.enabled), 알림에 들어가는 것 */
 export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
   const [prefs, setPrefs] = useState<Loaded<NotifyPrefs> | undefined>(undefined)
   const [link, setLink] = useState<Loaded<TelegramLink | null> | undefined>(undefined)
@@ -65,21 +65,17 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
   }, [])
 
   // Supabase가 없으면(개발) 저장할 곳이 없다
-  const editable = !!supabase && !!defaults && typeof prefs === 'object'
-  const cur = typeof prefs === 'object' ? prefs : {}
-  const enabled = cur.enabled !== false
-  const choices = defaults?.choices?.top ?? []
-  const top = cur.top && choices.includes(cur.top) ? cur.top : defaults?.top
-  const scope: NotifyScope = cur.scope && NOTIFY_SCOPES.includes(cur.scope) ? cur.scope : 'passed'
+  const editable = !!supabase && typeof prefs === 'object'
+  const enabled = !(typeof prefs === 'object' && prefs.enabled === false)
 
-  function change(next: NotifyPrefs) {
+  function toggle(on: boolean) {
     if (!editable) return
     const before = prefs
-    const merged = { ...cur, ...next }
-    setPrefs(merged)
+    const next = { ...prefs, enabled: on }
+    setPrefs(next)
     setSaved(null)
-    // 실패하면 고르기 전 값으로 되돌린다
-    saveNotify(merged).then((ok) => {
+    // 실패하면 누르기 전 값으로 되돌린다
+    saveNotify(next).then((ok) => {
       setSaved(ok ? 'ok' : 'failed')
       if (!ok) setPrefs(before)
     })
@@ -97,40 +93,21 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
       <section className="section">
         <div className="admin-block">
           {status}
-          {!defaults && <p className="note">{copy.admin.notifyMissing}</p>}
           {prefs === 'missing' && <p className="note">{copy.admin.prefsMissing}</p>}
           {prefs === 'failed' && <p className="note">{copy.admin.loadFailed}</p>}
           <label className="switch">
             {copy.admin.enabled}
-            <input type="checkbox" checked={enabled} disabled={!editable} onChange={(e) => change({ enabled: e.target.checked })} />
+            <input type="checkbox" checked={enabled} disabled={!editable} onChange={(e) => toggle(e.target.checked)} />
           </label>
-          <label className="field">
-            <span>{copy.admin.scope}</span>
-            <select value={scope} disabled={!editable || !enabled} onChange={(e) => change({ scope: e.target.value as NotifyScope })}>
-              {NOTIFY_SCOPES.map((v) => <option key={v} value={v}>{copy.admin.scopeOption[v]}</option>)}
-            </select>
-          </label>
-          {defaults && choices.length > 0 && scope === 'passed' && (
-            <label className="field">
-              <span>{copy.admin.top}</span>
-              <select value={top} disabled={!editable || !enabled} onChange={(e) => change({ top: Number(e.target.value) })}>
-                {choices.map((n) => (
-                  <option key={n} value={n}>{copy.admin.topOption(n)}{n === defaults.top ? copy.admin.defaultMark : ''}</option>
-                ))}
-              </select>
-            </label>
-          )}
           {saved && <p className={saved === 'ok' ? 'note' : 'note urgent'} role="status">{saved === 'ok' ? copy.admin.saved : copy.admin.saveFailed}</p>}
         </div>
       </section>
-      {defaults && (
-        <section className="section">
-          <SectionTitle>{copy.admin.contents}</SectionTitle>
-          <ul className="plain-list">
-            {copy.admin.contentLines(scope === 'all', top ?? defaults.top, defaults.soonMinScore).map((line) => <li key={line}>{line}</li>)}
-          </ul>
-        </section>
-      )}
+      <section className="section">
+        <SectionTitle>{copy.admin.contents}</SectionTitle>
+        <ul className="plain-list">
+          {copy.admin.contentLines(defaults?.soonMinScore).map((line) => <li key={line}>{line}</li>)}
+        </ul>
+      </section>
     </div>
   )
 }

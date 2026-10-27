@@ -108,13 +108,11 @@ export interface Collection {
   sources: { id: string; name: string; complete: boolean }[]
 }
 
-/** 화면 코드와 화면용 파일은 따로 배포되니(Cloudflare / 매일 수집) 칸이 없어도 깨지지 않게 읽는다 */
+/** 아침 알림 기본값(config/notify.yaml). 화면 코드와 화면용 파일은 따로 배포되니 칸이 없어도 깨지지 않게 읽는다 */
 export interface NotifyDefaults {
-  channels: string[]
-  top: number
-  /** 마감 임박에 넣는 최소 점수(사람마다 바꾸지 않는다) */
-  soonMinScore: number
-  choices: { top: number[] }
+  channels?: string[]
+  /** 마감 임박에 넣는 필터 통과 공고의 최소 점수 */
+  soonMinScore?: number
 }
 
 /** 연차 구간: 최소 경력 0~3년 미만, 3~7, 7~12, 12년 이상, 연차 무관 */
