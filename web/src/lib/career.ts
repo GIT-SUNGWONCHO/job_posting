@@ -9,7 +9,7 @@ export const BUCKETS: CareerBucket[] = ['0-3', '3-7', '7-12', '12+', 'any']
 export const FIT_TOP = 20
 /** 스킬 적합도와 포지션 맵의 가로 기준선(%) */
 export const FIT_LINE = 50
-/** 이 숙련도부터 "가진 스킬"로 센다. 그 아래(써 봄, 안 고름)는 절반 */
+/** 이 숙련도부터 "가진 스킬"로 센다. 그 아래(기초, 안 고름)는 절반 */
 export const FIT_LEVEL = 2
 /** 기간 고르기: 날 수. 0은 수집을 시작한 날부터 */
 export const PERIODS = [7, 30, 182, 365]

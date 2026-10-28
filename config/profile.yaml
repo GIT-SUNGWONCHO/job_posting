@@ -45,10 +45,10 @@ roles:
 
 # 스킬 숙련도
 skill_levels:
-  - {level: 1, name: 써 봄, desc: 학습·실습이나 작은 업무}
-  - {level: 2, name: 도움 받아 실무, desc: 있는 것을 고치거나 따라 만듦}
-  - {level: 3, name: 혼자 실무, desc: 직접 설계·구축·운영}
-  - {level: 4, name: 리드, desc: 기준을 세우고 남을 가르치거나 검토}
+  - {level: 1, name: 기초, desc: 배우거나 작은 업무에 써 봄}
+  - {level: 2, name: 실무, desc: 있는 것을 고치거나 도움 받아 만듦}
+  - {level: 3, name: 숙련, desc: 혼자 설계·구축·운영}
+  - {level: 4, name: 전문, desc: 기준을 세우고 가르치거나 검토}
 
 project_parts: [단독, 리드, 참여]
 degrees: [고졸, 전문학사, 학사, 석사, 박사]

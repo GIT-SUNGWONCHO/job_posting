@@ -39,7 +39,7 @@ def test_rule_view_and_text():
     v = profile.rule_view(V2)
     assert v["careerStart"] == "2016-12" and v["currentRole"] == "other" and v["skills"] == ["SQL", "Python"]
     t = profile.text(V2, TODAY)
-    assert "포스코이앤씨 (건설·부동산) 2023.11~현재" in t and "SQL(4 리드)" in t and "[학력] 학사 건축공학" in t
+    assert "포스코이앤씨 (건설·부동산) 2023.11~현재" in t and "SQL(4 전문)" in t and "[학력] 학사 건축공학" in t
 
 
 def test_facts_run_extracts_wanted_postings_once(tmp_path):

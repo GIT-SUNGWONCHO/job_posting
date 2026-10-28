@@ -204,7 +204,7 @@ export const copy = {
     legendMine: '내 직무',
     legendOther: '다른 직무',
     fit: (pct: number | null) => (pct === null ? '적합도 -' : `적합도 ${pct}%`),
-    fitHelp: '그 직무 공고가 많이 요구하는 스킬 20개 중 내가 가진 비율이에요(요구한 공고 수로 가중, 숙련도 "써 봄"은 절반)',
+    fitHelp: '그 직무 공고가 많이 요구하는 스킬 20개 중 내가 가진 비율이에요(요구한 공고 수로 가중, 숙련도 "기초"는 절반)',
     open: (n: number) => `열린 공고 ${n.toLocaleString()}`,
     change: (diff: string) => `7일 전보다 ${diff}`,
     years: (y: string) => `내 경력 ${y}년`,

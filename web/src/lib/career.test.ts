@@ -76,7 +76,7 @@ describe('커리어 지표', () => {
     expect(bucketOf(12)).toBe('12+')
   })
 
-  it('스킬 적합도: 요구한 공고 수로 가중, 써 봄은 절반', () => {
+  it('스킬 적합도: 요구한 공고 수로 가중, 기초는 절반', () => {
     const skills: [string, number][] = [['SQL', 8], ['Spark', 6], ['Kafka', 4], ['Go', 2]]
     expect(skillFit(skills, new Map([['SQL', 3], ['Spark', 1]]))).toBe(55) // (8 + 3) / 20
     expect(skillFit([], new Map())).toBeNull()
