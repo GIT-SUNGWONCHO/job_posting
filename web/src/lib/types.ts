@@ -11,7 +11,10 @@ export interface SourceLink {
 export interface Posting {
   id: string
   company: string
+  /** 원문 제목(공고 상세) */
   title: string
+  /** 목록 제목: 회사 이름·'채용' 같은 말을 뺀 제목. 원문과 같으면 없다(listTitle()로 읽는다) */
+  listTitle?: string
   careerMin: number | null
   careerMax: number | null
   career: string
@@ -172,6 +175,7 @@ export interface ToolsFound {
 export interface PastPosting {
   id: string
   title: string
+  listTitle?: string
   jobType: string | null
   firstSeen: string
   closedOn: string

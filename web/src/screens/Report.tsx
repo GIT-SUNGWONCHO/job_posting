@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { copy } from '../copy'
 import { Deadline, Empty, JobRow, Score, SectionTitle } from '../components/ui'
 import { NOT_AGAIN, useApps } from '../lib/applications'
-import { addDays, companyLine, dateText, isUrgent } from '../lib/format'
+import { addDays, companyLine, dateText, isUrgent, listTitle } from '../lib/format'
 import type { Match } from '../lib/matches'
 import { href } from '../lib/route'
 import { useStars } from '../lib/stars'
@@ -87,7 +87,7 @@ export function Report({ screen, passed, today, matches }: {
             <div className="match-head">
               <div className="row-main">
                 <span className="row-company">{companyLine(c[top.company], top.company)}</span>
-                <span className="hero-title">{top.title}</span>
+                <span className="hero-title">{listTitle(top)}</span>
                 {matches.get(top.id)?.reason && <span className="row-reason">{matches.get(top.id)?.reason}</span>}
                 <span className="row-meta">
                   {badge(top) && <span className="stage-chip">{badge(top)}</span>}

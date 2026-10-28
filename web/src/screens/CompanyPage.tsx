@@ -3,7 +3,7 @@ import { copy } from '../copy'
 import { YearBars } from '../components/charts'
 import { JobRow, SectionTitle } from '../components/ui'
 import { passes } from '../lib/filter'
-import { dartUrl, dateText, growth, money, pointChange, yearMonth } from '../lib/format'
+import { dartUrl, dateText, growth, listTitle, money, pointChange, yearMonth } from '../lib/format'
 import { loadCompanies } from '../lib/load'
 import { goBack, href } from '../lib/route'
 import { isStarred, useStars } from '../lib/stars'
@@ -319,7 +319,7 @@ function Past({ past, byJob, since, jobs }: { past: PastPosting[]; byJob: Record
           {shown.map((p) => (
             <div key={p.id} className="past-row">
               <span className="past-date">{t.closedOn(dateText(p.closedOn))}</span>
-              <span>{p.title}</span>
+              <span>{listTitle(p)}</span>
             </div>
           ))}
         </div>

@@ -183,3 +183,9 @@ def test_company_texts_skip_headhunter_noise_and_overseas(tmp_path):
     s.save()
     assert len(screen._company_texts(Store(tmp_path), {"회사"})["회사"]) == 1
 
+
+
+def test_list_title_only_when_shorter():
+    from jobpost.screen import _list_title
+    assert _list_title("[가나다] 데이터 엔지니어 채용", "가나다") == {"listTitle": "데이터 엔지니어"}
+    assert _list_title("Data Engineer", "가나다") == {}

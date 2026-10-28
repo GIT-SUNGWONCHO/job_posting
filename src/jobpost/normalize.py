@@ -52,6 +52,47 @@ def company_key(name: str) -> str:
     return compact.lower()
 
 
+_LEAD_LEGAL = re.compile(r"^\s*(?:\(\s*주\s*\)|㈜|주식회사)\s*")
+_LEAD_GROUP = re.compile(r"^\s*[\[【(]([^\]】)]{1,40})[\]】)]\s*")
+_DEADLINE_NOTE = re.compile(r"\s*[(\[]\s*(?:~\s*\d{1,2}\s*[./]\s*\d{1,2}|~?\s*채용\s*시\s*(?:마감|까지)|상시\s*채용)\s*[)\]]")
+_TAIL_WORDS = re.compile(
+    r"\s*(?:(?:경력|신입)\s*(?:사원|직)?\s*)?(?:인재\s*)?(?:채용\s*공고|모집\s*공고|채용|모집)(?:\s*합니다)?\.?\s*$"
+    r"|\s*[을를]\s*모집합니다\.?\s*$"
+)
+_SEPARATORS = " _-·:|/"
+
+
+def list_title(title: str, company: str) -> str:
+    """목록 제목: 목록에서 보이는 다듬은 제목(규칙만, AI 없음). 원문 제목은 공고 상세에 그대로 둔다.
+    앞의 [회사 이름]·회사 이름·(주), 마감 표기((채용 시 마감), (~10/31)), 끝의 '채용'·'채용공고'·'모집'·'경력사원 채용'을 뺀다.
+    [팀 이름]처럼 회사 이름이 아닌 묶음은 남긴다. 너무 짧아지면 원문을 쓴다."""
+    t = (title or "").strip()
+    key = company_key(company) if company else ""
+    names = sorted({n for n in (clean_company(company), common_name(company)) if n}, key=len, reverse=True) if company else []
+    for _ in range(3):
+        before = t
+        t = _LEAD_LEGAL.sub("", t)
+        m = _LEAD_GROUP.match(t)
+        if m and key and company_key(m.group(1)) == key:
+            t = t[m.end():]
+        for name in names:
+            # 회사 이름 바로 뒤가 띄어쓰기·기호·(주)일 때만 뺀다(카카오 공고의 "카카오페이"를 자르지 않게)
+            rest = t[len(name):] if t.startswith(name) else None
+            if rest is not None and (not rest or rest[0] in _SEPARATORS or rest.lstrip().startswith(("(주)", "㈜"))):
+                t = _LEAD_LEGAL.sub("", rest.lstrip(_SEPARATORS))
+                break
+        if t == before:
+            break
+    t = _DEADLINE_NOTE.sub("", t)
+    for _ in range(2):
+        shorter = _TAIL_WORDS.sub("", t).rstrip(_SEPARATORS + ",")
+        if shorter == t or len(shorter) < 4:
+            break
+        t = shorter
+    t = re.sub(r"\s{2,}", " ", t).strip(_SEPARATORS)
+    return t if len(t) >= 4 else (title or "").strip()
+
+
 def career_text(career_min: int | None, career_max: int | None) -> str:
     """경력 표기. 예: 경력 1~10년, 경력 8년 이상, 경력 5년 이하, 연차 무관, 신입."""
     if career_max == 0:

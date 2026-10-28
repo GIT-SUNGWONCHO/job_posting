@@ -18,12 +18,12 @@ from typing import Any
 
 from . import career, config, dart, facts, jobtypes, notify, research
 from .companies import CompanyRegistry, major_candidates
-from .normalize import career_text, clean_company, common_name, company_key
+from .normalize import career_text, clean_company, common_name, company_key, list_title
 from .store import Store
 
 log = logging.getLogger(__name__)
 
-VERSION = 6  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값(collection, notify)
+VERSION = 7  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값(collection, notify), 7: 목록 제목(listTitle)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
 # 본문을 고르는 순서: 리멤버 원문 > 직행이 정리한 요약 > 사람인 원문
@@ -99,10 +99,12 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         body = _body([r, *same], originals, details)
         if body:
             bodies[r["uid"]] = body
+        title = html.unescape(r.get("title", ""))  # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다
         return {
             "id": r["uid"],
             "company": key,
-            "title": html.unescape(r.get("title", "")),  # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다
+            "title": title,
+            **_list_title(title, companies[key]["name"]),
             "careerMin": o.get("career_min"),
             "careerMax": o.get("career_max"),
             "career": career_text(o.get("career_min"), o.get("career_max")),
@@ -225,7 +227,13 @@ def write(screen: dict[str, Any], out: Path) -> Path:  # 본문 파일도 같은
     return out
 
 
-COMPANIES_VERSION = 1  # 회사 기본정보 파일(companies.json.gz) 형식. web/src/lib/types.ts CompanyBasics와 같게
+def _list_title(title: str, company: str) -> dict[str, str]:
+    """목록 제목(normalize.list_title). 원문과 같으면 싣지 않는다(화면은 없으면 원문 제목을 쓴다)."""
+    short = list_title(title, company)
+    return {"listTitle": short} if short != title else {}
+
+
+COMPANIES_VERSION = 2  # 회사 기본정보 파일(companies.json.gz) 형식. web/src/lib/types.ts CompanyBasics와 같게. 2: 지난 공고의 목록 제목(listTitle)
 PAST_MAX = 50  # 회사마다 남길 지난 공고 수(최근 마감 순). 수는 pastByJob에 전부 센다
 
 
@@ -258,9 +266,11 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
             continue
         key = r.get("company_key") or r.get("company", "")
         if key in keys:
+            title = html.unescape(r.get("title", ""))  # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다
             past.setdefault(key, []).append({
                 "id": r["uid"],
-                "title": html.unescape(r.get("title", "")),  # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다
+                "title": title,
+                **_list_title(title, screen["companies"][key]["name"]),
                 "jobType": (r.get("job_type") or {}).get("id"),
                 "firstSeen": r.get("first_seen"),
                 "closedOn": r.get("closed_on"),

@@ -102,8 +102,9 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
         name = (companies.get(p["company"]) or {}).get("name") or p["company"]
         # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다. 글자로 풀어 두고 채널마다 다시 바꾼다
         m = matches.get(p["id"]) or {}
-        return {"id": p["id"], "title": html.unescape(f"{name} · {p['title']}"),
-                "company": html.unescape(name), "name": html.unescape(p["title"]), "score": score(p),
+        title = p.get("listTitle") or p["title"]  # 목록 제목(회사 이름·'채용' 같은 말을 뺀 제목), 없으면 원문
+        return {"id": p["id"], "title": html.unescape(f"{name} · {title}"),
+                "company": html.unescape(name), "name": html.unescape(title), "score": score(p),
                 "verdict": m.get("verdict") if m.get("kind") == "ai" else ("규칙 점수" if m else None),
                 "deadline": deadline_text(p, today),
                 "info": f"{_score_text(matches.get(p['id']))} · {deadline_text(p, today)}",

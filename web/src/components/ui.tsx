@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { copy } from '../copy'
 import { useApps } from '../lib/applications'
-import { companyLine, deadlineText, isUrgent } from '../lib/format'
+import { companyLine, deadlineText, isUrgent, listTitle } from '../lib/format'
 import { href } from '../lib/route'
 import type { Match } from '../lib/matches'
 import type { Company, Posting } from '../lib/types'
@@ -34,7 +34,7 @@ export function JobRow({ p, c, today, showCompany = true, active = false, match,
     <a className={active ? 'row active' : 'row'} href={href.job(p.id)} aria-current={active ? 'page' : undefined}>
       <span className="row-main">
         {showCompany && <span className="row-company">{companyLine(c, p.company)}</span>}
-        <span className="row-title">{p.title}</span>
+        <span className="row-title">{listTitle(p)}</span>
         {match?.reason && <span className="row-reason">{match.reason}</span>}
         <span className="row-meta">
           {badge && <span className="stage-chip">{badge}</span>}

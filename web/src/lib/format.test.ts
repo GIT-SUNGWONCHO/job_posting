@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { addDays, dateText, deadlineText, isUrgent } from './format'
+import { addDays, dateText, deadlineText, isUrgent, listTitle } from './format'
 
 describe('deadlineText', () => {
   const today = '2026-10-13'
@@ -61,5 +61,12 @@ describe('addDays', () => {
   it('moves across month ends', () => {
     expect(addDays('2026-10-26', -6)).toBe('2026-10-20')
     expect(addDays('2026-11-01', -1)).toBe('2026-10-31')
+  })
+})
+
+describe('listTitle', () => {
+  it('uses the list title and falls back to the original', () => {
+    expect(listTitle({ title: '[가나다] 데이터 엔지니어 채용', listTitle: '데이터 엔지니어' })).toBe('데이터 엔지니어')
+    expect(listTitle({ title: 'Data Engineer' })).toBe('Data Engineer')
   })
 })

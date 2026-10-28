@@ -3,6 +3,7 @@ import { copy } from '../copy'
 import { FilterSheet, type FilterSection } from '../components/FilterSheet'
 import { Chip, Empty, JobRow } from '../components/ui'
 import { matchesQuery } from '../lib/filter'
+import { listTitle } from '../lib/format'
 import { href } from '../lib/route'
 import type { Match } from '../lib/matches'
 import { isStarred, useStars } from '../lib/stars'
@@ -151,7 +152,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
               <span className="row-meta">
                 <span>{[open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen, list.length > 0 && (ui.sample ? copy.jobs.sampleCount(list.length) : copy.jobs.passedCount(list.length))]
                   .filter(Boolean).join(' · ')}</span>
-                {list.length > 0 && <span className="row-top">{list[0].title}</span>}
+                {list.length > 0 && <span className="row-top">{listTitle(list[0])}</span>}
               </span>
             </span>
           </a>

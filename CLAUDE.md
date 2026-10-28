@@ -53,7 +53,7 @@
 src/jobpost/
   models.py        공통 공고 형식(Posting, Detail)
   sources/         수집처별 수집기. 그 사이트에서 확인한 동작은 파일 맨 위에 적는다
-  normalize.py     회사 이름, 경력·마감 표기(용어집 형식)
+  normalize.py     회사 이름, 경력·마감 표기(용어집 형식), 목록 제목(규칙으로 다듬은 제목)
   scope.py         저장 범위(데이터·AI), 해외, 잡음 판단
   companies.py     기업 구분, 그룹 이름
   dedup.py         수집처가 다른 같은 공고 묶기

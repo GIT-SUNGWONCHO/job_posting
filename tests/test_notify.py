@@ -324,3 +324,9 @@ def test_a_first_message_that_went_out_still_counts_when_the_second_fails(monkey
     s = notify.run(SCREEN, db, TODAY)
     assert s["telegram"]["sent"] == 1 and db.updates == [("telegram_links", "user_id=eq.u1", {"last_sent_on": "2026-10-17"})]
     assert s["errors"] == ["telegram u1: 1통만 보냄: 텔레그램 sendMessage 429 Too Many Requests"]
+
+
+def test_digest_uses_list_title():
+    screen = {**SCREEN, "postings": [{**posting("z:1", title="[가나다] 데이터 엔지니어 채용"), "listTitle": "데이터 엔지니어"}]}
+    d = notify.digest(screen, FILTERS, MATCHES, TODAY)
+    assert d["passed"][0]["name"] == "데이터 엔지니어" and d["passed"][0]["title"] == "가나다 · 데이터 엔지니어"

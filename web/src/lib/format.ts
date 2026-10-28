@@ -11,6 +11,11 @@ export function todayISO(now = new Date()): string {
   return `${y}-${m}-${d}`
 }
 
+/** 목록 제목: 회사 이름·'채용' 같은 말을 뺀 제목(screen.py가 만든다). 없으면 원문 제목. 공고 상세는 원문 제목 */
+export function listTitle(p: { title: string; listTitle?: string }): string {
+  return p.listTitle || p.title
+}
+
 /** 마감까지 남은 날. 마감일이 없으면 null. */
 export function daysLeft(p: Pick<Posting, 'deadlineType' | 'deadline'>, today: string): number | null {
   if (p.deadlineType !== 'date' || !p.deadline) return null
