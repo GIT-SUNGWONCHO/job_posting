@@ -9414,6 +9414,114 @@
 },
 "v": 3
 },
+"00125521": {
+"company": {
+"ceo": "이성엽,정문호",
+"founded": "1968-11-07",
+"homepage": "https://www.slworld.com",
+"industry_code": "303",
+"market": "유가증권",
+"name": "에스엘(주)",
+"stock_code": "005850"
+},
+"disclosures": [
+{
+"date": "2026-06-25",
+"rcept_no": "20260625800567",
+"title": "[첨부정정]지속가능경영보고서등관련사항(자율공시)"
+},
+{
+"date": "2026-06-01",
+"rcept_no": "20260601800866",
+"title": "기업지배구조보고서공시"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327801560",
+"title": "기업가치제고계획(자율공시)"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326802061",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-18",
+"rcept_no": "20260318800775",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-02-25",
+"rcept_no": "20260225801864",
+"title": "[기재정정]주주총회소집결의"
+},
+{
+"date": "2026-02-19",
+"rcept_no": "20260219801030",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변경"
+},
+{
+"date": "2026-02-19",
+"rcept_no": "20260219800963",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-19",
+"rcept_no": "20260219800955",
+"title": "현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정"
+},
+{
+"date": "2025-12-12",
+"rcept_no": "20251212800912",
+"title": "기타경영사항(자율공시) (정관변경에 따른 배당기준일 안내)"
+},
+{
+"date": "2025-12-12",
+"rcept_no": "20251212800786",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-12-10",
+"rcept_no": "20251210800455",
+"title": "타인에대한채무보증결정"
+}
+],
+"employees": {
+"count": 4881,
+"date": "2025-12-31",
+"rcept_no": "20260318000781",
+"salary": 87845523,
+"tenure": 11.0
+},
+"fetched": "2026-10-29",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318000781",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 349266124228,
+"operating": 386185752873,
+"revenue": 4838846695980,
+"year": 2023
+},
+{
+"net": 381963573388,
+"operating": 395164287548,
+"revenue": 4973273970111,
+"year": 2024
+},
+{
+"net": 320790309572,
+"operating": 407099444958,
+"revenue": 5239939345004,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00125576": {
 "company": {
 "ceo": "이명곤, 김성광(각자대표이사)",
@@ -11582,6 +11690,22 @@
 }
 ]
 },
+"v": 3
+},
+"00126609": {
+"company": {
+"ceo": "김영채",
+"founded": "1984-08-17",
+"homepage": "https://www.hpe.com",
+"industry_code": "46510",
+"market": "기타",
+"name": "한국휴렛팩커드주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
+"finance": null,
 "v": 3
 },
 "00126937": {
@@ -31841,6 +31965,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00249858": {
+"company": {
+"ceo": "성기학",
+"founded": "1992-10-15",
+"homepage": "https://www.thenorthfacekorea.co.kr",
+"industry_code": "141",
+"market": "기타",
+"name": "주식회사 영원아웃도어",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
 "finance": null,
 "v": 3
 },
@@ -56993,6 +57133,134 @@
 },
 "v": 3
 },
+"00879020": {
+"company": {
+"ceo": "남궁선",
+"founded": "1996-06-19",
+"homepage": "https://www.unitrontech.com",
+"industry_code": "46522",
+"market": "코스닥",
+"name": "(주)유니트론텍",
+"stock_code": "142210"
+},
+"disclosures": [
+{
+"date": "2026-09-29",
+"rcept_no": "20260929900919",
+"title": "[기재정정]최대주주변경을수반하는주식담보제공계약체결"
+},
+{
+"date": "2026-06-22",
+"rcept_no": "20260622900729",
+"title": "전환가액의조정"
+},
+{
+"date": "2026-05-28",
+"rcept_no": "20260528900993",
+"title": "단기차입금증가결정"
+},
+{
+"date": "2026-04-27",
+"rcept_no": "20260427900922",
+"title": "타법인주식및출자증권취득결정"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327902360",
+"title": "기업가치제고계획(자율공시)"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326902586",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-18",
+"rcept_no": "20260318902437",
+"title": "불성실공시법인미지정 (지정유예)"
+},
+{
+"date": "2026-03-18",
+"rcept_no": "20260318901625",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-05",
+"rcept_no": "20260305901282",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-20",
+"rcept_no": "20260220901216",
+"title": "불성실공시법인지정예고 (공시불이행)"
+},
+{
+"date": "2026-02-09",
+"rcept_no": "20260209900335",
+"title": "주식소각결정"
+},
+{
+"date": "2026-02-09",
+"rcept_no": "20260209900329",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-06",
+"rcept_no": "20260206902625",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-22",
+"rcept_no": "20251222900809",
+"title": "전환가액의조정"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216901180",
+"title": "현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216901171",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 116,
+"date": "2025-12-31",
+"rcept_no": "20260318001467",
+"salary": 84336207,
+"tenure": 5.2
+},
+"fetched": "2026-10-29",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318001467",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 20038355461,
+"operating": 30923836146,
+"revenue": 598093762212,
+"year": 2023
+},
+{
+"net": 19711058530,
+"operating": 36127149169,
+"revenue": 712288587261,
+"year": 2024
+},
+{
+"net": 11833735551,
+"operating": 32268544768,
+"revenue": 768974453691,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00896285": {
 "company": {
 "ceo": "이운익",
@@ -61815,6 +62083,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
+"01040555": {
+"company": {
+"ceo": "김광수, 강희순",
+"founded": "2014-04-29",
+"homepage": "https://www.dacc21.co.kr",
+"industry_code": "31322",
+"market": "기타",
+"name": "(주)데크카본",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
 "finance": null,
 "v": 3
 },
@@ -76192,6 +76476,22 @@
 "finance": null,
 "v": 3
 },
+"01454086": {
+"company": {
+"ceo": "권태훈,유영기",
+"founded": "2016-01-19",
+"homepage": "https://www.sanghafarm.co.kr",
+"industry_code": "10129",
+"market": "기타",
+"name": "상하농원(유)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
+"finance": null,
+"v": 3
+},
 "01454341": {
 "company": {
 "ceo": "이상훈",
@@ -80646,6 +80946,22 @@
 "finance": null,
 "v": 3
 },
+"01568255": {
+"company": {
+"ceo": "손승현",
+"founded": "2018-10-01",
+"homepage": null,
+"industry_code": "59120",
+"market": "기타",
+"name": "주식회사 웨스트월드",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
+"finance": null,
+"v": 3
+},
 "01569102": {
 "company": {
 "ceo": "김성준",
@@ -82844,6 +83160,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01644184": {
+"company": {
+"ceo": "김동근,김동환",
+"founded": "2014-07-11",
+"homepage": null,
+"industry_code": "20423",
+"market": "기타",
+"name": "주식회사 브리드비인터내셔널",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
 "finance": null,
 "v": 3
 },
@@ -85610,6 +85942,22 @@
 "finance": null,
 "v": 3
 },
+"01784543": {
+"company": {
+"ceo": "형우진",
+"founded": "2017-05-15",
+"homepage": "https://www.hutom.io",
+"industry_code": "58222",
+"market": "기타",
+"name": "주식회사 휴톰 ",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
+"finance": null,
+"v": 3
+},
 "01785560": {
 "company": {
 "ceo": "오하영",
@@ -87477,6 +87825,73 @@
 "finance": null,
 "v": 3
 },
+"01867749": {
+"company": {
+"ceo": "조규종",
+"founded": "2010-04-30",
+"homepage": "https://uvc.co.kr",
+"industry_code": "58221",
+"market": "코넥스",
+"name": "(주)유비씨",
+"stock_code": "495810"
+},
+"disclosures": [
+{
+"date": "2026-07-03",
+"rcept_no": "20260703600456",
+"title": "기업설명회(IR)개최결과"
+},
+{
+"date": "2026-06-18",
+"rcept_no": "20260618600543",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-03-31",
+"rcept_no": "20260331601885",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-20",
+"rcept_no": "20260320600545",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-16",
+"rcept_no": "20260316600614",
+"title": "주주총회소집결의"
+},
+{
+"date": "2025-12-23",
+"rcept_no": "20251223600610",
+"title": "증권발행결과(자율공시)"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216600959",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-12-15",
+"rcept_no": "20251215000166",
+"title": "주요사항보고서(유상증자결정)"
+},
+{
+"date": "2025-11-26",
+"rcept_no": "20251126600367",
+"title": "본점소재지변경"
+},
+{
+"date": "2025-11-13",
+"rcept_no": "20251113600968",
+"title": "기업설명회(IR)개최결과"
+}
+],
+"employees": null,
+"fetched": "2026-10-29",
+"finance": null,
+"v": 3
+},
 "01867758": {
 "company": {
 "ceo": "김기철",
@@ -88043,6 +88458,22 @@
 "finance": null,
 "v": 3
 },
+"01898369": {
+"company": {
+"ceo": "배봉건",
+"founded": "2024-03-15",
+"homepage": null,
+"industry_code": "58211",
+"market": "기타",
+"name": "주식회사 크로노스튜디오",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
+"finance": null,
+"v": 3
+},
 "01898378": {
 "company": {
 "ceo": "김수",
@@ -88120,6 +88551,38 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01908620": {
+"company": {
+"ceo": "김동근, 김동환",
+"founded": "2015-10-06",
+"homepage": null,
+"industry_code": "20423",
+"market": "기타",
+"name": "주식회사 편강한방피부과학연구소",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
+"finance": null,
+"v": 3
+},
+"01908772": {
+"company": {
+"ceo": "임영하",
+"founded": "2006-06-01",
+"homepage": "https://www.dkenc.kr",
+"industry_code": "42311",
+"market": "기타",
+"name": "대경기술주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
 "finance": null,
 "v": 3
 },
@@ -88648,6 +89111,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01950386": {
+"company": {
+"ceo": "김영우, 문은주",
+"founded": "2020-02-11",
+"homepage": "https://www.selfdiylab.com",
+"industry_code": "47912",
+"market": "기타",
+"name": "주식회사 셀디랩",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
 "finance": null,
 "v": 3
 },
@@ -89977,6 +90456,22 @@
 "finance": null,
 "v": 3
 },
+"02046699": {
+"company": {
+"ceo": "강성지",
+"founded": "2016-06-29",
+"homepage": null,
+"industry_code": "582",
+"market": "기타",
+"name": "웰트 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
+"finance": null,
+"v": 3
+},
 "02047087": {
 "company": {
 "ceo": "김영준",
@@ -90118,6 +90613,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-22",
+"finance": null,
+"v": 3
+},
+"02054829": {
+"company": {
+"ceo": "이동현",
+"founded": "2017-03-27",
+"homepage": null,
+"industry_code": "62010",
+"market": "기타",
+"name": "(주)해시스냅",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-29",
 "finance": null,
 "v": 3
 }
