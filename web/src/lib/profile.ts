@@ -141,3 +141,18 @@ export function careerTotals(p: Profile, today = new Date()): [number, number] {
 }
 
 export const yearsText = (n: number) => n.toFixed(1).replace(/\.0$/, '')
+
+/** 기간 표기: 2021.03 ~ 재직 중 (5년 8개월). 끝이 비면 nowLabel */
+export function periodText(start: string, end: string, nowLabel: string, today = new Date()): string {
+  const dot = (s: string) => s.replace('-', '.')
+  const m = months(start, end, today)
+  const span = m ? ` (${durationText(m)})` : ''
+  return start ? `${dot(start)} ~ ${end ? dot(end) : nowLabel}${span}` : ''
+}
+
+/** 개월 수를 "5년 8개월" · "8개월" · "3년"으로 */
+export function durationText(m: number): string {
+  const y = Math.floor(m / 12)
+  const r = m % 12
+  return [y > 0 && `${y}년`, r > 0 && `${r}개월`].filter(Boolean).join(' ') || '0개월'
+}
