@@ -2,6 +2,8 @@ import { useSyncExternalStore } from 'react'
 
 // 주소 뒤 #/... 로 화면을 고른다. 서버 설정 없이 새로고침·뒤로 가기가 된다.
 export type CareerSeg = 'market' | 'position' | 'plan'
+export type ListKind = 'skills' | 'jobtypes' | 'industries'
+const LIST_KINDS: ListKind[] = ['skills', 'jobtypes', 'industries']
 const CAREER_SEGS: CareerSeg[] = ['market', 'position', 'plan']
 
 export type Route =
@@ -16,6 +18,7 @@ export type Route =
   | { name: 'profile' }
   | { name: 'notify' }
   | { name: 'collection' }
+  | { name: 'list'; kind: ListKind }
 
 export function parse(hash: string): Route {
   const [, a = '', b = '', c = ''] = hash.replace(/^#/, '').split('/')
@@ -36,6 +39,8 @@ export function parse(hash: string): Route {
     case 'interest':
     case 'apply': // 예전 주소(지원 현황)
       return { name: 'interest', seg: arg === 'companies' ? 'companies' : 'jobs' }
+    case 'list':
+      return LIST_KINDS.includes(arg as ListKind) ? { name: 'list', kind: arg as ListKind } : { name: 'admin' }
     case 'admin':
     case 'profile':
     case 'notify':
@@ -58,6 +63,7 @@ export const href = {
   profile: '#/profile',
   notify: '#/notify',
   collection: '#/collection',
+  list: (kind: ListKind) => `#/list/${kind}`,
   job: (id: string) => `#/job/${encodeURIComponent(id)}`,
   company: (key: string) => `#/company/${encodeURIComponent(key)}`,
   /** 내 리서치 노트. section을 주면 그 섹션으로 */

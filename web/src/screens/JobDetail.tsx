@@ -15,7 +15,7 @@ import type { Body, Posting, Screen } from '../lib/types'
 const HEADING = /^(\p{Extended_Pictographic}\s*)?\[?(소개|포지션 소개|회사 소개|담당\s*업무|주요\s*업무|자격\s*요건|필수\s*요건|우대\s*사항|혜택\s*및\s*복지|복지\s*및\s*혜택|채용\s*절차|전형\s*절차|근무\s*조건|근무\s*환경|기타\s*사항|유의\s*사항|보상|접수\s*방법|마감\s*기한|사내\s*문화)\]?$/u
 
 
-export function JobDetail({ screen, posting, today, match, feedback, onFeedback, app, onApp, panel = false }: {
+export function JobDetail({ screen, posting, today, match, feedback, onFeedback, app, onApp, showRating = true, panel = false }: {
   screen: Screen
   posting: Posting | undefined
   today: string
@@ -24,6 +24,8 @@ export function JobDetail({ screen, posting, today, match, feedback, onFeedback,
   onFeedback: (postingId: string, f: Feedback) => void
   app?: Application
   onApp: (postingId: string, app: Application | null) => void
+  /** 개발용 내 평가 칸(관리에서 끌 수 있다) */
+  showRating?: boolean
   panel?: boolean
 }) {
   // 열린 공고에 없으면 대개 수집처에서 내려간 공고다(지우지 않고 회사 화면 지난 공고에 남는다)
@@ -36,7 +38,7 @@ export function JobDetail({ screen, posting, today, match, feedback, onFeedback,
       </div>
     )
   }
-  return <Detail screen={screen} p={posting} today={today} match={match} feedback={feedback} onFeedback={onFeedback} app={app} onApp={onApp} panel={panel} />
+  return <Detail screen={screen} p={posting} today={today} match={match} feedback={feedback} onFeedback={onFeedback} app={app} onApp={onApp} showRating={showRating} panel={panel} />
 }
 
 function TopBar() {
@@ -47,7 +49,7 @@ function TopBar() {
   )
 }
 
-function Detail({ screen, p, today, match, feedback, onFeedback, app, onApp, panel }: {
+function Detail({ screen, p, today, match, feedback, onFeedback, app, onApp, showRating, panel }: {
   screen: Screen
   p: Posting
   today: string
@@ -56,6 +58,7 @@ function Detail({ screen, p, today, match, feedback, onFeedback, app, onApp, pan
   onFeedback: (postingId: string, f: Feedback) => void
   app?: Application
   onApp: (postingId: string, app: Application | null) => void
+  showRating: boolean
   panel: boolean
 }) {
   const [body, setBody] = useState<{ id: string; body: Body | null; failed?: boolean } | null>(null)
@@ -127,7 +130,7 @@ function Detail({ screen, p, today, match, feedback, onFeedback, app, onApp, pan
           </div>
         )}
       </section>
-      {match && detail && (
+      {showRating && match && detail && (
         <MyRating postingId={p.id} posting={{ company, title: p.title }} detail={detail} feedback={feedback} onFeedback={onFeedback} />
       )}
       <div className="action-bar">

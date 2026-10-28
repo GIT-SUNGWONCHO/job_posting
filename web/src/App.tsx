@@ -5,7 +5,7 @@ import { SideNav, TabBar } from './components/Nav'
 import { passes } from './lib/filter'
 import { todayISO } from './lib/format'
 import { loadScreen } from './lib/load'
-import { useRoute } from './lib/route'
+import { href, useRoute } from './lib/route'
 import { AppsContext, loadApplications, type Application } from './lib/applications'
 import { loadFeedback, type Feedback } from './lib/feedback'
 import { loadMatches, type Match } from './lib/matches'
@@ -15,7 +15,7 @@ import { readLocal, writeLocal } from './lib/storage'
 import { supabase } from './lib/supabase'
 import type { Filters, Screen } from './lib/types'
 import { useMedia, WIDE } from './lib/useMedia'
-import { Admin, CollectionPage, NotifyPage } from './screens/Admin'
+import { Admin, CollectionPage, ListPage, NotifyPage } from './screens/Admin'
 import { Career } from './screens/Career'
 import { CompanyPage } from './screens/CompanyPage'
 import { JobDetail } from './screens/JobDetail'
@@ -27,6 +27,8 @@ import { Profile } from './screens/Profile'
 import { Report } from './screens/Report'
 
 const FILTER_KEY = 'jobpost.filters.v1'
+/** 개발용: 내 평가(○△×)를 목록과 공고 상세에 보일지(이 기기에만) */
+const RATINGS_KEY = 'jobpost.showRatings.v1'
 
 function useSession(): Session | null | undefined {
   // undefined: 확인 중, null: 로그인 안 함. Supabase가 없으면(개발) 로그인 없이 쓴다
@@ -85,6 +87,7 @@ function Main({ screen }: { screen: Screen }) {
   const [feedback, setFeedback] = useState<Map<string, Feedback>>(new Map())
   const [apps, setApps] = useState<Map<string, Application>>(new Map())
   const [stars, setStars] = useState<StarsState>(undefined)
+  const [showRatings, setShowRatings] = useState(() => readLocal<boolean>(RATINGS_KEY) !== false)
   useEffect(() => {
     let alive = true
     loadMatches().then((m) => {
@@ -102,9 +105,9 @@ function Main({ screen }: { screen: Screen }) {
   // 목록에 내 평가(○△×)를 함께 보여준다
   const matches = useMemo(() => {
     const out = new Map<string, Match>()
-    for (const [id, m] of scored) out.set(id, feedback.has(id) ? { ...m, mine: feedback.get(id)!.label } : m)
+    for (const [id, m] of scored) out.set(id, showRatings && feedback.has(id) ? { ...m, mine: feedback.get(id)!.label } : m)
     return out
-  }, [scored, feedback])
+  }, [scored, feedback, showRatings])
   const onFeedback = (id: string, f: Feedback) => setFeedback((prev) => new Map(prev).set(id, f))
   // 저장 중인 회사의 ★는 다시 눌러도 무시한다(켜기·끄기 요청이 엇갈려 화면과 저장이 어긋나지 않게)
   const starSaving = useRef(new Set<string>())
@@ -192,9 +195,9 @@ function Main({ screen }: { screen: Screen }) {
       detail = !wide
       body = wide
         ? <div className="split">{jobs('jobs', route.id)}<JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)}
-          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} app={p && apps.get(p.id)} onApp={onApp} panel /></div>
+          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} app={p && apps.get(p.id)} onApp={onApp} showRating={showRatings} panel /></div>
         : <JobDetail screen={screen} posting={p} today={today} match={p && matches.get(p.id)}
-          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} app={p && apps.get(p.id)} onApp={onApp} />
+          feedback={p && feedback.get(p.id)} onFeedback={onFeedback} app={p && apps.get(p.id)} onApp={onApp} showRating={showRatings} />
       break
     }
     case 'company':
@@ -215,7 +218,12 @@ function Main({ screen }: { screen: Screen }) {
       body = <Interest screen={screen} seg={route.seg} apps={apps} today={today} matches={matches} onApp={onApp} />
       break
     case 'admin':
-      body = <Admin />
+      body = <Admin screen={screen} showRatings={showRatings} onShowRatings={(on) => { setShowRatings(on); writeLocal(RATINGS_KEY, on) }}
+        onSample={() => { setUi({ ...ui, sample: true, sort: 'recommend', limit: PAGE }); window.location.hash = href.jobs }} />
+      break
+    case 'list':
+      detail = !wide
+      body = <ListPage key={route.kind} screen={screen} kind={route.kind} />
       break
     case 'notify':
       detail = !wide
