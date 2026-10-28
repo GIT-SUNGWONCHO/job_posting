@@ -143,7 +143,7 @@ const textWidth = (s: string) => [...s].reduce((w, ch) => w + (/[ㄱ-힝]/.test(
 
 interface Box { x: number; y: number; w: number; h: number }
 
-/** 포지션 맵: 가로 스킬 적합도(0~100%), 세로 열린 공고. 기준선 두 개로 네 칸을 나눈다 */
+/** 직무 지도(포지션 맵): 가로 스킬 적합도(0~100%), 세로 열린 공고. 기준선 두 개로 네 칸을 나눈다 */
 export function PositionMap({ list, demandLine, mine, label }: {
   list: Position[]
   demandLine: number

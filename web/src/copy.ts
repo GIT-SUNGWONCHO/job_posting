@@ -190,7 +190,7 @@ export const copy = {
     mine: '내 스킬',
     share: (n: number, pct: number) => `${n.toLocaleString()}건 · ${pct}%`,
     noData: '커리어 지표가 아직 없어요. 다음 아침 수집이 끝나면 보여요',
-    map: '포지션 맵',
+    map: '직무 지도',
     mapNote: '가로는 스킬 적합도, 세로는 지금 열린 공고. 가운데 선은 적합도 50%와 직무들의 가운데 값이에요',
     axisFit: '스킬 적합도',
     axisDemand: '열린 공고',

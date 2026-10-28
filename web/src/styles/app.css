@@ -367,7 +367,7 @@ button.bar-row:hover .bar-name, .bar-row.selected .bar-name { color: var(--accen
 .bar.on { background: var(--accent); }
 .bar-value { min-width: 4.5em; text-align: right; white-space: nowrap; font-size: var(--fs-min); color: var(--sub); }
 
-/* 포지션 맵 아래 표, 목표 방향, 할 일 */
+/* 직무 지도 아래 표, 목표 방향, 할 일 */
 .quad-group { margin-top: 16px; }
 .quad-group h3 { margin: 0 0 4px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; font-size: var(--fs-sub); font-weight: var(--fw-title); }
 .quad-group h3 .note { font-weight: var(--fw-body); }

@@ -86,7 +86,7 @@ describe('커리어 지표', () => {
     ])
   })
 
-  it('포지션 맵: 커리어 방향이 아닌 직무는 빼고 네 칸으로 나눈다', () => {
+  it('직무 지도: 커리어 방향이 아닌 직무는 빼고 네 칸으로 나눈다', () => {
     const mine = new Map([['SQL', 3], ['Spark', 3]])
     const { list, demandLine } = positions(m, jobTypes, ['대기업'], mine, new Map([['data_eng', 4]]), new Map())
     expect(list.map((p) => p.id)).toEqual(['data_eng', 'ml_eng'])
