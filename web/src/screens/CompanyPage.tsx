@@ -1,20 +1,22 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { Fragment, useEffect, useState, type ReactNode } from 'react'
 import { copy } from '../copy'
-import { YearBars } from '../components/charts'
-import { JobRow, SectionTitle } from '../components/ui'
+import { BACK_ICON, JobRow, SectionTitle, Sep, STAR_ICON } from '../components/ui'
 import { passes } from '../lib/filter'
-import { dartUrl, dateText, growth, listTitle, money, pointChange, yearMonth } from '../lib/format'
+import { dartUrl, dateText, listTitle, money, yearMonth } from '../lib/format'
 import { loadCompanies } from '../lib/load'
 import { goBack, href } from '../lib/route'
 import { isStarred, useStars } from '../lib/stars'
-import type { CompaniesFile, CompanyBasics, Competitors, DartBasics, Filters, PastPosting, Screen, ToolsFound } from '../lib/types'
+import type { CompaniesFile, CompanyBasics, Competitors, DartBasics, Filters, PastPosting, Screen } from '../lib/types'
 
 const t = copy.company
 const PAST_SHOWN = 5
 const OPEN_SHOWN = 10
 
-// 회사 화면(와이어프레임 M4의 기본정보): 회사 개요(DART 공시 사실만) + 채용(열린 공고, 지난 공고).
-// 심층분석 모듈은 아직 없다. 숫자마다 출처 줄(종류 · 문서 · 날짜 ↗)을 단다(docs/content-rules.md)
+/** 출처 시트에 담는 줄: 이름 · 무엇에 썼는지 · 원문 */
+interface SourceItem { title: string; detail: string; url?: string | null }
+
+// 회사 화면: 이름 · 기업 구분 | 그룹 | 상장 → 기본정보(DART) → 실적(매출 · 영업이익 · 이익률 3년) → 내 리서치 노트
+// → 같은 업종 회사 → 열린 공고 · 지난 공고. 출처는 섹션 제목 오른쪽 "출처"를 눌러 시트로(docs/content-rules.md)
 export function CompanyPage({ screen, companyKey, today, filters, panel = false }: {
   screen: Screen
   companyKey: string
@@ -23,13 +25,14 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
   panel?: boolean
 }) {
   const c = screen.companies[companyKey]
-  // 필터를 통과한 공고(회사 목록의 "열린 공고" 수와 같은 것)를 먼저, 나머지는 그 뒤에
+  // 필터를 통과한 공고를 먼저, 나머지는 그 뒤에
   const all = screen.postings.filter((p) => p.company === companyKey && !p.noise)
   const passed = all.filter((p) => passes(p, c, filters))
   const open = [...passed, ...all.filter((p) => !passed.includes(p))]
   const [file, setFile] = useState<CompaniesFile | null | 'failed'>(null)
   const [attempt, setAttempt] = useState(0)
   const [allOpen, setAllOpen] = useState(false)
+  const [sheet, setSheet] = useState<{ title: string; items: SourceItem[] } | null>(null)
   useEffect(() => {
     let alive = true
     loadCompanies().then((f) => alive && setFile(f), () => alive && setFile('failed'))
@@ -39,258 +42,199 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
   }, [attempt])
   const basics: CompanyBasics | undefined = file && file !== 'failed' ? file.companies[companyKey] : undefined
   const dart = basics?.dart
-  const listed = dart && 'market' in dart && dart.market ? t.market(dart.market) : null
+  const d = dart && 'fetched' in dart ? dart : undefined
+  const listed = d?.market ? t.market(d.market) : null
   const stars = useStars()
   const on = isStarred(stars.state, companyKey)
+  const name = c?.name ?? companyKey
+  const meta = [c?.type, c?.group && `${c.group} 계열`, listed].filter(Boolean) as string[]
+  const srcBtn = (title: string, items: SourceItem[]) => items.length > 0 && (
+    <button type="button" className="src-btn" onClick={() => setSheet({ title, items })}>{copy.common.source}</button>
+  )
 
   return (
     <div className={panel ? 'page detail panel' : 'page detail'}>
-      {!panel && (
-        <div className="topbar">
-          <button type="button" className="icon-btn" aria-label={copy.job.back} onClick={() => goBack(href.companies)}>‹</button>
-        </div>
-      )}
-      <header className="page-head company-head">
-        <span className="logo" aria-hidden="true">{(c?.name ?? companyKey).slice(0, 1)}</span>
-        <div>
-          <h1>{c?.name ?? companyKey}</h1>
-          <div className="page-sub">{[c?.group && `${c.group} 계열`, c?.type, listed].filter(Boolean).join(' · ')}</div>
-          {stars.state === 'missing' && <p className="note small">{t.starsMissing}</p>}
-        </div>
+      <div className="topbar">
+        {!panel && <button type="button" className="icon-btn" aria-label={copy.common.back} onClick={() => goBack(href.companies)}>{BACK_ICON}</button>}
         {stars.state !== undefined && stars.state !== 'failed' && (
-          <button type="button" className={on ? 'star-btn on' : 'star-btn'} aria-pressed={on}
+          <button type="button" className={on ? 'star-btn on top' : 'star-btn top'} aria-pressed={on}
             aria-label={stars.state === 'missing' ? t.starsMissing : on ? t.unstar : t.star}
             title={stars.state === 'missing' ? t.starsMissing : undefined}
-            disabled={stars.state === 'missing'} onClick={() => stars.toggle(companyKey)}>{on ? '★' : '☆'}</button>
+            disabled={stars.state === 'missing'} onClick={() => stars.toggle(companyKey)}>{STAR_ICON}</button>
         )}
+      </div>
+      <header className="detail-head company-intro">
+        <h1>{name}</h1>
+        {meta.length > 0 && <div className="intro-meta">{meta.map((m, i) => <Fragment key={m}>{i > 0 && <Sep />}<span>{m}</span></Fragment>)}</div>}
+        {stars.state === 'missing' && <p className="note">{t.starsMissing}</p>}
       </header>
 
-      <section className="section">
-        <SectionTitle right={dart && 'fetched' in dart ? <span className="count">{t.updated(dateText(dart.fetched))}</span> : undefined}>
-          {t.overview}
-        </SectionTitle>
-        {file === null && <p className="note">{t.loading}</p>}
-        {file === 'failed' && (
+      {file === null && <section className="section"><p className="note">{t.loading}</p></section>}
+      {file === 'failed' && (
+        <section className="section">
           <div className="load-failed">
             <p className="note">{t.loadFailed}</p>
             <button type="button" className="text-link" onClick={() => { setFile(null); setAttempt((a) => a + 1) }}>{copy.load.retry}</button>
           </div>
-        )}
-        {file && file !== 'failed' && <Overview basics={basics} isPublic={c?.type === '공기업·공공기관'} />}
-      </section>
-
-      <section className="section">
-        <SectionTitle right={<span className="count">{t.daily}</span>}>{t.hiring}</SectionTitle>
-        <div className="sub-head">
-          <span>{open.length > 0 ? copy.jobs.openCount(open.length) : copy.jobs.noOpen}</span>
-          {passed.length < open.length && <span className="count">{t.openPassed(passed.length)}</span>}
-        </div>
-        <div className="rows">
-          {(allOpen ? open : open.slice(0, OPEN_SHOWN)).map((p) => <JobRow key={p.id} p={p} c={c} today={today} showCompany={false} />)}
-        </div>
-        {!allOpen && open.length > OPEN_SHOWN && (
-          <button type="button" className="text-link" onClick={() => setAllOpen(true)}>{copy.jobs.more(open.length - OPEN_SHOWN)}</button>
-        )}
-        {file && file !== 'failed' && <Past past={basics?.past ?? []} byJob={basics?.pastByJob ?? {}} since={file.since}
-          jobs={filters.job_types ?? []} />}
-      </section>
-
-      {file && file !== 'failed' && (
-        <section className="section deep">
-          <h2 className="group-title">{t.deep}</h2>
-          <CompetitorsView data={basics?.research?.competitors} hasDart={!!dart && 'corpCode' in dart} />
-          <ToolsView data={basics?.research?.tools} since={file.since} />
         </section>
       )}
+      {file && file !== 'failed' && (
+        <>
+          <section className="section">
+            <SectionTitle right={d && srcBtn(t.basicsSource, basicsSources(d))}>{t.basics}</SectionTitle>
+            {d ? <Basics d={d} /> : <NotFound basics={basics} isPublic={c?.type === '공기업·공공기관'} />}
+          </section>
+          {d?.finance && d.finance.years.length > 0 && (
+            <section className="section">
+              <SectionTitle right={srcBtn(t.financeSource, [{
+                title: t.sourceFinance(d.finance.year, d.finance.basis), detail: t.financeUse(d.finance.revenueName === '영업수익'),
+                url: d.finance.rceptNo && dartUrl(d.finance.rceptNo),
+              }])}>{t.finance}</SectionTitle>
+              <FinanceTable fin={d.finance} />
+            </section>
+          )}
+          <section className="section">
+            <SectionTitle info={t.noteHelp}>{t.note}</SectionTitle>
+            <div className="note-empty">
+              <span>{t.noteHelp}</span>
+              <span className="muted">{t.noteNow}</span>
+            </div>
+          </section>
+          <Peers data={basics?.research?.competitors} onSource={(items) => setSheet({ title: t.peersSource, items })} />
+        </>
+      )}
+
+      <section className="section open-sec">
+        <SectionTitle count={open.length}>{t.open}</SectionTitle>
+        {open.length === 0 ? <p className="note">{copy.jobs.noOpen}</p> : (
+          <div className="rows">
+            {(allOpen ? open : open.slice(0, OPEN_SHOWN)).map((p) => <JobRow key={p.id} p={p} c={c} today={today} showCompany={false} />)}
+          </div>
+        )}
+        {!allOpen && open.length > OPEN_SHOWN && (
+          <button type="button" className="btn block more" onClick={() => setAllOpen(true)}>{copy.jobs.more(open.length - OPEN_SHOWN)}</button>
+        )}
+      </section>
+      {file && file !== 'failed' && <Past past={basics?.past ?? []} byJob={basics?.pastByJob ?? {}} since={file.since} jobs={filters.job_types ?? []} />}
+
+      {sheet && <SourceSheet title={sheet.title} items={sheet.items} onClose={() => setSheet(null)} />}
     </div>
   )
 }
 
-function Source({ text, date, rceptNo }: { text: string; date?: string | null; rceptNo?: string | null }) {
-  const label = [text, date].filter(Boolean).join(' · ')
-  return rceptNo
-    ? <a className="source" href={dartUrl(rceptNo)} target="_blank" rel="noreferrer noopener">{label} ↗</a>
-    : <span className="source">{label}</span>
+function basicsSources(d: DartBasics): SourceItem[] {
+  const out: SourceItem[] = [{ title: t.sourceCompany, detail: t.companyUse }]
+  if (d.employees) {
+    out.push({
+      title: t.sourceEmployees, detail: [t.employeesUse, yearMonth(d.employees.rceptNo) && t.received(yearMonth(d.employees.rceptNo)!)].filter(Boolean).join(' · '),
+      url: d.employees.rceptNo && dartUrl(d.employees.rceptNo),
+    })
+  }
+  return out
 }
 
-function Overview({ basics, isPublic }: { basics: CompanyBasics | undefined; isPublic: boolean }) {
+/** DART와 잇지 못했거나 아직 받지 않은 회사 */
+function NotFound({ basics, isPublic }: { basics: CompanyBasics | undefined; isPublic: boolean }) {
   const dart = basics?.dart
   if (!dart) return <p className="note">{t.notChecked}</p>
+  if ('pending' in dart) return <p className="note">{t.pending(dart.corpName)}</p>
   if ('none' in dart) {
     // 공공기관은 대부분 DART가 아니라 알리오(공공기관 경영정보 공개)에 공시한다
     const topic = dart.none === 'ambiguous' || dart.none === 'mixed' ? t.ambiguous : isPublic ? t.noDartPublic : t.noDart
     return <p className="not-found">{t.notFound(topic)}</p>
   }
-  if ('pending' in dart) return <p className="note">{t.pending(dart.corpName)}</p>
-  return <DartOverview d={dart} />
+  return null
 }
 
-function DartOverview({ d }: { d: DartBasics }) {
-  const fin = d.finance
-  const years = fin?.years ?? []
-  const cur = years[years.length - 1]
-  const prev = years[years.length - 2]
-  const hasRevenue = cur?.revenue !== null && cur?.revenue !== undefined
-  const chartField = hasRevenue ? 'revenue' : 'operating'
-  // 영업수익으로 적는 회사는 그 이름 그대로(매출로 바꿔 부르지 않는다)
-  const revenueLabel = fin?.revenueName === '영업수익' ? t.operatingRevenue : t.revenue
-  const margin = (y: typeof cur | undefined) =>
-    y && y.revenue && y.operating !== null && y.operating !== undefined ? (y.operating / y.revenue) * 100 : null
-  // 전년 중간에 세운 회사(분할 신설 등)는 전년이 몇 달치라 전년 대비를 보여주지 않는다
-  const partialPrev = !!(prev && d.founded && d.founded > `${prev.year}-01-01`)
-  const vs = (delta: string | null) => (partialPrev ? null : delta)
+/** 기본정보: 법인명 · 대표 · 설립 · 임직원 · 평균 근속 · 1인 평균 급여 · 홈페이지 */
+function Basics({ d }: { d: DartBasics }) {
   const emp = d.employees
-  const info: [string, ReactNode][] = []
+  const rows: [string, ReactNode][] = []
   const legal = d.legalName || d.corpName
-  if (legal) info.push([t.legalName, legal])
-  if (d.ceo) info.push([t.ceo, d.ceo])
-  if (d.founded) info.push([t.founded, dateText(d.founded, true)])
+  if (legal) rows.push([t.legalName, legal])
+  if (d.ceo || d.founded) rows.push([t.ceoFounded, [d.ceo, d.founded && dateText(d.founded, true).slice(0, 7)].filter(Boolean).join(' · ')])
+  if (emp) {
+    rows.push([t.employees, t.people(emp.count)])
+    if (emp.tenure !== null) rows.push([t.tenure, t.years(emp.tenure.toFixed(1))])
+    if (emp.salary !== null) rows.push([t.salary, money(emp.salary)])
+  }
   if (d.homepage) {
-    info.push([t.homepage, <a key="hp" className="plain-link" href={d.homepage} target="_blank" rel="noreferrer noopener">
+    rows.push([t.homepage, <a key="hp" className="ext" href={d.homepage} target="_blank" rel="noreferrer noopener">
       {d.homepage.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗</a>])
   }
-
   return (
-    <div className="overview">
-      {fin && cur && (
-        <>
-          {/* 금융사처럼 매출액 줄이 없으면 영업이익·순이익만(다른 계정으로 바꿔 넣지 않는다) */}
-          {hasRevenue ? (
-            <div className="tiles three">
-              <Tile label={t.yearOf(revenueLabel, cur.year)} value={cur.revenue} delta={vs(growth(cur.revenue, prev?.revenue))} fmt={money} />
-              <Tile label={t.operating} value={cur.operating} delta={vs(growth(cur.operating, prev?.operating))} fmt={money} />
-              <Tile label={t.margin} value={margin(cur)} delta={vs(pointChange(margin(cur), margin(prev)))} fmt={(v) => `${v.toFixed(1)}%`} />
-            </div>
-          ) : (
-            <div className="tiles">
-              <Tile label={<>{t.yearOf(t.operating, cur.year)} <span className="help" title={t.noRevenue} aria-label={t.noRevenue}>?</span></>}
-                value={cur.operating} delta={vs(growth(cur.operating, prev?.operating))} fmt={money} />
-              <Tile label={t.net} value={cur.net} delta={vs(growth(cur.net, prev?.net))} fmt={money} />
-            </div>
-          )}
-          {years.filter((y) => y[chartField] !== null && y[chartField] !== undefined).length > 1 && (
-            <>
-              <h3 className="chart-title">{t.byYear(hasRevenue ? revenueLabel : t.operating)}</h3>
-              <YearBars data={years.map((y) => ({ year: y.year, value: y[chartField] }))}
-                label={t.byYear(hasRevenue ? revenueLabel : t.operating)} format={money} />
-            </>
-          )}
-          <Source text={t.sourceFinance(fin.year, fin.basis)} date={yearMonth(fin.rceptNo)} rceptNo={fin.rceptNo} />
-        </>
-      )}
-      {/* 직원 현황(사업보고서)과 기업개황은 출처가 달라 따로 묶는다 */}
-      {emp && (
-        <>
-          <dl className="kv">
-            <div><dt>{t.employees}</dt><dd>{t.people(emp.count)}</dd></div>
-            {(emp.tenure !== null || emp.salary !== null) && (
-              <div><dt>{t.tenureSalary}</dt><dd>{t.tenureSalaryValue(emp.tenure !== null ? emp.tenure.toFixed(1) : null,
-                emp.salary !== null ? money(emp.salary) : null)}</dd></div>
-            )}
-          </dl>
-          <Source text={t.sourceEmployees} date={yearMonth(emp.rceptNo)} rceptNo={emp.rceptNo} />
-        </>
-      )}
-      {info.length > 0 && (
-        <>
-          <dl className="kv">{info.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
-          <Source text={t.sourceCompany} />
-        </>
-      )}
+    <>
+      <div className="kv2 wide">{rows.map(([k, v]) => <Fragment key={k}><span className="k">{k}</span><span className="v">{v}</span></Fragment>)}</div>
+      {!emp && <p className="not-found">{t.notFound(t.noEmployees)}</p>}
+    </>
+  )
+}
 
-      <h3 className="sub-head">{t.disclosures}</h3>
-      {d.disclosures.length === 0 ? <p className="note">{t.noDisclosures}</p> : (
-        <div className="disclosures">
-          {d.disclosures.map((x) => (
-            <a key={x.rceptNo ?? x.title} className="disclosure" href={x.rceptNo ? dartUrl(x.rceptNo) : undefined}
-              target="_blank" rel="noreferrer noopener">
-              <span className="disclosure-date">{yearMonth(x.date)}</span>
-              <span>{x.title}</span>
-            </a>
-          ))}
-          <Source text={t.sourceDisclosures} />
+/** 실적: 연도별 매출 막대(올해만 파랑)와 같은 열에 영업이익 · 이익률. 매출 줄이 없는 회사(은행 등)는 영업이익만 */
+function FinanceTable({ fin }: { fin: NonNullable<DartBasics['finance']> }) {
+  const years = fin.years.slice(-3)
+  const hasRevenue = years.some((y) => y.revenue !== null && y.revenue !== undefined)
+  const max = Math.max(...years.map((y) => Math.abs((hasRevenue ? y.revenue : y.operating) ?? 0)), 1)
+  const last = years.length - 1
+  const revenueLabel = fin.revenueName === '영업수익' ? t.operatingRevenue : t.revenue
+  const margin = (y: (typeof years)[number]) =>
+    y.revenue && y.operating !== null && y.operating !== undefined ? `${((y.operating / y.revenue) * 100).toFixed(1)}%` : '-'
+  const cols = { gridTemplateColumns: `64px repeat(${years.length}, minmax(0, 1fr))` }
+  const barValue = (y: (typeof years)[number]) => (hasRevenue ? y.revenue : y.operating)
+  return (
+    <div className="fin" role="table" aria-label={t.finance}>
+      <div className="fin-bars" style={cols}>
+        <span className="fin-k">{hasRevenue ? revenueLabel : t.operating}</span>
+        {years.map((y, i) => {
+          const v = barValue(y)
+          return (
+            <span key={y.year} className={i === last ? 'fin-bar on' : 'fin-bar'}>
+              <b>{v === null || v === undefined ? '-' : money(v)}</b>
+              <i style={{ height: `${Math.max(((Math.abs(v ?? 0)) / max) * 100, 2)}px` }} />
+            </span>
+          )
+        })}
+      </div>
+      <div className="fin-years" style={cols}><span />{years.map((y, i) => <span key={y.year} className={i === last ? 'on' : ''}>{y.year}</span>)}</div>
+      {hasRevenue && (
+        <div className="fin-rows" style={cols}>
+          <span className="fin-k">{t.operating}</span>
+          {years.map((y) => <span key={y.year}>{y.operating === null || y.operating === undefined ? '-' : money(y.operating)}</span>)}
+          <span className="fin-k sub">{t.marginShort}</span>
+          {years.map((y) => <span key={y.year} className="sub">{margin(y)}</span>)}
         </div>
       )}
-      {!fin && <p className="not-found">{t.notFound(t.noFinance)}</p>}
     </div>
   )
 }
 
-function Tile({ label, value, delta, fmt }: {
-  label: ReactNode
-  value: number | null | undefined
-  delta: string | null
-  fmt: (v: number) => string
-}) {
-  return (
-    <div className="tile">
-      <span className="tile-label">{label}</span>
-      <b className="tile-value">{value === null || value === undefined ? '-' : fmt(value)}</b>
-      {delta && <span className="tile-delta">{t.vsLastYear} {delta}</span>}
-    </div>
-  )
-}
-
-/** 경쟁사: 이 회사(굵게)와 같은 업종에서 매출이 큰 곳. 화면에 있는 회사는 회사 화면으로 */
-function CompetitorsView({ data, hasDart }: { data: Competitors | undefined; hasDart: boolean }) {
-  const h = t.competitorsHead
+/** 같은 업종 회사: 이 회사(굵게, "이 회사")와 같은 DART 업종에서 매출이 큰 곳. 화면에 있는 회사는 회사 화면으로 */
+function Peers({ data, onSource }: { data: Competitors | undefined; onSource: (items: SourceItem[]) => void }) {
   const others = data?.rows.filter((r) => !r.self) ?? []
+  if (!data || others.length === 0) return null
+  const h = t.competitorsHead
+  const items: SourceItem[] = [{ title: t.peersRule, detail: t.sourceCompetitors(data.industry) },
+    ...data.rows.filter((r) => r.rceptNo).map((r) => ({
+      title: r.name, detail: [r.year, r.basis, r.revenueName === '영업수익' && t.operatingRevenue].filter(Boolean).join(' · '),
+      url: dartUrl(r.rceptNo!),
+    }))]
   return (
-    <div className="module">
-      <h3 className="sub-head">{t.competitors}</h3>
-      {!data || others.length === 0 ? (
-        <p className="not-found">{t.notFound(data || hasDart ? t.noCompetitors : t.noIndustry)}</p>
-      ) : (
-        <>
-          <table className="peer-table">
-            <thead><tr><th>{h.name}</th><th>{h.revenue}</th><th>{h.margin}</th></tr></thead>
-            <tbody>
-              {data.rows.map((r) => (
-                <tr key={r.name + (r.self ? '*' : '')} className={r.self ? 'self' : undefined}>
-                  <td>{r.key && !r.self ? <a className="plain-link" href={href.company(r.key)}>{r.name}</a> : r.name}</td>
-                  <td>
-                    {r.revenue === null ? '-' : r.rceptNo
-                      ? <a className="plain-link" href={dartUrl(r.rceptNo)} target="_blank" rel="noreferrer noopener">{money(r.revenue)}</a>
-                      : money(r.revenue)}
-                    {r.revenue !== null && (
-                      <span className="peer-sub">{[r.year, r.basis, r.revenueName === '영업수익' && t.operatingRevenue].filter(Boolean).join(' · ')}</span>
-                    )}
-                  </td>
-                  <td>{r.margin === null ? '-' : `${r.margin.toFixed(1)}%`}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Source text={t.sourceCompetitors(data.industry)} />
-        </>
-      )}
-    </div>
-  )
-}
-
-/** 직무 환경·도구: 칸(클라우드, 데이터 플랫폼, BI, AI 도구)마다 공고에 많이 나온 도구와 공고 수 */
-function ToolsView({ data, since }: { data: ToolsFound | undefined; since: string }) {
-  const any = data?.slots.some((s) => s.items.length > 0)
-  return (
-    <div className="module">
-      <h3 className="sub-head">{t.tools}</h3>
-      {!data || !any ? <p className="not-found">{t.notFound(t.noTools)}</p> : (
-        <>
-          <dl className="kv">
-            {data.slots.map((slot) => (
-              <div key={slot.name}>
-                <dt>{slot.name}</dt>
-                <dd className="tool-list">
-                  {slot.items.length === 0 ? <span className="muted">{t.toolsEmpty}</span>
-                    : slot.items.map((i) => <span key={i.skill} className="tool-chip">{i.skill} <b>{i.count}</b></span>)}
-                </dd>
-              </div>
-            ))}
-          </dl>
-          <Source text={t.sourceTools(data.postings, dateText(since, true))} />
-        </>
-      )}
-    </div>
+    <section className="section">
+      <SectionTitle right={<button type="button" className="src-btn" onClick={() => onSource(items)}>{copy.common.source}</button>}>{t.peers}</SectionTitle>
+      <div className="peers" role="table">
+        <span /><span className="th">{h.revenue}</span><span className="th">{h.margin}</span>
+        {data.rows.map((r) => (
+          <Fragment key={r.name + (r.self ? '*' : '')}>
+            <span className={r.self ? 'name self' : 'name'}>
+              {r.key && !r.self ? <a href={href.company(r.key)}>{r.name}</a> : r.name}
+              {r.self && <span className="badge">{t.self}</span>}
+            </span>
+            <span>{r.revenue === null ? '-' : money(r.revenue)}</span>
+            <span>{r.margin === null ? '-' : `${r.margin.toFixed(1)}%`}</span>
+          </Fragment>
+        ))}
+      </div>
+    </section>
   )
 }
 
@@ -305,21 +249,14 @@ function Past({ past, byJob, since, jobs }: { past: PastPosting[]; byJob: Record
   const list = all ? past : mine
   const shown = more ? list : list.slice(0, PAST_SHOWN)
   return (
-    <div className="past">
-      <div className="sub-head">
-        <span>{t.pastTitle}</span>
-        {total > 0 && (
-          <span className="count">
-            {jobs.length && !all ? t.pastMine(mineTotal, total) : past.length < total ? t.pastRecent(past.length, total) : t.pastAll(total)}
-          </span>
-        )}
-      </div>
+    <section className="section past-sec">
+      <SectionTitle count={jobs.length && !all ? mineTotal : total} info={t.pastNote(dateText(since, true))}>{t.pastTitle}</SectionTitle>
       {list.length === 0 ? <p className="note">{total === 0 ? t.noPast : t.noPastMine}</p> : (
         <div className="past-rows">
           {shown.map((p) => (
             <div key={p.id} className="past-row">
-              <span className="past-date">{t.closedOn(dateText(p.closedOn))}</span>
-              <span>{listTitle(p)}</span>
+              <span className="past-title">{listTitle(p)}</span>
+              <span className="badge muted">{t.closedOn(dateText(p.closedOn))}</span>
             </div>
           ))}
         </div>
@@ -332,7 +269,29 @@ function Past({ past, byJob, since, jobs }: { past: PastPosting[]; byJob: Record
           <button type="button" className="text-link" onClick={() => setAll(true)}>{t.showAllPast}</button>
         )}
       </div>
-      <p className="note small">{t.pastNote(dateText(since, true))}</p>
+    </section>
+  )
+}
+
+/** 출처 시트: 아래에서 올라오고, 줄마다 원문으로(↗) */
+function SourceSheet({ title, items, onClose }: { title: string; items: SourceItem[]; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+  return (
+    <div className="sheet-backdrop" onClick={onClose}>
+      <div className="sheet source-sheet" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
+        <div className="grip" aria-hidden="true" />
+        <h2>{title}</h2>
+        {items.map((it) => {
+          const inner = <><span className="src-main"><b>{it.title}</b><span>{it.detail}</span></span>{it.url && <span className="muted">↗</span>}</>
+          return it.url
+            ? <a key={it.title} className="src-row" href={it.url} target="_blank" rel="noreferrer noopener">{inner}</a>
+            : <div key={it.title} className="src-row">{inner}</div>
+        })}
+      </div>
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
 import { copy } from '../copy'
 import { FilterSheet, type FilterSection } from '../components/FilterSheet'
-import { Chip, Empty, JobRow } from '../components/ui'
+import { Chip, DOWN_ICON, Empty, JobRow, SEARCH_ICON, Sep, SLIDERS_ICON, STAR_ICON } from '../components/ui'
 import { matchesQuery } from '../lib/filter'
-import { listTitle } from '../lib/format'
+import { addDays } from '../lib/format'
 import { href } from '../lib/route'
 import type { Match } from '../lib/matches'
 import { isStarred, useStars } from '../lib/stars'
@@ -11,8 +11,11 @@ import type { Filters, Posting, Screen } from '../lib/types'
 
 export const PAGE = 50
 export type Sort = 'recommend' | 'latest' | 'deadline'
-/** sample: 기준 샘플(평가할 공고)만 본다. 개인 필터와 상관없이. starred: 회사 목록에서 관심 회사(★)만 */
-export interface JobsUi { query: string; sort: Sort; limit: number; sample: boolean; starred: boolean }
+/** sample: 기준 샘플(평가할 공고)만 본다. 개인 필터와 상관없이. starred: 회사 목록에서 관심 회사(★)만. withOpen: 회사 목록에서 열린 공고가 있는 회사만 */
+export interface JobsUi { query: string; sort: Sort; limit: number; sample: boolean; starred: boolean; withOpen: boolean }
+
+/** 회사 목록의 이번 주 새 공고: 오늘을 포함한 최근 며칠 */
+const WEEK = 7
 
 function jobChip(f: Filters): string {
   const n = (f.job_types ?? []).length
@@ -77,7 +80,13 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
     const passedBy = new Map<string, Posting[]>()
     for (const p of shown) passedBy.set(p.company, [...(passedBy.get(p.company) ?? []), p])
     const open = new Map<string, number>()
-    for (const p of screen.postings) if (!p.noise) open.set(p.company, (open.get(p.company) ?? 0) + 1)
+    const fresh = new Map<string, number>()
+    const weekStart = addDays(screen.date, -(WEEK - 1))
+    for (const p of screen.postings) {
+      if (p.noise) continue
+      open.set(p.company, (open.get(p.company) ?? 0) + 1)
+      if (p.firstSeen >= weekStart) fresh.set(p.company, (fresh.get(p.company) ?? 0) + 1)
+    }
     const types = filters.company_types ?? []
     const q = ui.query.trim().toLowerCase()
     const nameHit = (name: string) => !q || name.toLowerCase().includes(q)
@@ -89,79 +98,96 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
           && (types.length === 0 || types.includes(co.type))
           && !(filters.exclude_companies ?? []).some((x) => x && co.name.includes(x))
           && nameHit(co.name)))
-      .map(([key, co]) => ({ key, co, passed: passedBy.get(key) ?? [], open: open.get(key) ?? 0 }))
-      .sort((a, b) => b.passed.length - a.passed.length || b.open - a.open || a.co.name.localeCompare(b.co.name, 'ko'))
-  }, [seg, shown, screen.postings, c, filters, ui.query, ui.sample, ui.starred, stars])
+      .map(([key, co]) => ({ key, co, passed: passedBy.get(key) ?? [], open: open.get(key) ?? 0, fresh: fresh.get(key) ?? 0 }))
+      .filter((r) => !ui.withOpen || r.open > 0)
+      .sort((a, b) => b.open - a.open || b.passed.length - a.passed.length || a.co.name.localeCompare(b.co.name, 'ko'))
+  }, [seg, shown, screen.postings, screen.date, c, filters, ui.query, ui.sample, ui.starred, ui.withOpen, stars])
 
   const total = seg === 'jobs' ? shown.length : companies.length
   const rest = Math.max(total - ui.limit, 0)
   // 칩의 수는 화면에 있는 회사 중 ★한 곳(목록에서 빠진 회사의 ★는 세지 않는다)
   const starredCount = stars instanceof Set ? [...stars].filter((key) => key in c).length : 0
 
+  const { toggle } = useStars()
   return (
     <div className="page">
-      <header className="page-head">
-        <h1>{copy.jobs.title}</h1>
-        <div className="seg" role="tablist">
-          <a role="tab" aria-selected={seg === 'jobs'} className={seg === 'jobs' ? 'on' : ''} href={href.jobs}>{copy.jobs.segJobs}</a>
-          <a role="tab" aria-selected={seg === 'companies'} className={seg === 'companies' ? 'on' : ''} href={href.companies}>{copy.jobs.segCompanies}</a>
+      <header className="list-top">
+        <div className="title-tabs" role="tablist">
+          {seg === 'jobs'
+            ? <><h1 role="tab" aria-selected="true">{copy.jobs.segJobs}</h1><a role="tab" aria-selected="false" href={href.companies}>{copy.jobs.segCompanies}</a></>
+            : <><a role="tab" aria-selected="false" href={href.jobs}>{copy.jobs.segJobs}</a><h1 role="tab" aria-selected="true">{copy.jobs.segCompanies}</h1></>}
         </div>
-        <input className="search" type="search" placeholder={copy.jobs.searchPlaceholder} aria-label="검색" value={ui.query}
-          onChange={(e) => setUi({ ...ui, query: e.target.value, limit: PAGE })} />
-        <div className="chips scroll">
-          {sample.length > 0 && (
-            <Chip selected={ui.sample} onClick={() => setUi({ ...ui, sample: !ui.sample, sort: 'recommend', limit: PAGE })}>
-              {copy.jobs.sampleChip(rated, sample.length)}
-            </Chip>
-          )}
-          {seg === 'companies' && stars instanceof Set && (
-            <Chip selected={ui.starred} onClick={() => setUi({ ...ui, starred: !ui.starred, limit: PAGE })}>{copy.jobs.starredChip(starredCount)}</Chip>
-          )}
-          {!ui.sample && (
-            <>
-              <Chip selected={(filters.job_types ?? []).length > 0} onClick={() => setSheet('jobs')}>{jobChip(filters)} ▾</Chip>
-              <Chip selected={(filters.company_types ?? []).length > 0} onClick={() => setSheet('types')}>{typeChip(filters)} ▾</Chip>
-              <Chip selected={filters.career?.min != null || filters.career?.max != null} onClick={() => setSheet('career')}>{careerChip(filters)} ▾</Chip>
-              <Chip selected={(filters.regions ?? []).length > 0} onClick={() => setSheet('regions')}>{regionChip(filters)} ▾</Chip>
-            </>
-          )}
-        </div>
-        {ui.sample && <p className="note">{copy.jobs.sampleNote}</p>}
-        <div className="list-head">
-          <span>{seg === 'jobs' ? copy.jobs.count(shown.length) : copy.jobs.companyCount(companies.length)}</span>
-          {seg === 'jobs' && (
-            <select aria-label="정렬" value={ui.sort} onChange={(e) => setUi({ ...ui, sort: e.target.value as Sort, limit: PAGE })}>
+        <label className="search-box">
+          {SEARCH_ICON}
+          <input type="search" placeholder={seg === 'jobs' ? copy.jobs.searchPlaceholder : copy.jobs.searchCompany} aria-label={copy.jobs.search} value={ui.query}
+            onChange={(e) => setUi({ ...ui, query: e.target.value, limit: PAGE })} />
+        </label>
+      </header>
+      <div className="chips scroll filter-row">
+        {!ui.sample && (
+          <button type="button" className="chip icon" aria-label={copy.filter.all} onClick={() => setSheet('jobs')}>{SLIDERS_ICON}</button>
+        )}
+        {sample.length > 0 && (
+          <Chip selected={ui.sample} onClick={() => setUi({ ...ui, sample: !ui.sample, sort: 'recommend', limit: PAGE })}>
+            {copy.jobs.sampleChip(rated, sample.length)}
+          </Chip>
+        )}
+        {seg === 'companies' && stars instanceof Set && (
+          <Chip selected={ui.starred} onClick={() => setUi({ ...ui, starred: !ui.starred, limit: PAGE })}>{copy.jobs.starredChip(starredCount)}</Chip>
+        )}
+        {!ui.sample && (
+          <>
+            <Chip selected={(filters.job_types ?? []).length > 0} onClick={() => setSheet('jobs')}>{jobChip(filters)}{DOWN_ICON}</Chip>
+            <Chip selected={(filters.company_types ?? []).length > 0} onClick={() => setSheet('types')}>{typeChip(filters)}{DOWN_ICON}</Chip>
+            {seg === 'jobs' && <Chip selected={filters.career?.min != null || filters.career?.max != null} onClick={() => setSheet('career')}>{careerChip(filters)}{DOWN_ICON}</Chip>}
+            {seg === 'jobs' && <Chip selected={(filters.regions ?? []).length > 0} onClick={() => setSheet('regions')}>{regionChip(filters)}{DOWN_ICON}</Chip>}
+            {seg === 'companies' && <Chip selected={ui.withOpen} onClick={() => setUi({ ...ui, withOpen: !ui.withOpen, limit: PAGE })}>{copy.jobs.withOpenChip}</Chip>}
+          </>
+        )}
+      </div>
+      {ui.sample && <p className="note list-note">{copy.jobs.sampleNote}</p>}
+      <div className="list-head">
+        <span>{copy.jobs.total(total)}</span>
+        {seg === 'jobs' ? (
+          <label className="sort">
+            <select aria-label={copy.jobs.sortLabel} value={ui.sort} onChange={(e) => setUi({ ...ui, sort: e.target.value as Sort, limit: PAGE })}>
               {matches.size > 0 && <option value="recommend">{copy.jobs.sort.recommend}</option>}
               <option value="latest">{copy.jobs.sort.latest}</option>
               <option value="deadline">{copy.jobs.sort.deadline}</option>
             </select>
-          )}
-        </div>
-      </header>
+            {DOWN_ICON}
+          </label>
+        ) : <span className="sort">{copy.jobs.companySort}</span>}
+      </div>
 
       <div className="rows list">
         {total === 0 && <Empty>{seg === 'jobs' ? copy.jobs.empty : copy.jobs.emptyCompanies}</Empty>}
         {seg === 'jobs' && shown.slice(0, ui.limit).map((p) => (
           <JobRow key={p.id} p={p} c={c[p.company]} today={today} active={p.id === activeId} match={matches.get(p.id)} />
         ))}
-        {seg === 'companies' && companies.slice(0, ui.limit).map(({ key, co, passed: list, open }) => (
-          <a key={key} className="row" href={href.company(key)}>
-            <span className="row-main">
-              <span className="row-title">{isStarred(stars, key) && <span className="star-mark" aria-label={copy.company.starred}>★ </span>}{co.name}</span>
-              <span className="row-company">{[co.group && `${co.group} 계열`, co.type].filter(Boolean).join(' · ')}</span>
+        {seg === 'companies' && companies.slice(0, ui.limit).map(({ key, co, open, fresh }) => (
+          <div key={key} className="row company-row">
+            <a className="row-main" href={href.company(key)}>
+              <span className="row-title">{co.name}</span>
+              <span className="row-company"><span>{[co.type, co.group && `${co.group} 계열`].filter(Boolean).join(' · ')}</span></span>
               <span className="row-meta">
-                <span>{[open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen, list.length > 0 && (ui.sample ? copy.jobs.sampleCount(list.length) : copy.jobs.passedCount(list.length))]
-                  .filter(Boolean).join(' · ')}</span>
-                {list.length > 0 && <span className="row-top">{listTitle(list[0])}</span>}
+                <span>{open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen}</span>
+                {fresh > 0 && <><Sep /><span className="fresh">{copy.jobs.freshCount(fresh)}</span></>}
               </span>
-            </span>
-          </a>
+            </a>
+            {stars instanceof Set && (
+              <button type="button" className={isStarred(stars, key) ? 'star-btn on' : 'star-btn'} aria-pressed={isStarred(stars, key)}
+                aria-label={copy.company.starLabel(co.name)} onClick={() => toggle(key)}>{STAR_ICON}</button>
+            )}
+          </div>
         ))}
       </div>
       {rest > 0 && (
-        <button type="button" className="more-btn" onClick={() => setUi({ ...ui, limit: ui.limit + PAGE })}>
-          {copy.jobs.more(Math.min(rest, PAGE))}
-        </button>
+        <div className="list-more">
+          <button type="button" className="btn block more" onClick={() => setUi({ ...ui, limit: ui.limit + PAGE })}>
+            {copy.jobs.more(Math.min(rest, PAGE))}
+          </button>
+        </div>
       )}
 
       {sheet && (

@@ -99,6 +99,8 @@ export interface Screen {
   collection?: Collection | null
   /** 아침 알림 기본값과 고를 수 있는 값(config/notify.yaml, v6부터) */
   notify?: NotifyDefaults
+  /** 판정마다 배점에 곱하는 비율(config/match_guide.yaml fit, v8부터). 판단 근거의 받은 점수 */
+  matchFit?: Record<string, number>
   companies: Record<string, Company>
   postings: Posting[]
 }

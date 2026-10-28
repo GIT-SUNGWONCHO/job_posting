@@ -62,6 +62,14 @@ export function JobRow({ p, c, today, showCompany = true, active = false, match,
 
 const INFO_ICON = <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 7.6v.1" /></svg>
 
+// 선 아이콘(색은 글자색, 굵기는 app.css .ico)
+export const SEARCH_ICON = <svg className="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4.2-4.2" /></svg>
+export const SLIDERS_ICON = <svg className="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10" /><circle cx="16" cy="7" r="2" /><circle cx="8" cy="17" r="2" /></svg>
+export const DOWN_ICON = <svg className="ico down" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+export const RIGHT_ICON = <svg className="ico right" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+export const BACK_ICON = <svg className="ico back" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7" /></svg>
+export const STAR_ICON = <svg className="ico star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 16.6l-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z" /></svg>
+
 /** 섹션 머리: 제목 · 회색 숫자 · 오른쪽(ⓘ 기준, 출처 등). 기준 설명은 ⓘ를 눌러야 아래에 보인다 */
 export function SectionTitle({ children, count, info, right }: {
   children: ReactNode

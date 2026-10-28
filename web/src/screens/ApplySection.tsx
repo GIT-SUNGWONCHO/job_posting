@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { STAR_ICON } from '../components/ui'
 import { copy } from '../copy'
 import { dateText } from '../lib/format'
 import {
@@ -118,5 +119,37 @@ function ApplyDetails({ app, save, clear, state, setState }: {
         )}
       </div>
     </div>
+  )
+}
+
+/** 공고 상세 아래 ★: 누르면 관심에 넣고 다시 누르면 뺀다. 이미 지원 단계가 있으면 지원 단계를 연다 */
+export function InterestButton({ p, company, app, today, onApp, onOpen }: {
+  p: Posting
+  company: string
+  app: Application | undefined
+  today: string
+  onApp: (postingId: string, app: Application | null) => void
+  onOpen: () => void
+}) {
+  const [busy, setBusy] = useState(false)
+  const on = !!app && app.stage !== 'dismissed'
+  async function click() {
+    if (busy) return
+    if (app && app.stage !== 'interest' && app.stage !== 'dismissed') return onOpen()
+    setBusy(true)
+    if (app?.stage === 'interest') {
+      if (await deleteApplication(p.id)) onApp(p.id, null)
+    } else {
+      const next: Application = {
+        postingId: p.id, stage: 'interest', outcome: null, memo: app?.memo ?? '', nextOn: app?.nextOn ?? null,
+        nextLabel: app?.nextLabel ?? '', dates: app?.dates ?? {}, snapshot: snapshotOf(p, company),
+      }
+      if (await saveApplication(next, today)) onApp(p.id, { ...next, dates: next.dates.interest ? next.dates : { ...next.dates, interest: today } })
+    }
+    setBusy(false)
+  }
+  return (
+    <button type="button" className={on ? 'star-btn boxed on' : 'star-btn boxed'} aria-pressed={on} disabled={busy}
+      aria-label={on ? t.unstar : t.star} onClick={click}>{STAR_ICON}</button>
   )
 }

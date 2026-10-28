@@ -23,7 +23,7 @@ from .store import Store
 
 log = logging.getLogger(__name__)
 
-VERSION = 7  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값(collection, notify), 7: 목록 제목(listTitle)
+VERSION = 8  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값(collection, notify), 7: 목록 제목(listTitle), 8: 판정 비율(matchFit)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
 # 본문을 고르는 순서: 리멤버 원문 > 직행이 정리한 요약 > 사람인 원문
@@ -147,6 +147,8 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         # 관리 화면: 마지막 수집 요약(data/runs/), 아침 알림 기본값과 고를 수 있는 값(config/notify.yaml)
         "collection": collection(data_dir),
         "notify": notify.screen_defaults(),
+        # 판단 근거의 받은 점수 = 배점 × 판정 비율(config/match_guide.yaml fit)
+        "matchFit": config.load("match_guide")["fit"],
         "companies": companies,
         "postings": postings,
     }

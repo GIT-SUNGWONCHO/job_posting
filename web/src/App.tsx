@@ -79,7 +79,7 @@ function Main({ screen }: { screen: Screen }) {
   const defaults = screen.defaultFilters
   // 예전에 저장한 필터에 없는 항목(새로 생긴 직무 유형 등)은 기본값으로 채운다
   const [filters, setFilters] = useState<Filters>(() => ({ ...defaults, ...(readLocal<Filters>(FILTER_KEY) ?? {}) }))
-  const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE, sample: false, starred: false })
+  const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE, sample: false, starred: false, withOpen: true })
   const [scored, setScored] = useState<Map<string, Match>>(new Map())
   const [feedback, setFeedback] = useState<Map<string, Feedback>>(new Map())
   const [apps, setApps] = useState<Map<string, Application>>(new Map())

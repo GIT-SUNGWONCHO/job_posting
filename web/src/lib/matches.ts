@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { supabase } from './supabase'
 
 // 매칭 결과(Supabase matches 표, 매일 수집 뒤와 match 실행 때 다시 씀). 본인 행만 읽는다.
@@ -93,4 +94,18 @@ export async function loadMatchDetail(postingId: string): Promise<MatchDetail | 
     scoreV: r.score_v as number,
     profileV: r.profile_v as number,
   }
+}
+
+/** 공고 하나의 판단 근거(공고 상세를 열 때 그 공고만 받는다) */
+export function useMatchDetail(postingId: string, enabled: boolean): MatchDetail | null {
+  const [detail, setDetail] = useState<{ id: string; d: MatchDetail | null } | null>(null)
+  useEffect(() => {
+    if (!enabled) return
+    let alive = true
+    loadMatchDetail(postingId).then((d) => alive && setDetail({ id: postingId, d }), () => alive && setDetail({ id: postingId, d: null }))
+    return () => {
+      alive = false
+    }
+  }, [postingId, enabled])
+  return detail?.id === postingId ? detail.d : null
 }
