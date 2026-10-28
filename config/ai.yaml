@@ -20,4 +20,4 @@ match:                 # AI 매칭(recommend.py): 후보 공고마다 항목·�
   max_calls: 330       # 실행 한 번 최대 호출 수(후보 전체를 다시 매기는 날 기준)
   max_minutes: 35
   body_chars: 3000     # 공고 본문을 앞에서 몇 자까지 보낼지
-  reason_chars: 120    # 매칭 이유가 이보다 길면 자른다
+  reason_chars: 60     # 매칭 이유가 이보다 길면 자른다(AI에는 40자 안쪽으로 묻는다: 공고 상세 두 줄)

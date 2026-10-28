@@ -20,7 +20,7 @@ from .models import CompanyType
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 2  # 2: 항목별 판단 근거(지침은 match_guide.yaml의 version으로 따로 센다)
+PROMPT_VERSION = 3  # 2: 항목별 판단 근거, 3: 이유는 40자 안쪽(공고 상세 두 줄). 지침은 match_guide.yaml의 version으로 따로 센다
 
 
 def candidates(screen: dict[str, Any], user_filters: dict[str, Any]) -> list[dict[str, Any]]:
@@ -66,7 +66,7 @@ def prompt(profile_text: str, posting_text: str) -> str:
         f"- 판정(fit): {', '.join(g['fit'])}\n"
         "- 항목마다 name은 짧은 이름, posting은 공고가 요구하는 것, me는 지원자 쪽 근거(각 40자 안쪽)\n"
         f"- verdict: {', '.join(g['verdicts'])} 중 하나\n"
-        "- reason: 이 지원자에게 맞는 이유 한 문장(70자 안쪽, 맞는 점 먼저, 크게 부족한 점이 있으면 뒤에 짧게)\n"
+        "- reason: 이 지원자에게 맞는 이유 한 문장(40자 안쪽, 맞는 점 먼저, 크게 부족한 점이 있으면 뒤에 짧게)\n"
         "- gaps: 크게 부족한 점 최대 3개, 짧게\n\n"
         f"[지원자]\n{profile_text}\n\n[공고]\n{posting_text}"
     )
