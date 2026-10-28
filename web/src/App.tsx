@@ -208,7 +208,8 @@ function Main({ screen }: { screen: Screen }) {
       body = <NotePage key={route.key} screen={screen} companyKey={route.key} section={route.section} />
       break
     case 'career':
-      body = <Career screen={screen} seg={route.seg} filters={filters} matches={matches} today={today} />
+      body = <Career screen={screen} seg={route.seg} filters={filters} defaults={defaults} regions={regions} onFilters={saveFilters}
+        matches={matches} today={today} />
       break
     case 'interest':
       body = <Interest screen={screen} seg={route.seg} apps={apps} today={today} matches={matches} onApp={onApp} />

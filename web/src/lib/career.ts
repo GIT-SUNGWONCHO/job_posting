@@ -258,3 +258,30 @@ export function niceTicks(max: number, count = 4): number[] {
   for (let v = 0; v < max + step; v += step) out.push(v)
   return out
 }
+
+/** 달력 주(월~일)마다 새 공고. from(첫날 제외)부터 끝(오늘)까지. 이번 주는 며칠째인지(days)도 */
+export function weekBins(days: string[], values: (number | null)[], from: number): (Bin & { days: number })[] {
+  const out: (Bin & { days: number })[] = []
+  for (let i = from; i < days.length; i++) {
+    const d = new Date(`${days[i]}T00:00:00`)
+    const monday = new Date(d)
+    monday.setDate(d.getDate() - ((d.getDay() + 6) % 7))
+    const key = `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`
+    const last = out[out.length - 1]
+    const v = values[i]
+    if (last && last.start === key) {
+      last.end = days[i]
+      last.days += 1
+      if (v !== null) last.value = (last.value ?? 0) + v
+    } else {
+      out.push({ start: key, end: days[i], value: v, days: 1 })
+    }
+  }
+  return out
+}
+
+/** "10월 2주": 그 주 월요일이 그달 몇째 주인지 */
+export function weekLabel(monday: string): string {
+  const d = new Date(`${monday}T00:00:00`)
+  return `${d.getMonth() + 1}월 ${Math.ceil(d.getDate() / 7)}주`
+}

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   bins, bucketOf, currentOf, gaps, mySlice, niceTicks, otherDirections, periodStats, periods, positions, skillFit, strengths, sumSeries,
+  weekBins, weekLabel,
 } from './career'
 import type { CareerMetrics, JobType } from './types'
 
@@ -118,5 +119,14 @@ describe('mySlice', () => {
   })
   it('falls back to every direction job type and every company type', () => {
     expect(mySlice(types, { job_types: [], company_types: [] })).toEqual({ jobs: ['data_eng', 'ai_eng'], ctypes: null })
+  })
+})
+
+describe('weekBins', () => {
+  it('월요일부터 일요일까지 묶고 이번 주는 며칠째인지 센다', () => {
+    const days = ['2026-10-13', '2026-10-14', '2026-10-19', '2026-10-20', '2026-10-27', '2026-10-28']
+    const out = weekBins(days, [100, 5, 7, 3, 4, null], 1)
+    expect(out.map((b) => [b.start, b.value, b.days])).toEqual([['2026-10-12', 5, 1], ['2026-10-19', 10, 2], ['2026-10-26', 4, 2]])
+    expect(weekLabel('2026-10-12')).toBe('10월 2주')
   })
 })
