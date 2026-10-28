@@ -70,12 +70,7 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
 
 /* 1등 카드: 화면에서 가장 중요한 것 하나 */
 .hero { margin: 4px var(--gutter) 20px; padding: 18px; border-radius: var(--r-card); background: var(--accent-soft); }
-.hero-top { display: flex; justify-content: space-between; align-items: baseline; }
 .hero-label { font-size: var(--fs-min); font-weight: var(--fw-title); color: var(--accent); }
-.hero-count { margin-top: 2px; font-size: var(--fs-section); }
-.hero-count b { font-size: 32px; font-weight: var(--fw-title); color: var(--accent); margin-right: 2px; }
-.hero .rows { margin-top: 8px; }
-.hero .row + .row { border-top-color: rgba(27, 100, 218, 0.12); }
 
 /* 목록 한 줄: 회사 / 제목 / 마감 · 경력 (최대 4줄) */
 .rows { display: flex; flex-direction: column; }
@@ -125,7 +120,6 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); }
   border: 0; background: none; color: var(--accent); font-size: var(--fs-sub); cursor: pointer; text-align: left;
 }
 .empty { padding: 32px var(--gutter); margin: 0; color: var(--muted); font-size: var(--fs-sub); }
-.hero .empty { padding: 8px 0 0; }
 
 /* 상세 */
 .topbar { height: 56px; display: flex; align-items: center; padding: 0 8px; }
@@ -424,7 +418,8 @@ a.source:hover { text-decoration: underline; }
 .past-rows { display: flex; flex-direction: column; }
 .past-row { display: flex; gap: 12px; padding: 8px 0; font-size: var(--fs-sub); }
 .past-row + .past-row { border-top: 1px solid var(--line); }
-.past-date { width: 72px; }
+.past-date { width: auto; white-space: nowrap; }
+.gone-link { display: block; padding: 0 var(--gutter); }
 .past-actions { display: flex; gap: 16px; }
 
 /* 심층분석: 성격이 바뀌는 큰 묶음이라 위에 회색 띠 + 큰 제목 */

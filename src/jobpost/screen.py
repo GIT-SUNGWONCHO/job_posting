@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 import gzip
+import html
 import json
 import logging
 from datetime import date, datetime
@@ -89,7 +90,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         if key not in companies:
             name = r.get("company") or (registry.data.get(key) or {}).get("name") or key
             companies[key] = {
-                "name": clean_company(name),
+                "name": clean_company(html.unescape(name)),
                 "type": registry.company_type(key, r.get("company", "")).value,
                 "group": registry.group(key, r.get("company", "")),
             }
@@ -101,7 +102,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
         return {
             "id": r["uid"],
             "company": key,
-            "title": r.get("title", ""),
+            "title": html.unescape(r.get("title", "")),  # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다
             "careerMin": o.get("career_min"),
             "careerMax": o.get("career_max"),
             "career": career_text(o.get("career_min"), o.get("career_max")),
@@ -259,7 +260,7 @@ def build_companies(data_dir: Path, screen: dict[str, Any], today: date | None =
         if key in keys:
             past.setdefault(key, []).append({
                 "id": r["uid"],
-                "title": r.get("title", ""),
+                "title": html.unescape(r.get("title", "")),  # 수집처 제목에 &amp; 같은 HTML 표기가 섞여 온다
                 "jobType": (r.get("job_type") or {}).get("id"),
                 "firstSeen": r.get("first_seen"),
                 "closedOn": r.get("closed_on"),

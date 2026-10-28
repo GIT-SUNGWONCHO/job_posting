@@ -55,6 +55,8 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
   const [prefs, setPrefs] = useState<Loaded<NotifyPrefs> | undefined>(undefined)
   const [link, setLink] = useState<Loaded<TelegramLink | null> | undefined>(undefined)
   const [saved, setSaved] = useState<'ok' | 'failed' | null>(null)
+  // 저장하는 동안은 다시 누르지 못하게(켜기·끄기 요청이 엇갈려 화면과 저장이 어긋나지 않게)
+  const [saving, setSaving] = useState(false)
   useEffect(() => {
     let alive = true
     loadNotify().then((p) => alive && setPrefs(p))
@@ -69,16 +71,17 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
   const enabled = !(typeof prefs === 'object' && prefs.enabled === false)
 
   function toggle(on: boolean) {
-    if (!editable) return
+    if (!editable || saving) return
     const before = prefs
     const next = { ...prefs, enabled: on }
     setPrefs(next)
     setSaved(null)
+    setSaving(true)
     // 실패하면 누르기 전 값으로 되돌린다
     saveNotify(next).then((ok) => {
       setSaved(ok ? 'ok' : 'failed')
       if (!ok) setPrefs(before)
-    })
+    }).finally(() => setSaving(false))
   }
 
   let status = null
@@ -97,7 +100,7 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
           {prefs === 'failed' && <p className="note">{copy.admin.loadFailed}</p>}
           <label className="switch">
             {copy.admin.enabled}
-            <input type="checkbox" checked={enabled} disabled={!editable} onChange={(e) => toggle(e.target.checked)} />
+            <input type="checkbox" checked={enabled} disabled={!editable || saving} onChange={(e) => toggle(e.target.checked)} />
           </label>
           {saved && <p className={saved === 'ok' ? 'note' : 'note urgent'} role="status">{saved === 'ok' ? copy.admin.saved : copy.admin.saveFailed}</p>}
         </div>
@@ -105,7 +108,7 @@ export function NotifyPage({ defaults }: { defaults?: NotifyDefaults }) {
       <section className="section">
         <SectionTitle>{copy.admin.contents}</SectionTitle>
         <ul className="plain-list">
-          {copy.admin.contentLines(defaults?.soonMinScore).map((line) => <li key={line}>{line}</li>)}
+          {copy.admin.contentLines(defaults?.soonMinScore, defaults?.soonDays).map((line) => <li key={line}>{line}</li>)}
         </ul>
       </section>
     </div>
@@ -121,7 +124,7 @@ export function CollectionPage({ screen, today }: { screen: Screen; today: strin
     <div className="page detail">
       <SubHead title={copy.admin.collection} sub={copy.admin.collectionWhen} />
       <section className="section">
-        {!run ? (
+        {!run || sources.length === 0 ? (
           <p className="note">{copy.admin.noCollection}</p>
         ) : (
           <div className="admin-block">

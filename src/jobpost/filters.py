@@ -19,8 +19,9 @@ def reasons(
     filters: dict[str, Any],
     job_type: str | None = None,
 ) -> list[tuple[str, str]]:
-    """걸린 이유 전부(통과면 빈 목록). (종류, 값): keyword 제외 키워드, company 제외 회사, job 직무 유형 id,
-    company_type 기업 구분, career 경력, region 지역. 제외 키워드·회사가 없고 항상 보여줄 회사면 통과."""
+    """걸린 이유(통과면 빈 목록). (종류, 값): keyword 제외 키워드, company 제외 회사, job 직무 유형 id,
+    company_type 기업 구분, career 경력, region 지역. 제외 키워드·회사에 걸리면 그것만, 아니면 걸린 조건 전부.
+    제외에 안 걸리고 항상 보여줄 회사면 통과."""
     out = [("keyword", kw) for kw in filters.get("exclude_keywords") or [] if kw.replace(" ", "") in title.replace(" ", "")]
     out += [("company", c) for c in filters.get("exclude_companies") or [] if c and c in company]
     if out:

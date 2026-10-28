@@ -58,18 +58,19 @@ def _score_text(m: dict[str, Any] | None) -> str:
 
 
 def enabled(raw: dict[str, Any] | None) -> bool:
-    """관리 화면의 "아침 알림 받기"(Supabase settings.notify.enabled). 고르지 않았으면 받는다."""
-    return (raw or {}).get("enabled") is not False
+    """관리 화면의 "아침 알림 받기"(Supabase settings.notify.enabled). 고르지 않았거나 모양이 이상하면 받는다
+    (한 사람의 잘못된 값이 모두의 알림을 멈추지 않게)."""
+    return not (isinstance(raw, dict) and raw.get("enabled") is False)
 
 
 def screen_defaults() -> dict[str, Any]:
     """관리 화면이 알림에 들어가는 것을 적을 때 쓰는 값(화면용 파일 notify)."""
     cfg = config.load("notify")
-    return {"channels": cfg["channels"], "soonMinScore": cfg["soon_min_score"]}
+    return {"channels": cfg["channels"], "soonMinScore": cfg["soon_min_score"], "soonDays": cfg["soon_days"]}
 
 
-def why_not(p: dict[str, Any], screen: dict[str, Any], filters: dict[str, Any]) -> str:
-    """필터 밖 공고가 걸린 이유를 한 줄로: "직무 데이터 분석 · 경력 3년 이상"."""
+def why_not(p: dict[str, Any], screen: dict[str, Any], filters: dict[str, Any]) -> tuple[str, int]:
+    """필터 밖 공고가 걸린 이유를 한 줄로("직무 데이터 분석 · 경력 3년 이상")와 걸린 조건 수."""
     c = (screen.get("companies") or {}).get(p["company"]) or {}
     jobs = {t["id"]: t.get("short") or t["name"] for t in screen.get("jobTypes") or []}
     found = personal.reasons(title=p["title"], company=c.get("name", ""), company_type=CompanyType(c.get("type", "그 외")),
@@ -78,7 +79,7 @@ def why_not(p: dict[str, Any], screen: dict[str, Any], filters: dict[str, Any]) 
     text = {"keyword": lambda v: f"제외 키워드 {v}", "company": lambda v: f"제외 회사 {v}",
             "job": lambda v: f"직무 {jobs.get(v, v)}", "company_type": lambda v: f"기업 구분 {v}",
             "career": lambda v: p.get("career") or "경력", "region": lambda v: f"지역 {v}"}
-    return " · ".join(text[kind](value) for kind, value in found)
+    return " · ".join(text[kind](value) for kind, value in found), len(found)
 
 
 def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, dict[str, Any]], today: date,
@@ -118,18 +119,25 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
     passing = {p["id"] for p in recommend.candidates(screen, filters)}  # 잡음은 빠져 있다
     new = [p for p in wanted if start <= p["firstSeen"] <= today.isoformat()]
     passed = by_score(p for p in new if p["id"] in passing)
-    others = by_score(p for p in new if p["id"] not in passing and not p.get("noise"))
+    # 필터 밖: 걸린 조건이 적은(아깝게 빠진) 공고부터. 한도에 걸리면 뒤에서 줄인다
+    why = {p["id"]: why_not(p, screen, filters) for p in new if p["id"] not in passing and not p.get("noise")}
+    others = sorted(by_score(p for p in new if p["id"] in why), key=lambda p: why[p["id"]][1])
     interest = sorted((p for p in wanted if stages.get(p["id"]) == "interest" and closing(p)), key=lambda p: p.get("deadline") or "")
     soon = by_score(p for p in wanted if p["id"] in passing and closing(p) and stages.get(p["id"]) != "interest")
-    n_new = sum(1 for p in screen["postings"] if start <= p["firstSeen"] <= today.isoformat())
+    soon = [p for p in soon if score(p) >= cfg["soon_min_score"]]
+    # 머리 건수는 두 통에 실제로 든 공고 수(새 공고 = 필터 통과 + 필터 밖, 잡음·지원·관심 없음은 빼고)
+    n_new, n_soon = len(passed) + len(others), len(interest) + len(soon)
+    # 며칠 만에 보내면 기간을 적는다(지난 알림 다음 날부터 오늘까지)
+    first = date.fromisoformat(start)
     day = f"{today.month}/{today.day}({WEEKDAYS[today.weekday()]})"
-    n_soon = len(interest) + len(soon)
+    if first < today:
+        day = f"{first.month}/{first.day}~{day}"
     return {"date": day,
             "head": f"{day} 새 공고 {n_new}건 · 필터 통과 {len(passed)}건" + (f" · 마감 임박 {n_soon}건" if n_soon else ""),
             "counts": {"new": n_new, "passed": len(passed), "soon": n_soon},
             "passed": [item(p) for p in passed],
-            "others": [{**item(p), "why": why_not(p, screen, filters) if cfg.get("others_reason") else None} for p in others],
-            "soon": [item(p) for p in interest] + [item(p) for p in soon if score(p) >= cfg["soon_min_score"]],
+            "others": [{**item(p), "why": why[p["id"]][0] if cfg.get("others_reason") else None} for p in others],
+            "soon": [item(p) for p in interest] + [item(p) for p in soon],
             "soonMinScore": cfg["soon_min_score"],
             "report": base + "#/report", "jobs": base + "#/jobs", "career": base + "#/career"}
 
@@ -163,6 +171,13 @@ def _fit(d: dict[str, Any], keys: tuple[str, ...], render: Any, too_big: Any) ->
     return out
 
 
+def _rest_text(sec: dict[str, Any]) -> str:
+    """한도에 걸려 줄인 묶음의 안내. 필터 밖 공고는 공고 목록(개인 필터 적용)에 나오지 않는다."""
+    if sec["key"] == "others":
+        return f"외 {sec['rest']}건은 걸린 조건이 더 많은 공고라 줄였어요"
+    return f"외 {sec['rest']}건은 공고 목록에서"
+
+
 def _legend() -> str:
     return " · ".join(f"{mark} {name}" for name, mark in MARKS.items())
 
@@ -173,14 +188,14 @@ def _esc(s: str) -> str:
 
 def telegram_message(d: dict[str, Any]) -> list[tuple[str, list[list[dict[str, str]]] | None]]:
     """텔레그램 일반 메시지(HTML, 한 통 4096자 안)와 아래 버튼. 리치 메시지가 실패한 날 대신 보낸다.
-    v6(2026-10-27): 첫 통은 머리 두 줄 + 필터 통과 새 공고 + 마감 임박(접힌 인용) + 판정 설명, 둘째 통은 필터 밖 새 공고."""
+    첫 통은 머리 두 줄 + 필터 통과 새 공고 + 마감 임박(접힌 인용) + 판정 설명, 둘째 통은 필터 밖 새 공고."""
 
-    def entry(it: dict[str, Any]) -> str:
+    def entry(it: dict[str, Any], link_company: bool = True) -> str:
         score = "점수 없음" if it["score"] < 0 else f"{it['score']:g}점"
         star = "★ " if it["interest"] else ""
         why = f"\n<i>필터 밖: {_esc(it['why'])}</i>" if it.get("why") else ""
-        return (f'{MARKS.get(it["verdict"] or "", "▫️")} <b>{star}<a href="{html.escape(it["companyUrl"])}">'
-                f'{_esc(it["company"])}</a></b>  {score} · {_esc(it["deadline"])}\n'
+        company = f'<a href="{html.escape(it["companyUrl"])}">{_esc(it["company"])}</a>' if link_company else _esc(it["company"])
+        return (f'{MARKS.get(it["verdict"] or "", "▫️")} <b>{star}{company}</b>  {score} · {_esc(it["deadline"])}\n'
                 f'<a href="{html.escape(it["url"])}">{_esc(it["name"])}</a>{why}')
 
     def render(sections: list[dict[str, Any]], first: bool) -> str:
@@ -194,9 +209,10 @@ def telegram_message(d: dict[str, Any]) -> list[tuple[str, list[list[dict[str, s
                 continue
             lines += ["", f"<b>{_esc(sec['title'])}</b> {sec['total']}건"]
             if sec["items"]:
-                lines.append("<blockquote expandable>" + "\n\n".join(entry(it) for it in sec["items"]) + "</blockquote>")
+                lines.append("<blockquote expandable>" + "\n\n".join(entry(it, sec["key"] != "others") for it in sec["items"])
+                             + "</blockquote>")
             if sec["rest"]:
-                lines.append(f"외 {sec['rest']}건은 공고 목록에서")
+                lines.append(_rest_text(sec))
         if first:
             lines += ["", _legend()]
         return "\n".join(lines).strip()
@@ -213,17 +229,17 @@ def telegram_message(d: dict[str, Any]) -> list[tuple[str, list[list[dict[str, s
 
 
 def telegram_rich(d: dict[str, Any]) -> list[str]:
-    """텔레그램 리치 메시지(HTML). v7(2026-10-27): 첫 통은 제목, 건수, 필터 통과 새 공고와 마감 임박을 접는 블록의 표
+    """텔레그램 리치 메시지(HTML). 첫 통은 제목, 건수, 필터 통과 새 공고와 마감 임박을 접는 블록의 표
     (판정 · 회사와 공고 · 점수 · 마감), 대시보드 버튼, 판정 설명. 둘째 통은 필터 밖 새 공고(걸린 이유)를 접는 블록에.
     보내기가 실패하면 run()이 일반 메시지로 대신 보낸다."""
 
-    def table(items: list[dict[str, Any]]) -> str:
+    def table(items: list[dict[str, Any]], link_company: bool = True) -> str:
         rows = ['<tr><th></th><th align="left">회사 · 공고</th><th align="right">점수</th><th>마감</th></tr>']
         for it in items:
             score = "-" if it["score"] < 0 else f"{it['score']:g}"
+            company = f'<a href="{html.escape(it["companyUrl"])}">{_esc(it["company"])}</a>' if link_company else _esc(it["company"])
             rows.append(f'<tr><td>{MARKS.get(it["verdict"] or "", "▫️")}</td>'
-                        f'<td align="left"><b>{"★ " if it["interest"] else ""}'
-                        f'<a href="{html.escape(it["companyUrl"])}">{_esc(it["company"])}</a></b><br>'
+                        f'<td align="left"><b>{"★ " if it["interest"] else ""}{company}</b><br>'
                         f'<a href="{html.escape(it["url"])}">{_esc(it["name"])}</a>'
                         + (f'<br><i>필터 밖: {_esc(it["why"])}</i>' if it.get("why") else "") + '</td>'
                         f'<td align="right"><b>{score}</b></td><td align="center">{_esc(it["deadline"])}</td></tr>')
@@ -239,7 +255,7 @@ def telegram_rich(d: dict[str, Any]) -> list[str]:
                 continue
             if not sec["total"]:
                 continue
-            body = (table(sec["items"]) if sec["items"] else "") + (f"<p>외 {sec['rest']}건은 공고 목록에서</p>" if sec["rest"] else "")
+            body = (table(sec["items"], sec["key"] != "others") if sec["items"] else "") + (f"<p>{_rest_text(sec)}</p>" if sec["rest"] else "")
             parts.append(f"<details><summary>{_esc(sec['title'])} {sec['total']}건</summary>{body}</details>")
         if first:
             parts.append('<tg-button-row align="center">'
@@ -345,18 +361,29 @@ def run(screen: dict[str, Any], db: Any, today: date, session: Any = None, again
             try:
                 d = summary_for(user, last)
                 if channel == "telegram":
-                    # 통마다 리치 메시지로 보내고, 실패하면 그 통부터 일반 메시지로 대신 보낸다(두 형식의 통 수는 같다)
+                    # 통마다 리치 메시지로 보내고, 실패하면 그 통부터 일반 메시지로 대신 보낸다(두 형식의 통 수는 같다).
+                    # 첫 통이 갔으면 보낸 것으로 기록한다(다시 돌려도 첫 통이 또 가지 않게). 못 보낸 통은 오류로 남긴다
                     rich = telegram_rich(d) if cfg["telegram"].get("format") == "rich" else []
                     done = 0
                     try:
-                        for part in rich:
-                            telegram.send_rich(link["chat_id"], part, session)
-                            done += 1
-                    except telegram.TelegramError as e:  # 새 기능이라 막히면 일반 메시지로 대신 보낸다
-                        out.setdefault("notes", []).append(f"telegram {user[:8]}: 리치 메시지 실패, 일반 메시지로 보냄: {e}")
-                    if not rich or done < len(rich):
-                        for text, buttons in telegram_message(d)[done:]:
+                        for i, (text, buttons) in enumerate(telegram_message(d)):
+                            fallback = None
+                            if i < len(rich):
+                                try:
+                                    telegram.send_rich(link["chat_id"], rich[i], session)
+                                    done += 1
+                                    continue
+                                except telegram.TelegramError as e:  # 새 기능이라 막히면 일반 메시지로 대신 보낸다
+                                    rich = []
+                                    fallback = f"telegram {user[:8]}: 리치 메시지 실패({i + 1}통째), 일반 메시지로 보냄: {e}"
                             telegram.send(link["chat_id"], text, session, buttons=buttons)
+                            done += 1
+                            if fallback:
+                                out.setdefault("notes", []).append(fallback)
+                    except telegram.TelegramError as e:
+                        if not done:
+                            raise
+                        out["errors"].append(f"{channel} {user[:8]}: {done}통만 보냄: {str(e)[:200]}")
                 else:
                     tok = kakao.refresh(link["refresh_token"], session)
                     if tok.get("refresh_token"):  # 1개월 미만 남아 새로 받은 토큰. 바로 저장해야 다음 날도 보낼 수 있다

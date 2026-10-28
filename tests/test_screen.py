@@ -13,7 +13,7 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
     day = date(2026, 10, 13)
     ps = [
         Posting(source=Source.ZIGHANG, source_id="a", url="https://z/a", company="(주)회사",
-                title="데이터 엔지니어", career_min=5, career_max=None, regions=["서울"]),
+                title="데이터 &amp; AI 엔지니어", career_min=5, career_max=None, regions=["서울"]),
         Posting(source=Source.REMEMBER, source_id="1", url="https://r/1", company="회사",
                 title="데이터 엔지니어", description="[주요업무] " + "데이터 파이프라인 구축 " * 5),
         Posting(source=Source.ZIGHANG, source_id="b", url="https://z/b", company="외국회사",
@@ -36,6 +36,7 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
     assert [p["id"] for p in built["postings"]] == ["zighang:a"]
     p = built["postings"][0]
     assert p["career"] == "경력 5년 이상"
+    assert p["title"] == "데이터 & AI 엔지니어"  # 수집처의 HTML 표기를 풀어 둔다
     assert p["jobType"] == "data_eng"
     assert p["hasBody"] and bodies["bodies"]["zighang:a"]["source"] == "remember"
     assert {"id": "data_eng", "name": "데이터 엔지니어", "short": "데이터 엔지니어", "direction": True} in built["jobTypes"]

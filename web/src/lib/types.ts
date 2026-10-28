@@ -113,6 +113,8 @@ export interface NotifyDefaults {
   channels?: string[]
   /** 마감 임박에 넣는 필터 통과 공고의 최소 점수 */
   soonMinScore?: number
+  /** 마감 임박: 마감까지 남은 날 */
+  soonDays?: number
 }
 
 /** 연차 구간: 최소 경력 0~3년 미만, 3~7, 7~12, 12년 이상, 연차 무관 */

@@ -1,15 +1,14 @@
-# 아침 알림. 묶음과 문구 틀은 고정(docs/content-rules.md "아침 알림·오늘의 리포트"), 코드는 src/jobpost/notify.py.
+# 아침 알림 값. 묶음과 문구 틀은 docs/content-rules.md "아침 알림·오늘의 리포트", 코드는 src/jobpost/notify.py.
 # 매일 수집·매칭이 끝난 뒤 보낸다(.github/workflows/collect.yml). 연결은 docs/setup.md "4. 텔레그램".
-# 세 묶음, 모두 접어서: 첫 통에 필터 통과 새 공고 전부 · 마감 임박, 둘째 통에 필터 밖 새 공고(참고, 걸린 이유).
 # 사람마다 바꾸는 건 받기 켜기·끄기뿐이다(관리 > 아침 알림, Supabase settings.notify.enabled).
 
-version: 7  # 5: 세 묶음, 6: 모두 접기와 필터 밖 걸린 이유, 7: 필터 밖은 둘째 통으로(2026-10-27)
+version: 8  # 알림 형식 버전(여기 한 곳). 5: 세 묶음, 6: 모두 접기와 필터 밖 걸린 이유, 7: 필터 밖은 둘째 통으로, 8: 머리 건수·필터 밖 순서·기간(2026-10-27)
 
 channels: [telegram]   # 보낼 곳. kakao는 2026-10-21 텔레그램으로 바꾸며 껐다(연결 코드와 표는 남겨 둠)
 
 dashboard_url: https://careermap-web.oroloov.workers.dev
 soon_days: 3           # 마감 임박: D-day~D-3(용어집)
-soon_min_score: 70     # 마감 임박에 넣는 필터 통과 공고의 최소 점수(관심 공고는 점수와 상관없이, 머리의 건수는 전부)
+soon_min_score: 70     # 마감 임박에 넣는 필터 통과 공고의 최소 점수(관심 공고는 점수와 상관없이)
 
 others_reason: true   # 필터 밖 새 공고마다 걸린 이유(직무 · 기업 구분 · 경력 · 지역 등). 필터가 안정되면 끈다
 

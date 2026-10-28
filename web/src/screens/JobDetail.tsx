@@ -41,7 +41,19 @@ export function JobDetail({ screen, posting, today, match, feedback, onFeedback,
   }, [posting])
 
   // 열린 공고에 없으면 대개 수집처에서 내려간 공고다(지우지 않고 회사 화면 지난 공고에 남는다)
-  if (!posting) return <div className="page"><p className="empty">{copy.job.gone}</p></div>
+  if (!posting) {
+    return (
+      <div className={panel ? 'page detail panel' : 'page detail'}>
+        {!panel && (
+          <div className="topbar">
+            <button type="button" className="icon-btn" aria-label={copy.job.back} onClick={() => goBack(href.jobs)}>‹</button>
+          </div>
+        )}
+        <p className="empty">{copy.job.gone}</p>
+        <a className="more-link gone-link" href={href.jobs}>{copy.job.toJobs} ›</a>
+      </div>
+    )
+  }
   const p = posting
   const shown = body?.id === p.id ? body : null
   const c = screen.companies[p.company]

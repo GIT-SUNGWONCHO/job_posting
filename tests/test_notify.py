@@ -99,9 +99,10 @@ def test_messages_stay_under_telegram_limits_on_a_busy_day():
     assert len(d["passed"]) == 200 and len(d["others"]) == 200
     for rich in notify.telegram_rich(d):
         assert len(rich) <= notify.RICH_MAX + 1000 and rich.count("<tr>") <= notify.RICH_ROWS
-    assert "건은 공고 목록에서" in notify.telegram_rich(d)[1]  # 필터 밖은 줄이고 외 N건
-    for text, _ in notify.telegram_message(d):
-        assert len(text) <= telegram.TEXT_MAX and "건은 공고 목록에서" in text
+    assert "건은 걸린 조건이 더 많은 공고라 줄였어요" in notify.telegram_rich(d)[1]  # 필터 밖은 줄이고 외 N건
+    texts = [text for text, _ in notify.telegram_message(d)]
+    assert all(len(t) <= telegram.TEXT_MAX for t in texts)
+    assert "건은 공고 목록에서" in texts[0] and "줄였어요" in texts[1]
 
 
 def test_says_so_when_nothing_new_passes():
@@ -289,3 +290,37 @@ def test_reasons_name_every_filter_a_posting_missed(monkeypatch):
     assert d["others"][0]["why"] == "직무 데이터 분석 · 기업 구분 그 외 · 경력 2~4년 · 지역 부산"
     monkeypatch.setitem(config.load("notify"), "others_reason", False)  # 필터가 안정되면 끈다
     assert notify.digest(screen, filters, {}, TODAY)["others"][0]["why"] is None
+
+
+def test_header_counts_what_the_messages_hold_and_names_the_days_covered():
+    screen = {**SCREEN, "postings": [*SCREEN["postings"], {**posting("n:1", company="b"), "noise": "잡음"},
+                                     posting("y:1", first="2026-10-15")]}
+    d = notify.digest(screen, FILTERS, MATCHES, TODAY, stages={"z:3": "dismissed"}, since=date(2026, 10, 14))
+    assert d["counts"] == {"new": len(d["passed"]) + len(d["others"]), "passed": 4, "soon": 1}  # 잡음·관심 없음은 세지 않는다
+    assert d["date"] == "10/15~10/17(토)"  # 며칠 만에 보내면 기간
+    low = notify.digest(SCREEN, FILTERS, {**MATCHES, "z:6": {"score": 50, "kind": "ai"}}, TODAY)
+    assert low["counts"]["soon"] == 0 and low["soon"] == []  # 70점 아래뿐이면 건수도 0
+
+
+def test_others_closest_to_my_filters_come_first_without_company_links():
+    screen = {**SCREEN, "postings": [{**posting("o:far", company="b", job="labeling"), "regions": ["부산"]},
+                                     posting("o:near", company="b")]}
+    d = notify.digest(screen, {**FILTERS, "regions": ["서울"]}, {}, TODAY)
+    assert [it["id"] for it in d["others"]] == ["o:near", "o:far"]  # 걸린 조건 1개 → 3개
+    others = notify.telegram_rich(d)[1]
+    assert "#/company/" not in others and "<b>라마바</b>" in others
+
+
+def test_a_first_message_that_went_out_still_counts_when_the_second_fails(monkeypatch, keys):
+    monkeypatch.setitem(config.load("notify")["telegram"], "format", "text")
+    sent = []
+
+    def send(chat, text, s=None, buttons=None):
+        if sent:
+            raise telegram.TelegramError("텔레그램 sendMessage 429 Too Many Requests")
+        sent.append(text)
+    monkeypatch.setattr(telegram, "send", send)
+    db = FakeDB(telegram_links=[{"user_id": "u1", "chat_id": 42, "last_sent_on": None}])
+    s = notify.run(SCREEN, db, TODAY)
+    assert s["telegram"]["sent"] == 1 and db.updates == [("telegram_links", "user_id=eq.u1", {"last_sent_on": "2026-10-17"})]
+    assert s["errors"] == ["telegram u1: 1통만 보냄: 텔레그램 sendMessage 429 Too Many Requests"]
