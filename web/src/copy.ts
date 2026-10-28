@@ -1,11 +1,14 @@
 // 화면 문구는 이 파일에만 둔다. 용어와 표기는 docs/glossary.md를 따른다.
 export const copy = {
   appName: '채용공고',
-  tabs: { report: '리포트', jobs: '공고', career: '커리어', apply: '지원', admin: '관리' },
+  tabs: { report: '홈', jobs: '공고', career: '커리어', apply: '지원', admin: '관리' },
+  common: { info: '기준 보기', source: '출처', back: '뒤로' },
   report: {
-    title: '오늘의 리포트',
+    title: ['나한테 맞는 공고,', '놓치지 말아요'],
     top: '오늘의 1등',
-    weekCount: '이번 주 공고',
+    good: '맞는 점',
+    gap: '부족한 점',
+    weekCount: '이번 주',
     todayCount: '오늘',
     urgent: '마감 임박',
     todayBadge: '오늘',
@@ -13,7 +16,9 @@ export const copy = {
     detail: '자세히 보기',
     starredSection: '관심 회사 새 공고',
     weekSection: '이번 주 새 공고',
-    weekNote: (days: number) => `최근 ${days}일 필터 통과 공고 · 점수 높은 순`,
+    weekNote: (days: number) => `최근 ${days}일 처음 본 필터 통과 공고에서 1등을 뺀 나머지, 점수 높은 순. 오늘 처음 본 공고에는 "오늘"`,
+    urgentNote: '마감 3일 이내(D-day~D-3). 관심 공고를 먼저, 그다음 필터 통과 공고. 위에서 보인 공고는 빼요',
+    starredNote: '★ 관심 회사의 이번 주 새 공고. 필터와 상관없이 보여줘요',
     noWeek: '이번 주에 올라온 필터 통과 공고가 없어요',
     noMoreWeek: '이번 주 새 공고는 1등 하나예요',
     allByScore: '열린 공고 전체 추천순 보기',

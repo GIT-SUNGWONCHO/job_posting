@@ -14,15 +14,19 @@
   --overlay: rgba(25, 31, 40, 0.4);
   --chart-grid: #e5e8eb;   /* 차트 눈금선 */
   --chart-off: #c3cad3;    /* 차트에서 강조하지 않은 막대, 기준선(강조는 --accent) */
+  --hope: #9b2226;         /* 희망 직무(커리어 차트·성장 계획). 마감 임박의 빨강과 다른 어두운 빨강 */
+  --badge: #f2f4f6;        /* 배지 상자(오늘 · 지원 단계 · 내려감) */
+  --sep: #d1d6db;          /* 메타 줄의 얇은 세로선, 연표 세로선 */
+  --tab-off: #c4cad1;      /* 제목 탭에서 고르지 않은 쪽 */
+  --ok: #12b76a;           /* 상태 점: 연결됨 · 정상 */
 
-  /* 글자 크기(px): 페이지 제목 24, 섹션 17, 항목 제목 16, 본문 15, 보조 14, 최소 13 */
-  --fs-page: 24px;
-  --fs-group: 22px;        /* 큰 묶음 제목(심층분석) */
-  --fs-section: 17px;
+  /* 글자 크기(px) 다섯 단계: 페이지 제목 26, 섹션 20, 항목 제목 16, 본문 15, 작은 글자 13. 차트 눈금만 예외 */
+  --fs-page: 26px;
+  --fs-section: 20px;
   --fs-item: 16px;
   --fs-body: 15px;
-  --fs-sub: 14px;
   --fs-min: 13px;
+  --fs-tick: 11px;         /* 차트 눈금 글자(예외) */
   --fw-title: 700;
   --fw-item: 600;
   --fw-body: 400;
@@ -32,12 +36,15 @@
   /* 모서리 */
   --r-card: 16px;
   --r-score: 12px;
+  --r-score-solid: 14px;
+  --r-badge: 6px;
   --r-chip: 999px;
   --r-control: 10px;
 
   /* 간격 */
   --gutter: 20px;
-  --band-h: 8px;
+  --band-h: 8px;           /* 성격이 바뀌는 섹션 사이 회색 띠 */
+  --section-gap: 32px;     /* 같은 성격 섹션 사이 간격(홈) */
   --tabbar-h: 64px;
   --nav-w: 200px;
 }

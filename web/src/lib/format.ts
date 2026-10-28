@@ -48,10 +48,10 @@ export function dateText(iso: string, withYear = false): string {
   return withYear ? `${y}.${m}.${d}` : `${Number(m)}.${d}`
 }
 
-/** 회사 · 그룹 계열 */
+/** 목록 줄의 회사: 회사 · 그룹(그룹 이름이 회사 이름과 같으면 회사만) */
 export function companyLine(c: Company | undefined, fallback: string): string {
   const name = c?.name ?? fallback
-  return c?.group ? `${name} · ${c.group} 계열` : name
+  return c?.group && c.group !== name ? `${name} · ${c.group}` : name
 }
 
 /** +3, -2, 0 */

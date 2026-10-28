@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { copy } from '../copy'
-import { Deadline, Empty, JobRow, Score, SectionTitle } from '../components/ui'
+import { Deadline, Empty, JobRow, Score, SectionTitle, Sep } from '../components/ui'
 import { NOT_AGAIN, useApps } from '../lib/applications'
-import { addDays, companyLine, dateText, isUrgent, listTitle } from '../lib/format'
-import type { Match } from '../lib/matches'
+import { addDays, companyLine, isUrgent, listTitle } from '../lib/format'
+import { loadMatchDetail, type Match, type MatchDetail } from '../lib/matches'
 import { href } from '../lib/route'
 import { useStars } from '../lib/stars'
 import type { Posting, Screen } from '../lib/types'
@@ -65,81 +65,103 @@ export function Report({ screen, passed, today, matches }: {
   const starredShown = take('starred', starred, SHOW)
   const badge = (p: Posting) => (p.firstSeen === today ? copy.report.todayBadge : undefined)
   const more = (key: string, list: Posting[], visible: Posting[]) => list.length > visible.length && (
-    <button type="button" className="text-link" onClick={() => setOpen({ ...open, [key]: true })}>{copy.jobs.more(list.length - visible.length)}</button>
+    <button type="button" className="btn block more" onClick={() => setOpen({ ...open, [key]: true })}>{copy.jobs.more(list.length - visible.length)}</button>
   )
+  const jump = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   return (
-    <div className="page">
-      <header className="page-head">
-        <h1>{copy.report.title}</h1>
-        <div className="page-sub">{dateText(screen.date)}</div>
-        <div className="summary">
-          <span>{copy.report.weekCount} <b>{week.length.toLocaleString()}</b></span>
-          <span>{copy.report.todayCount} <b>{todayCount}</b></span>
-          <span>{copy.report.urgent} <b className="urgent">{urgentAll.length}</b></span>
+    <div className="page home">
+      <div className="home-head">
+        <h1>{copy.report.title[0]}<br />{copy.report.title[1]}</h1>
+        <div className="summary-strip">
+          <button type="button" onClick={() => jump('home-week')}><span>{copy.report.weekCount}</span><b>{week.length.toLocaleString()}</b></button>
+          <button type="button" onClick={() => jump('home-week')}><span>{copy.report.todayCount}</span><b>{todayCount}</b></button>
+          <button type="button" onClick={() => jump('home-urgent')}><span>{copy.report.urgent}</span><b className="urgent">{urgentAll.length}</b></button>
         </div>
-      </header>
+      </div>
 
-      {top && (
-        <section className="hero hero-top-pick">
-          <a className="hero-link" href={href.job(top.id)}>
-            <div className="hero-label">{copy.report.top}</div>
-            <div className="match-head">
-              <div className="row-main">
-                <span className="row-company">{companyLine(c[top.company], top.company)}</span>
-                <span className="hero-title">{listTitle(top)}</span>
-                {matches.get(top.id)?.reason && <span className="row-reason">{matches.get(top.id)?.reason}</span>}
-                <span className="row-meta">
-                  {badge(top) && <span className="stage-chip">{badge(top)}</span>}
-                  <Deadline p={top} today={today} /><span>{top.career}</span>
-                </span>
-              </div>
-              <Score value={matches.get(top.id)!.score} solid size={56} />
+      <div className="stack">
+        {top && <TopPick p={top} screen={screen} today={today} match={matches.get(top.id)!} badge={badge(top)} />}
+
+        <section id="home-week">
+          <SectionTitle count={rest.length} info={copy.report.weekNote(WEEK)}>{copy.report.weekSection}</SectionTitle>
+          {rest.length === 0 ? (
+            <Empty>{top ? copy.report.noMoreWeek : copy.report.noWeek}</Empty>
+          ) : (
+            <div className="rows">
+              {restShown.map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} badge={badge(p)} />)}
             </div>
-          </a>
-          <div className="hero-actions">
-            <a className="btn small" href={href.company(top.company)}>{copy.job.company}</a>
-            <a className="btn small primary" href={href.job(top.id)}>{copy.report.detail}</a>
-          </div>
+          )}
+          {more('week', rest, restShown)}
         </section>
-      )}
 
-      <section className="section">
-        <SectionTitle right={<span className="count">{copy.jobs.count(rest.length)}</span>}>{copy.report.weekSection}</SectionTitle>
-        <p className="note small">{copy.report.weekNote(WEEK)}</p>
-        {rest.length === 0 ? (
-          <Empty>{top ? copy.report.noMoreWeek : copy.report.noWeek}</Empty>
-        ) : (
-          <div className="rows">
-            {restShown.map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} badge={badge(p)} />)}
-          </div>
+        {urgent.length > 0 && (
+          <section id="home-urgent">
+            <SectionTitle count={urgent.length} info={copy.report.urgentNote}>{copy.report.urgentSection}</SectionTitle>
+            <div className="rows">
+              {urgentShown.map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} />)}
+            </div>
+            {more('urgent', urgent, urgentShown)}
+          </section>
         )}
-        {more('week', rest, restShown)}
-      </section>
 
-      {urgent.length > 0 && (
-        <section className="section">
-          <SectionTitle right={<span className="count">{copy.jobs.count(urgent.length)}</span>}>{copy.report.urgentSection}</SectionTitle>
-          <div className="rows">
-            {urgentShown.map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} />)}
-          </div>
-          {more('urgent', urgent, urgentShown)}
-        </section>
-      )}
-
-      {starred.length > 0 && (
-        <section className="section">
-          <SectionTitle right={<span className="count">{copy.jobs.count(starred.length)}</span>}>{copy.report.starredSection}</SectionTitle>
-          <div className="rows">
-            {starredShown.map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} badge={badge(p)} />)}
-          </div>
-          {more('starred', starred, starredShown)}
-        </section>
-      )}
-
-      <section className="section">
-        <a className="more-link" href={href.jobs}>{copy.report.allByScore} ›</a>
-      </section>
+        {starred.length > 0 && (
+          <section>
+            <SectionTitle count={starred.length} info={copy.report.starredNote}>{copy.report.starredSection}</SectionTitle>
+            <div className="rows">
+              {starredShown.map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} badge={badge(p)} />)}
+            </div>
+            {more('starred', starred, starredShown)}
+          </section>
+        )}
+      </div>
     </div>
   )
+}
+
+/** 오늘의 1등: 연한 파랑 카드에 회사 · 제목 · 진한 점수 상자, 맞는 점 · 부족한 점(판단 근거에서), 마감 | 경력, 버튼 둘 */
+function TopPick({ p, screen, today, match, badge }: { p: Posting; screen: Screen; today: string; match: Match; badge?: string }) {
+  const [detail, setDetail] = useState<{ id: string; d: MatchDetail | null } | null>(null)
+  useEffect(() => {
+    let alive = true
+    loadMatchDetail(p.id).then((d) => alive && setDetail({ id: p.id, d }), () => alive && setDetail({ id: p.id, d: null }))
+    return () => {
+      alive = false
+    }
+  }, [p.id])
+  const why = detail?.id === p.id && detail.d ? goodAndGap(detail.d) : null
+  return (
+    <section className="top-pick">
+      <div className="top-label">{copy.report.top}</div>
+      <div className="top-card">
+        <a className="top-head" href={href.job(p.id)}>
+          <span className="row-main">
+            <span className="row-company"><span>{companyLine(screen.companies[p.company], p.company)}</span>{badge && <span className="badge">{badge}</span>}</span>
+            <span className="hero-title">{listTitle(p)}</span>
+          </span>
+          <Score value={match.score} solid />
+        </a>
+        {why && (why.good || why.gap) ? (
+          <div className="why">
+            {why.good && <><span className="why-k good">{copy.report.good}</span><span className="why-v">{why.good}</span></>}
+            {why.gap && <><span className="why-k">{copy.report.gap}</span><span className="why-v">{why.gap}</span></>}
+          </div>
+        ) : match.reason && <p className="match-reason">{match.reason}</p>}
+        <span className="row-meta"><Deadline p={p} today={today} /><Sep /><span>{p.career}</span></span>
+        <div className="top-actions">
+          <a className="btn white" href={href.company(p.company)}>{copy.job.company}</a>
+          <a className="btn primary" href={href.job(p.id)}>{copy.report.detail}</a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/** 판단 근거에서 맞는 점(충족, 배점 큰 순 둘)과 부족한 점(미충족, 없으면 일부) */
+function goodAndGap(d: MatchDetail): { good: string; gap: string } {
+  const items = [...d.items].sort((a, b) => b.weight - a.weight)
+  const names = (fit: string) => items.filter((it) => it.fit === fit).slice(0, 2).map((it) => it.name)
+  const good = names('충족')
+  const gap = names('미충족').length ? names('미충족') : names('일부')
+  return { good: good.join(' · '), gap: gap.join(' · ') }
 }

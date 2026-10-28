@@ -30,7 +30,7 @@ export function MatchSection({ postingId, posting, feedback, onFeedback }: {
   return (
     <section className="section">
       <div className="match-head">
-        <Score value={d.score} solid size={56} />
+        <Score value={d.score} solid />
         <div className="row-main">
           {d.verdict && <span className="verdict">{d.verdict}</span>}
           {d.reason && <span className="match-reason">{d.reason} <span className="badge-ai">{copy.job.aiOpinion}</span></span>}

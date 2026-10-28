@@ -97,7 +97,7 @@ function StageList({ stage, list, open, today, onApp }: {
   const shown = all ? list : list.slice(0, SHOW)
   return (
     <section className="section" id={`stage-${stage}`}>
-      <SectionTitle right={<span className="count">{list.length}</span>}>{t.long[stage]}</SectionTitle>
+      <SectionTitle count={list.length}>{t.long[stage]}</SectionTitle>
       <div className="rows">
         {shown.map((a) => <AppRow key={a.postingId} a={a} posting={open.get(a.postingId)} today={today} onApp={onApp} />)}
       </div>
