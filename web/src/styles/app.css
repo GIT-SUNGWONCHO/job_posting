@@ -870,3 +870,4 @@ a.source:hover { text-decoration: underline; }
 .plain-name { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
 .plain-name b { font-size: var(--fs-body); font-weight: var(--fw-item); }
 .plain-name .tag { font-size: var(--fs-min); font-weight: var(--fw-item); color: var(--accent); white-space: nowrap; }
+.shell.wide .page.home, .shell.wide .page.admin, .shell.wide .page.career { max-width: 760px; }
