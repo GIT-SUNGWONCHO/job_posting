@@ -1,18 +1,18 @@
 import { useMemo, useState } from 'react'
 import { copy } from '../copy'
 import { FilterSheet, type FilterSection } from '../components/FilterSheet'
-import { Chip, DOWN_ICON, Empty, JobRow, SEARCH_ICON, Sep, SLIDERS_ICON, STAR_ICON } from '../components/ui'
+import { CompanyRow } from '../components/CompanyRow'
+import { Chip, DOWN_ICON, Empty, JobRow, SEARCH_ICON, SLIDERS_ICON } from '../components/ui'
 import { matchesQuery } from '../lib/filter'
 import { addDays } from '../lib/format'
 import { href } from '../lib/route'
 import type { Match } from '../lib/matches'
-import { isStarred, useStars } from '../lib/stars'
 import type { Filters, Posting, Screen } from '../lib/types'
 
 export const PAGE = 50
 export type Sort = 'recommend' | 'latest' | 'deadline'
-/** sample: 기준 샘플(평가할 공고)만 본다. 개인 필터와 상관없이. starred: 회사 목록에서 관심 회사(★)만. withOpen: 회사 목록에서 열린 공고가 있는 회사만 */
-export interface JobsUi { query: string; sort: Sort; limit: number; sample: boolean; starred: boolean; withOpen: boolean }
+/** sample: 기준 샘플(평가할 공고)만 본다. 개인 필터와 상관없이. withOpen: 회사 목록에서 열린 공고가 있는 회사만 */
+export interface JobsUi { query: string; sort: Sort; limit: number; sample: boolean; withOpen: boolean }
 
 /** 회사 목록의 이번 주 새 공고: 오늘을 포함한 최근 며칠 */
 const WEEK = 7
@@ -62,7 +62,6 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
   matches: Map<string, Match>
 }) {
   const [sheet, setSheet] = useState<FilterSection | null>(null)
-  const { state: stars } = useStars()
   const c = screen.companies
   const sample = useMemo(() => {
     const ids = new Set(screen.sample ?? [])
@@ -91,24 +90,18 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
     const q = ui.query.trim().toLowerCase()
     const nameHit = (name: string) => !q || name.toLowerCase().includes(q)
     return Object.entries(c)
-      // 관심 회사만 볼 때는 기업 구분과 상관없이 ★한 회사 전부(칩의 수와 같게)
-      .filter(([key, co]) => ui.starred
-        ? isStarred(stars, key) && (passedBy.has(key) || nameHit(co.name))
-        : passedBy.has(key) || (!ui.sample
-          && (types.length === 0 || types.includes(co.type))
-          && !(filters.exclude_companies ?? []).some((x) => x && co.name.includes(x))
-          && nameHit(co.name)))
+      .filter(([key, co]) => passedBy.has(key) || (!ui.sample
+        && (types.length === 0 || types.includes(co.type))
+        && !(filters.exclude_companies ?? []).some((x) => x && co.name.includes(x))
+        && nameHit(co.name)))
       .map(([key, co]) => ({ key, co, passed: passedBy.get(key) ?? [], open: open.get(key) ?? 0, fresh: fresh.get(key) ?? 0 }))
       .filter((r) => !ui.withOpen || r.open > 0)
       .sort((a, b) => b.open - a.open || b.passed.length - a.passed.length || a.co.name.localeCompare(b.co.name, 'ko'))
-  }, [seg, shown, screen.postings, screen.date, c, filters, ui.query, ui.sample, ui.starred, ui.withOpen, stars])
+  }, [seg, shown, screen.postings, screen.date, c, filters, ui.query, ui.sample, ui.withOpen])
 
   const total = seg === 'jobs' ? shown.length : companies.length
   const rest = Math.max(total - ui.limit, 0)
-  // 칩의 수는 화면에 있는 회사 중 ★한 곳(목록에서 빠진 회사의 ★는 세지 않는다)
-  const starredCount = stars instanceof Set ? [...stars].filter((key) => key in c).length : 0
 
-  const { toggle } = useStars()
   return (
     <div className="page">
       <header className="list-top">
@@ -131,9 +124,6 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
           <Chip selected={ui.sample} onClick={() => setUi({ ...ui, sample: !ui.sample, sort: 'recommend', limit: PAGE })}>
             {copy.jobs.sampleChip(rated, sample.length)}
           </Chip>
-        )}
-        {seg === 'companies' && stars instanceof Set && (
-          <Chip selected={ui.starred} onClick={() => setUi({ ...ui, starred: !ui.starred, limit: PAGE })}>{copy.jobs.starredChip(starredCount)}</Chip>
         )}
         {!ui.sample && (
           <>
@@ -166,20 +156,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
           <JobRow key={p.id} p={p} c={c[p.company]} today={today} active={p.id === activeId} match={matches.get(p.id)} />
         ))}
         {seg === 'companies' && companies.slice(0, ui.limit).map(({ key, co, open, fresh }) => (
-          <div key={key} className="row company-row">
-            <a className="row-main" href={href.company(key)}>
-              <span className="row-title">{co.name}</span>
-              <span className="row-company"><span>{[co.type, co.group && `${co.group} 계열`].filter(Boolean).join(' · ')}</span></span>
-              <span className="row-meta">
-                <span>{open > 0 ? copy.jobs.openCount(open) : copy.jobs.noOpen}</span>
-                {fresh > 0 && <><Sep /><span className="fresh">{copy.jobs.freshCount(fresh)}</span></>}
-              </span>
-            </a>
-            {stars instanceof Set && (
-              <button type="button" className={isStarred(stars, key) ? 'star-btn on' : 'star-btn'} aria-pressed={isStarred(stars, key)}
-                aria-label={copy.company.starLabel(co.name)} onClick={() => toggle(key)}>{STAR_ICON}</button>
-            )}
-          </div>
+          <CompanyRow key={key} companyKey={key} co={co} open={open} fresh={fresh} />
         ))}
       </div>
       {rest > 0 && (

@@ -11,7 +11,7 @@ export type Route =
   | { name: 'company'; key: string }
   | { name: 'note'; key: string; section: number }
   | { name: 'career'; seg: CareerSeg }
-  | { name: 'apply' }
+  | { name: 'interest'; seg: 'jobs' | 'companies' }
   | { name: 'admin' }
   | { name: 'profile' }
   | { name: 'notify' }
@@ -33,7 +33,9 @@ export function parse(hash: string): Route {
     }
     case 'career':
       return { name: 'career', seg: CAREER_SEGS.includes(arg as CareerSeg) ? (arg as CareerSeg) : 'market' }
-    case 'apply':
+    case 'interest':
+    case 'apply': // 예전 주소(지원 현황)
+      return { name: 'interest', seg: arg === 'companies' ? 'companies' : 'jobs' }
     case 'admin':
     case 'profile':
     case 'notify':
@@ -50,7 +52,8 @@ export const href = {
   companies: '#/jobs/companies',
   career: '#/career',
   careerSeg: (seg: CareerSeg) => (seg === 'market' ? '#/career' : `#/career/${seg}`),
-  apply: '#/apply',
+  interest: '#/interest',
+  interestCompanies: '#/interest/companies',
   admin: '#/admin',
   profile: '#/profile',
   notify: '#/notify',

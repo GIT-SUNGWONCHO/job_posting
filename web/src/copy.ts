@@ -1,7 +1,7 @@
 // 화면 문구는 이 파일에만 둔다. 용어와 표기는 docs/glossary.md를 따른다.
 export const copy = {
   appName: '채용공고',
-  tabs: { report: '홈', jobs: '공고', career: '커리어', apply: '지원', admin: '관리' },
+  tabs: { report: '홈', jobs: '공고', career: '커리어', interest: '관심', admin: '관리' },
   common: { info: '기준 보기', source: '출처', back: '뒤로' },
   report: {
     title: ['나한테 맞는 공고,', '놓치지 말아요'],
@@ -293,7 +293,18 @@ export const copy = {
     none: '이 회사의 리서치 노트가 아직 없어요',
   },
   apply: {
-    title: '지원 현황',
+    title: '관심',
+    tabJobs: (n: number) => `공고 ${n}`,
+    tabCompanies: (n: number) => `회사 ${n}`,
+    all: '전체',
+    /** 관심 탭 단계 칩 */
+    chip: { interest: '지원 전', applied: '지원함', passed: '서류 합격', interview: '면접', result: '결과', dismissed: '관심 없음' },
+    beforeApply: '지원 전',
+    closedBadge: '내려감',
+    nextDefault: '일정',
+    sortSoon: '일정·마감 가까운 순',
+    companySort: '이번 주 새 공고 많은 순',
+    noCompanies: '회사 화면에서 ★를 누르면 여기에 모여요',
     /** 칩·숫자 박스에 쓰는 짧은 표기(용어집 "지원 단계") */
     short: { interest: '관심', applied: '지원', passed: '서류', interview: '면접', result: '결과', dismissed: '관심 없음' },
     /** 목록 제목·공고 상세의 단계 고르기 */

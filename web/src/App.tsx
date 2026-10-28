@@ -16,10 +16,10 @@ import { supabase } from './lib/supabase'
 import type { Filters, Screen } from './lib/types'
 import { useMedia, WIDE } from './lib/useMedia'
 import { Admin, CollectionPage, NotifyPage } from './screens/Admin'
-import { Apply } from './screens/Apply'
 import { Career } from './screens/Career'
 import { CompanyPage } from './screens/CompanyPage'
 import { JobDetail } from './screens/JobDetail'
+import { Interest } from './screens/Interest'
 import { Jobs, PAGE, type JobsUi } from './screens/Jobs'
 import { Login } from './screens/Login'
 import { NotePage } from './screens/NotePage'
@@ -80,7 +80,7 @@ function Main({ screen }: { screen: Screen }) {
   const defaults = screen.defaultFilters
   // 예전에 저장한 필터에 없는 항목(새로 생긴 직무 유형 등)은 기본값으로 채운다
   const [filters, setFilters] = useState<Filters>(() => ({ ...defaults, ...(readLocal<Filters>(FILTER_KEY) ?? {}) }))
-  const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE, sample: false, starred: false, withOpen: true })
+  const [ui, setUi] = useState<JobsUi>({ query: '', sort: 'latest', limit: PAGE, sample: false, withOpen: true })
   const [scored, setScored] = useState<Map<string, Match>>(new Map())
   const [feedback, setFeedback] = useState<Map<string, Feedback>>(new Map())
   const [apps, setApps] = useState<Map<string, Application>>(new Map())
@@ -210,8 +210,8 @@ function Main({ screen }: { screen: Screen }) {
     case 'career':
       body = <Career screen={screen} seg={route.seg} filters={filters} matches={matches} today={today} />
       break
-    case 'apply':
-      body = <Apply screen={screen} apps={apps} today={today} onApp={onApp} />
+    case 'interest':
+      body = <Interest screen={screen} seg={route.seg} apps={apps} today={today} matches={matches} onApp={onApp} />
       break
     case 'admin':
       body = <Admin />

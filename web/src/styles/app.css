@@ -330,7 +330,6 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); line-height: 1.
 .upcoming b { flex: none; width: 48px; font-weight: var(--fw-item); }
 .upcoming b.urgent { color: var(--urgent); }
 button.row { width: 100%; border: 0; background: none; padding: 14px 0; text-align: left; cursor: pointer; }
-.app-row + .app-row, .row + .app-row, .app-row + .row { border-top: 1px solid var(--line); }
 .app-edit { display: flex; flex-direction: column; gap: 8px; padding: 0 0 16px; }
 .app-add { padding: 12px 0 0; border-top: 1px solid var(--line); }
 
@@ -689,3 +688,11 @@ a.source:hover { text-decoration: underline; }
 .note-cards .card b { font-size: var(--fs-item); font-weight: var(--fw-title); color: var(--ink); }
 .note-cards .card.on { background: var(--accent-soft); }
 .note-cards .card.on b { color: var(--accent); }
+
+/* 관심: 밑줄 탭 공고 · 회사, 단계 칩, 일정은 파랑, 내려간 공고는 흐리게 */
+.list-top + .utabs { margin-top: 12px; }
+.badge.sub { color: var(--sub); }
+.row-meta .next { color: var(--accent); font-weight: var(--fw-item); }
+.app-row.gone { opacity: 0.55; }
+.text-link.small { font-size: var(--fs-min); padding: 0; align-self: center; }
+.list-more .rows { margin-top: 4px; }
