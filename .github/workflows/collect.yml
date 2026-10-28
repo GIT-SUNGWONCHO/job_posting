@@ -78,6 +78,14 @@ jobs:
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
         run: uv run jobpost screen --data-dir data --out screen.json.gz --upload
 
+      - name: 내 리서치 노트(data 브랜치 notes/를 사람마다 Supabase에)
+        if: ${{ !cancelled() }}
+        continue-on-error: true  # 노트가 깨져도 매칭·알림은 계속
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: uv run jobpost notes --data-dir data
+
       - name: 매칭(후보 공고를 AI가 항목별로 매김)
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}

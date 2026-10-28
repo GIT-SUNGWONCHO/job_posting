@@ -1,9 +1,11 @@
 import { Fragment, useEffect, useState, type ReactNode } from 'react'
 import { copy } from '../copy'
-import { BACK_ICON, JobRow, SectionTitle, Sep, STAR_ICON } from '../components/ui'
+import { SourceSheet, type SourceItem } from '../components/SourceSheet'
+import { BACK_ICON, JobRow, RIGHT_ICON, SectionTitle, Sep, STAR_ICON } from '../components/ui'
 import { passes } from '../lib/filter'
 import { dartUrl, dateText, listTitle, money, yearMonth } from '../lib/format'
 import { loadCompanies } from '../lib/load'
+import { loadNote, type Note } from '../lib/notes'
 import { goBack, href } from '../lib/route'
 import { isStarred, useStars } from '../lib/stars'
 import type { CompaniesFile, CompanyBasics, Competitors, DartBasics, Filters, PastPosting, Screen } from '../lib/types'
@@ -12,8 +14,6 @@ const t = copy.company
 const PAST_SHOWN = 5
 const OPEN_SHOWN = 10
 
-/** 출처 시트에 담는 줄: 이름 · 무엇에 썼는지 · 원문 */
-interface SourceItem { title: string; detail: string; url?: string | null }
 
 // 회사 화면: 이름 · 기업 구분 | 그룹 | 상장 → 기본정보(DART) → 실적(매출 · 영업이익 · 이익률 3년) → 내 리서치 노트
 // → 같은 업종 회사 → 열린 공고 · 지난 공고. 출처는 섹션 제목 오른쪽 "출처"를 눌러 시트로(docs/content-rules.md)
@@ -93,13 +93,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
               <FinanceTable fin={d.finance} />
             </section>
           )}
-          <section className="section">
-            <SectionTitle info={t.noteHelp}>{t.note}</SectionTitle>
-            <div className="note-empty">
-              <span>{t.noteHelp}</span>
-              <span className="muted">{t.noteNow}</span>
-            </div>
-          </section>
+          <NoteSection companyKey={companyKey} />
           <Peers data={basics?.research?.competitors} onSource={(items) => setSheet({ title: t.peersSource, items })} />
         </>
       )}
@@ -119,6 +113,34 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
 
       {sheet && <SourceSheet title={sheet.title} items={sheet.items} onClose={() => setSheet(null)} />}
     </div>
+  )
+}
+
+/** 내 리서치 노트: 있으면 섹션 줄(누르면 노트 화면의 그 섹션으로), 없으면 무엇인지 설명 */
+function NoteSection({ companyKey }: { companyKey: string }) {
+  const [note, setNote] = useState<{ key: string; note: Note | null } | null>(null)
+  useEffect(() => {
+    let alive = true
+    loadNote(companyKey).then((n) => alive && setNote({ key: companyKey, note: n }), () => alive && setNote({ key: companyKey, note: null }))
+    return () => {
+      alive = false
+    }
+  }, [companyKey])
+  const n = note?.key === companyKey ? note.note : undefined
+  return (
+    <section className="section">
+      <SectionTitle info={t.noteHelp} right={n && <span className="count">{t.noteUpdated(dateText(n.updated))}</span>}>{t.note}</SectionTitle>
+      {n === undefined ? <p className="note">{t.loading}</p> : n ? (
+        <div className="note-rows">
+          {n.sections.map((sec, i) => <a key={sec.title} href={href.note(companyKey, i)}>{sec.title}{RIGHT_ICON}</a>)}
+        </div>
+      ) : (
+        <div className="note-empty">
+          <span>{t.noteHelp}</span>
+          <span className="muted">{t.noteNow}</span>
+        </div>
+      )}
+    </section>
   )
 }
 
@@ -270,28 +292,5 @@ function Past({ past, byJob, since, jobs }: { past: PastPosting[]; byJob: Record
         )}
       </div>
     </section>
-  )
-}
-
-/** 출처 시트: 아래에서 올라오고, 줄마다 원문으로(↗) */
-function SourceSheet({ title, items, onClose }: { title: string; items: SourceItem[]; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
-  return (
-    <div className="sheet-backdrop" onClick={onClose}>
-      <div className="sheet source-sheet" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
-        <div className="grip" aria-hidden="true" />
-        <h2>{title}</h2>
-        {items.map((it) => {
-          const inner = <><span className="src-main"><b>{it.title}</b><span>{it.detail}</span></span>{it.url && <span className="muted">↗</span>}</>
-          return it.url
-            ? <a key={it.title} className="src-row" href={it.url} target="_blank" rel="noreferrer noopener">{inner}</a>
-            : <div key={it.title} className="src-row">{inner}</div>
-        })}
-      </div>
-    </div>
   )
 }

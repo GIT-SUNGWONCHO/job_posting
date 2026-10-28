@@ -9,6 +9,7 @@ export type Route =
   | { name: 'jobs'; seg: 'jobs' | 'companies' }
   | { name: 'job'; id: string }
   | { name: 'company'; key: string }
+  | { name: 'note'; key: string; section: number }
   | { name: 'career'; seg: CareerSeg }
   | { name: 'apply' }
   | { name: 'admin' }
@@ -17,7 +18,7 @@ export type Route =
   | { name: 'collection' }
 
 export function parse(hash: string): Route {
-  const [, a = '', b = ''] = hash.replace(/^#/, '').split('/')
+  const [, a = '', b = '', c = ''] = hash.replace(/^#/, '').split('/')
   const arg = decodeURIComponent(b)
   switch (a) {
     case 'jobs':
@@ -26,6 +27,10 @@ export function parse(hash: string): Route {
       return arg ? { name: 'job', id: arg } : { name: 'jobs', seg: 'jobs' }
     case 'company':
       return arg ? { name: 'company', key: arg } : { name: 'jobs', seg: 'companies' }
+    case 'note': {
+      const section = Number.parseInt(decodeURIComponent(c), 10)
+      return arg ? { name: 'note', key: arg, section: Number.isFinite(section) ? section : -1 } : { name: 'jobs', seg: 'companies' }
+    }
     case 'career':
       return { name: 'career', seg: CAREER_SEGS.includes(arg as CareerSeg) ? (arg as CareerSeg) : 'market' }
     case 'apply':
@@ -52,6 +57,8 @@ export const href = {
   collection: '#/collection',
   job: (id: string) => `#/job/${encodeURIComponent(id)}`,
   company: (key: string) => `#/company/${encodeURIComponent(key)}`,
+  /** 내 리서치 노트. section을 주면 그 섹션으로 */
+  note: (key: string, section?: number) => `#/note/${encodeURIComponent(key)}${section === undefined ? '' : `/${section}`}`,
 }
 
 function subscribe(cb: () => void) {

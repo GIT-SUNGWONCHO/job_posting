@@ -98,6 +98,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 - 봇을 차단하거나 대화방을 지우면 보내기 단계가 실패하고 GitHub가 메일로 알린다. 4~5를 다시 한다.
 - 보낼 곳은 `config/notify.yaml`의 `channels`에서 고른다. 2026-10-21부터 `[telegram]`이고 카톡은 꺼 두었다.
 - 관리 > 아침 알림의 연결 상태와 받기 켜기·끄기는 `supabase/migrations/010_notify_settings.sql`을 실행해야 쓸 수 있다(실행 전에는 화면에 그 안내가 나온다). 실행 전에도 알림은 그대로 간다.
+- 회사 화면의 내 리서치 노트는 `supabase/migrations/011_research_notes.sql`을 실행해야 보인다(실행 전에는 "지금은 대화에서 요청해 만들어요"만 보인다). 실행한 뒤 Actions > notes를 한 번 돌리면 `data` 브랜치 `notes/`의 노트가 들어간다(그 뒤로는 매일 수집 때).
 
 ## 5. 카카오 (아침 알림, 꺼 둠)
 

@@ -129,6 +129,7 @@
 - **화면**: 앱 안 노트 화면. 회사 이름 · "내 리서치 노트 · 업데이트 날짜" · 기준 공고 줄 → 요약 3줄 → 섹션 탭(목차 순서). 한 화면을 내려 읽고 탭은 그 섹션으로 이동한다. 회사 화면에는 섹션 줄(›)과 "다시 조사 요청".
 - **블록**: 섹션 내용은 정해진 블록으로만 쓴다: 숫자 칸(이름 · 값 · 기준 시점), 막대(연도별 쌓은 막대, 구성비 막대), 표, 연표(날짜 · 제목 · 한 줄), 사실 목록, 단계 흐름(밸류체인), 인용(현직자 말, 출처 이름). 그릇은 고정하고 내용은 열어둔다.
 - **표시**: 출처는 섹션 제목 오른쪽 "출처" 시트. 해석이 들어가면 "AI 의견". 앱이 이미 보여주는 것(공고 본문, DART 기본정보 · 실적)은 노트에 다시 쓰지 않는다.
+- **저장 형식(v1)**: `data` 브랜치 `notes/<회사 키>.json`. `{v, company(회사 키), name, updated(YYYY-MM-DD), posting?{title, deadline, url, id}, summary[3줄], sections[{title, blocks, sources[{title, url}]}]}`. 블록 `t`는 kv(이름 · 값 · 기준 시점) · facts · table(head, rows, strong) · timeline(날짜 · 제목 · 한 줄) · stack(두 계열 쌓은 막대, 억 원) · mix(구성비 %) · steps(단계 · 하는 일 · AI) · quote · path · cards, 블록마다 title(소제목)을 둘 수 있다. 화면 쪽 형식은 `web/src/lib/notes.ts`, 넣기 전 확인은 `src/jobpost/notes.py`(모르는 블록, 출처 없는 섹션은 넣지 않는다). 매일 수집 때(또는 Actions > notes) 사람마다 Supabase `research_notes`에 들어간다.
 
 ## 화면 원칙
 

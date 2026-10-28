@@ -32,6 +32,18 @@ function devScreenFile(): Plugin {
         res.setHeader('Content-Type', 'application/json')
         res.end(readFileSync(path))
       })
+      // 내 리서치 노트(로그인 없이 화면을 볼 때): notes/<회사 키>.json
+      server.middlewares.use('/__dev/notes', (req, res) => {
+        const name = decodeURIComponent((req.url ?? '').replace(/^\//, ''))
+        const path = resolve(dir, 'notes', name)
+        if (!/^[^/\\]+\.json$/.test(name) || !existsSync(path)) {
+          res.statusCode = 404
+          res.end()
+          return
+        }
+        res.setHeader('Content-Type', 'application/json')
+        res.end(readFileSync(path))
+      })
       server.middlewares.use('/__dev/companies.json.gz', (_req, res) => {
         const path = resolve(dir, 'companies.json.gz')
         if (!existsSync(path)) {

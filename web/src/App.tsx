@@ -22,6 +22,7 @@ import { CompanyPage } from './screens/CompanyPage'
 import { JobDetail } from './screens/JobDetail'
 import { Jobs, PAGE, type JobsUi } from './screens/Jobs'
 import { Login } from './screens/Login'
+import { NotePage } from './screens/NotePage'
 import { Profile } from './screens/Profile'
 import { Report } from './screens/Report'
 
@@ -201,6 +202,10 @@ function Main({ screen }: { screen: Screen }) {
       body = wide
         ? <div className="split">{jobs('companies')}<CompanyPage key={route.key} screen={screen} companyKey={route.key} today={today} filters={filters} panel /></div>
         : <CompanyPage key={route.key} screen={screen} companyKey={route.key} today={today} filters={filters} />
+      break
+    case 'note':
+      detail = !wide
+      body = <NotePage key={route.key} screen={screen} companyKey={route.key} section={route.section} />
       break
     case 'career':
       body = <Career screen={screen} seg={route.seg} filters={filters} matches={matches} today={today} />

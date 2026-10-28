@@ -1,0 +1,43 @@
+# 내 리서치 노트만 다시 넣는다: data 브랜치 notes/*.json을 사람마다 Supabase research_notes에.
+# 매일 수집(collect)에서도 넣는다. 노트를 올린 뒤 바로 보고 싶을 때 수동 실행.
+# 수동 실행: GitHub > Actions > notes > Run workflow
+name: notes
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 노트 넣기
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: uv run jobpost notes --data-dir data | tee notes.json
+
+      - name: 실행 요약
+        if: always()
+        run: |
+          echo "### 내 리서치 노트" >> "$GITHUB_STEP_SUMMARY"
+          [ -f notes.json ] && cat notes.json >> "$GITHUB_STEP_SUMMARY" || echo "결과 없음" >> "$GITHUB_STEP_SUMMARY"

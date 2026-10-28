@@ -63,6 +63,7 @@ src/jobpost/
   jobtypes.py      직무 유형 분류(목록은 config/job_types.yaml, AI가 고름)
   dart.py          회사 기본정보: 공고 회사를 DART와 잇고 기업개황·주요 계정·직원 현황·주요 공시를 data/dart/에(설정 config/dart.yaml). DART는 여기서만 부른다
   research.py      회사 심층분석: 가진 데이터로 만드는 경쟁사(같은 DART 업종 매출 상위)·직무 환경·도구(공고 본문의 도구). 설정 config/research.yaml
+  notes.py         내 리서치 노트: data 브랜치 notes/*.json(정해진 블록)을 확인해 사람마다 Supabase research_notes에 넣는다
   career.py        커리어 지표(시장): 직무 유형 × 기업 구분별 날짜별 공고 수, 경력 요구, 요구 스킬(화면용 파일 career)
   facts.py         공고 정리: 후보 공고의 매칭 항목을 공고당 1번 AI로(data/facts.jsonl), 스킬 목록
   profile.py       프로필 v2(경력 > 직무 구간 > 프로젝트, 숙련도): 직무별 연수, AI에 보낼 요약
@@ -84,11 +85,11 @@ web/src/
   styles/          tokens.css(디자인 값), app.css
   lib/             화면용 파일 형식·불러오기, 표기, 개인 필터(filters.py와 같은 규칙), 주소, 지원 상태, 커리어 계산·할 일
   components/      목록 줄·칩 같은 공용 조각, 커리어 탭 차트(charts.tsx)
-  screens/         리포트, 공고·회사 목록, 공고 상세(지원 상태), 회사, 커리어, 지원 현황, 관리, 프로필
+  screens/         홈, 공고·회사 목록, 공고 상세(지원 상태), 회사, 내 리서치 노트, 커리어, 지원 현황, 관리, 프로필
   kakao.ts         카톡 연결 화면(kakao.html, 인가 코드만 보여줌)
 ```
 
 - 수집: `uv run jobpost collect --data-dir data` (시험은 `--max-pages 2 --detail-budget 5`)
 - 검사: `uv run ruff check src tests` 와 `uv run pytest -q`, 화면은 `cd web && npm test && npm run lint && npm run build`
 - 화면 개발: `uv run jobpost screen --data-dir <data> --out .dev-data/screen.json.gz` 후 `cd web && npm run dev`(Supabase 값이 없으면 로그인 없이 이 파일을 읽는다)
-- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과(DART 기본정보 포함)는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회사 기본정보(DART)만 받으려면 `dart.yml`, 회차 리포트는 `feedback.yml`, 알림 연결·다시 보내기는 `telegram.yml`(카톡은 `kakao.yml`). 매칭 뒤 아침 알림을 보낸다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
+- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과(DART 기본정보 포함)는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회사 기본정보(DART)만 받으려면 `dart.yml`, 회차 리포트는 `feedback.yml`, 알림 연결·다시 보내기는 `telegram.yml`(카톡은 `kakao.yml`), 리서치 노트만 바로 넣으려면 `notes.yml`. 매칭 뒤 아침 알림을 보낸다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.

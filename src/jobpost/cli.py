@@ -9,7 +9,20 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from . import ai, config, dart, db, facts, feedback, notify, pipeline, publish, recommend, screen
+from . import (
+    ai,
+    config,
+    dart,
+    db,
+    facts,
+    feedback,
+    notes,
+    notify,
+    pipeline,
+    publish,
+    recommend,
+    screen,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -50,6 +63,8 @@ def main(argv: list[str] | None = None) -> int:
     t = sub.add_parser("research-test", help="심층분석 시험: 구글 검색 근거로 회사 사실을 받아 보고 근거 수·출처를 로그로 낸다")
     t.add_argument("--company", required=True)
     t.add_argument("--models", default="", help="쉼표로 여러 모델(비우면 config/ai.yaml)")
+    nt = sub.add_parser("notes", help="내 리서치 노트: data 폴더 notes/*.json을 사람마다 Supabase에 넣는다")
+    nt.add_argument("--data-dir", type=Path, default=Path("data"))
     d = sub.add_parser("dart", help="회사 기본정보: 공고 회사를 DART와 잇고 기업개황·재무·직원·공시를 data/dart/에 쌓는다")
     d.add_argument("--data-dir", type=Path, default=Path("data"))
     d.add_argument("--budget", type=int, help="이번 실행에서 쓸 최대 요청 수(비우면 config/dart.yaml)")
@@ -92,6 +107,16 @@ def main(argv: list[str] | None = None) -> int:
                 if companies_path:
                     publish.upload(companies_path, name="companies.json.gz")
                 logging.info("Supabase 저장소에 올림")
+    if args.cmd == "notes":
+        if not db.configured():
+            logging.info("Supabase 설정이 없어 리서치 노트를 건너뜀")
+            return 0
+        store = db.DB()
+        store.check_server_key()
+        summary = notes.run(args.data_dir, store)
+        json.dump(summary, sys.stdout, ensure_ascii=False)
+        print()
+        return 0
     if args.cmd == "dart":
         if not dart.configured():
             logging.info("DART 키(DART_API_KEY)가 없어 회사 기본정보를 건너뜀")
