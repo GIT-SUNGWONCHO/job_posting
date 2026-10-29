@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       detail_budget:
-        description: 직행·사람인 상세(본문)를 수집처마다 받을 최대 건수(비우면 설정값)
+        description: 직행·사람인·원티드 상세(본문)를 수집처마다 받을 최대 건수(비우면 설정값)
         required: false
 
 permissions:
