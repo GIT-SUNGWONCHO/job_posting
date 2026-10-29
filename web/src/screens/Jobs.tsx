@@ -72,8 +72,9 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
     () => sortPostings((ui.sample ? sample : passed).filter((p) => matchesQuery(p, c[p.company], ui.query)), ui.sort, matches),
     [passed, sample, c, ui.query, ui.sort, ui.sample, matches],
   )
-  // 회사 목록: 기업 구분 필터에 맞는 회사 전부(공고가 없는 주요 기업 포함). 필터 통과 공고가 많은 순, 그다음 열린 공고가 많은 순.
-  // 검색은 회사 이름, 또는 필터 통과 공고 제목. 평가할 공고만 볼 때는 그 공고의 회사만
+  // 회사 목록: 기업 구분 필터에 맞는 회사 전부(공고가 없는 주요 기업 포함). 열린 공고가 많은 순.
+  // 검색은 회사 이름, 또는 필터 통과 공고 제목. 검색할 때는 "공고 있는 회사" 칩과 상관없이 공고 없는 회사도 찾는다.
+  // 평가할 공고만 볼 때는 그 공고의 회사만
   const companies = useMemo(() => {
     if (seg !== 'companies') return []
     const passedBy = new Map<string, Posting[]>()
@@ -95,7 +96,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
         && !(filters.exclude_companies ?? []).some((x) => x && co.name.includes(x))
         && nameHit(co.name)))
       .map(([key, co]) => ({ key, co, passed: passedBy.get(key) ?? [], open: open.get(key) ?? 0, fresh: fresh.get(key) ?? 0 }))
-      .filter((r) => !ui.withOpen || r.open > 0)
+      .filter((r) => !ui.withOpen || q !== '' || r.open > 0)
       .sort((a, b) => b.open - a.open || b.passed.length - a.passed.length || a.co.name.localeCompare(b.co.name, 'ko'))
   }, [seg, shown, screen.postings, screen.date, c, filters, ui.query, ui.sample, ui.withOpen])
 
