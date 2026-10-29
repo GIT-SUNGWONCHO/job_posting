@@ -12,7 +12,7 @@ flowchart LR
     Z[직행 API]
     R[리멤버 API]
     S[사람인 목록 HTML]
-    W[원티드 API]
+    W[원티드 API<br/>Actions에서 막혀 꺼 둠]
   end
   subgraph GitHub Actions
     C[수집<br/>매일 04:17]
@@ -35,7 +35,7 @@ flowchart LR
   Z --> C
   R --> C
   S --> C
-  W --> C
+  W -.-> C
   C --> D
   D --> A
   DB --> A

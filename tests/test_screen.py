@@ -86,6 +86,28 @@ def test_upload_sends_gzip_with_upsert(tmp_path, monkeypatch):
     assert headers["apikey"] == "k" and "Authorization" not in headers
 
 
+def test_upload_retries_server_errors(tmp_path, monkeypatch):
+    from jobpost import publish
+
+    codes = [520, 502, 200]
+
+    class FakeResp:
+        def __init__(self, code):
+            self.status_code, self.text = code, "x"
+
+    class FakeSession:
+        def post(self, url, data, headers, timeout):
+            return FakeResp(codes.pop(0))
+
+    monkeypatch.setenv("SUPABASE_URL", "https://x.supabase.co")
+    monkeypatch.setenv("SUPABASE_SECRET_KEY", "k")
+    monkeypatch.setattr(publish.time, "sleep", lambda s: None)
+    f = tmp_path / "screen.json.gz"
+    f.write_bytes(b"\x1f\x8b")
+    publish.upload(f, session=FakeSession())  # 두 번 실패하고 세 번째에 올라간다
+    assert codes == []
+
+
 def test_body_shard_matches_the_web_hash(tmp_path):
     # web/src/lib/load.test.ts와 같은 값이어야 한다
     assert screen.body_shard("zighang:a") == "04"
