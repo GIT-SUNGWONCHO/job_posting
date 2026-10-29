@@ -9,7 +9,10 @@ on:
   workflow_dispatch:
     inputs:
       detail_budget:
-        description: 직행·사람인·원티드 상세(본문)를 수집처마다 받을 최대 건수(비우면 설정값)
+        description: 직행·사람인·원티드·잡코리아 상세(본문)를 수집처마다 받을 최대 건수(비우면 설정값)
+        required: false
+      sources:
+        description: 이 수집처만 받기(쉼표로, 예 jobkorea). 비우면 켜 둔 수집처 전부
         required: false
 
 permissions:
@@ -47,6 +50,9 @@ jobs:
           args=(--data-dir data)
           if [ -n "${{ github.event.inputs.detail_budget }}" ]; then
             args+=(--detail-budget "${{ github.event.inputs.detail_budget }}")
+          fi
+          if [ -n "${{ github.event.inputs.sources }}" ]; then
+            args+=(--sources "${{ github.event.inputs.sources }}")
           fi
           uv run jobpost collect "${args[@]}" | tee run.json
 

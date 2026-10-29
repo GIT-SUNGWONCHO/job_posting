@@ -123,8 +123,17 @@ class Store:
         (self.base / "state.jsonl").write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
 
     def save_run(self, today: date, summary: dict[str, Any]) -> Path:
+        """그날 실행 요약. 같은 날 일부 수집처만 다시 돌리면(--sources) 수집처별 결과는 앞 실행과 합친다."""
         path = self.base / "runs" / f"{today.isoformat()}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
+        if path.exists():
+            try:
+                before = json.loads(path.read_text(encoding="utf-8"))
+            except ValueError:
+                before = {}
+            for key in ("sources", "details"):
+                if isinstance(before.get(key), dict):
+                    summary = {**summary, key: {**before[key], **(summary.get(key) or {})}}
         path.write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
         return path
 

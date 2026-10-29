@@ -33,7 +33,9 @@ jobs:
       - name: 수집처 시험
         env:
           SOURCES: ${{ github.event.inputs.sources }}
-        run: uv run jobpost check-source --sources "$SOURCES" | tee check.json
+        run: |
+          set -o pipefail  # 한 수집처라도 막히면 빨간 실패로 보이게
+          uv run jobpost check-source --sources "$SOURCES" | tee check.json
 
       - name: 결과 요약
         if: always()

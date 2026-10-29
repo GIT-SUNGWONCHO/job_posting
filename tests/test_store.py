@@ -66,3 +66,13 @@ def test_new_source_first_day_is_backfill(tmp_path):
     # 다음 날부터 원티드에서 처음 본 공고는 새 공고
     s.ingest(date(2026, 10, 15), [_p(Source.WANTED, "1"), _p(Source.WANTED, "2")], {"wanted"})
     assert "backfill" not in s.state["wanted:2"]
+
+
+def test_same_day_partial_rerun_merges_sources(tmp_path):
+    s = Store(tmp_path)
+    day = date(2026, 10, 30)
+    s.save_run(day, {"date": "2026-10-30", "sources": {"zighang": {"fetched": 1}}, "details": {"zighang": {"fetched": 1}}})
+    s.save_run(day, {"date": "2026-10-30", "sources": {"jobkorea": {"fetched": 2}}, "details": {}})
+    import json
+    run = json.loads((tmp_path / "runs" / "2026-10-30.json").read_text(encoding="utf-8"))
+    assert set(run["sources"]) == {"zighang", "jobkorea"} and set(run["details"]) == {"zighang"}
