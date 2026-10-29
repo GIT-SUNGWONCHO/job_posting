@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { addDays, dateText, deadlineText, isUrgent, listTitle } from './format'
+import { describe, expect, it, test } from 'vitest'
+import { addDays, dateText, deadlineText, isNewSince, isUrgent, listTitle } from './format'
 
 describe('deadlineText', () => {
   const today = '2026-10-13'
@@ -69,4 +69,10 @@ describe('listTitle', () => {
     expect(listTitle({ title: '[가나다] 데이터 엔지니어 채용', listTitle: '데이터 엔지니어' })).toBe('데이터 엔지니어')
     expect(listTitle({ title: 'Data Engineer' })).toBe('Data Engineer')
   })
+})
+
+test('isNewSince skips first-day postings of a new source', () => {
+  expect(isNewSince({ firstSeen: '2026-10-30' }, '2026-10-24')).toBe(true)
+  expect(isNewSince({ firstSeen: '2026-10-20' }, '2026-10-24')).toBe(false)
+  expect(isNewSince({ firstSeen: '2026-10-30', backfill: true }, '2026-10-24')).toBe(false)
 })

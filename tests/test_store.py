@@ -51,3 +51,18 @@ def test_details_mark_state(tmp_path):
     s.add_details(d, [Detail(uid="zighang:a", fetched_at=datetime(2026, 10, 13), description="본문")])
     assert s.state["zighang:a"]["detail"] is True
     assert (tmp_path / "details" / "2026" / "10" / "13.jsonl.gz").exists()
+
+
+def test_new_source_first_day_is_backfill(tmp_path):
+    s = Store(tmp_path)
+    s.ingest(date(2026, 10, 13), [_p(Source.ZIGHANG, "a")], {"zighang"})
+    # 첫 수집(상태가 비어 있음)은 표시하지 않는다
+    assert "backfill" not in s.state["zighang:a"]
+    # 원티드를 처음 붙인 날: 원래 열려 있던 공고. 같은 날 기존 수집처의 새 공고는 그대로 새 공고
+    s.ingest(date(2026, 10, 14), [_p(Source.ZIGHANG, "a"), _p(Source.ZIGHANG, "b"), _p(Source.WANTED, "1")],
+             {"zighang", "wanted"})
+    assert s.state["wanted:1"]["backfill"] is True
+    assert "backfill" not in s.state["zighang:b"]
+    # 다음 날부터 원티드에서 처음 본 공고는 새 공고
+    s.ingest(date(2026, 10, 15), [_p(Source.WANTED, "1"), _p(Source.WANTED, "2")], {"wanted"})
+    assert "backfill" not in s.state["wanted:2"]

@@ -4,7 +4,7 @@ import { FilterSheet, type FilterSection } from '../components/FilterSheet'
 import { CompanyRow } from '../components/CompanyRow'
 import { Chip, DOWN_ICON, Empty, JobRow, SEARCH_ICON, SLIDERS_ICON } from '../components/ui'
 import { matchesQuery } from '../lib/filter'
-import { addDays } from '../lib/format'
+import { addDays, isNewSince } from '../lib/format'
 import { href } from '../lib/route'
 import type { Match } from '../lib/matches'
 import type { Filters, Posting, Screen } from '../lib/types'
@@ -85,7 +85,7 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
     for (const p of screen.postings) {
       if (p.noise) continue
       open.set(p.company, (open.get(p.company) ?? 0) + 1)
-      if (p.firstSeen >= weekStart) fresh.set(p.company, (fresh.get(p.company) ?? 0) + 1)
+      if (isNewSince(p, weekStart)) fresh.set(p.company, (fresh.get(p.company) ?? 0) + 1)
     }
     const types = filters.company_types ?? []
     const q = ui.query.trim().toLowerCase()

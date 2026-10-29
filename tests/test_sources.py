@@ -4,7 +4,7 @@ from pathlib import Path
 
 from jobpost.models import DeadlineType, Source
 from jobpost.normalize import career_text
-from jobpost.sources import remember, saramin, zighang
+from jobpost.sources import remember, saramin, wanted, zighang
 
 FIX = Path(__file__).parent / "fixtures"
 
@@ -145,3 +145,39 @@ def test_saramin_detail_text():
     assert d.uid == "saramin:123"
     assert d.description == "📋 주요업무\n데이터 파이프라인 구축"
     assert d.raw == {"images": 1}
+
+
+def test_wanted_list_item():
+    tags = {655: "데이터 엔지니어", 1024: "데이터 사이언티스트", 1025: "빅데이터 엔지니어"}
+    dated, open_, newcomer = (wanted.parse_item(x, tags) for x in load("wanted_list.json")["data"])
+    assert dated.source is Source.WANTED
+    assert dated.url == "https://www.wanted.co.kr/wd/395306"
+    assert dated.company == "케이에스피아이"
+    assert (dated.career_min, dated.career_max, dated.newcomer) == (4, 10, False)
+    assert (dated.deadline_type, dated.deadline) == (DeadlineType.DATE, date(2026, 11, 13))
+    assert dated.regions == ["서울"]
+    assert "데이터 엔지니어" in dated.categories
+    # annual_to 100은 상한 없음, 마감일이 없으면 상시
+    assert (open_.career_min, open_.career_max) == (3, None)
+    assert (open_.deadline_type, open_.deadline) == (DeadlineType.ALWAYS, None)
+    assert (newcomer.career_min, newcomer.newcomer) == (None, True)
+
+
+def test_wanted_detail():
+    job = load("wanted_detail.json")["job"]
+    d = wanted.parse_detail(job, "395306", datetime(2026, 10, 29))
+    assert d.uid == "wanted:395306"
+    assert d.description and d.description.startswith("[주요업무]")
+    assert "[자격요건]" in d.description and "[회사 소개]" not in d.description
+    assert {t["title"] for t in d.raw["company_tags"]} >= {"50명이하", "설립3년이하"}
+
+
+def test_wanted_company_names():
+    known = {"컷백", "cj올리브영", "엔비디아nvidia"}
+    assert wanted.pick_company("컷백(Cutback)", known) == "컷백"
+    assert wanted.pick_company("씨제이올리브영(CJ올리브영)", known) == "CJ올리브영"
+    assert wanted.pick_company("엔비디아(NVIDIA)", known) == "엔비디아(NVIDIA)"
+    # 처음 보는 회사: 괄호 앞 이름, 다른 이름이 보통 이름이면 그쪽
+    assert wanted.pick_company("앤톡(Antock)", set()) == "앤톡"
+    assert wanted.pick_company("씨제이이엔엠(CJ이엔엠)", set()) == "CJ이엔엠"
+    assert wanted.pick_company("케이에스피아이(주)", set()) == "케이에스피아이"

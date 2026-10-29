@@ -189,3 +189,11 @@ def test_list_title_only_when_shorter():
     from jobpost.screen import _list_title
     assert _list_title("[가나다] 데이터 엔지니어 채용", "가나다") == {"listTitle": "데이터 엔지니어"}
     assert _list_title("Data Engineer", "가나다") == {}
+
+
+def test_backfill_only_when_every_first_day_member_is_backfill():
+    from jobpost.screen import is_backfill
+    w = {"first_seen": "2026-10-30", "backfill": True}
+    assert is_backfill([w], "2026-10-30")
+    assert not is_backfill([w, {"first_seen": "2026-10-30"}], "2026-10-30")  # 같은 날 다른 수집처의 새 공고
+    assert not is_backfill([w, {"first_seen": "2026-10-20"}], "2026-10-20")  # 예전부터 본 공고

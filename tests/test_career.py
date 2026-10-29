@@ -51,3 +51,13 @@ def test_duplicate_group_uses_earliest_first_seen_and_stays_open_while_any_membe
     assert out["series"]["data_eng|대기업"] == {"open": [1, 1, 1], "new": [None, 0, 0]}
     assert "Airflow" in out["dictionary"]
 
+
+
+def test_backfill_counts_as_open_but_not_new():
+    state = {r["uid"]: r for r in [
+        rec("a", "2026-10-13"), rec("w1", "2026-10-14", backfill=True), rec("w2", "2026-10-15"),
+        # 원티드 첫날 공고가 다른 수집처의 같은 날 새 공고와 묶이면 새 공고다
+        rec("z", "2026-10-14"), rec("w3", "2026-10-14", dup_of="z", backfill=True),
+    ]}
+    out = career.build(state, Registry(), [], {}, {}, date(2026, 10, 15))
+    assert out["series"]["data_eng|대기업"] == {"open": [1, 3, 4], "new": [None, 1, 1]}

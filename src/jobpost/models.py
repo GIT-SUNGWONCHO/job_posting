@@ -13,6 +13,7 @@ class Source(StrEnum):
     ZIGHANG = "zighang"
     REMEMBER = "remember"
     SARAMIN = "saramin"
+    WANTED = "wanted"
 
 
 class DeadlineType(StrEnum):

@@ -3,7 +3,7 @@ import { copy } from '../copy'
 import { CompanyRow } from '../components/CompanyRow'
 import { Chip, Deadline, Empty, Score, Sep } from '../components/ui'
 import { saveApplication, STAGES, type Application, type Stage } from '../lib/applications'
-import { addDays, companyLine, dateText, listTitle } from '../lib/format'
+import { addDays, companyLine, dateText, isNewSince, listTitle } from '../lib/format'
 import type { Match } from '../lib/matches'
 import { href } from '../lib/route'
 import { useStars } from '../lib/stars'
@@ -47,7 +47,7 @@ function InterestCompanies({ screen, keys }: { screen: Screen; keys: string[] })
   const weekStart = addDays(screen.date, -(WEEK - 1))
   const rows = keys.map((key) => {
     const list = screen.postings.filter((p) => p.company === key && !p.noise)
-    return { key, co: screen.companies[key], open: list.length, fresh: list.filter((p) => p.firstSeen >= weekStart).length }
+    return { key, co: screen.companies[key], open: list.length, fresh: list.filter((p) => isNewSince(p, weekStart)).length }
   }).sort((a, b) => b.fresh - a.fresh || b.open - a.open || a.co.name.localeCompare(b.co.name, 'ko'))
   return (
     <>

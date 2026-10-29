@@ -36,6 +36,11 @@ export function addDays(iso: string, n: number): string {
   return new Date(Date.parse(iso) + n * DAY).toISOString().slice(0, 10)
 }
 
+/** 그날 이후에 새로 올라온 공고인가. 새로 붙인 수집처가 첫날 가져온 공고(backfill)는 원래 열려 있던 공고라 아니다 */
+export function isNewSince(p: Pick<Posting, 'firstSeen' | 'backfill'>, day: string): boolean {
+  return !p.backfill && p.firstSeen >= day
+}
+
 /** 마감 3일 이내(D-day~D-3)면 빨강으로 표시한다. */
 export function isUrgent(p: Pick<Posting, 'deadlineType' | 'deadline'>, today: string): boolean {
   const n = daysLeft(p, today)

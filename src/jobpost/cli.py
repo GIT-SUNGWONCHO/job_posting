@@ -31,7 +31,7 @@ def main(argv: list[str] | None = None) -> int:
 
     c = sub.add_parser("collect", help="공고를 수집해 data 폴더에 쌓는다")
     c.add_argument("--data-dir", type=Path, default=Path("data"))
-    c.add_argument("--sources", help="쉼표로 구분(zighang,remember,saramin). 생략하면 전부")
+    c.add_argument("--sources", help="쉼표로 구분(zighang,remember,saramin,wanted). 생략하면 켜 둔 수집처 전부")
     c.add_argument("--max-pages", type=int, help="시험용: 조회마다 최대 페이지 수")
     c.add_argument("--detail-budget", type=int, help="직행 상세를 받을 최대 건수")
 

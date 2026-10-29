@@ -1,0 +1,146 @@
+{
+ "links": {
+  "prev": null,
+  "next": null
+ },
+ "data": [
+  {
+   "status": "active",
+   "hidden": false,
+   "company": {
+    "id": 57082,
+    "industry_name": "IT, 컨텐츠",
+    "application_response_stats": {
+     "avg_rate": 100.0,
+     "level": "very_high",
+     "delayed_count": 0,
+     "avg_day": null,
+     "remained_count": 0,
+     "type": "applied_reply_done"
+    },
+    "name": "케이에스피아이"
+   },
+   "annual_to": 10,
+   "compare_country": true,
+   "due_time": "2026-11-13",
+   "id": 395306,
+   "address": {
+    "location_key": "seoul",
+    "district": "강남구",
+    "country": "한국",
+    "location": "서울",
+    "full_location": "서울 강남구 강남대로112길 47, 2층",
+    "district_key": "seoul.gangnam-gu"
+   },
+   "position": "[Databricks] Data Intelligence Platform 엔지니어",
+   "is_recommended": false,
+   "category_tags": [
+    {
+     "parent_id": 518,
+     "id": 655
+    },
+    {
+     "parent_id": 518,
+     "id": 1024
+    },
+    {
+     "parent_id": 518,
+     "id": 1025
+    }
+   ],
+   "annual_from": 4
+  },
+  {
+   "status": "active",
+   "hidden": false,
+   "company": {
+    "id": 35182,
+    "industry_name": "IT, 컨텐츠",
+    "application_response_stats": {
+     "avg_rate": 70.08,
+     "level": "low",
+     "delayed_count": 0,
+     "avg_day": null,
+     "remained_count": 0,
+     "type": "applied_reply_done"
+    },
+    "name": "카카오헬스케어"
+   },
+   "annual_to": 100,
+   "compare_country": true,
+   "due_time": null,
+   "id": 395198,
+   "address": {
+    "location_key": "gyeonggi",
+    "district": "성남시",
+    "country": "한국",
+    "location": "경기",
+    "full_location": "경기도 성남시 분당구 판교역로 166, 카카오판교아지트 B동 5층",
+    "district_key": "gyeonggi.seongnam-si"
+   },
+   "position": "AI Engineer (Agent/ML)",
+   "is_recommended": false,
+   "category_tags": [
+    {
+     "parent_id": 518,
+     "id": 655
+    },
+    {
+     "parent_id": 518,
+     "id": 1634
+    },
+    {
+     "parent_id": 518,
+     "id": 10110
+    }
+   ],
+   "annual_from": 3
+  },
+  {
+   "status": "active",
+   "hidden": false,
+   "company": {
+    "id": 14591,
+    "industry_name": "IT, 컨텐츠",
+    "application_response_stats": {
+     "avg_rate": 99.1,
+     "level": "very_high",
+     "delayed_count": 0,
+     "avg_day": null,
+     "remained_count": 0,
+     "type": "applied_reply_done"
+    },
+    "name": "아이트럭"
+   },
+   "annual_to": 5,
+   "compare_country": true,
+   "due_time": null,
+   "id": 394235,
+   "address": {
+    "location_key": "seoul",
+    "district": "서초구",
+    "country": "한국",
+    "location": "서울",
+    "full_location": "서울 서초구 동작대로 230, 3층",
+    "district_key": "seoul.seocho-gu"
+   },
+   "position": "AI 머신러닝 엔지니어",
+   "is_recommended": false,
+   "category_tags": [
+    {
+     "parent_id": 518,
+     "id": 655
+    },
+    {
+     "parent_id": 518,
+     "id": 1634
+    },
+    {
+     "parent_id": 518,
+     "id": 10110
+    }
+   ],
+   "annual_from": 0
+  }
+ ]
+}

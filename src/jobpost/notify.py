@@ -118,7 +118,8 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
 
     wanted = [p for p in screen["postings"] if stages.get(p["id"]) not in NOT_AGAIN]
     passing = {p["id"] for p in recommend.candidates(screen, filters)}  # 잡음은 빠져 있다
-    new = [p for p in wanted if start <= p["firstSeen"] <= today.isoformat()]
+    # 새로 붙인 수집처가 첫날 가져온 공고(backfill)는 원래 열려 있던 공고라 새 공고로 알리지 않는다
+    new = [p for p in wanted if start <= p["firstSeen"] <= today.isoformat() and not p.get("backfill")]
     passed = by_score(p for p in new if p["id"] in passing)
     # 필터 밖: 걸린 조건이 적은(아깝게 빠진) 공고부터. 한도에 걸리면 뒤에서 줄인다
     why = {p["id"]: why_not(p, screen, filters) for p in new if p["id"] not in passing and not p.get("noise")}

@@ -58,6 +58,9 @@ class Store:
                extra: dict[str, dict[str, Any]] | None = None) -> tuple[list[str], list[str]]:
         """오늘 본 공고를 반영한다. (새 공고 uid, 오늘 내려간 공고 uid)를 돌려준다."""
         day = today.isoformat()
+        # 새로 붙인 수집처의 첫날 공고는 원래 열려 있던 공고다(backfill). 새 공고로 세지 않는다.
+        # 맨 처음 수집(상태가 비어 있음)은 화면·지표가 첫날을 따로 처리하므로 표시하지 않는다
+        known_sources = {r["source"] for r in self.state.values()}
         new_rows: list[dict[str, Any]] = []
         new_uids: list[str] = []
         seen: set[str] = set()
@@ -67,6 +70,8 @@ class Store:
             rec = self.state.get(uid)
             if rec is None:
                 rec = {"uid": uid, "source": p.source.value, "first_seen": day, "detail": False}
+                if known_sources and p.source.value not in known_sources:
+                    rec["backfill"] = True
                 self.state[uid] = rec
                 new_uids.append(uid)
                 row = p.model_dump(mode="json")

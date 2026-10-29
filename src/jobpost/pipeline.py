@@ -18,6 +18,7 @@ from .scope import in_scope, is_overseas, noise_reason
 from .sources import CollectResult
 from .sources.remember import RememberCollector
 from .sources.saramin import SaraminCollector
+from .sources.wanted import WantedCollector
 from .sources.zighang import ZighangCollector
 from .store import Store
 
@@ -27,6 +28,7 @@ COLLECTORS = {
     Source.ZIGHANG.value: ZighangCollector,
     Source.REMEMBER.value: RememberCollector,
     Source.SARAMIN.value: SaraminCollector,
+    Source.WANTED.value: WantedCollector,
 }
 
 
@@ -58,12 +60,15 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
     collectors: dict[str, Any] = {}
     for name in sources or list(COLLECTORS):
         scfg = (cfg.get("sources") or {}).get(name) or {}
-        if not scfg.get("enabled", True):
-            continue
+        if sources is None and not scfg.get("enabled", True):
+            continue  # 꺼 둔 수집처는 --sources로 이름을 줄 때만 받는다(영향 미리 보기)
         t0 = time.monotonic()
         log.info("%s 수집 시작", name)
         result, collector = _collect(name, scfg, max_pages)
         collectors[name] = collector
+        if hasattr(collector, "resolve_companies"):  # 회사 이름 표기가 다른 수집처(원티드)
+            collector.resolve_companies(result.postings,
+                                        {r.get("company_key") for r in store.state.values()} | set(registry.data))
         names = {company_key(p.company): p.company for p in result.postings}
         registry.update(result.company_types, names, today.isoformat())
         kept = [p for p in result.postings if in_scope(p)]
@@ -109,11 +114,11 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         rep = rep_of.get(r["uid"])
         r["dup_of"] = rep if rep and rep != r["uid"] else None
 
-    # 상세(본문): 직행·사람인. 리멤버는 목록에 본문이 같이 온다.
-    # 묶인 공고는 대표만 받는다(대표 순서가 리멤버 > 직행 > 사람인이라 본문이 있는 쪽이 대표다).
+    # 상세(본문): 직행·사람인·원티드. 리멤버는 목록에 본문이 같이 온다.
+    # 묶인 공고는 대표만 받는다(대표 순서가 리멤버 > 직행 > 사람인 > 원티드라 본문이 있는 쪽이 대표다).
     # 대기업·공공·외국계부터, 새로 본 공고부터 하루 한도만큼
     summary["details"] = {}
-    for name in ("zighang", "saramin"):
+    for name in ("zighang", "saramin", "wanted"):
         scfg = (cfg.get("sources") or {}).get(name) or {}
         budget = scfg.get("detail_budget", 0) if detail_budget is None else detail_budget
         if not budget or name not in collectors:

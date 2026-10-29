@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { copy } from '../copy'
 import { Deadline, Empty, JobRow, Score, SectionTitle, Sep } from '../components/ui'
 import { NOT_AGAIN, useApps } from '../lib/applications'
-import { addDays, companyLine, isUrgent, listTitle } from '../lib/format'
+import { addDays, companyLine, isNewSince, isUrgent, listTitle } from '../lib/format'
 import { loadMatchDetail, type Match, type MatchDetail } from '../lib/matches'
 import { href } from '../lib/route'
 import { useStars } from '../lib/stars'
@@ -40,7 +40,7 @@ export function Report({ screen, passed, today, matches }: {
   const byDeadline = (a: Posting, b: Posting) => (a.deadline ?? '').localeCompare(b.deadline ?? '')
 
   const weekStart = addDays(screen.date, -(WEEK - 1))
-  const week = passed.filter((p) => p.firstSeen >= weekStart && again(p)).sort(byScore)
+  const week = passed.filter((p) => isNewSince(p, weekStart) && again(p)).sort(byScore)
   // "오늘"은 브라우저 날짜 기준(오늘 수집이 끝나기 전이면 어제 공고에 붙지 않게)
   const todayCount = week.filter((p) => p.firstSeen === today).length
   // 1 오늘의 1등: 최근 7일 새 공고 중 점수 1등(점수가 있는 공고만)
@@ -60,10 +60,10 @@ export function Report({ screen, passed, today, matches }: {
   urgentShown.forEach((p) => shown.add(p.id))
   // 4 관심 회사 새 공고: ★ 회사의 이번 주 새 공고, 필터와 상관없이(잡음은 빼고)
   const starred = stars instanceof Set && stars.size
-    ? screen.postings.filter((p) => stars.has(p.company) && p.firstSeen >= weekStart && !p.noise && again(p) && !shown.has(p.id)).sort(byScore)
+    ? screen.postings.filter((p) => stars.has(p.company) && isNewSince(p, weekStart) && !p.noise && again(p) && !shown.has(p.id)).sort(byScore)
     : []
   const starredShown = take('starred', starred, SHOW)
-  const badge = (p: Posting) => (p.firstSeen === today ? copy.report.todayBadge : undefined)
+  const badge = (p: Posting) => (isNewSince(p, today) && p.firstSeen === today ? copy.report.todayBadge : undefined)
   const more = (key: string, list: Posting[], visible: Posting[]) => list.length > visible.length && (
     <button type="button" className="btn block more" onClick={() => setOpen({ ...open, [key]: true })}>{copy.jobs.more(list.length - visible.length)}</button>
   )

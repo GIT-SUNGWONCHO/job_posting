@@ -2,7 +2,8 @@
 
 v2(2026-10-22), 국내·잡음 아닌 공고, 같은 공고 묶음은 하나(처음 본 날은 묶음에서 가장 이른 날) 기준. 직무 유형 × 기업 구분마다 나눠 두고 화면이 내 필터에 맞게 더한다.
 - 날짜별 열린 공고 수: 처음 본 날 ≤ 그날 < 내려간 날(state.jsonl). 지난 공고는 소급할 수 없어 수집을 시작한 날부터
-- 날짜별 새 공고 수: 그날 처음 본 공고. 수집 첫날은 그동안 열려 있던 공고가 한꺼번에 들어와 세지 않는다(null)
+- 날짜별 새 공고 수: 그날 처음 본 공고. 수집 첫날은 그동안 열려 있던 공고가 한꺼번에 들어와 세지 않는다(null).
+  새로 붙인 수집처가 첫날 가져온 공고(backfill)도 원래 열려 있던 공고라 새 공고로 세지 않는다(열린 공고에는 센다)
 - 지금 열린 공고의 연차 분포: 최소 경력 기준 0~3년 미만(신입·N년 이하 포함), 3~7, 7~12, 12년 이상, 연차 무관
 - 지금 열린 공고가 요구하는 스킬: 본문에서 스킬 사전(config/skills.yaml)으로 찾은 스킬별 공고 수(전부, 많은 순)
 연봉은 공고에 거의 적혀 있지 않아(2026-10-21 공고 정리 340건 중 금액이 적힌 것 5건 남짓) 넣지 않는다.
@@ -17,7 +18,7 @@ from typing import Any
 from . import matching
 from .companies import CompanyRegistry
 
-VERSION = 2  # 2: 신입·N년 이하를 3년 미만으로, 같은 공고 묶음의 날짜, 스킬 사전 이름(dictionary)
+VERSION = 3  # 2: 신입·N년 이하를 3년 미만으로, 같은 공고 묶음의 날짜, 스킬 사전 이름(dictionary), 3: 새로 붙인 수집처의 첫날 공고(backfill)는 새 공고로 세지 않음
 CAREER_BUCKETS = [("0-3", 0, 3), ("3-7", 3, 7), ("7-12", 7, 12), ("12+", 12, 99)]
 
 
@@ -51,11 +52,12 @@ def daily(state: dict[str, dict[str, Any]], registry: CompanyRegistry, today: da
         if r.get("dup_of"):
             members.setdefault(r["dup_of"], []).append(r)
 
-    def span(r: dict[str, Any]) -> tuple[str, str | None]:
+    def span(r: dict[str, Any]) -> tuple[str, str | None, bool]:
         group = [r, *members.get(r["uid"], [])] if "uid" in r else [r]
         first = min(x["first_seen"] for x in group if x.get("first_seen"))
         closed = None if any(not x.get("closed_on") for x in group) else max(x["closed_on"] for x in group)
-        return first, closed
+        backfill = all(x.get("backfill") for x in group if x.get("first_seen") == first)
+        return first, closed, backfill
 
     spans = {id(r): span(r) for r in recs}
     start = min((spans[id(r)][0] for r in recs), default=today.isoformat())
@@ -70,14 +72,15 @@ def daily(state: dict[str, dict[str, Any]], registry: CompanyRegistry, today: da
         ckey = r.get("company_key") or r.get("company", "")
         k = _key((r.get("job_type") or {}).get("id"), registry.company_type(ckey, r.get("company", "")).value)
         s = series.setdefault(k, {"open": [0] * len(days), "new": [0] * len(days)})
-        first_seen, closed_on = spans[id(r)]
+        first_seen, closed_on, backfill = spans[id(r)]
         first = index.get(first_seen)
         if first is None:
             continue
         end = index.get(closed_on, len(days)) if closed_on else len(days)
         for i in range(first, min(end, len(days))):
             s["open"][i] += 1  # type: ignore[operator]
-        s["new"][first] += 1  # type: ignore[operator]
+        if not backfill:
+            s["new"][first] += 1  # type: ignore[operator]
     for s in series.values():
         s["new"][0] = None  # 수집 첫날은 새 공고로 세지 않는다
     return {"since": start, "days": days, "series": series}

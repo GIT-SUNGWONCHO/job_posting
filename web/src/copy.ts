@@ -86,7 +86,7 @@ export const copy = {
     reason: '매칭 이유',
     aiOpinion: 'AI 의견',
     body: '공고 내용',
-    bodySource: { remember: '리멤버 원문', zighang: '직행이 정리한 요약', saramin: '사람인 원문' } as Record<string, string>,
+    bodySource: { remember: '리멤버 원문', wanted: '원티드 원문', zighang: '직행이 정리한 요약', saramin: '사람인 원문' } as Record<string, string>,
     noBody: '공고 내용은 수집처에서 볼 수 있어요',
     bodyMore: '공고 내용 더 보기',
     bodyFailed: '공고 내용을 불러오지 못했어요',

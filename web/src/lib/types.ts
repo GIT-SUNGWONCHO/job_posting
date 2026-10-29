@@ -25,6 +25,8 @@ export interface Posting {
   headhunter: boolean
   noise: string | null
   firstSeen: string
+  /** 새로 붙인 수집처가 첫날 가져온 공고(원래 열려 있던 공고). 새 공고로 세지 않는다 */
+  backfill?: boolean
   /** 직무 유형 id. 오늘 들어와 아직 분류 전이면 null */
   jobType: string | null
   /** 본문 파일(bodies/xx.json.gz)에 본문이 있나 */
@@ -34,7 +36,7 @@ export interface Posting {
 
 export interface Body {
   text: string
-  /** 본문을 가져온 수집처: remember(원문), zighang(직행이 정리한 요약), saramin(원문) */
+  /** 본문을 가져온 수집처: remember·wanted·saramin(원문), zighang(직행이 정리한 요약) */
   source: string
 }
 
