@@ -45554,6 +45554,22 @@
 },
 "v": 3
 },
+"00479042": {
+"company": {
+"ceo": "김준용",
+"founded": "1997-07-12",
+"homepage": "https://www.rexsoft.co.kr",
+"industry_code": "58221",
+"market": "기타",
+"name": "렉스소프트(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-30",
+"finance": null,
+"v": 3
+},
 "00479857": {
 "company": {
 "ceo": "박제형",
@@ -50343,6 +50359,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00591177": {
+"company": {
+"ceo": "권치오",
+"founded": "2006-09-01",
+"homepage": "https://www.gmarineservice.com",
+"industry_code": "75999",
+"market": "기타",
+"name": "(주)지마린서비스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-30",
 "finance": null,
 "v": 3
 },
@@ -63475,6 +63507,22 @@
 "finance": null,
 "v": 3
 },
+"01073793": {
+"company": {
+"ceo": "조삼호",
+"founded": "2014-08-06",
+"homepage": null,
+"industry_code": "68112",
+"market": "기타",
+"name": "주식회사 마디",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-30",
+"finance": null,
+"v": 3
+},
 "01074862": {
 "company": {
 "ceo": "손성은",
@@ -70108,6 +70156,22 @@
 "finance": null,
 "v": 3
 },
+"01259649": {
+"company": {
+"ceo": "최명서",
+"founded": "2016-02-25",
+"homepage": null,
+"industry_code": "64209",
+"market": "기타",
+"name": "주식회사 제이파트너스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-30",
+"finance": null,
+"v": 3
+},
 "01261644": {
 "company": {
 "ceo": "이정호",
@@ -75678,6 +75742,129 @@
 "finance": null,
 "v": 3
 },
+"01408999": {
+"company": {
+"ceo": "김학성, 박창훈",
+"founded": "2019-09-04",
+"homepage": null,
+"industry_code": "582",
+"market": "코스닥",
+"name": "(주)웨이버스",
+"stock_code": "336060"
+},
+"disclosures": [
+{
+"date": "2026-10-19",
+"rcept_no": "20261019000035",
+"title": "주요사항보고서(자기주식취득결정)"
+},
+{
+"date": "2026-08-05",
+"rcept_no": "20260805900557",
+"title": "주권매매거래정지해제 (액면병합 주권 변경상장)"
+},
+{
+"date": "2026-07-08",
+"rcept_no": "20260708900631",
+"title": "주권매매거래정지 (주식의 병합, 분할 등 전자등록 변경, 말소)"
+},
+{
+"date": "2026-06-29",
+"rcept_no": "20260629900452",
+"title": "임시주주총회결과"
+},
+{
+"date": "2026-05-27",
+"rcept_no": "20260527900261",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-05-22",
+"rcept_no": "20260522900257",
+"title": "단일판매ㆍ공급계약체결(자율공시)"
+},
+{
+"date": "2026-05-20",
+"rcept_no": "20260520900758",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2026-05-20",
+"rcept_no": "20260520900755",
+"title": "주식병합결정"
+},
+{
+"date": "2026-05-20",
+"rcept_no": "20260520900752",
+"title": "주주총회소집결의 (임시주주총회)"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326902232",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-18",
+"rcept_no": "20260318900424",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-02-24",
+"rcept_no": "20260224900327",
+"title": "주주총회소집결의"
+},
+{
+"date": "2025-12-18",
+"rcept_no": "20251218900065",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2025-12-12",
+"rcept_no": "20251212900592",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-10-31",
+"rcept_no": "20251031900109",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+}
+],
+"employees": {
+"count": 423,
+"date": "2025-12-31",
+"rcept_no": "20260318000548",
+"salary": 48251783,
+"tenure": 3.8
+},
+"fetched": "2026-10-30",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318000548",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 7067361871,
+"operating": 5059915724,
+"revenue": 48755717335,
+"year": 2023
+},
+{
+"net": 3260196717,
+"operating": 1677639649,
+"revenue": 56364920891,
+"year": 2024
+},
+{
+"net": 2743505908,
+"operating": 1991577750,
+"revenue": 70202813590,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "01410505": {
 "company": {
 "ceo": "박우진",
@@ -76272,6 +76459,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01437636": {
+"company": {
+"ceo": "김병우",
+"founded": "2015-06-25",
+"homepage": null,
+"industry_code": "75999",
+"market": "기타",
+"name": "주식회사 우아한청년들",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-30",
 "finance": null,
 "v": 3
 },
@@ -78296,6 +78499,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"01503434": {
+"company": {
+"ceo": "이기선",
+"founded": "1998-06-18",
+"homepage": null,
+"industry_code": "75999",
+"market": "기타",
+"name": "주식회사 선정인터내셔날",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-30",
 "finance": null,
 "v": 3
 },
@@ -88401,6 +88620,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-23",
+"finance": null,
+"v": 3
+},
+"01894628": {
+"company": {
+"ceo": "이성은",
+"founded": "2021-10-01",
+"homepage": "https://verish.me/index.html",
+"industry_code": "47413",
+"market": "기타",
+"name": "딥다이브",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-30",
 "finance": null,
 "v": 3
 },

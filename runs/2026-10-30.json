@@ -1,0 +1,106 @@
+{
+ "date": "2026-10-30",
+ "started": "2026-10-30T08:21:21",
+ "sources": {
+  "zighang": {
+   "fetched": 8843,
+   "in_scope": 8842,
+   "complete": true,
+   "requests": 222,
+   "seconds": 89.5,
+   "errors": [],
+   "error_count": 0,
+   "new": 156,
+   "closed": 193
+  },
+  "remember": {
+   "fetched": 1535,
+   "in_scope": 1282,
+   "complete": true,
+   "requests": 60,
+   "seconds": 177.3,
+   "errors": [],
+   "error_count": 0,
+   "new": 13,
+   "closed": 21
+  },
+  "saramin": {
+   "fetched": 4024,
+   "in_scope": 1510,
+   "complete": true,
+   "requests": 48,
+   "seconds": 65.2,
+   "errors": [],
+   "error_count": 0,
+   "new": 99,
+   "closed": 63
+  },
+  "wanted": {
+   "fetched": 0,
+   "in_scope": 0,
+   "complete": false,
+   "requests": 7,
+   "seconds": 6.0,
+   "errors": [
+    "데이터 엔지니어: 403 Client Error: Forbidden for url: https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=655&job_sort=job.latest_order&locations=all&years=-1&limit=100&offset=0",
+    "빅데이터 엔지니어: 403 Client Error: Forbidden for url: https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=1025&job_sort=job.latest_order&locations=all&years=-1&limit=100&offset=0",
+    "데이터 사이언티스트: 403 Client Error: Forbidden for url: https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=1024&job_sort=job.latest_order&locations=all&years=-1&limit=100&offset=0",
+    "머신러닝 엔지니어: 403 Client Error: Forbidden for url: https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=1634&job_sort=job.latest_order&locations=all&years=-1&limit=100&offset=0",
+    "BI 엔지니어: 403 Client Error: Forbidden for url: https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=1022&job_sort=job.latest_order&locations=all&years=-1&limit=100&offset=0",
+    "데이터 분석가: 403 Client Error: Forbidden for url: https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=656&job_sort=job.latest_order&locations=all&years=-1&limit=100&offset=0",
+    "DBA: 403 Client Error: Forbidden for url: https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=10231&job_sort=job.latest_order&locations=all&years=-1&limit=100&offset=0"
+   ],
+   "error_count": 7,
+   "new": 0,
+   "closed": 0
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 73,
+   "fetched": 69,
+   "remaining": 4,
+   "errors": [
+    "상세 460dcdfa-d7fe-4c57-952f-509551d813c8: 빈 응답",
+    "상세 ceec7491-3d25-4d41-bf8b-c9c40aab1f5b: 빈 응답",
+    "상세 d8646570-fe23-41c3-81b3-4bddeacde77c: 빈 응답",
+    "상세 eb5aefab-c119-4593-bee3-ffbf3c8fbb8b: 빈 응답"
+   ],
+   "seconds": 29.2
+  },
+  "saramin": {
+   "requested": 85,
+   "fetched": 85,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 84.5
+  },
+  "wanted": {
+   "requested": 0,
+   "fetched": 0,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 0.0
+  }
+ },
+ "job_types": {
+  "pending": 0,
+  "classified": 195,
+  "calls": 3
+ },
+ "open": 6785,
+ "overseas_open": 4849,
+ "open_unique": 5701,
+ "duplicates": 1084,
+ "noise": 257,
+ "company_types": {
+  "그 외": 4766,
+  "대기업": 670,
+  "외국계": 216,
+  "공기업·공공기관": 49
+ },
+ "personal_filter_pass": 305,
+ "new": 268,
+ "closed": 277,
+ "finished": "2026-10-30T08:29:04"
+}
