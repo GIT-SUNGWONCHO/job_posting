@@ -10,12 +10,13 @@ from pathlib import Path
 from typing import Any
 
 from . import config, dedup, filters, jobtypes
-from .companies import CompanyRegistry
+from .companies import CompanyRegistry, posting_type
 from .http import Client
 from .models import CompanyType, Posting, Source
 from .normalize import company_key
 from .scope import in_scope, is_overseas, noise_reason
 from .sources import CollectResult
+from .sources.jobkorea import JobkoreaCollector
 from .sources.remember import RememberCollector
 from .sources.saramin import SaraminCollector
 from .sources.wanted import WantedCollector
@@ -29,6 +30,7 @@ COLLECTORS = {
     Source.REMEMBER.value: RememberCollector,
     Source.SARAMIN.value: SaraminCollector,
     Source.WANTED.value: WantedCollector,
+    Source.JOBKOREA.value: JobkoreaCollector,
 }
 
 
@@ -43,6 +45,21 @@ def _collect(name: str, cfg: dict[str, Any], max_pages: int | None) -> tuple[Col
     if max_pages is not None:
         result.complete = False  # 시험 실행은 마감 판단에 쓰지 않는다
     return result, collector
+
+
+def check_source(name: str, details: int = 2) -> dict[str, Any]:
+    """수집처를 한 페이지씩만 받아 본다(저장 없음). 새 수집처를 켜기 전에 GitHub Actions에서 막히지 않는지 본다."""
+    scfg = (config.load("collect").get("sources") or {}).get(name) or {}
+    result, collector = _collect(name, scfg, max_pages=1)
+    out: dict[str, Any] = {"fetched": len(result.postings), "in_scope": sum(in_scope(p) for p in result.postings),
+                           "requests": result.requests, "errors": result.errors[:10],
+                           "sample": [f"{p.company} | {p.title}" for p in result.postings[:5]]}
+    if details and result.postings and hasattr(collector, "fetch_details"):
+        collector.client = Client(min_interval=scfg.get("detail_min_interval", scfg.get("min_interval", 0.5)))
+        got, errors = collector.fetch_details([p.source_id for p in result.postings[:details]])
+        out["details"] = {"fetched": len(got), "chars": [len(d.description or "") for d in got], "errors": errors[:5]}
+    out["ok"] = bool(result.postings) and not result.errors
+    return out
 
 
 def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None = None,
@@ -91,6 +108,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
             "noise": noise_reason(p),
             "overseas": is_overseas(p),
             "headhunter": p.headhunter,
+            "client_type": p.client_type,
             "via": p.via,
         }
         for p in collected
@@ -114,11 +132,11 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         rep = rep_of.get(r["uid"])
         r["dup_of"] = rep if rep and rep != r["uid"] else None
 
-    # 상세(본문): 직행·사람인·원티드. 리멤버는 목록에 본문이 같이 온다.
-    # 묶인 공고는 대표만 받는다(대표 순서가 리멤버 > 직행 > 사람인 > 원티드라 본문이 있는 쪽이 대표다).
+    # 상세(본문): 직행·사람인·원티드·잡코리아. 리멤버는 목록에 본문이 같이 온다.
+    # 묶인 공고는 대표만 받는다(대표 순서가 리멤버 > 직행 > 사람인 > 원티드 > 잡코리아라 본문이 있는 쪽이 대표다).
     # 대기업·공공·외국계부터, 새로 본 공고부터 하루 한도만큼
     summary["details"] = {}
-    for name in ("zighang", "saramin", "wanted"):
+    for name in ("zighang", "saramin", "wanted", "jobkorea"):
         scfg = (cfg.get("sources") or {}).get(name) or {}
         budget = scfg.get("detail_budget", 0) if detail_budget is None else detail_budget
         if not budget or name not in collectors:
@@ -127,8 +145,8 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
                   if r["source"] == name and not r.get("detail") and not r.get("overseas")
                   and not r.get("dup_of") and not r.get("noise")]
         wanted.sort(key=lambda r: r.get("first_seen", ""), reverse=True)
-        wanted.sort(key=lambda r: registry.company_type(
-            r.get("company_key", ""), r.get("company", "")) is CompanyType.OTHER)
+        wanted.sort(key=lambda r: posting_type(
+            registry, r.get("company_key", ""), r.get("company", ""), r.get("client_type")) is CompanyType.OTHER)
         ids = [r["uid"].split(":", 1)[1] for r in wanted[:budget]]
         t0 = time.monotonic()
         collector = collectors[name]
@@ -145,7 +163,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
 
     # 요약
     reps = [r for r in open_recs if not r.get("dup_of")]
-    types = Counter(registry.company_type(r.get("company_key", ""), r.get("company", "")).value
+    types = Counter(posting_type(registry, r.get("company_key", ""), r.get("company", ""), r.get("client_type")).value
                     for r in reps)
     personal = config.load("filters")
     today_reps = [p for p in collected
@@ -156,7 +174,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
             continue
         ok, _ = filters.passes(
             title=p.title, company=p.company,
-            company_type=registry.company_type(company_key(p.company), p.company),
+            company_type=posting_type(registry, company_key(p.company), p.company, p.client_type),
             career_min=p.career_min, career_max=p.career_max, regions=p.regions, filters=personal,
             job_type=(store.state[p.uid].get("job_type") or {}).get("id"),
         )

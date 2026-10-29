@@ -13,6 +13,7 @@ flowchart LR
     R[리멤버 API]
     S[사람인 목록 HTML]
     W[원티드 API<br/>Actions에서 막혀 꺼 둠]
+    J[잡코리아 헤드헌팅 HTML]
   end
   subgraph GitHub Actions
     C[수집<br/>매일 04:17]
@@ -36,6 +37,7 @@ flowchart LR
   R --> C
   S --> C
   W -.-> C
+  J --> C
   C --> D
   D --> A
   DB --> A

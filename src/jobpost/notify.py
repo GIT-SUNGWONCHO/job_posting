@@ -73,7 +73,8 @@ def why_not(p: dict[str, Any], screen: dict[str, Any], filters: dict[str, Any]) 
     """필터 밖 공고가 걸린 이유를 한 줄로("직무 데이터 분석 · 경력 3년 이상")와 걸린 조건 수."""
     c = (screen.get("companies") or {}).get(p["company"]) or {}
     jobs = {t["id"]: t.get("short") or t["name"] for t in screen.get("jobTypes") or []}
-    found = personal.reasons(title=p["title"], company=c.get("name", ""), company_type=CompanyType(c.get("type", "그 외")),
+    found = personal.reasons(title=p["title"], company=c.get("name", ""),
+                             company_type=CompanyType(p.get("clientType") or c.get("type", "그 외")),
                              career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
                              filters=filters, job_type=p.get("jobType"))
     text = {"keyword": lambda v: f"제외 키워드 {v}", "company": lambda v: f"제외 회사 {v}",

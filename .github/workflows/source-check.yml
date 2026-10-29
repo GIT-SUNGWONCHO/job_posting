@@ -1,0 +1,44 @@
+# 수집처가 GitHub Actions에서 열리는지 시험한다(목록 한 페이지 + 본문 두 건, 아무것도 저장하지 않음).
+# 새 수집처를 매일 수집에 켜기 전에 돌린다(원티드는 개발 환경에서 됐지만 Actions에서 403이었다, 2026-10-30).
+# 수동 실행: GitHub > Actions > source-check > Run workflow
+name: source-check
+
+on:
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: 쉼표로 구분한 수집처(예 jobkorea,wanted)
+        required: true
+        default: jobkorea
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 수집처 시험
+        env:
+          SOURCES: ${{ github.event.inputs.sources }}
+        run: uv run jobpost check-source --sources "$SOURCES" | tee check.json
+
+      - name: 결과 요약
+        if: always()
+        run: |
+          echo '### 수집처 시험' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat check.json >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

@@ -16,7 +16,7 @@ from datetime import date, timedelta
 from typing import Any
 
 from . import matching
-from .companies import CompanyRegistry
+from .companies import CompanyRegistry, posting_type
 
 VERSION = 3  # 2: 신입·N년 이하를 3년 미만으로, 같은 공고 묶음의 날짜, 스킬 사전 이름(dictionary), 3: 새로 붙인 수집처의 첫날 공고(backfill)는 새 공고로 세지 않음
 CAREER_BUCKETS = [("0-3", 0, 3), ("3-7", 3, 7), ("7-12", 7, 12), ("12+", 12, 99)]
@@ -70,7 +70,7 @@ def daily(state: dict[str, dict[str, Any]], registry: CompanyRegistry, today: da
     series: dict[str, dict[str, list[int | None]]] = {}
     for r in recs:
         ckey = r.get("company_key") or r.get("company", "")
-        k = _key((r.get("job_type") or {}).get("id"), registry.company_type(ckey, r.get("company", "")).value)
+        k = _key((r.get("job_type") or {}).get("id"), posting_type(registry, ckey, r.get("company", ""), r.get("client_type")).value)
         s = series.setdefault(k, {"open": [0] * len(days), "new": [0] * len(days)})
         first_seen, closed_on, backfill = spans[id(r)]
         first = index.get(first_seen)
@@ -93,7 +93,7 @@ def current(postings: list[dict[str, Any]], companies: dict[str, dict[str, Any]]
     for p in postings:
         if p.get("noise"):
             continue
-        k = _key(p.get("jobType"), (companies.get(p["company"]) or {}).get("type", "그 외"))
+        k = _key(p.get("jobType"), p.get("clientType") or (companies.get(p["company"]) or {}).get("type", "그 외"))
         g = groups.setdefault(k, {"career": Counter(), "skills": Counter(), "withBody": 0})
         g["career"][bucket(p.get("careerMin"), p.get("careerMax"))] += 1
         body = (bodies.get(p["id"]) or {}).get("text")

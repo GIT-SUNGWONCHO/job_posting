@@ -4,7 +4,7 @@ from pathlib import Path
 
 from jobpost.models import DeadlineType, Source
 from jobpost.normalize import career_text
-from jobpost.sources import remember, saramin, wanted, zighang
+from jobpost.sources import jobkorea, remember, saramin, wanted, zighang
 
 FIX = Path(__file__).parent / "fixtures"
 
@@ -181,3 +181,43 @@ def test_wanted_company_names():
     assert wanted.pick_company("앤톡(Antock)", set()) == "앤톡"
     assert wanted.pick_company("씨제이이엔엠(CJ이엔엠)", set()) == "CJ이엔엠"
     assert wanted.pick_company("케이에스피아이(주)", set()) == "케이에스피아이"
+
+
+def test_jobkorea_headhunting_rows():
+    rows = jobkorea.parse_rows((FIX / "jobkorea_hh_list.html").read_text(encoding="utf-8"))
+    assert len(rows) == 2
+    p = jobkorea.parse_item(rows[0], "AI/ML엔지니어")
+    assert p.source is Source.JOBKOREA and p.headhunter
+    assert p.url == "https://www.jobkorea.co.kr/Recruit/GI_Read/50264615"
+    assert p.company == "피플워크㈜"  # 회사 자리는 서치펌
+    assert p.title.startswith("AI Engineer / AI Scientist")
+    assert p.client_type == "대기업" and p.raw["client_label"] == "대기업"
+    assert (p.career_min, p.regions, p.employment_types) == (3, ["인천"], ["정규직"])
+    assert (p.deadline_type, p.deadline) == (DeadlineType.DATE, date(2027, 1, 27))
+    # 헤드헌터 이름은 읽지 않는다
+    assert "홍길동" not in json.dumps(p.raw, ensure_ascii=False)
+    # 중견기업 의뢰는 "그 외"
+    second = jobkorea.parse_item(rows[1], "데이터분석가")
+    assert second.raw["client_label"] == "중견기업" and second.client_type == "그 외"
+
+
+def test_jobkorea_client_label():
+    assert jobkorea.client_label("대기업 - 국내 대기업 시중은행") == "대기업"
+    assert jobkorea.client_label("외국계 - Management Consulting") == "외국계"
+    assert jobkorea.client_label("잡뉴스솔로몬서치 - 25년 역사") is None
+
+
+def test_jobkorea_detail_keeps_position_and_drops_contacts():
+    page = (FIX / "jobkorea_hh_detail.html").read_text(encoding="utf-8")
+    d = jobkorea.parse_detail(page, "50264615", datetime(2026, 10, 30))
+    assert d.uid == "jobkorea:50264615"
+    text = d.description or ""
+    assert "[ 담당업무 ]" in text and "LLM 기반 모델" in text
+    assert "설립된 회사" not in text  # 서치펌 소개는 뺀다
+    assert "@" not in text and "010-0000-0000" not in text and "홍길동" not in text
+
+
+def test_scrub_keeps_work_lines():
+    out = jobkorea.scrub("고객 문의 분류 모델 개발\n채용담당 : 홍길동 전무\n메일 hong@example.com, 02-123-4567")
+    assert "고객 문의 분류 모델 개발" in out
+    assert "홍길동" not in out and "@" not in out and "123-4567" not in out

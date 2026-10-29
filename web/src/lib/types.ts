@@ -23,6 +23,8 @@ export interface Posting {
   regions: string[]
   employment: string[]
   headhunter: boolean
+  /** 헤드헌팅 공고의 의뢰 회사 구분(수집처가 적어 준 것). 회사 자리는 서치펌이라 필터는 이걸 쓴다 */
+  clientType?: CompanyType
   noise: string | null
   firstSeen: string
   /** 새로 붙인 수집처가 첫날 가져온 공고(원래 열려 있던 공고). 새 공고로 세지 않는다 */

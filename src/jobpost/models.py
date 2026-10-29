@@ -14,6 +14,7 @@ class Source(StrEnum):
     REMEMBER = "remember"
     SARAMIN = "saramin"
     WANTED = "wanted"
+    JOBKOREA = "jobkorea"
 
 
 class DeadlineType(StrEnum):
@@ -55,6 +56,9 @@ class Posting(BaseModel):
 
     source_company_types: list[str] = Field(default_factory=list)  # 수집처가 붙인 기업 구분
     headhunter: bool = False
+    # 헤드헌팅 공고의 의뢰 회사 구분(수집처가 "대기업 - 시중은행"처럼 적어 준 것, CompanyType 값).
+    # 회사 자리는 서치펌이라, 필터와 시장 지표는 회사 구분 대신 이걸 쓴다
+    client_type: str | None = None
     posted_at: datetime | None = None
 
     description: str | None = None  # 공고 본문(있는 수집처만)

@@ -18,7 +18,8 @@ export function passes(p: Posting, c: Company | undefined, f: Filters): boolean 
   if (jobs && jobs.length && p.jobType && !jobs.includes(p.jobType)) return false
 
   const types = f.company_types
-  if (types && types.length && !types.includes(c?.type ?? '그 외')) return false
+  // 헤드헌팅 공고는 서치펌 대신 의뢰 회사 구분으로 거른다
+  if (types && types.length && !types.includes(p.clientType ?? c?.type ?? '그 외')) return false
 
   const fmin = f.career?.min ?? null
   const fmax = f.career?.max ?? null

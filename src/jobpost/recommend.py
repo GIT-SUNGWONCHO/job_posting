@@ -30,7 +30,7 @@ def candidates(screen: dict[str, Any], user_filters: dict[str, Any]) -> list[dic
             continue
         c = screen["companies"].get(p["company"]) or {}
         ok, _ = filters.passes(
-            title=p["title"], company=c.get("name", ""), company_type=CompanyType(c.get("type", "그 외")),
+            title=p["title"], company=c.get("name", ""), company_type=CompanyType(p.get("clientType") or c.get("type", "그 외")),
             career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
             filters=user_filters, job_type=p.get("jobType"),
         )

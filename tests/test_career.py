@@ -61,3 +61,12 @@ def test_backfill_counts_as_open_but_not_new():
     ]}
     out = career.build(state, Registry(), [], {}, {}, date(2026, 10, 15))
     assert out["series"]["data_eng|대기업"] == {"open": [1, 3, 4], "new": [None, 1, 1]}
+
+
+def test_headhunting_postings_count_under_the_client_company_type():
+    state = {r["uid"]: r for r in [rec("a", "2026-10-13"), rec("h", "2026-10-14", company="firm", client_type="대기업")]}
+    out = career.build(state, Registry(), [], {}, {}, date(2026, 10, 14))
+    assert out["series"]["data_eng|대기업"]["open"] == [1, 2]
+    postings = [{"id": "h", "company": "firm", "jobType": "data_eng", "careerMin": 5, "noise": None, "clientType": "외국계"}]
+    cur = career.current(postings, {"firm": {"type": "그 외"}}, {})
+    assert list(cur) == ["data_eng|외국계"]

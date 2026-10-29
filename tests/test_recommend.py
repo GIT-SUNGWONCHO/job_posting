@@ -123,3 +123,13 @@ def test_sample_run_scores_only_those_postings_regardless_of_filters():
 def test_sample_ids_come_from_config():
     ids = recommend.sample_ids()
     assert len(ids) == 60 and len(set(ids)) == 60
+
+
+def test_candidates_use_client_type_for_headhunting():
+    screen = {"companies": {"firm": {"name": "서치펌", "type": "그 외"}},
+              "postings": [{"id": "h", "company": "firm", "title": "데이터 엔지니어", "careerMin": 7, "careerMax": None,
+                            "regions": ["서울"], "jobType": "data_eng", "noise": None, "clientType": "대기업"},
+                           {"id": "x", "company": "firm", "title": "데이터 엔지니어", "careerMin": 7, "careerMax": None,
+                            "regions": ["서울"], "jobType": "data_eng", "noise": None}]}
+    got = recommend.candidates(screen, {"company_types": ["대기업"]})
+    assert [p["id"] for p in got] == ["h"]

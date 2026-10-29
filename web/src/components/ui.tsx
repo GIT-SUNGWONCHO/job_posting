@@ -47,7 +47,7 @@ export function JobRow({ p, c, today, showCompany = true, active = false, match,
           <Deadline p={p} today={today} />
           <Sep />
           <span>{p.career}</span>
-          {p.headhunter && <><Sep /><span>{copy.job.headhunter}</span></>}
+          {p.headhunter && <><Sep /><span>{p.clientType ? copy.job.headhunterFor(p.clientType) : copy.job.headhunter}</span></>}
         </span>
       </span>
       {match && (

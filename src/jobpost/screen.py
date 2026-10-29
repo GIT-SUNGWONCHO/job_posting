@@ -26,8 +26,8 @@ log = logging.getLogger(__name__)
 VERSION = 8  # 2: 직무 유형(jobType, jobTypes), 3: 본문 파일(hasBody, bodies.json.gz), 4: 스킬 목록·프로필 선택지(skills, profileOptions), 기준 샘플(sample), 5: 커리어 지표(career), 6: 수집 현황·알림 기본값(collection, notify), 7: 목록 제목(listTitle), 8: 판정 비율(matchFit)
 BODY_MAX = 4000  # 본문 최대 글자 수
 BODY_MIN = 50  # 이보다 짧으면 이미지뿐인 공고로 보고 본문 없음으로 둔다
-# 본문을 고르는 순서: 리멤버 원문 > 원티드 원문 > 직행이 정리한 요약 > 사람인 원문
-BODY_PRIORITY = {"remember": 0, "wanted": 1, "zighang": 2, "saramin": 3}
+# 본문을 고르는 순서: 리멤버 원문 > 원티드 원문 > 직행이 정리한 요약 > 사람인 원문 > 잡코리아 헤드헌팅 원문
+BODY_PRIORITY = {"remember": 0, "wanted": 1, "zighang": 2, "saramin": 3, "jobkorea": 4}
 # 본문은 공고 id로 나눈 여러 파일에 담는다. 상세를 열면 그 공고가 든 파일 하나만 받는다
 BODY_SHARDS = 16
 
@@ -55,7 +55,7 @@ def is_backfill(group: list[dict[str, Any]], first_seen: str) -> bool:
     return all(x.get("backfill") for x in group if x.get("first_seen", "") == first_seen)
 
 
-SOURCE_NAMES = {"zighang": "직행", "remember": "리멤버", "saramin": "사람인", "wanted": "원티드"}
+SOURCE_NAMES = {"zighang": "직행", "remember": "리멤버", "saramin": "사람인", "wanted": "원티드", "jobkorea": "잡코리아"}
 
 
 def _body(members: list[dict[str, Any]], originals: dict[str, dict[str, Any]],
@@ -100,6 +100,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
                 "group": registry.group(key, r.get("company", "")),
             }
         job_type = next(((x.get("job_type") or {}).get("id") for x in [r, *same] if x.get("job_type")), None)
+        client_type = next((x["client_type"] for x in [r, *same] if x.get("client_type")), None)
         first_seen = min([r.get("first_seen", "")] + [d.get("first_seen", "") for d in same])
         backfill = is_backfill([r, *same], first_seen)
         body = _body([r, *same], originals, details)
@@ -119,6 +120,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
             "regions": o.get("regions") or [],
             "employment": o.get("employment_types") or [],
             "headhunter": bool(r.get("headhunter")),
+            **({"clientType": client_type} if client_type else {}),
             "noise": r.get("noise"),
             "firstSeen": first_seen,
             **({"backfill": True} if backfill else {}),

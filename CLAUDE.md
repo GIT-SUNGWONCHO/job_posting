@@ -31,7 +31,7 @@
 | 3 | 매칭: 프로필·이력서, 직무 분류, 점수 | 진행 중: 프로필 v2, 공고 정리, AI 매칭(판단 근거) + 내 평가로 지침을 고치는 회차 진행 중. 기준이 서면 규칙화와 기준 샘플(3-5) |
 | 4 | 분석: 회사 리서치, 커리어 탭 | 초안: 커리어 탭(시장 · 내 위치 · 성장 계획, 공고에서 센 지표 v1, 이번 달 할 일), 회사 기본정보(DART: 회사 개요, 지난 공고, 공고가 없어도 보이는 주요 기업), 심층분석 v1(★ 관심 회사, 경쟁사, 직무 환경·도구). 심층분석 AI 모듈(사업 구조, 웹 조사)은 백로그(2026-10-26) |
 | 5 | 보고: 오늘의 리포트, 아침 알림 | 완료(초안, 2026-10-28 리뷰 반영): 오늘의 리포트(이번 주 기준: 1등 · 새 공고 · 마감 임박 · 관심 회사 새 공고), 아침 알림(매일 매칭 끝에 텔레그램, 모두 접어서: 첫 통 필터 통과 새 공고 전부 · 마감 임박, 둘째 통 필터 밖(걸린 이유), 카톡은 꺼 둠), 관리(아침 알림 · 수집 현황). 매칭 고도화보다 나머지 단계 초안을 먼저 끝낸다(2026-10-17) |
-| 6 | 확장: 지원 상태, 지인 계정, 나머지 수집처 | 초안: 지원 상태(공고 상세의 단계·메모·일정, 관심 탭, 추천·알림에서 빼기). 수집처: 원티드 수집기는 만들었으나 GitHub Actions에서 막혀 꺼 둠(정식 경로는 원티드 OpenAPI). 새 수집처는 붙이기 전에 시장·내 위치 영향을 먼저 잰다 |
+| 6 | 확장: 지원 상태, 지인 계정, 나머지 수집처 | 초안: 지원 상태(공고 상세의 단계·메모·일정, 관심 탭, 추천·알림에서 빼기). 수집처: 잡코리아 헤드헌팅 추가(의뢰 회사 구분으로 셈), 원티드는 GitHub Actions에서 막혀 꺼 둠(정식 경로는 원티드 OpenAPI). 새 수집처는 영향을 먼저 재고 `source-check.yml`로 Actions에서 열리는지 본 뒤 켠다 |
 
 ## 꼭 지킬 것
 
@@ -92,4 +92,4 @@ web/src/
 - 수집: `uv run jobpost collect --data-dir data` (시험은 `--max-pages 2 --detail-budget 5`)
 - 검사: `uv run ruff check src tests` 와 `uv run pytest -q`, 화면은 `cd web && npm test && npm run lint && npm run build`
 - 화면 개발: `uv run jobpost screen --data-dir <data> --out .dev-data/screen.json.gz` 후 `cd web && npm run dev`(Supabase 값이 없으면 로그인 없이 이 파일을 읽는다)
-- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과(DART 기본정보 포함)는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회사 기본정보(DART)만 받으려면 `dart.yml`, 회차 리포트는 `feedback.yml`, 알림 연결·다시 보내기는 `telegram.yml`(카톡은 `kakao.yml`), 리서치 노트만 바로 넣으려면 `notes.yml`. 매칭 뒤 아침 알림을 보낸다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.
+- 매일 실행: `.github/workflows/collect.yml`(04:17 KST). 결과(DART 기본정보 포함)는 `data` 브랜치에 커밋되고, 화면용 파일은 Supabase 저장소에 올라가고, 매칭 결과는 Supabase `matches`에 쓴다. 매칭만 다시 하려면 `match.yml`, 회사 기본정보(DART)만 받으려면 `dart.yml`, 회차 리포트는 `feedback.yml`, 알림 연결·다시 보내기는 `telegram.yml`(카톡은 `kakao.yml`), 리서치 노트만 바로 넣으려면 `notes.yml`, 새 수집처가 Actions에서 열리는지 보려면 `source-check.yml`(저장 없음). 매칭 뒤 아침 알림을 보낸다. 실행 요약은 Actions 화면과 `data` 브랜치 `runs/`에 남는다.

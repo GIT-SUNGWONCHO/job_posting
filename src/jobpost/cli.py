@@ -31,9 +31,13 @@ def main(argv: list[str] | None = None) -> int:
 
     c = sub.add_parser("collect", help="공고를 수집해 data 폴더에 쌓는다")
     c.add_argument("--data-dir", type=Path, default=Path("data"))
-    c.add_argument("--sources", help="쉼표로 구분(zighang,remember,saramin,wanted). 생략하면 켜 둔 수집처 전부")
+    c.add_argument("--sources", help="쉼표로 구분(zighang,remember,saramin,wanted,jobkorea). 생략하면 켜 둔 수집처 전부")
     c.add_argument("--max-pages", type=int, help="시험용: 조회마다 최대 페이지 수")
     c.add_argument("--detail-budget", type=int, help="직행 상세를 받을 최대 건수")
+
+    k = sub.add_parser("check-source", help="수집처가 이 환경(GitHub Actions 등)에서 열리는지 시험한다. 아무것도 저장하지 않는다")
+    k.add_argument("--sources", required=True, help="쉼표로 구분(예: jobkorea,wanted)")
+    k.add_argument("--details", type=int, default=2, help="본문(상세)도 이만큼 받아 본다")
 
     s = sub.add_parser("screen", help="화면용 파일(오늘 열린 국내 공고 + 회사)을 만든다")
     s.add_argument("--data-dir", type=Path, default=Path("data"))
@@ -83,6 +87,11 @@ def main(argv: list[str] | None = None) -> int:
         print()
         failed = [n for n, s in summary["sources"].items() if s["error_count"] and not s["fetched"]]
         return 1 if failed and len(failed) == len(summary["sources"]) else 0
+    if args.cmd == "check-source":
+        out = {name: pipeline.check_source(name, details=args.details) for name in args.sources.split(",")}
+        json.dump(out, sys.stdout, ensure_ascii=False, indent=1)
+        print()
+        return 0 if all(v["ok"] for v in out.values()) else 1
     if args.cmd == "screen":
         built, bodies = screen.build(args.data_dir, with_career=True)
         path = screen.write(built, args.out)

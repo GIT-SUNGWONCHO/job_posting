@@ -30,3 +30,9 @@ it('filters by job type but lets unclassified postings through', () => {
   expect(passes({ ...base, jobType: 'non_data' }, large, g)).toBe(false)
   expect(passes({ ...base, jobType: null }, large, g)).toBe(true)
 })
+
+it('uses the client company type for headhunting postings', () => {
+  const firm: Company = { name: '피플워크', type: '그 외', group: null }
+  expect(passes({ ...base, headhunter: true, clientType: '대기업' }, firm, f)).toBe(true)
+  expect(passes({ ...base, headhunter: true }, firm, f)).toBe(false)
+})

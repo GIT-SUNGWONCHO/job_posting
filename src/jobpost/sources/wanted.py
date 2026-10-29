@@ -100,7 +100,7 @@ class WantedCollector:
         self.cfg = cfg
         self.tags: dict[int, str] = {int(k): v for k, v in (cfg.get("tags") or {}).items()}
 
-    def _tag(self, tag: int, max_pages: int) -> list[dict[str, Any]]:
+    def _tag(self, tag: int, max_pages: int, strict: bool = True) -> list[dict[str, Any]]:
         per = self.cfg.get("per", 100)
         items: list[dict[str, Any]] = []
         for page in range(max_pages):
@@ -113,6 +113,8 @@ class WantedCollector:
             items += batch
             if not batch or not (data.get("links") or {}).get("next"):
                 return items
+        if not strict:  # 시험 실행(--max-pages)은 한도에서 멈추는 게 정상
+            return items
         raise RuntimeError(f"최대 {max_pages}페이지에서 멈춤")
 
     def collect(self, max_pages: int | None = None) -> CollectResult:
@@ -125,7 +127,7 @@ class WantedCollector:
         for tag, name in self.tags.items():
             t0 = time.monotonic()
             try:
-                items = self._tag(tag, limit)
+                items = self._tag(tag, limit, strict=max_pages is None)
             except Exception as e:
                 result.complete = False
                 result.errors.append(f"{name}: {e}")

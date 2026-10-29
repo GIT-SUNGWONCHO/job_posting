@@ -24,8 +24,8 @@ _RECRUIT_WORDS = re.compile(
     r"\d+\s*년\s*(이상|이하|↑)?|상시|수시|채용시|마감|급구"
 )
 # 사람이 아니라 수집처를 고르는 순서. 본문이 있는 리멤버를 대표로 쓴다.
-# 원티드는 나중에 붙여서 맨 뒤에 둔다(앞에 두면 이미 있던 묶음의 대표가 바뀌어 매칭·관심 표시가 끊긴다)
-SOURCE_PRIORITY = {"remember": 0, "zighang": 1, "saramin": 2, "wanted": 3}
+# 원티드·잡코리아는 나중에 붙여서 맨 뒤에 둔다(앞에 두면 이미 있던 묶음의 대표가 바뀌어 매칭·관심 표시가 끊긴다)
+SOURCE_PRIORITY = {"remember": 0, "zighang": 1, "saramin": 2, "wanted": 3, "jobkorea": 4}
 
 
 @dataclass

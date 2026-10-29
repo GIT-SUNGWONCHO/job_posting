@@ -75,6 +75,13 @@ def major_candidates(listed: list[list[str]]) -> list[dict[str, str | None]]:
     return out
 
 
+def posting_type(registry: CompanyRegistry, key: str, name: str, client_type: str | None = None) -> CompanyType:
+    """공고 하나의 기업 구분. 헤드헌팅 공고는 의뢰 회사 구분(수집처가 적어 준 것)을 쓴다."""
+    if client_type:
+        return CompanyType(client_type)
+    return registry.company_type(key, name)
+
+
 class CompanyRegistry:
     def __init__(self, path: Path):
         self.path = path
