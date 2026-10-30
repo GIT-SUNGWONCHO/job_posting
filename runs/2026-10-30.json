@@ -1,6 +1,6 @@
 {
  "date": "2026-10-30",
- "started": "2026-10-30T08:21:21",
+ "started": "2026-10-30T08:56:45",
  "sources": {
   "zighang": {
    "fetched": 8843,
@@ -53,6 +53,17 @@
    "error_count": 7,
    "new": 0,
    "closed": 0
+  },
+  "jobkorea": {
+   "fetched": 388,
+   "in_scope": 316,
+   "complete": true,
+   "requests": 60,
+   "seconds": 118.2,
+   "errors": [],
+   "error_count": 0,
+   "new": 316,
+   "closed": 0
   }
  },
  "details": {
@@ -81,26 +92,33 @@
    "remaining": 0,
    "errors": [],
    "seconds": 0.0
+  },
+  "jobkorea": {
+   "requested": 259,
+   "fetched": 259,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 516.3
   }
  },
  "job_types": {
   "pending": 0,
-  "classified": 195,
-  "calls": 3
+  "classified": 314,
+  "calls": 4
  },
- "open": 6785,
- "overseas_open": 4849,
- "open_unique": 5701,
- "duplicates": 1084,
+ "open": 7099,
+ "overseas_open": 4851,
+ "open_unique": 5960,
+ "duplicates": 1139,
  "noise": 257,
  "company_types": {
-  "그 외": 4766,
-  "대기업": 670,
-  "외국계": 216,
+  "그 외": 4954,
+  "대기업": 727,
+  "외국계": 230,
   "공기업·공공기관": 49
  },
- "personal_filter_pass": 305,
- "new": 268,
- "closed": 277,
- "finished": "2026-10-30T08:29:04"
+ "personal_filter_pass": 29,
+ "new": 316,
+ "closed": 0,
+ "finished": "2026-10-30T09:07:37"
 }

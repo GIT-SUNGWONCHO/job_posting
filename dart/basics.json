@@ -54591,6 +54591,22 @@
 "finance": null,
 "v": 3
 },
+"00788782": {
+"company": {
+"ceo": "이민섭",
+"founded": "2006-05-25",
+"homepage": null,
+"industry_code": "649",
+"market": "기타",
+"name": "(주)스마일파트너스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-10-30",
+"finance": null,
+"v": 3
+},
 "00790501": {
 "company": {
 "ceo": "석태수",
