@@ -1,0 +1,98 @@
+{
+ "date": "2026-11-01",
+ "started": "2026-11-01T07:34:09",
+ "sources": {
+  "zighang": {
+   "fetched": 8680,
+   "in_scope": 8679,
+   "complete": true,
+   "requests": 217,
+   "seconds": 87.5,
+   "errors": [],
+   "error_count": 0,
+   "new": 270,
+   "closed": 352
+  },
+  "remember": {
+   "fetched": 1468,
+   "in_scope": 1217,
+   "complete": true,
+   "requests": 56,
+   "seconds": 165.4,
+   "errors": [],
+   "error_count": 0,
+   "new": 2,
+   "closed": 30
+  },
+  "saramin": {
+   "fetched": 3669,
+   "in_scope": 1368,
+   "complete": true,
+   "requests": 42,
+   "seconds": 55.8,
+   "errors": [],
+   "error_count": 0,
+   "new": 19,
+   "closed": 147
+  },
+  "jobkorea": {
+   "fetched": 377,
+   "in_scope": 306,
+   "complete": true,
+   "requests": 59,
+   "seconds": 116.2,
+   "errors": [],
+   "error_count": 0,
+   "new": 8,
+   "closed": 15
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 145,
+   "fetched": 141,
+   "remaining": 4,
+   "errors": [
+    "상세 460dcdfa-d7fe-4c57-952f-509551d813c8: 빈 응답",
+    "상세 ceec7491-3d25-4d41-bf8b-c9c40aab1f5b: 빈 응답",
+    "상세 d8646570-fe23-41c3-81b3-4bddeacde77c: 빈 응답",
+    "상세 eb5aefab-c119-4593-bee3-ffbf3c8fbb8b: 빈 응답"
+   ],
+   "seconds": 58.1
+  },
+  "saramin": {
+   "requested": 19,
+   "fetched": 19,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 18.3
+  },
+  "jobkorea": {
+   "requested": 6,
+   "fetched": 6,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 10.2
+  }
+ },
+ "job_types": {
+  "pending": 0,
+  "classified": 184,
+  "calls": 3
+ },
+ "open": 6803,
+ "overseas_open": 4767,
+ "open_unique": 5733,
+ "duplicates": 1070,
+ "noise": 247,
+ "company_types": {
+  "그 외": 4769,
+  "대기업": 696,
+  "외국계": 219,
+  "공기업·공공기관": 49
+ },
+ "personal_filter_pass": 317,
+ "new": 299,
+ "closed": 544,
+ "finished": "2026-11-01T07:42:52"
+}

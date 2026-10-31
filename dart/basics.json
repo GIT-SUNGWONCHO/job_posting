@@ -28188,6 +28188,22 @@
 "unlisted": true,
 "v": 3
 },
+"00187123": {
+"company": {
+"ceo": "김인석",
+"founded": "1991-11-25",
+"homepage": "https://www.hanalife.co.kr",
+"industry_code": "65110",
+"market": "기타",
+"name": "하나생명보험(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-01",
+"finance": null,
+"v": 3
+},
 "00187488": {
 "company": {
 "ceo": "김윤호",
@@ -53612,6 +53628,22 @@
 },
 "v": 3
 },
+"00672010": {
+"company": {
+"ceo": "이종근",
+"founded": "2000-06-21",
+"homepage": "https://www.wooriat.com",
+"industry_code": "64999",
+"market": "기타",
+"name": "우리자산신탁 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-01",
+"finance": null,
+"v": 3
+},
 "00673523": {
 "company": {
 "ceo": "장종환",
@@ -55393,6 +55425,53 @@
 },
 "v": 3
 },
+"00819268": {
+"company": {
+"ceo": "김윤우",
+"founded": "2009-10-01",
+"homepage": null,
+"industry_code": "64999",
+"market": "기타",
+"name": "연합자산관리(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 143,
+"date": "2025-12-31",
+"rcept_no": "20260331003188",
+"salary": 141587413,
+"tenure": 5.4
+},
+"fetched": "2026-11-01",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260331003188",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 9667964618,
+"operating": 17329617189,
+"revenue": 446243283046,
+"year": 2023
+},
+{
+"net": 206466749365,
+"operating": 268659589178,
+"revenue": 786806728401,
+"year": 2024
+},
+{
+"net": 340309071352,
+"operating": 442455158446,
+"revenue": 1138306466423,
+"year": 2025
+}
+]
+},
+"v": 3
+},
 "00820024": {
 "company": {
 "ceo": "이윤행",
@@ -55491,6 +55570,22 @@
 ],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"00834018": {
+"company": {
+"ceo": "조상희",
+"founded": "2008-04-15",
+"homepage": null,
+"industry_code": "2413",
+"market": "기타",
+"name": "주식회사 씨엔테크",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-01",
 "finance": null,
 "v": 3
 },
@@ -61698,6 +61793,22 @@
 }
 ]
 },
+"v": 3
+},
+"01014648": {
+"company": {
+"ceo": "안순현",
+"founded": "2002-06-03",
+"homepage": "https://www.rexgen.co.kr",
+"industry_code": "2642",
+"market": "기타",
+"name": "렉스젠(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-01",
+"finance": null,
 "v": 3
 },
 "01016211": {
@@ -74591,6 +74702,22 @@
 "finance": null,
 "v": 3
 },
+"01361768": {
+"company": {
+"ceo": "김명준",
+"founded": "2006-10-16",
+"homepage": "https://www.mappers.kr",
+"industry_code": "58222",
+"market": "기타",
+"name": "(주)맵퍼스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-01",
+"finance": null,
+"v": 3
+},
 "01362280": {
 "company": {
 "ceo": "이수복",
@@ -86633,6 +86760,22 @@
 "finance": null,
 "v": 3
 },
+"01761816": {
+"company": {
+"ceo": "이영규",
+"founded": "2002-08-06",
+"homepage": "https://www.itsroom.co.kr",
+"industry_code": "26410",
+"market": "기타",
+"name": "(주)아이티공간",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-01",
+"finance": null,
+"v": 3
+},
 "01769881": {
 "company": {
 "ceo": "벤슨웡",
@@ -91518,6 +91661,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-10-21",
+"finance": null,
+"v": 3
+},
+"02053112": {
+"company": {
+"ceo": "김진성",
+"founded": "2019-09-09",
+"homepage": "https://www.oncosoft.io",
+"industry_code": "582",
+"market": "기타",
+"name": "주식회사 온코소프트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-01",
 "finance": null,
 "v": 3
 },
