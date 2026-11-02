@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from . import config, dedup, filters, jobtypes
-from .companies import CompanyRegistry, posting_type
+from .companies import CompanyRegistry, client_from_title, is_search_firm, posting_type
 from .http import Client
 from .models import CompanyType, Posting, Source
 from .normalize import company_key
@@ -102,6 +102,13 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
             "error_count": len(result.errors),
         }
 
+    # 헤드헌팅: 수집처가 알려 주지 않으면(사람인·직행) 회사 이름이 서치펌인지로 가리고,
+    # 의뢰 회사 구분도 수집처가 주지 않으면 제목에서 읽는다("[국내 바이오 제약 대기업] AI Engineer")
+    for p in collected:
+        p.headhunter = p.headhunter or is_search_firm(p.company)
+        if p.headhunter and not p.client_type:
+            client = client_from_title(p.title)
+            p.client_type = client.value if client else None
     extra = {
         p.uid: {
             "company_key": company_key(p.company),
@@ -159,7 +166,8 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
                                     "errors": errors[:20], "seconds": round(time.monotonic() - t0, 1)}
 
     # 직무 유형(AI). 키가 없거나 실패해도 수집 결과는 그대로 저장한다
-    summary["job_types"] = jobtypes.run(store.state, store.load_postings(), today.isoformat())
+    summary["job_types"] = jobtypes.run(store.state, store.load_postings(), today.isoformat(),
+                                        details=store.load_details())
 
     # 요약
     reps = [r for r in open_recs if not r.get("dup_of")]

@@ -14,10 +14,36 @@ class FakeAI:
 
 
 def test_classify_keeps_only_valid_answers():
-    items = [("z:1", "Data Engineer", ["데이터엔지니어"]), ("z:2", "AI 마케터", ["마케팅"])]
+    items = [("z:1", "Data Engineer", ["데이터엔지니어"], "주요업무 파이프라인 구축"), ("z:2", "AI 마케터", ["마케팅"], "")]
     ai = FakeAI([[{"i": 0, "t": "data_eng"}, {"i": 1, "t": "없는유형"}, {"i": 7, "t": "analyst"}]])
     assert jobtypes.classify(items, ai) == {"z:1": "data_eng"}
-    assert "데이터 엔지니어" in ai.prompts[0] and "0\tData Engineer\t데이터엔지니어" in ai.prompts[0]
+    assert "데이터 엔지니어" in ai.prompts[0] and "0\tData Engineer\t데이터엔지니어\t주요업무 파이프라인 구축" in ai.prompts[0]
+
+
+def test_snippet_starts_at_duties():
+    text = "회사 소개 " * 50 + "\n담당업무\nSCM 업무를   LLM·RAG 기반 서비스로 설계·개발\n지원자격 ..."
+    got = jobtypes.snippet(text)
+    assert got.startswith("담당업무 SCM 업무를 LLM·RAG") and len(got) <= jobtypes.SNIPPET_CHARS
+    assert jobtypes.snippet("회사 소개만 있음") == "회사 소개만 있음" and jobtypes.snippet(None) == ""
+
+
+def test_run_reclassifies_when_body_arrives():
+    v = jobtypes.taxonomy()["version"]
+    current = {"v": v, "prompt": jobtypes.PROMPT_VERSION}
+    state = {
+        "z:1": {"uid": "z:1", "title": "AI Solutions Engineer", "first_seen": "2026-10-29",
+                "job_type": {"id": "consulting", **current, "body": False}},  # 제목만 보고 분류, 이제 본문이 있다
+        "z:2": {"uid": "z:2", "title": "Data Engineer", "first_seen": "2026-10-29",
+                "job_type": {"id": "data_eng", **current, "body": False}},  # 본문이 아직 없다
+        "z:3": {"uid": "z:3", "title": "ML Engineer", "first_seen": "2026-10-29",
+                "job_type": {"id": "ml_eng", **current, "body": True}},
+    }
+    details = {"z:1": {"description": "담당업무 SCM 업무를 LLM 서비스로 개발"}, "z:3": {"description": "업무 내용 모델 학습"}}
+    ai = FakeAI([[{"i": 0, "t": "ai_eng"}]])
+    summary = jobtypes.run(state, {}, "2026-11-03", client=ai, details=details)
+    assert summary == {"pending": 0, "classified": 1, "calls": 1}
+    assert state["z:1"]["job_type"]["id"] == "ai_eng" and state["z:1"]["job_type"]["body"] is True
+    assert "0\tAI Solutions Engineer\t\t담당업무 SCM 업무를 LLM 서비스로 개발" in ai.prompts[0]
 
 
 def test_run_records_versions_and_skips_current_closed_overseas():
@@ -35,7 +61,7 @@ def test_run_records_versions_and_skips_current_closed_overseas():
     summary = jobtypes.run(state, {"z:1": {"categories": ["데이터엔지니어"]}}, "2026-10-13", client=ai)
     assert summary == {"pending": 0, "classified": 2, "calls": 1}
     assert state["z:1"]["job_type"] == {"id": "data_eng", "v": v, "prompt": jobtypes.PROMPT_VERSION,
-                                        "model": "fake-model", "on": "2026-10-13"}
+                                        "model": "fake-model", "on": "2026-10-13", "body": False}
     assert state["z:5"]["job_type"]["v"] == v
     assert "job_type" not in state["z:3"] and "job_type" not in state["z:4"]
 

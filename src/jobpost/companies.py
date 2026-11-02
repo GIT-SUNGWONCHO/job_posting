@@ -25,6 +25,22 @@ _TYPE_MAP = {
 # 여러 구분이 붙으면 이 순서로 고른다. 그룹 규칙에 걸리면 대기업이 우선한다
 _PRIORITY = [CompanyType.PUBLIC, CompanyType.FOREIGN, CompanyType.LARGE]
 
+# 서치펌(헤드헌팅 회사) 이름. 사람인·직행은 헤드헌팅 공고를 따로 표시하지 않아 회사 이름으로 가린다(2026-11-02).
+# "리서치·리써치"는 서치펌이 아니다(바이오리서치에이아이, 티엔티리써치)
+_SEARCH_FIRM = re.compile(r"(?<!리)(?:써치|서치)|헤드헌|스카우트|에이치알|HR컨설팅|HR$", re.I)
+# 헤드헌팅 공고 제목의 의뢰 회사 설명: "[국내 바이오 제약 대기업]", "(바이오, 대기업 계열)", "외국계 해운 IT기업"
+_CLIENT_WORDS = [("외국계", CompanyType.FOREIGN), ("공기업", CompanyType.PUBLIC), ("공공기관", CompanyType.PUBLIC),
+                 ("대기업", CompanyType.LARGE)]
+
+
+def is_search_firm(name: str) -> bool:
+    return bool(_SEARCH_FIRM.search(clean_company(name or "")))
+
+
+def client_from_title(title: str) -> CompanyType | None:
+    """헤드헌팅 공고 제목에 적힌 의뢰 회사 구분. 없으면 None(중견·스타트업 같은 말은 '그 외'와 같아 따로 두지 않는다)."""
+    return next((t for word, t in _CLIENT_WORDS if word in (title or "")), None)
+
 
 @cache
 def _group_rules() -> list[tuple[str, re.Pattern]]:

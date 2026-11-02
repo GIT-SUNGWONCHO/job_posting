@@ -1,6 +1,7 @@
 from datetime import date
 
 from jobpost import dedup
+from jobpost.companies import client_from_title, is_search_firm
 from jobpost.filters import passes
 from jobpost.models import CompanyType, DeadlineType, Posting, Source
 from jobpost.normalize import career_text, clean_company, company_key, deadline_text
@@ -156,3 +157,14 @@ def test_common_name_turns_korean_readings_of_group_names_into_latin():
     assert common_name("케이티") == "KT"  # 별칭이 먼저
     assert common_name("삼성에스디에스") == "삼성SDS"
     assert common_name("삼성생명보험") == "삼성생명" and common_name("현대엔지니어링") == "현대엔지니어링"
+
+
+def test_search_firm_and_client_from_title():
+    for name in ["(주)메타써치", "(주)스카우트", "에이치알포유(주)", "HR컨설팅(주)", "터닝포인트HR", "자바스서치주식회사"]:
+        assert is_search_firm(name), name
+    for name in ["(주)바이오리서치에이아이", "(주)티엔티리써치", "SK바이오팜", "동성인재개발교육원"]:
+        assert not is_search_firm(name), name
+    assert client_from_title("[국내 바이오 제약 대기업]AI Engineer, AX") is CompanyType.LARGE
+    assert client_from_title("AI Engineer, AX (바이오, 대기업 계열)") is CompanyType.LARGE
+    assert client_from_title("외국계 해운 IT기업 Data Architect 경력직 채용") is CompanyType.FOREIGN
+    assert client_from_title("[주요SI업체] AI 플랫폼 Architect") is None
