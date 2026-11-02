@@ -239,7 +239,8 @@ def main(argv: list[str] | None = None) -> int:
             old = current.get(user) or {}
             before = (old.get("memo") or {}).get("lines") or []
             comments = feedback.latest_comments(rows, user, titles)
-            lines = feedback.memo_lines(comments, before, client)
+            # 지금 메모를 합치게 하면 막연한 문장이 계속 남아서, 코멘트에서 처음부터 다시 뽑는다(코멘트가 전부 남아 있다)
+            lines = feedback.memo_lines(comments, [], client)
             if lines != before:
                 store.insert("match_memos", [{"user_id": user, "version": (old.get("version") or 0) + 1,
                                               "updated_at": datetime.now(UTC).isoformat(),
