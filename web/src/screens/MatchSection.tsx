@@ -117,7 +117,6 @@ function FeedbackBox({ postingId, posting, detail, feedback, onFeedback }: {
   return (
     <div className="feedback">
       <h3>{t.mine}</h3>
-      <p className="note">{t.mineHelp}</p>
       {feedback && !current && <p className="note">{t.previous}</p>}
       <div className="chips wrap" role="radiogroup" aria-label={t.mine}>
         {LABELS.map((l) => (

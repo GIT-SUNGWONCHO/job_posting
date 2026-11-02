@@ -108,7 +108,6 @@ export const copy = {
     meta: (rule: number | null, model: string | null, guide: number) =>
       [rule !== null && `규칙 점수 ${rule}`, model, `지침 v${guide}`].filter(Boolean).join(' · '),
     mine: '내 평가',
-    mineHelp: '직무로 맞는지만 보고 매겨 주세요. 업종·회사 취향은 코멘트에 적어도 점수에는 쓰지 않아요',
     labels: { good: '○ 지원할 만함', maybe: '△ 애매', bad: '× 아님' },
     marks: { good: '○', maybe: '△', bad: '×' },
     previous: '지난 회차에 남긴 평가예요. 정답으로 계속 쓰니 판단이 바뀌었을 때만 다시 저장하세요',
