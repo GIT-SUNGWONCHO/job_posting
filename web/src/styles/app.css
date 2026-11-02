@@ -584,6 +584,9 @@ a.source:hover { text-decoration: underline; }
 .intro-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: var(--fs-body); color: var(--sub); }
 .kv2.wide { margin-top: 0; grid-template-columns: 96px minmax(0, 1fr); }
 .ext { color: var(--accent); }
+.elsewhere { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.elsewhere .k { font-size: var(--fs-min); color: var(--sub); }
+.elsewhere .chip { text-decoration: none; color: var(--ink); }
 .fin { display: flex; flex-direction: column; }
 .fin-bars, .fin-years, .fin-rows { display: grid; column-gap: 4px; }
 .fin-bars { align-items: end; }

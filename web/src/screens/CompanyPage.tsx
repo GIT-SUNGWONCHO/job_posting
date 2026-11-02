@@ -3,7 +3,7 @@ import { copy } from '../copy'
 import { SourceSheet, type SourceItem } from '../components/SourceSheet'
 import { BACK_ICON, JobRow, RIGHT_ICON, SectionTitle, Sep, STAR_ICON } from '../components/ui'
 import { passes } from '../lib/filter'
-import { dartUrl, dateText, listTitle, money, yearMonth } from '../lib/format'
+import { dartUrl, dateText, ELSEWHERE, elsewhereUrl, listTitle, money, yearMonth } from '../lib/format'
 import { loadCompanies } from '../lib/load'
 import { loadNote, type Note } from '../lib/notes'
 import { goBack, href } from '../lib/route'
@@ -83,6 +83,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
           <section className="section">
             <SectionTitle right={d && srcBtn(t.basicsSource, basicsSources(d))}>{t.basics}</SectionTitle>
             {d ? <Basics d={d} /> : <NotFound basics={basics} isPublic={c?.type === '공기업·공공기관'} />}
+            {!(d?.finance && d.employees) && <Elsewhere name={name} />}
           </section>
           {d?.finance && d.finance.years.length > 0 && (
             <section className="section">
@@ -156,6 +157,20 @@ function basicsSources(d: DartBasics): SourceItem[] {
 }
 
 /** DART와 잇지 못했거나 아직 받지 않은 회사 */
+/** DART에 실적·직원 정보가 없을 때: 회사 이름으로 바로 찾는 사이트 */
+function Elsewhere({ name }: { name: string }) {
+  return (
+    <div className="elsewhere">
+      <span className="k">{t.elsewhere}</span>
+      <div className="chips wrap">
+        {ELSEWHERE.map((s) => (
+          <a key={s} className="chip" href={elsewhereUrl(s, name)} target="_blank" rel="noreferrer noopener">{t.elsewhereSites[s]} ↗</a>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function NotFound({ basics, isPublic }: { basics: CompanyBasics | undefined; isPublic: boolean }) {
   const dart = basics?.dart
   if (!dart) return <p className="note">{t.notChecked}</p>

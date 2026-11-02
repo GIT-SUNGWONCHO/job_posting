@@ -105,3 +105,17 @@ export function yearMonth(s: string | null | undefined): string | null {
 
 /** DART 공시 보기 주소 */
 export const dartUrl = (rceptNo: string) => `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`
+
+/** 다른 곳에서 보기: DART에 실적·직원 정보가 없을 때 회사 이름으로 바로 찾는 사이트(2026-11-02 주소 확인).
+ * 사람인 기업정보는 비상장도 사원 수·매출(나이스 기준)을 보여 준다 */
+export const ELSEWHERE = ['saramin', 'jobplanet', 'blind', 'naver'] as const
+export type Elsewhere = (typeof ELSEWHERE)[number]
+export function elsewhereUrl(site: Elsewhere, name: string): string {
+  const q = encodeURIComponent(name)
+  switch (site) {
+    case 'saramin': return `https://www.saramin.co.kr/zf_user/search/company?searchword=${q}`
+    case 'jobplanet': return `https://www.jobplanet.co.kr/search?query=${q}`
+    case 'blind': return `https://www.teamblind.com/kr/search/${q}`
+    case 'naver': return `https://search.naver.com/search.naver?query=${q}`
+  }
+}
