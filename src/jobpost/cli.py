@@ -17,6 +17,7 @@ from . import (
     db,
     facts,
     feedback,
+    jobtypes,
     notes,
     notify,
     pipeline,
@@ -52,6 +53,9 @@ def main(argv: list[str] | None = None) -> int:
     m.add_argument("--sample", action="store_true", help="기준 샘플(config/match_sample.yaml)만 다시 매긴다")
     m.add_argument("--model", help="이번 실행만 다른 모델로(회차 시험)")
 
+    jc = sub.add_parser("jobtypes-check", help="시험: 보조 직무 유형을 골라 보고 지금 분류와 비교한다(저장 없음)")
+    jc.add_argument("--data-dir", type=Path, default=Path("data"))
+    jc.add_argument("--n", type=int, default=160)
     br = sub.add_parser("bodyread", help="본문 읽기: 원문이 이미지뿐인 후보 공고의 이미지 글자를 AI로 읽어 ocr.jsonl에 쌓는다")
     br.add_argument("--data-dir", type=Path, default=Path("data"))
     f = sub.add_parser("facts", help="후보 공고의 매칭 항목을 AI로 정리해 data 폴더 facts.jsonl에 쌓는다")
@@ -167,6 +171,12 @@ def main(argv: list[str] | None = None) -> int:
                                 facts.load(args.data_dir), only=only)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
+    if args.cmd == "jobtypes-check":
+        st = Store(args.data_dir)
+        out = jobtypes.check_secondary(st.state, st.load_postings(), st.load_details(), ai.Gemini(), n=args.n)
+        json.dump(out, sys.stdout, ensure_ascii=False, indent=1)
+        print()
+        return 0
     if args.cmd == "bodyread":
         built, _ = screen.build(args.data_dir)
         settings_b: list[dict] = []

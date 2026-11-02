@@ -85,3 +85,17 @@ def test_taxonomy_ids_are_unique_and_described():
     types = jobtypes.taxonomy()["types"]
     assert len({t["id"] for t in types}) == len(types)
     assert all(t["name"] and t["desc"] for t in types)
+
+
+def test_classify_with_secondary_drops_same_or_unknown():
+    from jobpost import jobtypes
+
+    class AI:
+        def json(self, prompt, schema):
+            assert "보조" in prompt and "s" in schema["items"]["properties"]
+            return [{"i": 0, "t": "non_data", "s": "analyst"}, {"i": 1, "t": "data_eng", "s": "data_eng"},
+                    {"i": 2, "t": "analyst", "s": "nope"}]
+
+    items = [("a", "CRM 마케팅 데이터 분석", [], ""), ("b", "데이터 엔지니어", [], ""), ("c", "데이터 분석가", [], "")]
+    assert jobtypes.classify_with_secondary(items, AI()) == {"a": ("non_data", "analyst"), "b": ("data_eng", ""),
+                                                            "c": ("analyst", "")}

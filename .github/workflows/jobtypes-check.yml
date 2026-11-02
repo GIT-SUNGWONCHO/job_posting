@@ -1,0 +1,42 @@
+# 시험: 직무 유형에 보조(두 직무에 걸치는 공고)를 붙이면 어떻게 나오는지 본다. 아무것도 저장하지 않는다.
+# 열린 공고 n건(데이터·AI 쪽 반, 그 밖 반)을 다시 분류해 보조가 붙은 공고와 주 유형이 바뀐 공고를 로그에 남긴다.
+# 수동 실행: GitHub > Actions > jobtypes-check > Run workflow
+name: jobtypes-check
+
+on:
+  workflow_dispatch:
+    inputs:
+      n:
+        description: 시험할 공고 수(80건에 AI 1번)
+        required: false
+        default: "160"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 보조 직무 유형 시험
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          N: ${{ inputs.n }}
+        run: uv run --no-dev jobpost jobtypes-check --data-dir data --n "${N:-160}"
