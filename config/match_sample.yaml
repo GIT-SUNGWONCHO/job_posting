@@ -1,11 +1,13 @@
-# 기준 샘플: 매칭 회차를 비교하는 고정 공고 60건. 여기에 내가 매긴 ○△×가 정답이다(docs/decisions.md 2026-10-14).
+# 기준 샘플: 매칭 회차를 비교하는 고정 공고 100건. 여기에 내가 매긴 ○△×가 정답이다(docs/decisions.md 2026-10-14).
 # 묶음: 규칙 상위 15, 판단 갈림 15(지난 AI 시험에서 규칙과 크게 엇갈림), 직무별 20(직무 유형마다 4), 무작위 10.
 # 2026-10-14 수집분, 기본 개인 필터 통과 공고에서 골랐다. 제목이 같은 공고(수집처·회사명만 다른 것)는 하나만.
 # 마감된 공고는 같은 묶음에서 새로 골라 바꾸고 version을 올린다. 평가한 공고는 마감돼도 빼지 않는다
 # (회차 시험 match --sample이 data 브랜치에서 가져와 다시 매긴다).
 # v2(2026-11-02): 평가 전에 마감된 22건을 같은 묶음 후보(회차 리포트의 CAND)에서 바꿨다.
+# v3(2026-11-02): 지침 v4 전체 매칭 뒤 40건을 더했다. AI 점수 구간별로 80점 이상 15·60~79점 15(점수 고르게),
+#   60점 미만 무작위 10. 기존 샘플과 제목이 같은 공고, 한 회사 3건째는 뺐다. 평가는 할 만한 것만 한다.
 
-version: 2
+version: 3
 
 postings:
   - {id: "zighang:0ef8f980-4686-4367-bcec-b384bf61d8d6", group: 규칙 상위, company: "카카오뱅크", title: "데이터 엔지니어 - Data Warehouse", url: "https://zighang.com/recruitment/0ef8f980-4686-4367-bcec-b384bf61d8d6"}
@@ -68,3 +70,43 @@ postings:
   - {id: "zighang:17dd962f-b862-4d29-992f-44c55a405f13", group: 무작위, company: "에이엔게임즈", title: "데이터 분석가 모집", url: "https://zighang.com/recruitment/17dd962f-b862-4d29-992f-44c55a405f13"}
   - {id: "saramin:55423607", group: 무작위, company: "한화시스템", title: "한화시스템 MRO사업부 Data Analyst 경력사원 채용", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55423607"}
   - {id: "zighang:a300c835-a42c-4833-b420-2ae5310b330a", group: 무작위, company: "우아한형제들", title: "Business Analyst (타임세일)", url: "https://zighang.com/recruitment/a300c835-a42c-4833-b420-2ae5310b330a"}
+  - {id: "remember:348062", group: AI 80점 이상, company: "쿠팡", title: "[쿠팡로지스틱스서비스] 물류 데이터 분석 담당자 (신입 가능)", url: "https://career.rememberapp.co.kr/job/posting/348062"}
+  - {id: "jobkorea:50234845", group: AI 80점 이상, company: "커리어커넥트", title: "대형저축은행 마이데이터사업팀원 (SQL 활용 필수 / 데이터시각화)", url: "https://www.jobkorea.co.kr/Recruit/GI_Read/50234845"}
+  - {id: "saramin:55389339", group: AI 80점 이상, company: "에이치디씨랩스", title: "[HDC랩스] AI LAB팀 AI 엔지니어 및 에이전트, 연구보조원 채용", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55389339"}
+  - {id: "zighang:0926398e-0f4c-435d-99bf-bc4c059a728d", group: AI 80점 이상, company: "콘센트릭스서비스코리아", title: "데이터분석 AI 프로젝트 매니저", url: "https://zighang.com/recruitment/0926398e-0f4c-435d-99bf-bc4c059a728d"}
+  - {id: "zighang:46428695-cbb7-4402-ad91-c02c803d532c", group: AI 80점 이상, company: "쿠팡", title: "[쿠팡] AI CS 품질 관리 담당자", url: "https://zighang.com/recruitment/46428695-cbb7-4402-ad91-c02c803d532c"}
+  - {id: "zighang:fd22ed1d-1e21-4f3d-91a7-5def9a28a74b", group: AI 80점 이상, company: "DL케미칼", title: "데이터 분석가(Data Analyst) 담당", url: "https://zighang.com/recruitment/fd22ed1d-1e21-4f3d-91a7-5def9a28a74b"}
+  - {id: "zighang:e4fc8ed2-9bdc-4944-8b0e-3436b508cafa", group: AI 80점 이상, company: "LX하우시스", title: "경력사원 상시채용 - 빅데이터", url: "https://zighang.com/recruitment/e4fc8ed2-9bdc-4944-8b0e-3436b508cafa"}
+  - {id: "zighang:8dfafa2d-9d9c-458d-9668-916350653449", group: AI 80점 이상, company: "효성아이티엑스", title: "[효성ITX] 데이터 분석가", url: "https://zighang.com/recruitment/8dfafa2d-9d9c-458d-9668-916350653449"}
+  - {id: "zighang:c4f61888-1cf6-4f82-88ed-c5e259f68236", group: AI 80점 이상, company: "SK", title: "AI Agent 엔지니어 영입", url: "https://zighang.com/recruitment/c4f61888-1cf6-4f82-88ed-c5e259f68236"}
+  - {id: "zighang:730ecc68-fdea-4bdd-94bc-c03d8a9f98a5", group: AI 80점 이상, company: "에이치엘홀딩스", title: "AI Agent 엔지니어(FDE) 경력직", url: "https://zighang.com/recruitment/730ecc68-fdea-4bdd-94bc-c03d8a9f98a5"}
+  - {id: "zighang:e87ff019-7fab-4064-aa86-a1dc4c377eac", group: AI 80점 이상, company: "효성아이티엑스", title: "[효성ITX] AI 서비스 개발자", url: "https://zighang.com/recruitment/e87ff019-7fab-4064-aa86-a1dc4c377eac"}
+  - {id: "zighang:f03daa95-f70f-40fb-8b7e-9c949c113b8f", group: AI 80점 이상, company: "라이나생명보험", title: "Customer & Growth Analytics", url: "https://zighang.com/recruitment/f03daa95-f70f-40fb-8b7e-9c949c113b8f"}
+  - {id: "jobkorea:50190222", group: AI 80점 이상, company: "파워에이치알", title: "[주요SI업체] Forward Deployed Engineer", url: "https://www.jobkorea.co.kr/Recruit/GI_Read/50190222"}
+  - {id: "zighang:4dcda489-c875-4350-bb17-763b18f43921", group: AI 80점 이상, company: "우아한형제들", title: "Business Analyst (간편 픽업)", url: "https://zighang.com/recruitment/4dcda489-c875-4350-bb17-763b18f43921"}
+  - {id: "zighang:9f1a82c6-e699-4f95-a032-e9c3007a9c16", group: AI 80점 이상, company: "SK", title: "AI Data 엔지니어 영입", url: "https://zighang.com/recruitment/9f1a82c6-e699-4f95-a032-e9c3007a9c16"}
+  - {id: "zighang:4dfaf72d-eb42-4bdd-9003-9fe097ec5a4d", group: AI 60~79점, company: "목암생명과학연구소", title: "[목암생명과학연구소] LLM 에이전트 연구원/엔지니어 채용", url: "https://zighang.com/recruitment/4dfaf72d-eb42-4bdd-9003-9fe097ec5a4d"}
+  - {id: "remember:343180", group: AI 60~79점, company: "CJ올리브영", title: "[CJ올리브영] Forward Deployed AI Engineer", url: "https://career.rememberapp.co.kr/job/posting/343180"}
+  - {id: "remember:343137", group: AI 60~79점, company: "넥스트증권", title: "Data Analytics Engineer", url: "https://career.rememberapp.co.kr/job/posting/343137"}
+  - {id: "zighang:bef149e1-8557-471c-b9e3-abb91fef82a9", group: AI 60~79점, company: "신세계I&C", title: "[신세계아이앤씨] AI서비스개발 직무 인재모집(채용 시 마감)", url: "https://zighang.com/recruitment/bef149e1-8557-471c-b9e3-abb91fef82a9"}
+  - {id: "remember:341221", group: AI 60~79점, company: "여기어때컴퍼니", title: "Data Analyst [User Behavior]", url: "https://career.rememberapp.co.kr/job/posting/341221"}
+  - {id: "remember:326943", group: AI 60~79점, company: "카카오페이증권", title: "그로스 플랫폼 프로덕트 빌더", url: "https://career.rememberapp.co.kr/job/posting/326943"}
+  - {id: "remember:336258", group: AI 60~79점, company: "쿠팡", title: "데이터 분석가 경력직 (CRM FP&A)", url: "https://career.rememberapp.co.kr/job/posting/336258"}
+  - {id: "saramin:55439858", group: AI 60~79점, company: "나인닷츠컨설팅", title: "AI Agent Engineer (M365 & Automation) 모집", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55439858"}
+  - {id: "remember:338951", group: AI 60~79점, company: "쿠팡", title: "[쿠팡] Senior, Data Analyst (Audit Automation & Data Analytics)", url: "https://career.rememberapp.co.kr/job/posting/338951"}
+  - {id: "zighang:63089682-ea6c-48ec-a47b-39afe998e8a1", group: AI 60~79점, company: "틱톡", title: "Global Business Solutions - Business Analyst (Graduate)", url: "https://zighang.com/recruitment/63089682-ea6c-48ec-a47b-39afe998e8a1"}
+  - {id: "zighang:adea96d4-aa37-4ac4-bcb6-454be2a70f9f", group: AI 60~79점, company: "SK", title: "[SK inc.(AX)] AI Agent 개발자", url: "https://zighang.com/recruitment/adea96d4-aa37-4ac4-bcb6-454be2a70f9f"}
+  - {id: "saramin:54402533", group: AI 60~79점, company: "신세계아이앤씨", title: "데이터엔지니어링(DE) 직무 인재모집(채용 시 마감)", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=54402533"}
+  - {id: "zighang:62171964-adc8-4d97-a2c8-58367b2b7da1", group: AI 60~79점, company: "앤서스랩", title: "[DX]Data Processing Engineer", url: "https://zighang.com/recruitment/62171964-adc8-4d97-a2c8-58367b2b7da1"}
+  - {id: "saramin:55073286", group: AI 60~79점, company: "케이비헬스케어", title: "[KB금융그룹 계열] KB헬스케어 데이터 분석 엔지니어 채용", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55073286"}
+  - {id: "jobkorea:50169631", group: AI 60~79점, company: "스카우트파트너스", title: "유통CRM (Braze.Amplitude.SQL.데이터분석.개인화.2-5)대기업", url: "https://www.jobkorea.co.kr/Recruit/GI_Read/50169631"}
+  - {id: "remember:335706", group: AI 60점 미만, company: "CJ올리브영", title: "[CJ올리브영] Research Specialist", url: "https://career.rememberapp.co.kr/job/posting/335706"}
+  - {id: "zighang:192e7388-bbe3-4ff7-ad98-d751f7658b25", group: AI 60점 미만, company: "카카오페이증권", title: "AI Native Engineering팀 AI 엔지니어", url: "https://zighang.com/recruitment/192e7388-bbe3-4ff7-ad98-d751f7658b25"}
+  - {id: "jobkorea:50207540", group: AI 60점 미만, company: "커리어앤스카우트", title: "외국계 해운 IT기업 Data Architect 경력직 채용", url: "https://www.jobkorea.co.kr/Recruit/GI_Read/50207540"}
+  - {id: "remember:348766", group: AI 60점 미만, company: "카카오헬스케어", title: "[경력] Product Eng. (BE&Data)", url: "https://career.rememberapp.co.kr/job/posting/348766"}
+  - {id: "zighang:2dbea257-0b07-4d76-ba22-8b10e8968b40", group: AI 60점 미만, company: "카카오", title: "AI Research Engineer (Search & Agent) (경력)", url: "https://zighang.com/recruitment/2dbea257-0b07-4d76-ba22-8b10e8968b40"}
+  - {id: "zighang:9d0d1529-ea45-4cf4-83fb-40c5c3a1b0c7", group: AI 60점 미만, company: "월트디즈니컴퍼니", title: "Manager, Marketing Analytics", url: "https://zighang.com/recruitment/9d0d1529-ea45-4cf4-83fb-40c5c3a1b0c7"}
+  - {id: "zighang:85770d7b-6849-4932-b018-3d6bb2b18c34", group: AI 60점 미만, company: "다음", title: "Agentic AI Search 개발자", url: "https://zighang.com/recruitment/85770d7b-6849-4932-b018-3d6bb2b18c34"}
+  - {id: "zighang:be55c2d3-045b-4181-be47-82121eb38ce3", group: AI 60점 미만, company: "쿠팡", title: "Sr. Staff - AI Data Center Architect", url: "https://zighang.com/recruitment/be55c2d3-045b-4181-be47-82121eb38ce3"}
+  - {id: "zighang:0481ef3a-f828-4cb7-99c5-3f2b0d16dd40", group: AI 60점 미만, company: "카카오뱅크", title: "[카카오뱅크] AI 엔지니어", url: "https://zighang.com/recruitment/0481ef3a-f828-4cb7-99c5-3f2b0d16dd40"}
+  - {id: "jobkorea:50205524", group: AI 60점 미만, company: "헌터스그룹", title: "[강남][외국계IT기업] Data Architect(8년이상)", url: "https://www.jobkorea.co.kr/Recruit/GI_Read/50205524"}
