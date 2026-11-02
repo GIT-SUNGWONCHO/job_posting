@@ -94,25 +94,15 @@ def verdict(score: int) -> str:
     return g["below"]
 
 
-def adjust(base: int, facts: dict[str, Any] | None, wants: dict[str, Any] | None, english: str | None,
+def adjust(base: int, facts: dict[str, Any] | None, english: str | None,
            employment_types: list[str] | None) -> tuple[int, list[str]]:
-    """공고 사실을 원하는 조건·개인 필터와 비교해 가감점을 준 뒤 상한을 건다. (최종 점수, 조정 설명)."""
-    facts, wants = facts or {}, wants or {}
+    """할 수 없는 공고에만 상한을 건다(영어, 필터에서 못 거른 고용 형태). (최종 점수, 조정 설명).
+    취향(원하는 조건)은 점수에 넣지 않는다: want_tags로 표시만 한다(docs/decisions.md 2026-11-02 점수 기준)."""
+    facts = facts or {}
     g = config.load("match_guide")["gates"]
     notes: list[str] = []
-    score = base
-    industry = facts.get("industry")
-    names = {i["id"]: i["name"] for i in config.load("profile")["industries"]}
-    if industry and industry in (wants.get("industriesLike") or []):
-        score += g["like_industry"]
-        notes.append(f"선호 업종({names.get(industry, industry)}) +{g['like_industry']}")
-    if industry and industry in (wants.get("industriesAvoid") or []):
-        score += g["avoid_industry"]
-        notes.append(f"비선호 업종({names.get(industry, industry)}) {g['avoid_industry']}")
-    score = max(0, min(100, score))
+    score = max(0, min(100, base))
     caps: list[tuple[int, str]] = []
-    if wants.get("level") == "실무자" and facts.get("level") == "리더·관리자":
-        caps.append((g["level_cap"], "리더·관리자 공고"))
     if english and english in config.load("profile").get("english_low", []) and facts.get("english") == "필요":
         caps.append((g["english_cap"], "영어로 일하는 공고"))
     emp = facts.get("employment")
@@ -125,14 +115,29 @@ def adjust(base: int, facts: dict[str, Any] | None, wants: dict[str, Any] | None
     return score, notes
 
 
+def want_tags(facts: dict[str, Any] | None, wants: dict[str, Any] | None) -> list[str]:
+    """공고 사실이 원하는 조건에 걸리는지(점수는 그대로, 화면에 표시만)."""
+    facts, wants = facts or {}, wants or {}
+    names = {i["id"]: i["name"] for i in config.load("profile")["industries"]}
+    industry = facts.get("industry")
+    out: list[str] = []
+    if industry and industry in (wants.get("industriesLike") or []):
+        out.append(f"선호 업종 {names.get(industry, industry)}")
+    if industry and industry in (wants.get("industriesAvoid") or []):
+        out.append(f"비선호 업종 {names.get(industry, industry)}")
+    if wants.get("level") == "실무자" and facts.get("level") == "리더·관리자":
+        out.append("리더·관리자 공고")
+    return out
+
+
 def finish(row: dict[str, Any], data: dict[str, Any], user_filters: dict[str, Any]) -> dict[str, Any]:
-    """AI 결과(새로 매겼거나 다시 쓰는 것)에 조정·판정을 지금 원하는 조건으로 다시 매긴다."""
+    """AI 결과(새로 매겼거나 다시 쓰는 것)에 상한·판정과 원하는 조건 표시를 지금 설정으로 다시 단다."""
     parts = row.get("parts") or {}
     if parts.get("kind") != "ai" or "base" not in parts:
         return row  # v1 결과(공고 사실 없음)는 그대로
-    score, notes = adjust(parts["base"], parts.get("posting"), data.get("wants"), data.get("english"),
-                          user_filters.get("employment_types"))
-    return {**row, "score": score, "parts": {**parts, "adjust": notes, "verdict": verdict(score)}}
+    score, notes = adjust(parts["base"], parts.get("posting"), data.get("english"), user_filters.get("employment_types"))
+    tags = want_tags(parts.get("posting"), data.get("wants"))
+    return {**row, "score": score, "parts": {**parts, "adjust": notes, "wants": tags, "verdict": verdict(score)}}
 
 
 def score_items(items: list[dict[str, Any]]) -> int:

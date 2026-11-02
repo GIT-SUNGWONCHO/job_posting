@@ -29,7 +29,7 @@ FACTS = {"level": "실무자", "english": "필요 없음", "employment": "정규
 ITEMS = [
     {"kind": "핵심 업무", "name": "파이프라인 구축", "posting": "Spark 파이프라인", "me": "마트 설계", "fit": "일부", "weight": 50},
     {"kind": "필수 스킬", "name": "Airflow", "posting": "Airflow 필수", "me": "Airflow 2단계", "fit": "충족", "weight": 30},
-    {"kind": "직급·수준", "name": "연차", "posting": "5년 이상", "me": "약 10년", "fit": "충족", "weight": 20},
+    {"kind": "경력 연수·직급", "name": "연차", "posting": "5년 이상", "me": "약 10년", "fit": "충족", "weight": 20},
 ]
 
 
@@ -79,7 +79,7 @@ def test_run_scores_candidates_with_ai_and_keeps_basis():
     assert ai_row["score"] == 75 and ai_row["parts"]["kind"] == "ai" and ai_row["parts"]["verdict"] == "고려"
     assert ai_row["parts"]["items"] == ITEMS and ai_row["parts"]["rule"] > 0
     assert ai_row["matched"] == ["Airflow", "연차"] and ai_row["missing"] == ["Spark 경험"]
-    assert ai_row["score_v"] == 4 and ai_row["profile_v"] == 3
+    assert ai_row["score_v"] == 5 and ai_row["profile_v"] == 3
     assert ai_row["parts"]["base"] == 75 and ai_row["parts"]["posting"] == FACTS and ai_row["parts"]["adjust"] == []
     assert by["z:2"]["parts"]["kind"] == "rule"  # AI가 실패하면 규칙 점수만
     # 회사명까지 보낸다
@@ -141,15 +141,18 @@ def test_verdict_follows_score_bands():
     assert [recommend.verdict(x) for x in (100, 80, 79, 60, 59, 0)] == ["지원 추천", "지원 추천", "고려", "고려", "비추천", "비추천"]
 
 
-def test_adjust_applies_preferences_then_caps():
+def test_adjust_caps_only_what_the_person_cannot_do():
+    facts = {**FACTS, "level": "리더·관리자", "english": "필요", "industry": "game"}
+    assert recommend.adjust(95, facts, "못함", ["정규직"]) == (65, ["영어로 일하는 공고라 최대 65점"])
+    assert recommend.adjust(90, {**FACTS, "employment": "인턴"}, None, ["정규직"]) == (30, ["인턴 공고라 최대 30점"])
+    assert recommend.adjust(90, facts, "능통", None) == (90, [])  # 직급·업종 취향은 점수에 넣지 않는다
+
+
+def test_want_tags_show_preferences_without_scoring():
     wants = {"level": "실무자", "industriesAvoid": ["game"], "industriesLike": ["bank"]}
-    facts = {**FACTS, "level": "리더·관리자", "english": "필요"}
-    score, notes = recommend.adjust(95, facts, wants, "못함", ["정규직"])
-    assert score == 50  # 95 - 15(게임) = 80, 리더 상한 50(영어 상한 65는 이미 아래라 안 붙는다)
-    assert notes == ["비선호 업종(게임) -15", "리더·관리자 공고라 최대 50점"]
-    assert recommend.adjust(70, {**FACTS, "industry": "bank"}, wants, "능통", ["정규직"]) == (75, ["선호 업종(금융(은행·카드)) +5"])
-    assert recommend.adjust(90, {**FACTS, "employment": "인턴"}, {}, None, ["정규직"]) == (30, ["인턴 공고라 최대 30점"])
-    assert recommend.adjust(90, FACTS, {}, None, None) == (90, [])  # 원하는 조건이 없으면 그대로
+    assert recommend.want_tags({**FACTS, "level": "리더·관리자", "industry": "game"}, wants) == ["비선호 업종 게임", "리더·관리자 공고"]
+    assert recommend.want_tags({**FACTS, "industry": "bank"}, wants) == ["선호 업종 금융(은행·카드)"]
+    assert recommend.want_tags(FACTS, {}) == []
 
 
 def test_changing_wants_reuses_ai_and_only_readjusts():
@@ -162,7 +165,7 @@ def test_changing_wants_reuses_ai_and_only_readjusts():
     recommend.run(SCREEN, BODIES, db, ai, TODAY)
     assert not ai.prompts  # 원하는 조건은 AI에 보내지 않아 다시 묻지 않는다
     row = next(r for r in db.inserted if r["posting_id"] == "z:1")
-    assert row["score"] == 60 and row["parts"]["verdict"] == "고려" and row["parts"]["adjust"] == ["비선호 업종(게임) -15"]
+    assert row["score"] == 75 and row["parts"]["adjust"] == [] and row["parts"]["wants"] == ["비선호 업종 게임"]
 
 
 def test_memo_goes_into_prompt_and_changes_the_profile_hash():
