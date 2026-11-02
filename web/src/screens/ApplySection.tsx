@@ -8,6 +8,8 @@ import {
 import type { Posting } from '../lib/types'
 
 const t = copy.apply
+/** 공고 상세에서 고르는 단계. 관심은 단계가 아니라 ★로 넣는다(2026-10-28) */
+const APPLY_STAGES = STAGES.filter((s) => s !== 'interest')
 
 // 지원 상태: 단계 고르기(누르면 바로 저장), 결과(합격·불합격), 메모·다음 일정(저장 버튼).
 // 공고 상세에서는 posting으로, 지원 현황에서 마감되거나 직접 추가한 공고는 저장해 둔 사본(app.snapshot)으로 고친다
@@ -41,10 +43,13 @@ export function ApplySection({ postingId, posting, company, app, today, onChange
     save({ ...base, stage, snapshot })
   }
 
+  // 지원 상태를 지우면 지원 전으로 돌아가고 관심(★)은 남는다. ★를 빼려면 아래 ★를 누른다
   async function clear() {
+    if (!app) return
     setState('saving')
-    const ok = await deleteApplication(postingId)
-    if (ok) onChange(postingId, null)
+    const next: Application = { ...app, stage: 'interest', outcome: null, nextOn: null, nextLabel: '' }
+    const ok = await saveApplication(next, today)
+    if (ok) onChange(postingId, { ...next, dates: next.dates.interest ? next.dates : { ...next.dates, interest: today } })
     setState(ok ? 'idle' : 'failed')
   }
 
@@ -52,12 +57,12 @@ export function ApplySection({ postingId, posting, company, app, today, onChange
     <section className={embedded ? 'apply' : 'section apply'}>
       {!embedded && <h2>{t.status}</h2>}
       <div className="chips wrap" role="radiogroup" aria-label={t.status}>
-        {STAGES.map((s) => (
+        {APPLY_STAGES.map((s) => (
           <button key={s} type="button" role="radio" aria-checked={app?.stage === s}
             className={app?.stage === s ? 'chip selected' : 'chip'} onClick={() => pick(s)}>{t.long[s]}</button>
         ))}
       </div>
-      {app && <ApplyDetails key={app.postingId + app.stage} app={app} save={save} clear={clear} state={state} setState={setState} />}
+      {app && app.stage !== 'interest' && <ApplyDetails key={app.postingId + app.stage} app={app} save={save} clear={clear} state={state} setState={setState} />}
       {!app && state === 'failed' && <span className="note urgent">{t.failed}</span>}
     </section>
   )
