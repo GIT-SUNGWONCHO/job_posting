@@ -475,6 +475,7 @@ export const copy = {
     wantsHelp: '공고를 빼지 않고 점수에만 반영해요. 고르지 않으면 상관없음이에요',
     wantLevel: '포지션',
     wantSize: '회사 규모',
+    sizeHelp: '중견 이상: 직원 300명 미만·스타트업을 낮춰요. 큰 회사: 직원 1,000명 미만을 낮춰요(대기업 계열·대형 외국계는 큰 회사)',
     likeIndustries: '선호 업종',
     avoidIndustries: '비선호 업종',
     any: '상관없음',

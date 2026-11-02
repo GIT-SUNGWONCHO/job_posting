@@ -523,6 +523,7 @@ function WantsEdit({ value, opts, busy, failed, cancel, onSave }: EditProps & { 
         <p className="note">{t.wantsHelp}</p>
         <OneOf label={t.wantLevel} value={v.level} options={opts.want_levels ?? []} onChange={(level) => setV({ ...v, level })} />
         <OneOf label={t.wantSize} value={v.size} options={opts.company_sizes ?? []} onChange={(size) => setV({ ...v, size })} />
+        <p className="note">{t.sizeHelp}</p>
         <SectionTitle>{t.likeIndustries}</SectionTitle>
         {industryChips('industriesLike', 'industriesAvoid')}
         <SectionTitle>{t.avoidIndustries}</SectionTitle>

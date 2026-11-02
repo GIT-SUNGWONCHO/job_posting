@@ -79,7 +79,7 @@ def test_run_scores_candidates_with_ai_and_keeps_basis():
     assert ai_row["score"] == 75 and ai_row["parts"]["kind"] == "ai" and ai_row["parts"]["verdict"] == "고려"
     assert ai_row["parts"]["items"] == ITEMS and ai_row["parts"]["rule"] > 0
     assert ai_row["matched"] == ["Airflow", "연차"] and ai_row["missing"] == ["Spark 경험"]
-    assert ai_row["score_v"] == 2 and ai_row["profile_v"] == 3
+    assert ai_row["score_v"] == 3 and ai_row["profile_v"] == 3
     assert ai_row["parts"]["base"] == 75 and ai_row["parts"]["posting"] == FACTS and ai_row["parts"]["adjust"] == []
     assert by["z:2"]["parts"]["kind"] == "rule"  # AI가 실패하면 규칙 점수만
     # 회사명까지 보낸다

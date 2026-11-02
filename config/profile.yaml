@@ -59,5 +59,7 @@ english_low: [못함, 읽기·쓰기]
 
 # 원하는 조건: 필터로 빼지 않고 점수에만 반영한다(config/match_guide.yaml gates, docs/decisions.md 2026-11-02).
 # 비우면 상관없음. 업종은 위 industries의 id
+# 회사 규모(config/match_guide.yaml posting_facts.size): 큰 회사 = 직원 1,000명 이상 또는 대기업 계열·대형 외국계,
+# 중견 = 300~1,000명, 작은 회사 = 300명 미만·스타트업. "중견 이상"을 고르면 작은 회사를, "큰 회사"를 고르면 중견·작은 회사를 감점한다
 want_levels: [실무자, 리더]
 company_sizes: [중견 이상, 큰 회사]
