@@ -143,7 +143,7 @@ def sample_dump(sample: list[dict[str, Any]], matches: list[dict[str, Any]], row
         label = labels.get((m["user_id"], m["posting_id"]))
         out.append("SMP\t" + json.dumps({
             "user": m["user_id"][:8], "id": p["id"], "group": p.get("group"), "company": p.get("company"),
-            "title": p.get("title"), "url": p.get("url"), "kind": parts.get("kind"), "score": m.get("score"),
+            "title": p.get("title"), "url": (p.get("sources") or [{}])[0].get("url"), "kind": parts.get("kind"), "score": m.get("score"),
             "verdict": parts.get("verdict"), "rule": parts.get("rule"), "base": parts.get("base"),
             "posting": parts.get("posting"), "adjust": parts.get("adjust"), "reason": m.get("reason"),
             "gaps": m.get("missing") or [], "items": parts.get("items") or [],
@@ -290,6 +290,7 @@ def ranking(screen: dict[str, Any], rows: list[dict[str, Any]]) -> list[str]:
             continue
         ai = r.get("score") if r.get("kind") == "ai" else None
         out.append("RANK\t" + json.dumps({"user": r["user_id"][:8], "rule": r.get("rule"), "ai": ai, "v": r.get("score_v"),
+                                          "id": p["id"], "jobType": p.get("jobType"), "url": (p.get("sources") or [{}])[0].get("url"),
                                           "company": names.get(p["company"], p["company"]), "title": p["title"]},
                                          ensure_ascii=False))
     return out
