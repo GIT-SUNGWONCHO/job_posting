@@ -19,7 +19,7 @@ import time
 from datetime import date
 from typing import Any
 
-from . import ai, config, filters, jobtypes, matching, profile
+from . import ai, bodyread, config, filters, jobtypes, matching, profile
 from .models import CompanyType
 
 log = logging.getLogger(__name__)
@@ -95,7 +95,7 @@ def verdict(score: int) -> str:
 
 
 def adjust(base: int, facts: dict[str, Any] | None, english: str | None,
-           employment_types: list[str] | None) -> tuple[int, list[str]]:
+           employment_types: list[str] | None, has_body: bool = True) -> tuple[int, list[str]]:
     """할 수 없는 공고에만 상한을 건다(영어, 필터에서 못 거른 고용 형태). (최종 점수, 조정 설명).
     취향(원하는 조건)은 점수에 넣지 않는다: want_tags로 표시만 한다(docs/decisions.md 2026-11-02 점수 기준)."""
     facts = facts or {}
@@ -108,6 +108,8 @@ def adjust(base: int, facts: dict[str, Any] | None, english: str | None,
     emp = facts.get("employment")
     if employment_types and emp in ("계약직", "인턴", "기타") and not any(a in emp for a in employment_types):
         caps.append((g["employment_cap"], f"{emp} 공고"))
+    if not has_body:
+        caps.append((g["no_body_cap"], "본문이 없는 공고"))
     for cap, why in sorted(caps):
         if score > cap:
             notes.append(f"{why}라 최대 {cap}점")
@@ -135,7 +137,8 @@ def finish(row: dict[str, Any], data: dict[str, Any], user_filters: dict[str, An
     parts = row.get("parts") or {}
     if parts.get("kind") != "ai" or "base" not in parts:
         return row  # v1 결과(공고 사실 없음)는 그대로
-    score, notes = adjust(parts["base"], parts.get("posting"), data.get("english"), user_filters.get("employment_types"))
+    score, notes = adjust(parts["base"], parts.get("posting"), data.get("english"), user_filters.get("employment_types"),
+                          has_body=parts.get("body", True))
     tags = want_tags(parts.get("posting"), data.get("wants"))
     return {**row, "score": score, "parts": {**parts, "adjust": notes, "wants": tags, "verdict": verdict(score)}}
 
@@ -223,11 +226,16 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         for rule, p in scored:
             o = old.get(p["id"])
             meta = (o or {}).get("reason_meta") or {}
+            has_body = len(texts.get(p["id"]) or "") >= bodyread.MIN_TEXT
+            # 본문 없이 매긴 공고에 본문이 생기면(본문 읽기) 다시 묻는다. 예전 결과(body 칸 없음)는 본문이 있던 것으로 본다
             same = (o and (o.get("parts") or {}).get("kind") == "ai" and o.get("profile_v") == pv
+                    and ((o.get("parts") or {}).get("body", True) or not has_body)
                     and o.get("score_v") == guide_v and meta.get("prompt") == PROMPT_VERSION and meta.get("model") == model
                     and (not phash or meta.get("profile_hash") in (None, phash)))
             row = None
             twin = shared.get((p["id"], phash)) if phash else None
+            if twin and not ((twin.get("parts") or {}).get("body", True) or not has_body):
+                twin = None
             if same or twin:
                 src = o if same else twin
                 row = {k: src[k] for k in ("score", "parts", "matched", "missing", "reason", "reason_meta")}
@@ -250,7 +258,7 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                     base = score_items(items)
                     row = {"score": base,
                            "parts": {"kind": "ai", "items": items, "base": base, "posting": got.get("posting") or {},
-                                     "rule": rule["score"]},
+                                     "rule": rule["score"], "body": has_body},
                            "matched": [i["name"] for i in items if i.get("fit") == "충족"],
                            "missing": [g for g in got.get("gaps") or [] if g][:3],
                            "reason": reason or None,

@@ -15,6 +15,12 @@ facts:                 # 공고 정리(facts.py): 공고당 1번, 모두 함께 
   max_calls: 250       # 하루(실행 한 번) 최대 호출 수. 남은 공고는 다음 날
   max_minutes: 20
 
+bodyread:              # 본문 읽기(bodyread.py): 원문이 이미지뿐인 후보 공고의 이미지 글자를 공고당 1번
+  max_calls: 80        # 하루 최대 호출 수(처음 며칠은 쌓인 공고, 그 뒤 하루 몇 건)
+  max_minutes: 10
+  max_images: 3        # 공고 하나에서 읽을 이미지 수(앞에서부터)
+  max_bytes: 4000000   # 이보다 큰 이미지는 건너뛴다
+
 match:                 # AI 매칭(recommend.py): 후보 공고마다 항목·가중치·판정. 지침은 config/match_guide.yaml
   model: null          # 비우면 위 model. 회차 시험에서 다른 모델을 써 볼 때만 바꾼다
   max_calls: 330       # 실행 한 번 최대 호출 수(후보 전체를 다시 매기는 날 기준)

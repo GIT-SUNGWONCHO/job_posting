@@ -66,6 +66,7 @@ src/jobpost/
   research.py      회사 심층분석: 가진 데이터로 만드는 경쟁사(같은 DART 업종 매출 상위)·직무 환경·도구(공고 본문의 도구). 설정 config/research.yaml
   notes.py         내 리서치 노트: data 브랜치 notes/*.json(정해진 블록)을 확인해 사람마다 Supabase research_notes에 넣는다
   career.py        커리어 지표(시장): 직무 유형 × 기업 구분별 날짜별 공고 수, 경력 요구, 요구 스킬(화면용 파일 career)
+  bodyread.py      본문 읽기: 원문이 이미지뿐인 후보 공고의 이미지 글자를 AI로(data/ocr.jsonl). 상세(본문)에 붙는다
   facts.py         공고 정리: 후보 공고의 매칭 항목을 공고당 1번 AI로(data/facts.jsonl), 스킬 목록
   profile.py       프로필 v2(경력 > 직무 구간 > 프로젝트, 숙련도): 직무별 연수, AI에 보낼 요약
   matching.py      규칙 점수(비교용, config/matching.yaml + 스킬 사전 config/skills.yaml)

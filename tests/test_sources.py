@@ -144,7 +144,7 @@ def test_saramin_detail_text():
     d = parse_detail(html, "123", datetime(2026, 10, 13))
     assert d.uid == "saramin:123"
     assert d.description == "📋 주요업무\n데이터 파이프라인 구축"
-    assert d.raw == {"images": 1}
+    assert d.raw["images"] == 1
 
 
 def test_wanted_list_item():
@@ -221,3 +221,48 @@ def test_scrub_keeps_work_lines():
     out = jobkorea.scrub("고객 문의 분류 모델 개발\n채용담당 : 홍길동 전무\n메일 hong@example.com, 02-123-4567")
     assert "고객 문의 분류 모델 개발" in out
     assert "홍길동" not in out and "@" not in out and "123-4567" not in out
+
+
+def test_bodyread_finds_image_urls_and_merges_text():
+    from jobpost import bodyread
+    zig = {"description": "마감기한\n상시채용", "raw": {"content": {"type": "doc", "content": [
+        {"type": "image", "attrs": {"src": "https://cdn.example.com/crawler/a"}}]}}}
+    sar = {"description": None, "raw": {"images": 2, "image_urls": ["https://img.example.com/1.png"]}}
+    assert bodyread.image_urls(zig) == ["https://cdn.example.com/crawler/a"]
+    assert bodyread.needs_reading(zig) and bodyread.needs_reading(sar)
+    assert not bodyread.needs_reading({"description": "가" * 400, "raw": zig["raw"]})
+    merged = bodyread.merge(zig, {"text": "담당업무\n- 데이터 파이프라인"})
+    assert merged["description"].endswith("- 데이터 파이프라인") and merged["ocr"]
+    assert bodyread.merge(zig, {"text": ""}) is zig
+
+
+def test_bodyread_run_reads_candidates_once(tmp_path):
+    from jobpost import bodyread
+
+    class AI:
+        model = "m"
+        calls = 0
+
+        def json(self, prompt, schema, images=None):
+            AI.calls += 1
+            assert images and images[0][0] == "image/png"
+            return {"text": "주요업무 - 데이터 모델링"}
+
+    class Resp:
+        status_code = 200
+        headers = {"Content-Type": "image/png"}
+        content = b"png"
+
+    class Session:
+        headers: dict = {}
+
+        def get(self, url, timeout=None):
+            return Resp()
+
+    details = {"z:1": {"description": "", "raw": {"image_urls": ["https://x/1.png"]}},
+               "z:2": {"description": "가" * 400, "raw": {}}}
+    s = bodyread.run(tmp_path, ["z:1", "z:2"], details, AI(), "2026-11-02", session=Session())
+    assert s["done"] == 1 and AI.calls == 1
+    assert bodyread.load(tmp_path)["z:1"]["text"] == "주요업무 - 데이터 모델링"
+    s = bodyread.run(tmp_path, ["z:1"], details, AI(), "2026-11-03", session=Session())
+    assert s["pending"] == 0 and AI.calls == 1  # 한 번 읽은 공고는 다시 읽지 않는다

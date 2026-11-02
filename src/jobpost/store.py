@@ -138,11 +138,18 @@ class Store:
         return path
 
     def load_details(self) -> dict[str, dict[str, Any]]:
-        """저장된 모든 상세(본문). 같은 공고를 다시 받았으면 나중 것."""
+        """저장된 모든 상세(본문). 같은 공고를 다시 받았으면 나중 것.
+        본문이 이미지뿐이라 AI로 읽은 글(ocr.jsonl, bodyread.py)이 있으면 본문 뒤에 붙인다."""
+        from . import bodyread  # store는 수집 기반이라 본문 읽기는 쓸 때만 가져온다
+
         out: dict[str, dict[str, Any]] = {}
         for path in sorted((self.base / "details").rglob("*.jsonl.gz")):
             for r in _read_gz(path):
                 out[r["uid"]] = r
+        read = bodyread.load(self.base)
+        for uid, row in read.items():
+            if uid in out:
+                out[uid] = bodyread.merge(out[uid], row)
         return out
 
     def load_postings(self) -> dict[str, dict[str, Any]]:

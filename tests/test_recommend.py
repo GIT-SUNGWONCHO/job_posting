@@ -15,7 +15,8 @@ SCREEN = {
          "careerMax": None, "career": "경력 5년 이상", "regions": ["서울"], "noise": None},
     ],
 }
-BODIES = {"bodies": {"z:1": {"text": "Spark, Airflow, Databricks로 데이터 파이프라인 구축", "source": "zighang"}}}
+BODIES = {"bodies": {"z:1": {"text": "Spark, Airflow, Databricks로 데이터 파이프라인 구축\n" + "담당 업무 설명 " * 40,
+                             "source": "zighang"}}}
 PROFILE = {
     "schema": 2,
     "careers": [{"company": "가람건설", "industry": "construction", "start": "2016-12", "end": "", "title": "대리",
@@ -178,3 +179,17 @@ def test_memo_goes_into_prompt_and_changes_the_profile_hash():
     again, ai2 = FakeDB(old), FakeAI()  # 메모가 없어지면 같은 프로필 버전이어도 다시 매긴다
     recommend.run(SCREEN, BODIES, again, ai2, TODAY)
     assert ai2.prompts
+
+
+def test_no_body_caps_score_and_body_arrival_rematches():
+    assert recommend.adjust(95, FACTS, None, None, has_body=False) == (70, ["본문이 없는 공고라 최대 70점"])
+    short = {"bodies": {"z:1": {"text": "마감기한 상시채용", "source": "zighang"}}}
+    first = FakeDB()
+    recommend.run(SCREEN, short, first, FakeAI(), TODAY)
+    row = next(r for r in first.inserted if r["posting_id"] == "z:1")
+    assert row["parts"]["body"] is False and row["score"] == 70
+    old = [{k: r[k] for k in ("posting_id", "score", "parts", "matched", "missing", "reason", "reason_meta",
+                              "profile_v", "score_v")} for r in first.inserted]
+    db, ai = FakeDB(old), FakeAI()
+    recommend.run(SCREEN, BODIES, db, ai, TODAY)  # 본문 읽기로 본문이 생기면 다시 묻는다
+    assert ai.prompts

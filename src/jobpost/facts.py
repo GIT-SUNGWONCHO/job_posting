@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from . import config, matching, recommend
+from . import bodyread, config, matching, recommend
 
 log = logging.getLogger(__name__)
 
@@ -90,8 +90,11 @@ def save(data_dir: Path, rows: dict[str, dict[str, Any]]) -> None:
     (data_dir / FILE).write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
 
 
-def is_current(row: dict[str, Any] | None) -> bool:
-    return bool(row) and row.get("prompt") == PROMPT_VERSION and row.get("industries_v") == config.load("profile")["version"]
+def is_current(row: dict[str, Any] | None, has_body: bool = False) -> bool:
+    """지금 지시문·업종 목록으로 정리했고, 본문이 생겼으면(본문 읽기) 본문까지 보고 정리했는지."""
+    return (bool(row) and row.get("prompt") == PROMPT_VERSION
+            and row.get("industries_v") == config.load("profile")["version"]
+            and (row.get("body", True) or not has_body))
 
 
 def posting_text(p: dict[str, Any], company: str, body: str | None) -> str:
@@ -104,7 +107,10 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
     """wanted(후보 공고 id, 앞에서부터 먼저)에서 아직 정리하지 않은 것을 하루 한도까지 정리한다."""
     rows = load(data_dir)
     texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
-    todo = [pid for pid in wanted if pid in texts and not is_current(rows.get(pid))]
+    def has_body(pid: str) -> bool:
+        return len(texts.get(pid) or "") >= bodyread.MIN_TEXT
+
+    todo = [pid for pid in wanted if pid in texts and not is_current(rows.get(pid), has_body(pid))]
     summary: dict[str, Any] = {"wanted": len(wanted), "pending": len(todo), "done": 0, "calls": 0}
     if not todo:
         return summary
@@ -127,7 +133,7 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
             errors.append(str(e)[:200])
             continue
         rows[pid] = {"uid": pid, "facts": got, "prompt": PROMPT_VERSION, "industries_v": config.load("profile")["version"],
-                     "model": getattr(client, "model", None), "on": today}
+                     "model": getattr(client, "model", None), "on": today, "body": has_body(pid)}
         summary["done"] += 1
         if summary["done"] % 25 == 0:
             save(data_dir, rows)  # 중간에 멈춰도 한 일은 남긴다

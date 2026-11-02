@@ -11,6 +11,7 @@ from pathlib import Path
 
 from . import (
     ai,
+    bodyread,
     config,
     dart,
     db,
@@ -51,6 +52,8 @@ def main(argv: list[str] | None = None) -> int:
     m.add_argument("--sample", action="store_true", help="기준 샘플(config/match_sample.yaml)만 다시 매긴다")
     m.add_argument("--model", help="이번 실행만 다른 모델로(회차 시험)")
 
+    br = sub.add_parser("bodyread", help="본문 읽기: 원문이 이미지뿐인 후보 공고의 이미지 글자를 AI로 읽어 ocr.jsonl에 쌓는다")
+    br.add_argument("--data-dir", type=Path, default=Path("data"))
     f = sub.add_parser("facts", help="후보 공고의 매칭 항목을 AI로 정리해 data 폴더 facts.jsonl에 쌓는다")
     f.add_argument("--data-dir", type=Path, default=Path("data"))
 
@@ -164,6 +167,20 @@ def main(argv: list[str] | None = None) -> int:
                                 facts.load(args.data_dir), only=only)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
+    if args.cmd == "bodyread":
+        built, _ = screen.build(args.data_dir)
+        settings_b: list[dict] = []
+        if db.configured():
+            store_b = db.DB()
+            store_b.check_server_key()
+            settings_b = store_b.select("settings", "select=user_id,filters")
+        wanted = facts.candidates_for_all(built, settings_b)
+        details = Store(args.data_dir).load_details()
+        client = ai.Gemini() if ai.configured() else None
+        summary = bodyread.run(args.data_dir, wanted, details, client, date.today().isoformat())
+        json.dump(summary, sys.stdout, ensure_ascii=False)
+        print()
+        return 0
     if args.cmd == "facts":
         built, bodies = screen.build(args.data_dir)
         settings: list[dict] = []

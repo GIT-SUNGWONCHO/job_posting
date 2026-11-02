@@ -152,7 +152,10 @@ def parse_detail(html: str, rid: str, now: datetime) -> Detail:
         lines = lines[1:]
     text = "\n".join(lines)
     return Detail(uid=f"{Source.SARAMIN.value}:{rid}", fetched_at=now, description=text or None,
-                  raw={"images": len(soup.find_all("img"))})
+                  raw={"images": len(soup.find_all("img")),
+                       # 이미지뿐인 공고는 본문 읽기(bodyread)가 이 주소의 이미지를 AI로 읽는다
+                       "image_urls": [s for s in (i.get("src") or "" for i in soup.find_all("img"))
+                                      if s.startswith("http")][:5]})
 
 
 class SaraminCollector:

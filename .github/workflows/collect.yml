@@ -56,6 +56,13 @@ jobs:
           fi
           uv run jobpost collect "${args[@]}" | tee run.json
 
+      - name: 본문 읽기(이미지뿐인 후보 공고의 글자, AI)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: uv run jobpost bodyread --data-dir data
+
       - name: 공고 정리(후보 공고의 매칭 항목, AI)
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}

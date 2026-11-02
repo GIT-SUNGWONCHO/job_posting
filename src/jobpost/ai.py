@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 import os
 import time
@@ -34,8 +35,13 @@ class Gemini:
         self.calls = 0
         self._last = 0.0
 
-    def json(self, prompt: str, schema: dict[str, Any], retries: int = 3) -> Any:
-        """지시문을 보내고 schema 형식의 JSON을 받는다. 형식이 틀리면 다시 묻는다."""
+    def json(self, prompt: str, schema: dict[str, Any], retries: int = 3,
+             images: list[tuple[str, bytes]] | None = None) -> Any:
+        """지시문을 보내고 schema 형식의 JSON을 받는다. 형식이 틀리면 다시 묻는다.
+        images: [(mime, bytes)] 함께 보낼 이미지(본문 읽기)."""
+        parts: list[dict[str, Any]] = [{"text": prompt}]
+        for mime, data in images or []:
+            parts.append({"inline_data": {"mime_type": mime, "data": base64.b64encode(data).decode()}})
         last_error = ""
         for attempt in range(retries):
             wait = self.min_interval - (time.monotonic() - self._last)
@@ -47,7 +53,7 @@ class Gemini:
                 URL.format(model=self.model),
                 headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"], "Content-Type": "application/json"},
                 json={
-                    "contents": [{"parts": [{"text": prompt}]}],
+                    "contents": [{"parts": parts}],
                     "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema,
                                          "temperature": 0},
                 },
