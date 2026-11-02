@@ -178,3 +178,14 @@ def test_filter_by_employment_type():
     assert passes(**args, filters=f, employment=["인턴직"]) == (False, "employment")
     assert passes(**args, filters=f, employment=[])[0]  # 고용 형태를 안 주는 수집처(리멤버)는 통과
     assert passes(**args, filters={}, employment=["계약직"])[0]
+
+
+def test_subsidiary_from_title_moves_only_named_subsidiaries():
+    from jobpost.companies import subsidiary_from_title
+    assert subsidiary_from_title("쿠팡", "[쿠팡로지스틱스서비스] 물류 데이터 분석 담당자") == "쿠팡로지스틱스서비스"
+    assert subsidiary_from_title("한화", "[한화시스템/방산] 데이터 엔지니어") == "한화시스템"
+    assert subsidiary_from_title("SK", "[SK inc.(AX)] AI Agent 개발자") is None  # 별칭으로 같은 회사
+    assert subsidiary_from_title("케이비헬스케어", "[KB금융그룹 계열] 데이터 분석") is None
+    assert subsidiary_from_title("에이치디씨랩스", "[HDC랩스] AI 엔지니어") is None  # 모회사 이름으로 시작하지 않음
+    assert subsidiary_from_title("현대자동차", "[현대자동차그룹] 데이터") is None
+    assert subsidiary_from_title("쿠팡", "물류 데이터 분석") is None

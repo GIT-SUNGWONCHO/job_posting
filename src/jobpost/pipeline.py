@@ -10,7 +10,13 @@ from pathlib import Path
 from typing import Any
 
 from . import config, dedup, filters, jobtypes
-from .companies import CompanyRegistry, client_from_title, is_search_firm, posting_type
+from .companies import (
+    CompanyRegistry,
+    client_from_title,
+    is_search_firm,
+    posting_type,
+    subsidiary_from_title,
+)
 from .http import Client
 from .models import CompanyType, Posting, Source
 from .normalize import company_key
@@ -101,6 +107,14 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
             "errors": result.errors[:20],
             "error_count": len(result.errors),
         }
+
+    # 자회사: 모회사 이름으로 올라온 공고의 제목 맨 앞 [자회사]로 회사를 옮긴다. 기업 구분은 모회사 것을 물려준다
+    for p in collected:
+        sub = subsidiary_from_title(p.company, p.title)
+        if sub:
+            parent = registry.data.get(company_key(p.company)) or {}
+            registry.update({company_key(sub): set(parent.get("types") or {})}, {company_key(sub): sub}, today.isoformat())
+            p.company = sub
 
     # 헤드헌팅: 수집처가 알려 주지 않으면(사람인·직행) 회사 이름이 서치펌인지로 가리고,
     # 의뢰 회사 구분도 수집처가 주지 않으면 제목에서 읽는다("[국내 바이오 제약 대기업] AI Engineer")

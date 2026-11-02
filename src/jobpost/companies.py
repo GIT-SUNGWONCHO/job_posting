@@ -13,7 +13,7 @@ from pathlib import Path
 
 from . import config
 from .models import CompanyType
-from .normalize import clean_company
+from .normalize import clean_company, company_key
 
 # 수집처 표기 → 공통 구분
 _TYPE_MAP = {
@@ -40,6 +40,28 @@ def is_search_firm(name: str) -> bool:
 def client_from_title(title: str) -> CompanyType | None:
     """헤드헌팅 공고 제목에 적힌 의뢰 회사 구분. 없으면 None(중견·스타트업 같은 말은 '그 외'와 같아 따로 두지 않는다)."""
     return next((t for word, t in _CLIENT_WORDS if word in (title or "")), None)
+
+
+_TITLE_HEAD = re.compile(r"^\s*[\[【]([^\]】]{2,40})[\]】]")
+_NOT_COMPANY = re.compile(r"(그룹|계열|그룹사|자회사|공채|채용|경력|신입|인턴)$")
+
+
+def subsidiary_from_title(company: str, title: str) -> str | None:
+    """제목 맨 앞 [회사]가 같은 그룹의 자회사면 그 이름(공고를 자회사 화면으로 옮긴다, 2026-11-02).
+    "[쿠팡로지스틱스서비스] …"를 쿠팡이 올린 경우처럼, 수집처는 모회사 이름으로 올리고 실제 고용 회사는 제목에 적는다.
+    조건: 대괄호 안이 회사 키가 다르고, 모회사 키로 시작하고(쿠팡 → 쿠팡로지스틱스서비스), 같은 그룹 규칙에 맞는다.
+    "[KB금융그룹 계열]"처럼 회사 이름이 아닌 말, "[한화시스템/방산]"의 / 뒤 부서는 뺀다."""
+    m = _TITLE_HEAD.match(title or "")
+    if not m:
+        return None
+    sub = re.sub(r"\([^)]*\)", "", m.group(1).split("/")[0]).strip()
+    if not sub or _NOT_COMPANY.search(sub):
+        return None
+    parent, child = company_key(company), company_key(sub)
+    if not parent or child == parent or not child.startswith(parent):
+        return None
+    group = match_group(company)
+    return sub if group and match_group(sub) == group else None
 
 
 @cache
