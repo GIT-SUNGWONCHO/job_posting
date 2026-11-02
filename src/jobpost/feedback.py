@@ -237,3 +237,58 @@ def memo_lines(comments: list[dict[str, Any]], current: list[str], client: Any) 
         return current
     got = client.json(memo_prompt(comments, current), memo_schema())
     return [" ".join(str(x).split())[:60] for x in got.get("lines") or [] if str(x).strip()][:MEMO_MAX]
+
+
+FUNNEL_STEPS = [("keyword", "제외 키워드"), ("company", "제외 회사"), ("job", "직무 유형"), ("company_type", "기업 구분"),
+                ("career", "경력"), ("region", "지역"), ("employment", "고용 형태")]
+
+
+def funnel(screen: dict[str, Any], user: str, user_filters: dict[str, Any]) -> list[str]:
+    """한 사람의 개인 필터를 단계마다 차례로 걸었을 때 남는 공고 수(비공개 리포트). 직무 유형·기업 구분 분포도 함께."""
+    from collections import Counter
+
+    from . import filters
+    from .models import CompanyType
+
+    companies = screen["companies"]
+    names = {t["id"]: t["name"] for t in screen.get("jobTypes") or []}
+    postings = screen["postings"]
+    real = [p for p in postings if not p.get("noise")]
+    kinds: dict[str, set[str]] = {}
+    for p in real:
+        c = companies.get(p["company"]) or {}
+        found = filters.reasons(
+            title=p["title"], company=c.get("name", ""), company_type=CompanyType(p.get("clientType") or c.get("type", "그 외")),
+            career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
+            filters=user_filters, job_type=p.get("jobType"), employment=p.get("employment"))
+        kinds[p["id"]] = {k for k, _ in found}
+    out = [f"FILTER\t{user[:8]}\t" + json.dumps(user_filters, ensure_ascii=False)]
+    left = real
+    steps = [f"열린 공고 {len(postings)}", f"잡음 빼고 {len(real)}"]
+    for kind, label in FUNNEL_STEPS:
+        left = [p for p in left if kind not in kinds[p["id"]]]
+        steps.append(f"{label} {len(left)}")
+    out.append(f"FUNNEL\t{user[:8]}\t" + " → ".join(steps))
+    allowed = set(user_filters.get("job_types") or [])
+    jt = Counter(p.get("jobType") or "미분류" for p in real)
+    out.append(f"JOBTYPES\t{user[:8]}\t" + ", ".join(
+        f"{'✔' if k in allowed else '·'}{names.get(k, k)} {n}" for k, n in jt.most_common()))
+    ct = Counter(p.get("clientType") or (companies.get(p["company"]) or {}).get("type", "그 외") for p in real)
+    out.append(f"COMPANYTYPES\t{user[:8]}\t" + ", ".join(f"{k} {n}" for k, n in ct.most_common()))
+    return out
+
+
+def ranking(screen: dict[str, Any], rows: list[dict[str, Any]]) -> list[str]:
+    """사람마다 지금 매칭 줄을 규칙 점수 순으로(비공개 리포트). rows: {user_id, posting_id, score, rule, kind, score_v}."""
+    by_id = {p["id"]: p for p in screen["postings"]}
+    names = {k: c["name"] for k, c in screen["companies"].items()}
+    out = []
+    for r in sorted(rows, key=lambda r: (r["user_id"], -float(r.get("rule") or 0))):
+        p = by_id.get(r["posting_id"])
+        if not p:
+            continue
+        ai = r.get("score") if r.get("kind") == "ai" else None
+        out.append("RANK\t" + json.dumps({"user": r["user_id"][:8], "rule": r.get("rule"), "ai": ai, "v": r.get("score_v"),
+                                          "company": names.get(p["company"], p["company"]), "title": p["title"]},
+                                         ensure_ascii=False))
+    return out

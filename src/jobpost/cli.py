@@ -207,15 +207,20 @@ def main(argv: list[str] | None = None) -> int:
             names = {k: c["name"] for k, c in built["companies"].items()}
             every: list[dict] = []
             while True:  # Supabase는 한 번에 1,000줄까지 준다
-                page = store.select("matches", "select=user_id,posting_id,score,rule:parts->rule,kind:parts->>kind"
+                page = store.select("matches", "select=user_id,posting_id,score,score_v,rule:parts->rule,kind:parts->>kind"
                                                f"&order=user_id,posting_id&limit=1000&offset={len(every)}")
                 every += page
                 if len(page) < 1000:
                     break
             memos = recommend.load_memos(store)
             memo_out = [f"MEMO\t{user[:8]}\t{line}" for user, ls in memos.items() for line in ls]
+            defaults = config.load("filters")
+            settings = {r["user_id"]: r.get("filters") or {} for r in store.select("settings", "select=user_id,filters")}
+            funnels = [line for user in sorted(settings)
+                       for line in feedback.funnel(built, user, {**defaults, **settings[user]})]
             lines = (feedback.report(sample, matches, rows) + feedback.sample_dump(sample, matches, rows)
-                     + memo_out + feedback.candidates(sample, built["postings"], names, every))
+                     + memo_out + funnels + feedback.ranking(built, every)
+                     + feedback.candidates(sample, built["postings"], names, every))
             args.out.write_text("\n".join(lines) + "\n", encoding="utf-8")
             logging.info("비공개 리포트 %d줄을 파일에 씀", len(lines))
     if args.cmd == "memo":

@@ -145,3 +145,28 @@ def test_memo_uses_latest_comments_only():
     assert feedback.memo_lines(got, ["예전 메모"], ai) == ["코드로 ETL을 직접 개발한 경험 없음", "영어 업무 어려움"]
     assert "× 회사A | 데이터 엔지니어 | elt를" in ai.prompts[0] and "- 예전 메모" in ai.prompts[0]
     assert feedback.memo_lines([], ["그대로"], ai) == ["그대로"] and len(ai.prompts) == 1  # 코멘트가 없으면 AI를 부르지 않는다
+
+
+def test_funnel_and_ranking_for_private_report():
+    screen = {"companies": {"a": {"name": "가나다", "type": "대기업"}, "b": {"name": "작은회사", "type": "그 외"}},
+              "jobTypes": [{"id": "data_eng", "name": "데이터 엔지니어"}, {"id": "software", "name": "개발"}],
+              "postings": [
+                  {"id": "1", "company": "a", "title": "데이터 엔지니어", "jobType": "data_eng", "careerMin": 7, "careerMax": None,
+                   "regions": ["서울"], "employment": ["정규직"], "noise": None},
+                  {"id": "2", "company": "b", "title": "데이터 엔지니어", "jobType": "data_eng", "careerMin": 7, "careerMax": None,
+                   "regions": ["서울"], "employment": ["정규직"], "noise": None},
+                  {"id": "3", "company": "a", "title": "백엔드", "jobType": "software", "careerMin": 7, "careerMax": None,
+                   "regions": ["서울"], "employment": [], "noise": None},
+                  {"id": "4", "company": "a", "title": "데이터 엔지니어 인턴", "jobType": "data_eng", "careerMin": None,
+                   "careerMax": None, "regions": ["서울"], "employment": ["인턴직"], "noise": None},
+                  {"id": "5", "company": "a", "title": "데이터 입력", "jobType": None, "careerMin": None, "careerMax": None,
+                   "regions": [], "employment": [], "noise": "잡음"}]}
+    f = {"job_types": ["data_eng"], "company_types": ["대기업"], "employment_types": ["정규직"]}
+    lines = feedback.funnel(screen, "user-0001", f)
+    assert lines[1] == ("FUNNEL\tuser-000\t열린 공고 5 → 잡음 빼고 4 → 제외 키워드 4 → 제외 회사 4 → 직무 유형 3 → "
+                        "기업 구분 2 → 경력 2 → 지역 2 → 고용 형태 1")
+    assert lines[2] == "JOBTYPES\tuser-000\t✔데이터 엔지니어 3, ·개발 1"
+    rows = [{"user_id": "user-0001", "posting_id": "1", "score": 70, "rule": 60, "kind": "ai", "score_v": 2},
+            {"user_id": "user-0001", "posting_id": "3", "score": 80, "rule": 90, "kind": "rule", "score_v": 1}]
+    got = [json.loads(x.split("\t", 1)[1]) for x in feedback.ranking(screen, rows)]
+    assert [(g["rule"], g["ai"]) for g in got] == [(90, None), (60, 70)]
