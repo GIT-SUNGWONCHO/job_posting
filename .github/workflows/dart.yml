@@ -12,7 +12,7 @@ on:
         required: false
         default: "5000"
       minutes:
-        description: 이 시간(분)이 지나면 멈춘다. 아침 수집(04:17, 실제로는 7시 전후)과 겹치면 수집이 기다리니 그 시간은 피한다
+        description: 이 시간(분)이 지나면 멈춘다. 아침 수집(02:17, 실제로는 4~6시)과 겹치면 수집이 기다리니 그 시간은 피한다
         required: false
         default: "30"
       find:
