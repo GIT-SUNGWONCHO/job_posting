@@ -24,6 +24,8 @@ export function Report({ screen, passed, today, matches }: {
 }) {
   // 섹션마다 더 보기를 눌렀는지
   const [open, setOpen] = useState<Record<string, boolean>>({})
+  // 이번 주 새 공고 섹션의 보기: 이번 주 전체 또는 오늘 처음 본 공고만
+  const [weekView, setWeekView] = useState<'week' | 'today'>('week')
   const take = (key: string, list: Posting[], n: number) => (open[key] ? list : list.slice(0, n))
   const apps = useApps()
   const stars = useStars().state
@@ -46,7 +48,8 @@ export function Report({ screen, passed, today, matches }: {
   // 1 오늘의 1등: 최근 7일 새 공고 중 점수 1등(점수가 있는 공고만)
   const top = week[0] && matches.has(week[0].id) ? week[0] : undefined
   // 2 이번 주 새 공고: 1등을 뺀 나머지
-  const rest = top ? week.slice(1) : week
+  const restAll = top ? week.slice(1) : week
+  const rest = weekView === 'today' ? restAll.filter((p) => p.firstSeen === today) : restAll
   const restShown = take('week', rest, WEEK_ROWS)
   // 위에서 보인 공고(펼친 것까지)는 아래 섹션에서 뺀다
   const shown = new Set([...(top ? [top.id] : []), ...restShown.map((p) => p.id)])
@@ -85,8 +88,14 @@ export function Report({ screen, passed, today, matches }: {
 
         <section id="home-week">
           <SectionTitle count={rest.length} info={copy.report.weekNote(WEEK)}>{copy.report.weekSection}</SectionTitle>
+          <div className="utabs inline" role="tablist" aria-label={copy.report.weekSection}>
+            {(['week', 'today'] as const).map((v) => (
+              <button key={v} type="button" role="tab" aria-selected={weekView === v} className={weekView === v ? 'on' : undefined}
+                onClick={() => setWeekView(v)}>{copy.report.weekViews[v]}</button>
+            ))}
+          </div>
           {rest.length === 0 ? (
-            <Empty>{top ? copy.report.noMoreWeek : copy.report.noWeek}</Empty>
+            <Empty>{weekView === 'today' ? copy.report.noToday : top ? copy.report.noMoreWeek : copy.report.noWeek}</Empty>
           ) : (
             <div className="rows">
               {restShown.map((p) => <JobRow key={p.id} p={p} c={c[p.company]} today={today} match={matches.get(p.id)} badge={badge(p)} />)}
@@ -139,7 +148,7 @@ function TopPick({ p, screen, today, match, badge }: { p: Posting; screen: Scree
             <span className="row-company"><span>{companyLine(screen.companies[p.company], p.company)}</span>{badge && <span className="badge">{badge}</span>}</span>
             <span className="hero-title">{listTitle(p)}</span>
           </span>
-          <Score value={match.score} solid />
+          <Score value={match.score} solid rule={match.kind === 'rule'} />
         </a>
         {why && (why.good || why.gap) ? (
           <div className="why">

@@ -146,7 +146,7 @@ function AppRow({ a, posting, companies, today, match, onApp }: {
       <span className="row-meta">{meta}</span>
     </span>
   )
-  const score = match && <span className="row-score"><Score value={match.score} /></span>
+  const score = match && <span className="row-score"><Score value={match.score} rule={match.kind === 'rule'} /></span>
   if (posting) return <a className="row" href={href.job(a.postingId)}>{main}{score}</a>
   return (
     <div className={gone ? 'app-row gone' : 'app-row'}>

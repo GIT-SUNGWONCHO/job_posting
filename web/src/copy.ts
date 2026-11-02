@@ -21,6 +21,8 @@ export const copy = {
     starredNote: '★ 관심 회사의 이번 주 새 공고. 필터와 상관없이 보여줘요',
     noWeek: '이번 주에 올라온 필터 통과 공고가 없어요',
     noMoreWeek: '이번 주 새 공고는 1등 하나예요',
+    weekViews: { week: '이번 주', today: '오늘' },
+    noToday: '오늘 처음 본 필터 통과 공고가 없어요(1등은 위에)',
     allByScore: '열린 공고 전체 추천순 보기',
   },
   jobs: {
@@ -94,7 +96,9 @@ export const copy = {
     bodyFailed: '공고 내용을 불러오지 못했어요',
   },
   match: {
-    ruleOnly: 'AI가 아직 매기지 않아 규칙 점수예요',
+    ruleOnly: 'AI가 아직 매기지 않아 규칙 점수예요. 다음 매칭 때 AI가 매겨요',
+    ruleTag: '규칙',
+    ruleScore: (n: number) => `규칙 점수 ${n}, AI 매칭 전`,
     basis: '판단 근거',
     basisHelp: '항목마다 받은 점수 = 배점 × 판정(충족 1, 일부·정보 없음 0.5, 미충족 0). 배점 합은 100이에요',
     devTag: '개발용 · 매칭 기준을 만드는 내 평가',

@@ -250,6 +250,10 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); line-height: 1.
   background: var(--accent-soft); color: var(--accent); font-size: var(--fs-item); font-weight: var(--fw-title);
 }
 .score.solid { border-radius: var(--r-score-solid); background: var(--accent); color: var(--on-accent); font-size: var(--fs-section); }
+/* 규칙 점수(AI 매칭 전): 회색 상자에 "규칙"과 숫자. AI 점수와 헷갈리지 않게 */
+.score.rule { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0; line-height: 1.1;
+  background: var(--band); color: var(--muted); font-size: var(--fs-min); font-weight: var(--fw-item); }
+.score.rule small { font-size: var(--fs-min); font-weight: var(--fw-body); }
 .row-reason { margin-top: 2px; font-size: var(--fs-min); color: var(--sub); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .badge-ai { display: inline-block; padding: 1px 6px; border: 1px dashed var(--muted); border-radius: 6px; font-size: var(--fs-min); color: var(--sub); font-weight: var(--fw-body); }
 .match-head { display: flex; align-items: center; gap: 14px; }
@@ -473,6 +477,11 @@ a.source:hover { text-decoration: underline; }
 .utabs { display: flex; gap: 24px; padding: 0 var(--gutter); border-bottom: 1px solid var(--line); }
 .utabs a { padding: 10px 0 12px; margin-bottom: -1px; font-size: var(--fs-item); color: var(--sub); border-bottom: 2px solid transparent; }
 .utabs a.on { color: var(--ink); font-weight: var(--fw-title); border-bottom-color: var(--ink); }
+/* 섹션 안의 밑줄 탭(홈 이번 주 · 오늘): 여백 없이, 버튼으로 */
+.utabs.inline { padding: 0; margin-bottom: 4px; }
+.utabs.inline button { padding: 10px 0 12px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none;
+  font: inherit; font-size: var(--fs-item); color: var(--sub); cursor: pointer; }
+.utabs.inline button.on { color: var(--ink); font-weight: var(--fw-title); border-bottom-color: var(--ink); }
 
 /* 홈: 제목 · 숫자 세 개 줄 · 오늘의 1등 · 섹션(간격만) */
 .home-head { padding: 32px var(--gutter) var(--section-gap); display: flex; flex-direction: column; gap: 20px; }

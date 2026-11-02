@@ -15,7 +15,7 @@ export function Verdict({ match }: { match: Match }) {
   return (
     <section className="section verdict-sec">
       <div className="verdict-head">
-        <Score value={match.score} solid />
+        <Score value={match.score} solid rule={match.kind === 'rule'} />
         {match.verdict && <span className="verdict-text">{match.verdict}</span>}
         {match.kind === 'ai' && <span className="ai-tag">{copy.job.aiOpinion}</span>}
       </div>

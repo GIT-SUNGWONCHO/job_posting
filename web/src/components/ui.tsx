@@ -11,8 +11,16 @@ export function Deadline({ p, today }: { p: Posting; today: string }) {
   return <span className={urgent ? 'dday urgent' : 'dday'}>{deadlineText(p, today)}</span>
 }
 
-export function Score({ value, solid = false }: { value: number; solid?: boolean }) {
+/** 점수 상자. rule: AI가 아직 안 매긴 공고의 규칙 점수(회색 상자에 "규칙"과 숫자, AI 점수와 다르게 보이게) */
+export function Score({ value, solid = false, rule = false }: { value: number; solid?: boolean; rule?: boolean }) {
   const size = solid ? 56 : 44
+  if (rule) {
+    return (
+      <span className="score rule" style={{ width: size, height: size }} aria-label={copy.match.ruleScore(value)}>
+        <small>{copy.match.ruleTag}</small>{value}
+      </span>
+    )
+  }
   return (
     <span className={solid ? 'score solid' : 'score'} style={{ width: size, height: size }} aria-label={`점수 ${value}`}>
       {value}
@@ -52,7 +60,7 @@ export function JobRow({ p, c, today, showCompany = true, active = false, match,
       </span>
       {match && (
         <span className="row-score">
-          <Score value={match.score} />
+          <Score value={match.score} rule={match.kind === 'rule'} />
           {match.mine && <span className="mine" aria-label={copy.match.labels[match.mine]}>{copy.match.marks[match.mine]}</span>}
         </span>
       )}
