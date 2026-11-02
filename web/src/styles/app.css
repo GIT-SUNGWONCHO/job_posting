@@ -883,3 +883,7 @@ a.source:hover { text-decoration: underline; }
 .plain-name b { font-size: var(--fs-body); font-weight: var(--fw-item); }
 .plain-name .tag { font-size: var(--fs-min); font-weight: var(--fw-item); color: var(--accent); white-space: nowrap; }
 .shell.wide .page.home, .shell.wide .page.admin, .shell.wide .page.career { max-width: 760px; }
+
+/* 입력 칸을 누를 때 아이폰이 화면을 확대하지 않게(16px 미만이면 확대), 두 번 탭 확대도 막는다. 손가락 확대는 그대로 둔다 */
+input, textarea, select { font-size: var(--fs-input) !important; }
+html { touch-action: manipulation; }

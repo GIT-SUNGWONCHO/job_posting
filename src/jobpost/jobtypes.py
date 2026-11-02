@@ -50,7 +50,7 @@ def snippet(text: str | None) -> str:
 
 SECONDARY_GUIDE = (
     "주 업무가 두 직무 유형에 실제로 걸치면 s에 보조 직무 유형 하나를 적는다(예: CRM 마케팅 데이터 분석 → 주 non_data, 보조 analyst). "
-    "제목에 단어만 들어간 정도로는 보조를 붙이지 않는다. 대부분의 공고는 보조가 없고, 그때 s는 빈 문자열이다.\n"
+    "제목에 단어만 들어간 정도로는 보조를 붙이지 않는다. 대부분의 공고는 보조가 없고, 그때 s는 none이다.\n"
 )
 
 
@@ -73,7 +73,7 @@ def schema(secondary: bool = False) -> dict[str, Any]:
     ids = [t["id"] for t in taxonomy()["types"]]
     props: dict[str, Any] = {"i": {"type": "INTEGER"}, "t": {"type": "STRING", "enum": ids}}
     if secondary:
-        props["s"] = {"type": "STRING", "enum": ids + [""]}
+        props["s"] = {"type": "STRING", "enum": ids + ["none"]}
     return {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["i", "t"] + (["s"] if secondary else []),
                                        "properties": props}}
 

@@ -24,6 +24,7 @@
   --fs-page: 26px;
   --fs-section: 20px;
   --fs-item: 16px;
+  --fs-input: 16px;        /* 입력 칸 글자: 16px보다 작으면 아이폰이 칸을 누를 때 화면을 확대한다 */
   --fs-body: 15px;
   --fs-min: 13px;
   --fs-tick: 11px;         /* 차트 눈금 글자(예외) */
