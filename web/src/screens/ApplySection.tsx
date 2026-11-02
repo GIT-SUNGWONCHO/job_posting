@@ -8,7 +8,6 @@ import {
 import type { Posting } from '../lib/types'
 
 const t = copy.apply
-const CHOICES: Stage[] = [...STAGES, 'dismissed']
 
 // 지원 상태: 단계 고르기(누르면 바로 저장), 결과(합격·불합격), 메모·다음 일정(저장 버튼).
 // 공고 상세에서는 posting으로, 지원 현황에서 마감되거나 직접 추가한 공고는 저장해 둔 사본(app.snapshot)으로 고친다
@@ -53,7 +52,7 @@ export function ApplySection({ postingId, posting, company, app, today, onChange
     <section className={embedded ? 'apply' : 'section apply'}>
       {!embedded && <h2>{t.status}</h2>}
       <div className="chips wrap" role="radiogroup" aria-label={t.status}>
-        {CHOICES.map((s) => (
+        {STAGES.map((s) => (
           <button key={s} type="button" role="radio" aria-checked={app?.stage === s}
             className={app?.stage === s ? 'chip selected' : 'chip'} onClick={() => pick(s)}>{t.long[s]}</button>
         ))}
@@ -96,7 +95,7 @@ function ApplyDetails({ app, save, clear, state, setState }: {
             <textarea rows={3} value={memo} placeholder={t.memoPlaceholder}
               onChange={(e) => { setMemo(e.target.value); edited() }} />
           </label>
-          <div className="row2">
+          <div className="apply-next">
             <label className="field">
               <span>{t.next}</span>
               <input type="date" value={nextOn} onChange={(e) => { setNextOn(e.target.value); edited() }} />

@@ -321,7 +321,10 @@ h2 { font-size: var(--fs-section); font-weight: var(--fw-title); line-height: 1.
 
 /* 지원 상태(공고 상세)와 지원 현황 */
 .apply, .apply-details { display: flex; flex-direction: column; gap: 12px; }
-.apply-details .feedback-actions { justify-content: space-between; }
+.apply-details .feedback-actions { justify-content: space-between; align-items: center; }
+/* 다음 일정: 날짜 칸이 좁으면(iOS 날짜 입력은 최소 폭이 있다) 칸 밖으로 넘쳐 옆 칸과 겹친다 → 날짜는 최대 150px, 이름이 나머지 */
+.apply-next { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr); gap: 8px; }
+.apply-next input[type='date'] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; }
 /* 배지: 회색 상자 하나, 회사 이름 뒤에(오늘 · 지원 단계 · 내려감은 흐린 글자) */
 .badge, .stage-chip { flex: none; display: inline-flex; align-items: center; height: 22px; padding: 0 7px; border-radius: var(--r-badge); background: var(--badge); color: var(--ink); font-size: var(--fs-min); font-weight: var(--fw-item); white-space: nowrap; }
 .badge.muted, .stage-chip.muted { color: var(--muted); }
@@ -539,6 +542,8 @@ a.source:hover { text-decoration: underline; }
 .detail-head .apply { margin-top: 12px; padding: 16px; border-radius: var(--r-score); background: var(--band); }
 .detail-head .apply .chip { background: var(--bg); border-color: var(--bg); }
 .detail-head .apply .chip.selected { background: var(--accent-soft); border-color: var(--accent-soft); }
+/* 회색 상자 안 입력 칸은 테두리 없이 흰 바탕(상자 안 상자로 보이지 않게) */
+.detail-head .apply .field input, .detail-head .apply .field textarea { border-color: var(--bg); }
 .detail-head + .section { border-top: var(--band-h) solid var(--band); }
 
 .verdict-sec { gap: 10px; }
