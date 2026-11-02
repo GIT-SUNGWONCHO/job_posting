@@ -928,37 +928,52 @@ def _audit_amount(s: str) -> int | None:
     return -v if (m.group(1) or t.startswith("(")) else v
 
 
+_REV_NAMES = {"매출액", "매출", "영업수익", "수익", "매출및지분법손익"}
+_OP_NAMES = {"영업이익", "영업손실", "영업손익"}
+_NET_NAMES = {"당기순이익", "당기순손실", "당기순손익"}
+
+
+def _core(label: str) -> str:
+    """'Ⅲ. 영업이익(손실)' → '영업이익'. 앞 번호와 괄호를 지운다(매출채권 같은 다른 줄과 정확히 가르려고)."""
+    return re.sub(r"\(.*?\)", "", _label(label))
+
+
 def audit_income(text: str) -> dict[str, Any]:
-    """감사보고서 원문에서 손익계산서 첫 표의 매출·영업이익·당기순이익(원 단위). 못 읽으면 why."""
-    m = re.search(r"(포괄)?손익계산서", text)
-    if not m:
-        return {"why": "손익계산서 없음"}
-    rest = text[m.start():]
-    unit_m = re.search(r"단위\s*[:：]\s*(백만원|천원|억원|원)", rest[:4000])
-    unit = _UNITS[unit_m.group(1)] if unit_m else None
-    out: dict[str, Any] = {"unit": unit_m.group(1) if unit_m else None}
-    want = {"revenue": AUDIT_REVENUE, "operating": AUDIT_OP, "net": AUDIT_NET}
-    for tr in re.findall(r"<TR\b.*?</TR>", rest[:200_000], re.S | re.I):
-        cells = _cells(tr)
-        if len(cells) < 2:
-            continue
-        lab = _label(cells[0])
-        for key, names in want.items():
-            if key in out or not any(lab.startswith(n) for n in names):
+    """감사보고서 원문에서 손익계산서 표(영업이익 줄과 당기순이익 줄이 함께 있는 첫 표)의
+    매출·영업이익·당기순이익(원 단위). 단위는 표 바로 앞이나 표 안의 "(단위 : 백만원)" 글. 못 읽으면 why."""
+    for t in re.finditer(r"<TABLE\b.*?</TABLE>", text, re.S | re.I):
+        rows = [_cells(tr) for tr in re.findall(r"<TR\b.*?</TR>", t.group(0), re.S | re.I)]
+        got: dict[str, Any] = {}
+        for cells in rows:
+            if len(cells) < 2:
+                continue
+            core = _core(cells[0])
+            key = ("revenue" if core in _REV_NAMES else "operating" if core in _OP_NAMES
+                   else "net" if core in _NET_NAMES else None)
+            if not key or key in got:
                 continue
             # 주석 번호 칸(쉼표 없는 1~2자리 숫자, "4,21"처럼 여럿)은 건너뛴다
             vals = [c for c in cells[1:] if not re.fullmatch(r"\d{1,2}(\s*[,.]\s*\d{1,2})*", c.strip())]
             nums = [v for v in (_audit_amount(c) for c in vals) if v is not None]
             if nums:
-                out[key] = nums[0] * (unit or 1)
-                out[key + "_label"] = cells[0]
-        if all(k in out for k in want):
-            break
-    if not any(k in out for k in want):
-        out["why"] = "손익계산서 표에서 줄을 못 찾음"
-    emp = re.search(r"(종업원|임직원|직원)\s*수[^0-9]{0,40}([\d,]+)\s*명", text)
-    out["employees"] = int(emp.group(2).replace(",", "")) if emp else None
-    return out
+                got[key] = nums[0]
+                got[key + "_label"] = cells[0]
+        if "operating" not in got or "net" not in got:
+            continue
+        around = _TAG.sub(" ", text[max(0, t.start() - 2000):t.start()] + t.group(0)[:3000])
+        units = re.findall(r"단위\s*[:：]?\s*(백만원|천원|억원|원)", around)
+        unit = units[-1] if units else None
+        mult = _UNITS[unit] if unit else 1
+        for k in ("revenue", "operating", "net"):
+            if k in got:
+                got[k] *= mult
+        got["unit"] = unit
+        if not unit:
+            got["why"] = "단위 못 찾음(원으로 봄)"
+        emp = re.search(r"(종업원|임직원|직원)\s*수[^0-9]{0,40}([\d,]+)\s*명", text)
+        got["employees"] = int(emp.group(2).replace(",", "")) if emp else None
+        return got
+    return {"why": "손익계산서 표를 못 찾음"}
 
 
 def audit_check(codes: list[str], today: date, raw: int = 0) -> list[dict[str, Any]]:
@@ -975,7 +990,7 @@ def audit_check(codes: list[str], today: date, raw: int = 0) -> list[dict[str, A
                 text = audit_document(client, rep["rcept_no"])
                 got = audit_income(text)
                 row.update(got)
-                if raw > 0 and ("why" in got or "revenue" not in got):
+                if raw > 0 and "why" in got:
                     raw -= 1
                     i = text.find("손익계산서")
                     row["snippet"] = " ".join(_TAG.sub(" ", text[max(0, i):i + 6000]).split())[:1500]

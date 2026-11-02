@@ -484,7 +484,9 @@ def test_filers_list_error_does_not_stop_the_day(tmp_path, monkeypatch):
     assert corps["삼성전자"]["corp_code"] == "00126380" and out["fetched"] == 1
 
 
-AUDIT_DOC = """<DOCUMENT><P>손 익 계 산 서</P><P>포괄손익계산서</P><P>(단위 : 천원)</P>
+AUDIT_DOC = """<DOCUMENT><P>재무제표는 재무상태표, 포괄손익계산서로 구성되어 있습니다</P>
+<P>재 무 상 태 표</P><TABLE><TR><TD>2. 매출채권(주석11)</TD><TE>9,999</TE></TR></TABLE>
+<P>손 익 계 산 서</P><P>(단위 : 천원)</P>
 <TABLE><TR><TH>과 목</TH><TH>주석</TH><TH>제 10(당) 기</TH><TH>제 9(전) 기</TH></TR>
 <TR><TD>Ⅰ. 매출액</TD><TD>21</TD><TE>1,234,567</TE><TE>1,000,000</TE></TR>
 <TR><TD>Ⅱ. 매출원가</TD><TD></TD><TE>(500,000)</TE><TE>(400,000)</TE></TR>
@@ -498,4 +500,4 @@ def test_audit_income_reads_first_income_table():
     assert got["unit"] == "천원" and got["revenue"] == 1_234_567_000
     assert got["operating"] == -12_000_000 and got["net"] == -15_500_000
     assert got["employees"] == 1203 and "why" not in got
-    assert dart.audit_income("<P>재무상태표</P>")["why"] == "손익계산서 없음"
+    assert dart.audit_income("<P>재무상태표</P>")["why"] == "손익계산서 표를 못 찾음"
