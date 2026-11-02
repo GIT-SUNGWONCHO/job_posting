@@ -144,7 +144,8 @@ def sample_dump(sample: list[dict[str, Any]], matches: list[dict[str, Any]], row
         out.append("SMP\t" + json.dumps({
             "user": m["user_id"][:8], "id": p["id"], "group": p.get("group"), "company": p.get("company"),
             "title": p.get("title"), "url": p.get("url"), "kind": parts.get("kind"), "score": m.get("score"),
-            "verdict": parts.get("verdict"), "rule": parts.get("rule"), "reason": m.get("reason"),
+            "verdict": parts.get("verdict"), "rule": parts.get("rule"), "base": parts.get("base"),
+            "posting": parts.get("posting"), "adjust": parts.get("adjust"), "reason": m.get("reason"),
             "gaps": m.get("missing") or [], "items": parts.get("items") or [],
             "label": label[0] if label else None, "comment": label[1] if label else None,
         }, ensure_ascii=False))
