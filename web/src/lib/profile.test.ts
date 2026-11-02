@@ -53,6 +53,7 @@ describe('periodText', () => {
 
 it('fills missing wants with defaults when loading an older v2 profile', () => {
   const p = upgrade({ schema: 2, careers: [], wants: { level: '실무자' } })
-  expect(p.wants).toEqual({ level: '실무자', size: '', industriesLike: [], industriesAvoid: [] })
-  expect(upgrade({ schema: 2 }).wants).toEqual({ level: '', size: '', industriesLike: [], industriesAvoid: [] })
+  expect(p.wants).toEqual({ level: '실무자', industriesLike: [], industriesAvoid: [] })
+  expect(upgrade({ schema: 2 }).wants).toEqual({ level: '', industriesLike: [], industriesAvoid: [] })
+  expect(upgrade({ schema: 2, wants: { level: '', size: '큰 회사' } }).wants).not.toHaveProperty('size') // 뺀 칸은 버린다
 })

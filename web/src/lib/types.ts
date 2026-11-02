@@ -80,9 +80,8 @@ export interface ProfileOptions {
   degrees: string[]
   major_groups: string[]
   english: string[]
-  /** 원하는 조건: 포지션, 회사 규모(점수에만 반영) */
+  /** 원하는 조건: 포지션(점수에만 반영) */
   want_levels?: string[]
-  company_sizes?: string[]
 }
 
 /** 공고에서 나온 스킬과 나온 공고 수. 프로필 스킬은 이 안에서 고른다 */

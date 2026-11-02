@@ -3,7 +3,7 @@
 지금은 로직을 정하는 단계라 점수를 AI가 매기고 판단 근거를 남긴다(docs/decisions.md 2026-10-14 매칭).
 AI는 공고마다 비교할 항목을 고르고 항목마다 공고 요구 · 내 근거 · 판정 · 가중치를 적는다. 점수는 코드가 가중치×판정으로
 다시 계산한다. 지침은 config/match_guide.yaml이고, 회차마다 내 피드백을 보고 고친다.
-v2부터 AI는 공고 사실(직급·영어·고용 형태·업종·회사 규모)도 따로 적고, 코드가 원하는 조건(프로필 wants)과 개인 필터의
+v2부터 AI는 공고 사실(직급·영어·고용 형태·업종)도 따로 적고, 코드가 원하는 조건(프로필 wants)과 개인 필터의
 고용 형태에 맞춰 상한·가감점을 준다(adjust). 판정 이름은 최종 점수 구간으로 정한다(bands).
 원하는 조건은 AI에 보내지 않아서, 그것만 바꾸면 AI를 다시 부르지 않고 지난 결과에 조정만 다시 한다.
 평가 코멘트에서 뽑은 매칭 메모(match_memos 표)는 지원자 요약 끝에 붙인다. 메모가 바뀌면 다시 매긴다.
@@ -55,12 +55,11 @@ def schema() -> dict[str, Any]:
     }}
     pf = g["posting_facts"]
     industries = [i["id"] for i in config.load("profile")["industries"]]
-    facts = {"type": "OBJECT", "required": ["level", "english", "employment", "industry", "size"], "properties": {
+    facts = {"type": "OBJECT", "required": ["level", "english", "employment", "industry"], "properties": {
         "level": {"type": "STRING", "enum": pf["level"]},
         "english": {"type": "STRING", "enum": pf["english"]},
         "employment": {"type": "STRING", "enum": pf["employment"]},
         "industry": {"type": "STRING", "enum": industries},
-        "size": {"type": "STRING", "enum": pf["size"]},
     }}
     return {"type": "OBJECT", "required": ["items", "posting", "reason", "gaps"], "properties": {
         "items": {"type": "ARRAY", "items": item},
@@ -78,7 +77,7 @@ def prompt(profile_text: str, posting_text: str) -> str:
         f"- 항목 종류(kind): {', '.join(g['item_kinds'])}\n"
         f"- 판정(fit): {', '.join(g['fit'])}\n"
         "- 항목마다 name은 짧은 이름, posting은 공고가 요구하는 것, me는 지원자 쪽 근거(각 40자 안쪽)\n"
-        "- posting: 공고 사실(level, english, employment, industry, size). 지원자와 상관없이 공고만 보고 적는다\n"
+        "- posting: 공고 사실(level, english, employment, industry). 지원자와 상관없이 공고만 보고 적는다\n"
         "- 업종(industry) id: " + ", ".join(f"{i['id']} {i['name']}" for i in config.load("profile")["industries"]) + "\n"
         "- reason: 이 지원자에게 맞는 이유 한 문장(40자 안쪽, 맞는 점 먼저, 크게 부족한 점이 있으면 뒤에 짧게)\n"
         "- gaps: 크게 부족한 점 최대 3개, 짧게\n\n"
@@ -110,12 +109,6 @@ def adjust(base: int, facts: dict[str, Any] | None, wants: dict[str, Any] | None
     if industry and industry in (wants.get("industriesAvoid") or []):
         score += g["avoid_industry"]
         notes.append(f"비선호 업종({names.get(industry, industry)}) {g['avoid_industry']}")
-    sizes = {"작은 회사": 0, "중견": 1, "큰 회사": 2}
-    want_size = {"중견 이상": 1, "큰 회사": 2}.get(wants.get("size") or "")
-    size = sizes.get(facts.get("size") or "")
-    if want_size is not None and size is not None and size < want_size:
-        score += g["smaller_company"]
-        notes.append(f"원하는 규모보다 작은 회사 {g['smaller_company']}")
     score = max(0, min(100, score))
     caps: list[tuple[int, str]] = []
     if wants.get("level") == "실무자" and facts.get("level") == "리더·관리자":

@@ -169,8 +169,6 @@ function ProfileView({ profile, opts, panel, loading, onEdit }: {
         <div className="kv2 wide plain">
           <span className="k">{t.wantLevel}</span>
           <span className="v">{profile.wants.level || t.any}</span>
-          <span className="k">{t.wantSize}</span>
-          <span className="v">{profile.wants.size || t.any}</span>
           <span className="k">{t.likeIndustries}</span>
           <span className="v">{profile.wants.industriesLike.map((x) => industries[x] ?? x).join(' · ') || '-'}</span>
           <span className="k">{t.avoidIndustries}</span>
@@ -522,8 +520,6 @@ function WantsEdit({ value, opts, busy, failed, cancel, onSave }: EditProps & { 
       <div className="edit-body">
         <p className="note">{t.wantsHelp}</p>
         <OneOf label={t.wantLevel} value={v.level} options={opts.want_levels ?? []} onChange={(level) => setV({ ...v, level })} />
-        <OneOf label={t.wantSize} value={v.size} options={opts.company_sizes ?? []} onChange={(size) => setV({ ...v, size })} />
-        <p className="note">{t.sizeHelp}</p>
         <SectionTitle>{t.likeIndustries}</SectionTitle>
         {industryChips('industriesLike', 'industriesAvoid')}
         <SectionTitle>{t.avoidIndustries}</SectionTitle>

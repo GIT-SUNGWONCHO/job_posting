@@ -39,7 +39,6 @@ export interface Skill {
 /** 원하는 조건: 필터로 빼지 않고 점수에만 반영한다(config/match_guide.yaml gates). 빈 값은 상관없음 */
 export interface Wants {
   level: string // 실무자 · 리더
-  size: string // 중견 이상 · 큰 회사
   industriesLike: string[] // config/profile.yaml industries의 id
   industriesAvoid: string[]
 }
@@ -55,7 +54,7 @@ export interface Profile {
   wants: Wants
 }
 
-export const emptyWants: Wants = { level: '', size: '', industriesLike: [], industriesAvoid: [] }
+export const emptyWants: Wants = { level: '', industriesLike: [], industriesAvoid: [] }
 
 export const emptyProfile: Profile = {
   schema: 2,
@@ -78,7 +77,8 @@ const NON_DATA_ROLES = new Set(['pi', 'sales_md'])
 export function upgrade(data: Record<string, unknown>): Profile {
   if (data.schema === 2) {
     const p = { ...emptyProfile, ...(data as Partial<Profile>) } as Profile
-    return { ...p, wants: { ...emptyWants, ...(p.wants ?? {}) } }
+    const { level, industriesLike, industriesAvoid } = { ...emptyWants, ...(p.wants ?? {}) }
+    return { ...p, wants: { level, industriesLike, industriesAvoid } } // 예전 칸(회사 규모)은 버린다
   }
   const jobs = (data.jobs as { company: string; start: string; end: string; role: string }[] | undefined) ?? []
   const careers: Career[] = jobs.map((j) => ({ ...emptyCareer(), company: j.company, start: j.start, end: j.end,
