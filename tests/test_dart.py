@@ -501,3 +501,37 @@ def test_audit_income_reads_first_income_table():
     assert got["operating"] == -12_000_000 and got["net"] == -15_500_000
     assert got["employees"] == 1203 and "why" not in got
     assert dart.audit_income("<P>재무상태표</P>")["why"] == "손익계산서 표를 못 찾음"
+
+
+class FakeAuditClient:
+    def __init__(self, doc: str):
+        self.doc = doc
+
+    def json(self, name, params):
+        assert name == "list.json" and params["pblntf_ty"] == "F"
+        return {"status": "000", "list": [
+            {"rcept_no": "1", "report_nm": "연결감사보고서 (2025.12)", "rcept_dt": "20260401"},
+            {"rcept_no": "2", "report_nm": "감사보고서 (2025.12)", "rcept_dt": "20260331"},
+            {"rcept_no": "0", "report_nm": "감사보고서 (2024.12)", "rcept_dt": "20250331"}]}
+
+    def get(self, name, params):
+        import io as _io
+        import zipfile as _zip
+        assert name == "document.xml" and params["rcept_no"] == "2"  # 별도 감사보고서 최신
+        buf = _io.BytesIO()
+        with _zip.ZipFile(buf, "w") as z:
+            z.writestr("a.xml", self.doc)
+
+        class R:
+            content = buf.getvalue()
+        return R()
+
+
+def test_audit_finance_returns_two_years_like_annual_reports():
+    fin = dart.audit_finance(FakeAuditClient(AUDIT_DOC), "00000001", date(2026, 11, 2))
+    assert fin["basis"] == "감사보고서" and fin["year"] == 2025 and fin["rcept_no"] == "2"
+    assert fin["revenue_name"] == "매출액"
+    assert fin["years"] == [
+        {"year": 2024, "revenue": 1_000_000_000, "operating": 30_000_000, "net": 20_000_000},
+        {"year": 2025, "revenue": 1_234_567_000, "operating": -12_000_000, "net": -15_500_000},
+    ]

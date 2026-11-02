@@ -8,6 +8,7 @@ data 폴더(data 브랜치)
   dart/corps.json   회사 키 → DART 고유번호 잇기 결과 {"corp_code", "corp_name", "stock_code", "how", "checked"}
                     못 찾았으면 corp_code null과 why(none: 같은 이름 없음, ambiguous: 같은 이름 여럿)
   dart/basics.json  DART 고유번호 → 받은 기본정보 {"fetched", "company", "finance", "employees", "disclosures"}
+                    finance는 사업보고서 주요 계정, 없으면 비상장 회사의 감사보고서 손익계산서(basis "감사보고서")
                     주요 기업 후보 중 상장 폐지된 곳은 기업개황만 받고 "unlisted": true
   dart/listed.json  종목코드가 있는 회사 [고유번호, 이름, 종목코드](상장 폐지 포함), 7일마다
   dart/filers.json  사업보고서를 낸 비상장 회사 [고유번호, 이름, ""](그해 3~5월 제출분), 7일마다
@@ -524,7 +525,8 @@ MATCH_VERSION = 6  # 잇기 규칙 판. 올리면 다음 실행에서 모든 회
 # 4: 리뷰(2026-10-22) — 믿기 어려운 대체 이름(_weak) 거르기, 최근 공시로 고르기는 대기업·공기업만, 글자까지 같은 이름 규칙 뺌
 # 5: 글자 그대로와 한글 읽기가 다른 회사면 잇지 않음(4의 "글자 그대로 먼저"가 RFHIC를 옛 법인으로 바꿨다)
 # 6: 외국계는 한국 법인 이름(구글코리아, 한국마이크로소프트)으로도 찾는다
-BASICS_VERSION = 3  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다
+BASICS_VERSION = 4  # 받아 둔 기본정보 형식. 올리면 다음 실행부터 회사마다 다시 받는다
+# 4(2026-11-02): 사업보고서 실적이 없는 비상장 회사는 감사보고서 실적. 3에서 실적이 있던 회사는 다시 받지 않는다
 # 2: 공시를 거르지 않고 40건 3: 영업수익도 매출 자리에(revenue_name). 2에서 매출액이 있던 회사는 다시 받지 않는다
 
 
@@ -562,6 +564,8 @@ def fetch(client: Client, corp_code: str, today: date, listed_only: bool = False
             emp = client.json("empSttus.json", {"corp_code": corp_code, "bsns_year": y, "reprt_code": REPORT_ANNUAL})
             employees = parse_employees((emp or {}).get("list") or [])
             break
+    if finance is None and (out["company"] or {}).get("market") not in LISTED_MARKETS:
+        finance = audit_finance(client, corp_code, today)
     out["finance"] = finance
     out["employees"] = employees
 
@@ -815,7 +819,8 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                 return 0
             if got.get("unlisted") and not (major and listed_only):
                 return 0
-            if got.get("v") != BASICS_VERSION or date.fromisoformat(got["fetched"]) + refresh <= today:
+            stale_v = got.get("v") != BASICS_VERSION and not (got.get("v") == 3 and got.get("finance"))
+            if stale_v or date.fromisoformat(got["fetched"]) + refresh <= today:
                 return 1
             return None
 
@@ -958,13 +963,15 @@ def audit_income(text: str) -> dict[str, Any]:
             if nums:
                 got[key] = nums[0]
                 got[key + "_label"] = cells[0]
+                if len(nums) > 1:
+                    got[key + "_prev"] = nums[1]
         if "operating" not in got or "net" not in got:
             continue
         around = _TAG.sub(" ", text[max(0, t.start() - 2000):t.start()] + t.group(0)[:3000])
         units = re.findall(r"단위\s*[:：]?\s*(백만원|천원|억원|원)", around)
         unit = units[-1] if units else None
         mult = _UNITS[unit] if unit else 1
-        for k in ("revenue", "operating", "net"):
+        for k in ("revenue", "operating", "net", "revenue_prev", "operating_prev", "net_prev"):
             if k in got:
                 got[k] *= mult
         got["unit"] = unit
@@ -974,6 +981,34 @@ def audit_income(text: str) -> dict[str, Any]:
         got["employees"] = int(emp.group(2).replace(",", "")) if emp else None
         return got
     return {"why": "손익계산서 표를 못 찾음"}
+
+
+def audit_finance(client: Client, corp_code: str, today: date) -> dict[str, Any] | None:
+    """사업보고서 실적이 없는 비상장 회사: 최근 감사보고서의 당기·전기 실적을 parse_finance와 같은 꼴로.
+    basis "감사보고서"(별도 재무제표). 감사보고서가 없거나 표를 못 읽으면 None(요청 실패도 None, 다음 갱신 때 다시)."""
+    try:
+        rep = audit_report(client, corp_code, today)
+        if not rep:
+            return None
+        got = audit_income(audit_document(client, rep["rcept_no"]))
+    except DartError as e:
+        if isinstance(e, LimitReached):
+            raise
+        log.warning("DART 감사보고서 %s: %s", corp_code, e)
+        return None
+    if "operating" not in got and "revenue" not in got:
+        return None
+    m = re.search(r"\((\d{4})\.\d{2}\)", rep.get("report_nm") or "")
+    year = int(m.group(1)) if m else int((rep.get("rcept_dt") or "0000")[:4]) - 1
+    rows = []
+    for y, suffix in ((year - 1, "_prev"), (year, "")):
+        row = {"year": y, **{k: got.get(k + suffix) for k in ("revenue", "operating", "net")}}
+        if any(row[k] is not None for k in ("revenue", "operating", "net")):
+            rows.append(row)
+    rev_label = _core(got.get("revenue_label") or "")
+    return {"year": year, "basis": "감사보고서", "rcept_no": rep["rcept_no"],
+            "revenue_name": "영업수익" if rev_label == "영업수익" else ("매출액" if "revenue" in got else None),
+            "years": rows}
 
 
 def audit_check(codes: list[str], today: date, raw: int = 0) -> list[dict[str, Any]]:

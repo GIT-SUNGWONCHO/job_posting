@@ -205,7 +205,8 @@ export interface DartBasics {
   /** 사업보고서 주요 계정(원). 오래된 해부터 */
   finance: {
     year: number
-    basis: '연결' | '별도'
+    /** 감사보고서: 사업보고서가 없는 비상장 회사(별도 재무제표, 직전 두 해) */
+    basis: '연결' | '별도' | '감사보고서'
     rceptNo: string | null
     /** 매출 자리에 쓴 계정: 매출액, 또는 영업수익(증권사·일부 플랫폼) */
     revenueName?: string

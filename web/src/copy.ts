@@ -182,7 +182,8 @@ export const copy = {
     founded: '설립',
     homepage: '홈페이지',
     market: (m: string) => (m === '기타' ? '비상장' : `${m} 상장`),
-    sourceFinance: (year: number, basis: string) => `공시 · DART 사업보고서(${year}, ${basis})`,
+    sourceFinance: (year: number, basis: string) =>
+      (basis === '감사보고서' ? `공시 · DART 감사보고서(${year}, 별도)` : `공시 · DART 사업보고서(${year}, ${basis})`),
     sourceEmployees: '공시 · 사업보고서 직원 현황',
     sourceCompany: '공시 · DART 기업개황',
     sourceDisclosures: '공시 · DART 주요사항보고·거래소공시',
