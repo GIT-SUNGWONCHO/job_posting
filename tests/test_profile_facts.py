@@ -1,3 +1,4 @@
+import json
 from datetime import date
 
 from test_recommend import BODIES, SCREEN
@@ -89,6 +90,32 @@ def test_feedback_metrics_and_report():
     assert "규칙 점수: 상위 10 중 ○ 2건" in text  # 규칙 점수가 다 같으면 반반
     assert "○ AI 50(고려) 규칙 80 | 회사 | 공고 b | 코멘트: 핵심 업무가 딱 맞음" in text  # ○인데 60 미만
     assert "× AI 70(고려)" in text and "[아직 평가 안 함 1건]" in text
+    public = "\n".join(feedback.report(sample, matches, rows, private=False))  # 공개 로그용: 건수·지표만
+    assert "AI 점수: 상위 10 중 ○ 2건" in public and "[아직 평가 안 함 1건]" in public
+    assert "공고 b" not in public and "코멘트" not in public and "나:" not in public
     dump = feedback.sample_dump(sample, matches, rows)
     assert len(dump) == 4 and dump[0].startswith("SMP\t") and '"score": 90' in dump[0]
     assert '"label": "good", "comment": "핵심 업무가 딱 맞음"' in dump[3]  # b(50점), 최신 평가
+
+
+def test_feedback_candidates_replace_closed_sample():
+    sample = [{"id": "s1", "group": "규칙 상위", "title": "샘플 1"}, {"id": "s2", "group": "직무별:data_eng", "title": "샘플 2"},
+              {"id": "s3", "group": "무작위", "title": "샘플 3"}]
+    open_postings = [{"id": "s1", "company": "k", "title": "샘플 1"}]  # s2·s3은 마감
+    open_postings += [{"id": f"p{i}", "company": "k", "title": f"공고 {i}", "jobType": "data_eng" if i % 2 else "analyst"}
+                      for i in range(6)]
+    open_postings.append({"id": "same", "company": "k", "title": "샘플 2"})  # 샘플과 제목이 같은 공고는 빼다
+    rows = [{"user_id": "u1", "posting_id": f"p{i}", "score": 50, "rule": 10 * i, "kind": "ai" if i < 3 else None}
+            for i in range(6)]
+    rows += [{"user_id": "u1", "posting_id": "s1", "score": 90, "rule": 99, "kind": "ai"},
+             {"user_id": "u1", "posting_id": "same", "score": 90, "rule": 99, "kind": "ai"},
+             {"user_id": "u1", "posting_id": "gone", "score": 90, "rule": 99, "kind": "ai"}]  # 화면에 없는 공고
+    out = feedback.candidates(sample, open_postings, {"k": "회사"}, rows, n=4)
+    assert out[0] == "== 사용자 u1: 마감된 샘플 2건, 바꿀 후보 공고 6건"
+    assert [x for x in out if x.startswith("CLOSED")] == ['CLOSED\t{"id": "s2", "group": "직무별:data_eng"}',
+                                                          'CLOSED\t{"id": "s3", "group": "무작위"}']
+    cands = [json.loads(x.split("\t", 1)[1]) for x in out if x.startswith("CAND")]
+    assert [c["id"] for c in cands if c["group"] == "규칙 상위"] == ["p5", "p4", "p3", "p2"]
+    assert [c["id"] for c in cands if c["group"] == "판단 갈림"] == ["p0", "p1", "p2"]  # AI 점수가 있는 것만, 차이 큰 순
+    assert {c["jobType"] for c in cands if c["group"] == "직무별:data_eng"} == {"data_eng"}
+    assert all(c["company"] == "회사" for c in cands) and not any(c["id"] in {"s1", "same", "gone"} for c in cands)

@@ -67,8 +67,10 @@ def _body(members: list[dict[str, Any]], originals: dict[str, dict[str, Any]],
     return None
 
 
-def build(data_dir: Path, today: date | None = None, with_career: bool = False) -> tuple[dict[str, Any], dict[str, Any]]:
-    """(화면용 파일, 본문 파일). with_career: 커리어 지표까지(본문 스킬을 다 찾느라 20초쯤 더 걸려 화면용 파일을 올릴 때만)."""
+def build(data_dir: Path, today: date | None = None, with_career: bool = False,
+          keep: set[str] | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
+    """(화면용 파일, 본문 파일). with_career: 커리어 지표까지(본문 스킬을 다 찾느라 20초쯤 더 걸려 화면용 파일을 올릴 때만).
+    keep: 마감됐어도 넣을 공고(기준 샘플 회차 시험용. 평가한 공고를 마감 뒤에도 다시 매긴다). 화면용 파일에는 쓰지 않는다."""
     today = today or date.today()
     store = Store(data_dir)
     registry = CompanyRegistry(data_dir / "companies.json")
@@ -76,7 +78,8 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False) 
     details = store.load_details()
     bodies: dict[str, dict[str, str]] = {}
 
-    open_recs = [r for r in store.open_records() if not r.get("overseas")]
+    records = store.open_records() + [r for uid, r in store.state.items() if keep and uid in keep and r.get("closed_on")]
+    open_recs = [r for r in records if not r.get("overseas")]
     dups: dict[str, list[dict[str, Any]]] = {}
     for r in open_recs:
         if r.get("dup_of"):

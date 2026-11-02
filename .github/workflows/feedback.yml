@@ -1,9 +1,16 @@
-# 회차 리포트: 내 평가와 그때의 AI 판단 근거를 모아 로그로 낸다. 매칭 지침을 고칠 때 본다.
+# 회차 리포트: 내 평가와 그때의 AI 판단 근거를 모은다. 매칭 지침을 고칠 때 본다.
+# 레포가 공개라 로그도 공개다. 로그에는 건수·지표만 남긴다. 공고별 평가·코멘트·판단 근거(프로필에서 나온 문장)·
+# 바꿀 후보는 recipient(받는 쪽 공개 키 인증서, base64)로 암호화해서만 남기고, 그 키가 없으면 만들지 않는다.
+# 개인 키는 받는 쪽(대화 세션)에만 있다. 받는 법은 docs/setup.md "회차 리포트 받기(암호화)".
 # 수동 실행: GitHub > Actions > feedback > Run workflow
 name: feedback
 
 on:
   workflow_dispatch:
+    inputs:
+      recipient:
+        description: 받는 쪽 공개 키 인증서(PEM을 base64 한 줄로). 비우면 건수·지표만
+        required: false
 
 permissions:
   contents: read
@@ -14,6 +21,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
 
       - uses: astral-sh/setup-uv@v6
         with:
@@ -26,4 +38,17 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-        run: uv run --no-dev jobpost feedback
+          RECIPIENT: ${{ inputs.recipient }}
+        run: |
+          set -euo pipefail
+          if [ -z "$RECIPIENT" ]; then
+            uv run --no-dev jobpost feedback --data-dir data
+            exit 0
+          fi
+          umask 077
+          echo "$RECIPIENT" | base64 -d > "$RUNNER_TEMP/recipient.pem"
+          openssl x509 -in "$RUNNER_TEMP/recipient.pem" -noout -subject  # 인증서가 맞는지 먼저 본다
+          uv run --no-dev jobpost feedback --data-dir data --out "$RUNNER_TEMP/report.txt"
+          echo "----- 암호화한 비공개 리포트 -----"
+          openssl cms -encrypt -binary -aes256 -outform PEM -in "$RUNNER_TEMP/report.txt" "$RUNNER_TEMP/recipient.pem"
+          rm -f "$RUNNER_TEMP/report.txt"

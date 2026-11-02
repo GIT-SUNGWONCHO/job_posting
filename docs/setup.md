@@ -137,3 +137,20 @@ cd web && npm install && npm run dev
 ```
 
 `web/.env`에 Supabase 값이 없으면 로그인 없이 `.dev-data/screen.json.gz`를 읽는다(개발 서버에서만). 검사는 `npm test`, `npm run lint`, `npm run build`.
+
+## 회차 리포트 받기(암호화)
+
+레포가 공개라 GitHub Actions 로그도 누구나 본다. 그래서 feedback 워크플로는 로그에 건수와 지표만 남기고, 공고별 평가·코멘트·AI 판단 근거(프로필에서 나온 "나:" 문장)·샘플을 바꿀 후보는 받는 쪽 공개 키로 암호화해서만 남긴다. 개인 키는 받는 쪽에만 있고 레포·Secrets·로그 어디에도 두지 않는다.
+
+1. 받는 쪽(대화 세션의 임시 폴더)에서 키를 만든다. 세션이 끝나면 지워지니 다음에는 새로 만든다.
+   ```
+   openssl req -x509 -newkey rsa:3072 -nodes -keyout key.pem -out cert.pem -days 7 -subj "/CN=feedback"
+   base64 -w0 cert.pem   # 이 한 줄을 recipient 입력에 넣는다
+   ```
+2. Actions > feedback > Run workflow, `recipient`에 위 한 줄을 넣고 실행한다(비우면 건수·지표만).
+3. 로그의 "암호화한 비공개 리포트" 아래 `-----BEGIN CMS-----`부터 `-----END CMS-----`까지를 `report.pem`으로 저장해(줄 앞 시각은 지운다) 푼다.
+   ```
+   openssl cms -decrypt -inform PEM -inkey key.pem -in report.pem
+   ```
+
+리포트 줄: `SMP`는 기준 샘플 공고별 점수·판단 근거·내 평가, `CLOSED`는 마감된 샘플, `CAND`는 같은 묶음에서 바꿀 후보다.

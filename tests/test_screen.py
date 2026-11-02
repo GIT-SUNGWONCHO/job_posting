@@ -48,6 +48,9 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
     assert "closed" not in built and "다른회사" not in built["companies"]  # 내려간 공고는 화면용 파일에 넣지 않는다
     assert built["collection"] is None  # 수집 요약이 아직 없다
 
+    kept, _ = screen.build(tmp_path, today=day, keep={"saramin:9"})  # 기준 샘플 회차 시험은 마감된 샘플도 매긴다
+    assert [p["id"] for p in kept["postings"]] == ["zighang:a", "saramin:9"]
+
     s.save_run(day, {"date": "2026-10-13", "finished": "2026-10-13T04:40:00", "new": 3, "closed": 1, "open_unique": 2,
                      "sources": {"zighang": {"in_scope": 10, "complete": True, "new": 2, "closed": 1, "error_count": 0},
                                  "saramin": {"in_scope": 5, "complete": False, "new": 1, "closed": 0, "errors": ["x"]}}})

@@ -53,8 +53,9 @@ def main(argv: list[str] | None = None) -> int:
     f = sub.add_parser("facts", help="후보 공고의 매칭 항목을 AI로 정리해 data 폴더 facts.jsonl에 쌓는다")
     f.add_argument("--data-dir", type=Path, default=Path("data"))
 
-    r = sub.add_parser("feedback", help="회차 리포트: 내 평가와 그때의 AI 판단 근거를 로그로 낸다")
+    r = sub.add_parser("feedback", help="회차 리포트: 로그에는 건수·지표만, --out에는 공고별 평가·판단 근거·바꿀 후보(비공개)")
     r.add_argument("--data-dir", type=Path, default=Path("data"))
+    r.add_argument("--out", type=Path, help="비공개 리포트를 쓸 파일(워크플로가 암호화한다. 로그에 찍지 않는다)")
 
     n = sub.add_parser("notify", help="아침 알림: 연결한 사람마다 새 공고 요약을 보낸다(채널은 config/notify.yaml)")
     n.add_argument("--data-dir", type=Path, default=Path("data"))
@@ -140,10 +141,10 @@ def main(argv: list[str] | None = None) -> int:
         if not db.configured():
             logging.info("Supabase 설정이 없어 매칭을 건너뜀")
             return 0
-        built, bodies = screen.build(args.data_dir)
+        only = set(recommend.sample_ids()) if args.sample else None
+        built, bodies = screen.build(args.data_dir, keep=only)
         store = db.DB()
         store.check_server_key()
-        only = set(recommend.sample_ids()) if args.sample else None
         summary = recommend.run(built, bodies, store, recommend.make_client(args.model), date.today(),
                                 facts.load(args.data_dir), only=only)
         json.dump(summary, sys.stdout, ensure_ascii=False)
@@ -196,7 +197,21 @@ def main(argv: list[str] | None = None) -> int:
                                           f"&posting_id=in.({quoted})")
         rows = store.select("feedback", "select=user_id,posting_id,match_key,label,comment,updated_at&order=updated_at")
         sample = config.load("match_sample")["postings"]
-        print("\n".join(feedback.report(sample, matches, rows) + feedback.sample_dump(sample, matches, rows)))
+        print("\n".join(feedback.report(sample, matches, rows, private=False)))
+        if args.out:
+            built, _ = screen.build(args.data_dir)
+            names = {k: c["name"] for k, c in built["companies"].items()}
+            every: list[dict] = []
+            while True:  # Supabase는 한 번에 1,000줄까지 준다
+                page = store.select("matches", "select=user_id,posting_id,score,rule:parts->rule,kind:parts->>kind"
+                                               f"&order=user_id,posting_id&limit=1000&offset={len(every)}")
+                every += page
+                if len(page) < 1000:
+                    break
+            lines = (feedback.report(sample, matches, rows) + feedback.sample_dump(sample, matches, rows)
+                     + feedback.candidates(sample, built["postings"], names, every))
+            args.out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            logging.info("비공개 리포트 %d줄을 파일에 씀", len(lines))
     return 0
 
 

@@ -69,7 +69,7 @@ src/jobpost/
   profile.py       프로필 v2(경력 > 직무 구간 > 프로젝트, 숙련도): 직무별 연수, AI에 보낼 요약
   matching.py      규칙 점수(비교용, config/matching.yaml + 스킬 사전 config/skills.yaml)
   recommend.py     사람마다 매칭: 후보 공고를 AI가 매기고 판단 근거를 남김(지침 config/match_guide.yaml), Supabase matches에 씀
-  feedback.py      회차 리포트: 내 평가와 판단 근거 모음(feedback.yml)
+  feedback.py      회차 리포트: 로그에는 지표만, 공고별 평가·판단 근거·샘플 바꿀 후보는 암호화(feedback.yml)
   notify.py        아침 알림: 사람마다 첫 통(필터 통과 새 공고 전부 · 마감 임박)과 둘째 통(필터 밖 새 공고와 걸린 이유), 모두 접어서 켜 둔 채널로 보냄, 알림 연결(설정 config/notify.yaml)
   telegram.py      텔레그램 봇 보내기·대화방 찾기. 텔레그램은 여기서만 부른다
   kakao.py         카카오 "나에게 보내기"·토큰(꺼 둠). 카카오는 여기서만 부른다

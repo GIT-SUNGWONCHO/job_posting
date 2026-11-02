@@ -2,11 +2,15 @@
 
 내 평가는 공고에 대한 판단이라 회차와 상관없이 공고별 가장 최근 것을 정답으로 쓴다.
 지표(docs/decisions.md 2026-10-14): 상위 10건 중 ○ 7건 이상, 상위 20건 안 × 1건 이하, ○가 ×보다 위인 비율 85% 이상.
-규칙 점수도 같은 잣대로 잰다. 결과는 실행 로그로만 본다(.github/workflows/feedback.yml).
+규칙 점수도 같은 잣대로 잰다.
+
+레포가 공개라 실행 로그도 공개다. 로그에는 건수와 지표만 남기고(private=False), 공고별 평가·코멘트·판단 근거
+(프로필에서 나온 "나:" 문장)·바꿀 후보는 비공개 리포트로 따로 만들어 암호화한다(.github/workflows/feedback.yml).
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 from collections.abc import Callable
 from typing import Any
@@ -36,8 +40,10 @@ def _metric_line(name: str, m: dict[str, Any]) -> str:
             f"○가 ×보다 위 {pairs}(목표 85% 이상) → {'목표 달성' if ok else '미달'} [평가·점수 있는 {m['n']}건 기준]")
 
 
-def report(sample: list[dict[str, Any]], matches: list[dict[str, Any]], rows: list[dict[str, Any]]) -> list[str]:
-    """sample: 기준 샘플 공고, matches: 그 공고들의 지금 매칭 결과, rows: feedback 표(updated_at 오름차순)."""
+def report(sample: list[dict[str, Any]], matches: list[dict[str, Any]], rows: list[dict[str, Any]],
+           private: bool = True) -> list[str]:
+    """sample: 기준 샘플 공고, matches: 그 공고들의 지금 매칭 결과, rows: feedback 표(updated_at 오름차순).
+    private=False면 건수·지표만(공개 로그용). 공고별 줄, 코멘트, 판단 근거는 private=True일 때만."""
     info = {p["id"]: p for p in sample}
     ids = list(info)
     out: list[str] = []
@@ -80,6 +86,9 @@ def report(sample: list[dict[str, Any]], matches: list[dict[str, Any]], rows: li
                 cells.append(f"{weight}/{fit}")
             out.append(f"    {kind}: ○ {cells[0]}  × {cells[1]}")
 
+        if not private:
+            out.append(f"  [아직 평가 안 함 {sum(1 for pid in ids if pid not in labels)}건]")
+            continue
         out.append("  [점수와 내 평가가 어긋난 공고: ○인데 60점 미만, ×인데 70점 이상]")
         for pid in rated:
             s = ai_score(pid)
@@ -123,4 +132,45 @@ def sample_dump(sample: list[dict[str, Any]], matches: list[dict[str, Any]], row
             "gaps": m.get("missing") or [], "items": parts.get("items") or [],
             "label": label[0] if label else None, "comment": label[1] if label else None,
         }, ensure_ascii=False))
+    return out
+
+
+def _order(pid: str, seed: str) -> str:
+    return hashlib.sha1(f"{seed}:{pid}".encode()).hexdigest()
+
+
+def candidates(sample: list[dict[str, Any]], open_postings: list[dict[str, Any]], names: dict[str, str],
+               rows: list[dict[str, Any]], seed: str = "sample", n: int = 15) -> list[str]:
+    """기준 샘플에서 마감된 공고를 바꿀 후보(비공개 리포트에만). 한 줄 JSON(CAND\t...).
+    open_postings: 열린 공고(화면용 파일), rows: 사람별 지금 매칭 줄 {user_id, posting_id, score, rule, kind}.
+    매칭 줄이 있는 공고 = 그 사람의 개인 필터를 통과한 후보다. 묶음은 match_sample.yaml과 같다."""
+    in_sample = {p["id"] for p in sample}
+    titles = {p["id"]: p["title"] for p in sample}
+    by_id = {p["id"]: p for p in open_postings}
+    closed = [p for p in sample if p["id"] not in by_id]
+    out: list[str] = []
+    for user in sorted({r["user_id"] for r in rows}):
+        pool = [r for r in rows if r["user_id"] == user and r["posting_id"] in by_id and r["posting_id"] not in in_sample
+                and by_id[r["posting_id"]]["title"] not in titles.values()]
+
+        def line(group: str, r: dict[str, Any], user: str = user) -> str:
+            p = by_id[r["posting_id"]]
+            return "CAND\t" + json.dumps({
+                "user": user[:8], "group": group, "id": p["id"], "company": names.get(p["company"], p["company"]),
+                "title": p["title"], "jobType": p.get("jobType"), "rule": r.get("rule"),
+                "ai": r.get("score") if r.get("kind") == "ai" else None,
+            }, ensure_ascii=False)
+
+        out.append(f"== 사용자 {user[:8]}: 마감된 샘플 {len(closed)}건, 바꿀 후보 공고 {len(pool)}건")
+        out += ["CLOSED\t" + json.dumps({"id": p["id"], "group": p.get("group")}, ensure_ascii=False) for p in closed]
+        rule_top = sorted((r for r in pool if r.get("rule") is not None), key=lambda r: -float(r["rule"]))[:n]
+        out += [line("규칙 상위", r) for r in rule_top]
+        split = sorted((r for r in pool if r.get("kind") == "ai" and r.get("rule") is not None),
+                       key=lambda r: -abs(float(r["score"]) - float(r["rule"])))[:n]
+        out += [line("판단 갈림", r) for r in split]
+        for jt in sorted({p["group"].split(":", 1)[1] for p in closed if p.get("group", "").startswith("직무별:")}):
+            same = sorted((r for r in pool if by_id[r["posting_id"]].get("jobType") == jt),
+                          key=lambda r: _order(r["posting_id"], seed))[:n // 2]
+            out += [line(f"직무별:{jt}", r) for r in same]
+        out += [line("무작위", r) for r in sorted(pool, key=lambda r: _order(r["posting_id"], seed))[:n]]
     return out
