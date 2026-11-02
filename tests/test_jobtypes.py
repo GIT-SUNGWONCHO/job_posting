@@ -87,15 +87,14 @@ def test_taxonomy_ids_are_unique_and_described():
     assert all(t["name"] and t["desc"] for t in types)
 
 
-def test_classify_with_secondary_drops_same_or_unknown():
+def test_classify_secondary_keeps_only_other_family():
     from jobpost import jobtypes
 
     class AI:
         def json(self, prompt, schema):
-            assert "보조" in prompt and "s" in schema["items"]["properties"]
-            return [{"i": 0, "t": "non_data", "s": "analyst"}, {"i": 1, "t": "data_eng", "s": "data_eng"},
-                    {"i": 2, "t": "analyst", "s": "nope"}]
+            assert "주 유형은 바꾸지 않는다" in prompt
+            return [{"i": 0, "s": "analyst"}, {"i": 1, "s": "data_sci"}, {"i": 2, "s": "none"}, {"i": 3, "s": "non_data"}]
 
-    items = [("a", "CRM 마케팅 데이터 분석", [], ""), ("b", "데이터 엔지니어", [], ""), ("c", "데이터 분석가", [], "")]
-    assert jobtypes.classify_with_secondary(items, AI()) == {"a": ("non_data", "analyst"), "b": ("data_eng", ""),
-                                                            "c": ("analyst", "")}
+    items = [("a", "non_data", "CRM 마케팅 데이터 분석", [], ""), ("b", "data_eng", "데이터 엔지니어", [], ""),
+             ("c", "analyst", "데이터 분석가", [], ""), ("d", "analyst", "CRM 분석·캠페인 운영", [], "")]
+    assert jobtypes.classify_secondary(items, AI()) == {"a": "analyst", "d": "non_data"}

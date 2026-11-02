@@ -48,13 +48,7 @@ def snippet(text: str | None) -> str:
     return " ".join(text[m.start() if m else 0:].split())[:SNIPPET_CHARS]
 
 
-SECONDARY_GUIDE = (
-    "주 업무가 두 직무 유형에 실제로 걸치면 s에 보조 직무 유형 하나를 적는다(예: CRM 마케팅 데이터 분석 → 주 non_data, 보조 analyst). "
-    "제목에 단어만 들어간 정도로는 보조를 붙이지 않는다. 대부분의 공고는 보조가 없고, 그때 s는 none이다.\n"
-)
-
-
-def prompt(lines: list[str], secondary: bool = False) -> str:
+def prompt(lines: list[str]) -> str:
     guide = "\n".join(f"- {t['id']}: {t['name']} — {t['desc']}" for t in taxonomy()["types"])
     return (
         "채용공고를 직무 유형 하나로 분류한다. 제목, 수집처 분류, 본문(주요 업무 앞부분, 없으면 비어 있다)을 보고 "
@@ -62,62 +56,88 @@ def prompt(lines: list[str], secondary: bool = False) -> str:
         "제목에 AI나 데이터가 들어가도 주 업무가 마케팅·영업·디자인이면 non_data, 일반 개발이면 software다.\n"
         "제목에 Solutions·솔루션이 있어도 사내 서비스·플랫폼을 직접 설계·개발·운영하면 개발 직무로 고르고, "
         "고객사 대상 기술영업·프리세일즈·컨설팅일 때만 consulting이다.\n"
-        "판단이 어려우면 가장 가까운 것 하나를 고른다.\n"
-        + (SECONDARY_GUIDE if secondary else "") + "\n"
+        "판단이 어려우면 가장 가까운 것 하나를 고른다.\n\n"
         f"직무 유형:\n{guide}\n\n"
         "공고(번호, 제목, 수집처 분류, 본문):\n" + "\n".join(lines)
     )
 
 
-def schema(secondary: bool = False) -> dict[str, Any]:
+def schema() -> dict[str, Any]:
     ids = [t["id"] for t in taxonomy()["types"]]
-    props: dict[str, Any] = {"i": {"type": "INTEGER"}, "t": {"type": "STRING", "enum": ids}}
-    if secondary:
-        props["s"] = {"type": "STRING", "enum": ids + ["none"]}
-    return {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["i", "t"] + (["s"] if secondary else []),
-                                       "properties": props}}
+    return {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["i", "t"], "properties": {
+        "i": {"type": "INTEGER"}, "t": {"type": "STRING", "enum": ids}}}}
 
 
-def classify_with_secondary(items: list[tuple[str, str, list[str], str]], client: Any) -> dict[str, tuple[str, str]]:
-    """시험(보조 직무 유형): {uid: (주, 보조 또는 "")}. 보조가 주와 같으면 비운다."""
-    lines = [f"{i}\t{' '.join(title.split())}\t{', '.join(c for c in cats if c not in _BROAD)[:120]}\t{body}"
-             for i, (_, title, cats, body) in enumerate(items)]
+DATA_FAMILY = {"data_eng", "data_arch", "dba", "analyst", "data_sci", "ml_eng", "mlops", "ai_eng", "research",
+               "planning", "consulting", "labeling"}
+
+
+def family(t: str) -> str:
+    """직무 계열: 데이터·AI 쪽인지 그 밖(일반 개발 software, 데이터·AI 아님 non_data)인지."""
+    return "data" if t in DATA_FAMILY else "other"
+
+
+def secondary_prompt(lines: list[str]) -> str:
+    guide = "\n".join(f"- {t['id']}: {t['name']} — {t['desc']}" for t in taxonomy()["types"])
+    return (
+        "채용공고마다 주 직무 유형은 이미 정해져 있다(줄의 두 번째 칸). 주 유형은 바꾸지 않는다.\n"
+        "주 업무의 상당 부분(절반 가까이)이 다른 계열의 직무이면 그 직무 유형 하나를 s에 적는다. 계열은 둘이다: "
+        "데이터·AI(data_eng, data_arch, dba, analyst, data_sci, ml_eng, mlops, ai_eng, research, planning, consulting, labeling)와 "
+        "그 밖(software, non_data).\n"
+        "예: 주 non_data인 CRM 마케팅 공고가 SQL로 고객 데이터를 직접 분석하는 일이 많으면 s=analyst. "
+        "주 analyst인 공고가 캠페인 운영까지 맡으면 s=non_data.\n"
+        "같은 계열의 직무는 s로 적지 않는다. 제목이나 회사 소개에 AI·데이터라는 말이 들어간 정도, 도구를 쓰는 정도로는 붙이지 않는다. "
+        "대부분의 공고는 s가 none이다.\n\n"
+        f"직무 유형:\n{guide}\n\n"
+        "공고(번호, 주 유형, 제목, 수집처 분류, 본문):\n" + "\n".join(lines)
+    )
+
+
+def secondary_schema() -> dict[str, Any]:
+    ids = [t["id"] for t in taxonomy()["types"]]
+    return {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["i", "s"], "properties": {
+        "i": {"type": "INTEGER"}, "s": {"type": "STRING", "enum": ids + ["none"]}}}}
+
+
+def classify_secondary(items: list[tuple[str, str, str, list[str], str]], client: Any) -> dict[str, str]:
+    """[(uid, 주 유형, 제목, 수집처 분류, 본문)] → {uid: 보조 유형}. 주와 같은 계열이면 버린다(보조 없음은 빠진다)."""
+    lines = [f"{i}\t{primary}\t{' '.join(title.split())}\t{', '.join(c for c in cats if c not in _BROAD)[:120]}\t{body}"
+             for i, (_, primary, title, cats, body) in enumerate(items)]
     valid = {t["id"] for t in taxonomy()["types"]}
-    out: dict[str, tuple[str, str]] = {}
-    for row in client.json(prompt(lines, secondary=True), schema(secondary=True)):
-        i, t, s = row.get("i"), row.get("t"), row.get("s") or ""
-        if isinstance(i, int) and 0 <= i < len(items) and t in valid:
-            out[items[i][0]] = (t, s if s in valid and s != t else "")
+    out: dict[str, str] = {}
+    for row in client.json(secondary_prompt(lines), secondary_schema()):
+        i, s = row.get("i"), row.get("s")
+        if isinstance(i, int) and 0 <= i < len(items) and s in valid and family(s) != family(items[i][1]):
+            out[items[i][0]] = s
     return out
 
 
 def check_secondary(state: dict[str, dict[str, Any]], originals: dict[str, dict[str, Any]],
                     details: dict[str, dict[str, Any]], client: Any, n: int = 160, seed: str = "secondary") -> dict[str, Any]:
-    """시험: 열린 국내 공고 n건(데이터·AI 쪽과 그 밖을 반씩, 무작위)을 보조까지 골라 보고 지금 분류와 비교한다(저장 없음)."""
+    """시험: 열린 국내 공고 n건(데이터·AI 쪽과 그 밖을 반씩, 무작위)에 계열이 다른 보조만 골라 본다(주 유형은 그대로, 저장 없음)."""
     import random
 
     rng = random.Random(seed)
     live = [r for r in state.values() if not r.get("closed_on") and not r.get("overseas") and r.get("job_type")]
-    data_side = [r for r in live if r["job_type"]["id"] not in ("non_data", "software", "labeling")]
-    other = [r for r in live if r not in data_side]
+    data_side = [r for r in live if family(r["job_type"]["id"]) == "data"]
+    other = [r for r in live if family(r["job_type"]["id"]) == "other"]
     pick = rng.sample(data_side, min(n // 2, len(data_side))) + rng.sample(other, min(n - n // 2, len(other)))
-    out: dict[str, Any] = {"n": len(pick), "with_secondary": 0, "primary_changed": 0, "rows": []}
+    out: dict[str, Any] = {"n": len(pick), "with_secondary": 0, "data_to_other": 0, "other_to_data": 0, "rows": []}
     batch = config.load("ai")["job_types"].get("batch", 80)
     for start in range(0, len(pick), batch):
         part = pick[start:start + batch]
-        items = [(r["uid"], r.get("title", ""), (originals.get(r["uid"]) or {}).get("categories") or [],
+        items = [(r["uid"], r["job_type"]["id"], r.get("title", ""), (originals.get(r["uid"]) or {}).get("categories") or [],
                   snippet((details.get(r["uid"]) or {}).get("description") or (originals.get(r["uid"]) or {}).get("description")))
                  for r in part]
-        got = classify_with_secondary(items, client)
+        got = classify_secondary(items, client)
         for r in part:
-            if r["uid"] not in got:
+            s = got.get(r["uid"])
+            if not s:
                 continue
-            t, s = got[r["uid"]]
             now = r["job_type"]["id"]
-            out["with_secondary"] += bool(s)
-            out["primary_changed"] += t != now
-            if s or t != now:
-                out["rows"].append({"title": r.get("title", "")[:60], "now": now, "primary": t, "secondary": s})
+            out["with_secondary"] += 1
+            out["data_to_other" if family(now) == "data" else "other_to_data"] += 1
+            out["rows"].append({"title": r.get("title", "")[:60], "primary": now, "secondary": s})
     return out
 
 
