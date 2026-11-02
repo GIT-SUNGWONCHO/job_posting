@@ -859,3 +859,127 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
         "with_basics": sum(1 for k in linked if corps[k]["corp_code"] in basics),
     })
     return summary
+
+
+# ---------- 감사보고서 실적(비상장, 시험 중) ----------
+# 비상장 외감 회사는 사업보고서가 없어 fnlttSinglAcnt가 비지만, 감사보고서(공시 종류 F 외부감사관련)는 낸다.
+# 감사보고서 원문(document.xml, zip 안 XML)에서 손익계산서 표를 찾아 매출·영업이익·당기순이익을 읽는다.
+# DART 원문 XML은 <TABLE><TR><TD|TH|TE|TU>… 표 꼴이고 단위는 표 앞 "(단위 : 원)" 같은 글로 온다.
+# 확인 전(2026-11-02): 10곳 시험(dart-audit-check.yml)으로 형식을 확인한 뒤 매일 수집에 넣을지 정한다.
+
+AUDIT_REVENUE = ("매출액", "영업수익", "수익(매출액)", "매출")
+AUDIT_OP = ("영업이익", "영업손실", "영업이익(손실)", "영업손익")
+AUDIT_NET = ("당기순이익", "당기순손실", "당기순이익(손실)", "당기순손익")
+_UNITS = {"원": 1, "천원": 1_000, "백만원": 1_000_000, "억원": 100_000_000}
+
+
+def audit_report(client: Client, corp_code: str, today: date) -> dict[str, str] | None:
+    """가장 최근 감사보고서(별도 먼저, 없으면 연결) {rcept_no, report_nm, rcept_dt}."""
+    begin = (today - timedelta(days=730)).strftime("%Y%m%d")
+    found = client.json("list.json", {"corp_code": corp_code, "bgn_de": begin, "end_de": today.strftime("%Y%m%d"),
+                                      "pblntf_ty": "F", "last_reprt_at": "Y", "page_count": 100})
+    rows = [r for r in (found or {}).get("list") or [] if "감사보고서" in (r.get("report_nm") or "")]
+    rows.sort(key=lambda r: r.get("rcept_dt") or "", reverse=True)
+    plain = [r for r in rows if "연결" not in r["report_nm"]]
+    pick = (plain or rows or [None])[0]
+    return {k: pick[k] for k in ("rcept_no", "report_nm", "rcept_dt")} if pick else None
+
+
+def audit_document(client: Client, rcept_no: str) -> str:
+    """감사보고서 원문 XML(zip 안 파일을 이어 붙인 글)."""
+    resp = client.get("document.xml", {"rcept_no": rcept_no})
+    try:
+        z = zipfile.ZipFile(io.BytesIO(resp.content))
+    except zipfile.BadZipFile:
+        raise DartError("DART document.xml 응답이 zip이 아님") from None
+    out = []
+    for name in z.namelist():
+        raw = z.read(name)
+        for enc in ("utf-8", "cp949"):
+            try:
+                out.append(raw.decode(enc))
+                break
+            except UnicodeDecodeError:
+                continue
+    return "\n".join(out)
+
+
+_TAG = re.compile(r"<[^>]+>")
+_CELL = re.compile(r"<(T[DHEU])\b[^>]*>(.*?)</\1>", re.S | re.I)
+
+
+def _cells(tr: str) -> list[str]:
+    return [" ".join(_TAG.sub(" ", c).split()) for _, c in _CELL.findall(tr)]
+
+
+def _label(s: str) -> str:
+    """'Ⅰ. 매출액(주석 21)' → '매출액'. 앞 번호·주석 표시·공백을 지운다."""
+    s = re.sub(r"\(\s*주\s*석[^)]*\)|\(\s*주\d[^)]*\)", "", s)
+    s = re.sub(r"^[\s\dⅠ-ⅫIVXivx.\-·가-하]{0,4}[.)]\s*", "", s)
+    return re.sub(r"\s+", "", s)
+
+
+def _audit_amount(s: str) -> int | None:
+    t = s.replace(",", "").replace(" ", "")
+    m = re.fullmatch(r"\(?(-)?(\d+)\)?", t)
+    if not m or not t.strip("()-"):
+        return None
+    v = int(m.group(2))
+    return -v if (m.group(1) or t.startswith("(")) else v
+
+
+def audit_income(text: str) -> dict[str, Any]:
+    """감사보고서 원문에서 손익계산서 첫 표의 매출·영업이익·당기순이익(원 단위). 못 읽으면 why."""
+    m = re.search(r"(포괄)?손익계산서", text)
+    if not m:
+        return {"why": "손익계산서 없음"}
+    rest = text[m.start():]
+    unit_m = re.search(r"단위\s*[:：]\s*(백만원|천원|억원|원)", rest[:4000])
+    unit = _UNITS[unit_m.group(1)] if unit_m else None
+    out: dict[str, Any] = {"unit": unit_m.group(1) if unit_m else None}
+    want = {"revenue": AUDIT_REVENUE, "operating": AUDIT_OP, "net": AUDIT_NET}
+    for tr in re.findall(r"<TR\b.*?</TR>", rest[:200_000], re.S | re.I):
+        cells = _cells(tr)
+        if len(cells) < 2:
+            continue
+        lab = _label(cells[0])
+        for key, names in want.items():
+            if key in out or not any(lab.startswith(n) for n in names):
+                continue
+            # 주석 번호 칸(쉼표 없는 1~2자리 숫자, "4,21"처럼 여럿)은 건너뛴다
+            vals = [c for c in cells[1:] if not re.fullmatch(r"\d{1,2}(\s*[,.]\s*\d{1,2})*", c.strip())]
+            nums = [v for v in (_audit_amount(c) for c in vals) if v is not None]
+            if nums:
+                out[key] = nums[0] * (unit or 1)
+                out[key + "_label"] = cells[0]
+        if all(k in out for k in want):
+            break
+    if not any(k in out for k in want):
+        out["why"] = "손익계산서 표에서 줄을 못 찾음"
+    emp = re.search(r"(종업원|임직원|직원)\s*수[^0-9]{0,40}([\d,]+)\s*명", text)
+    out["employees"] = int(emp.group(2).replace(",", "")) if emp else None
+    return out
+
+
+def audit_check(codes: list[str], today: date, raw: int = 0) -> list[dict[str, Any]]:
+    """시험: 고유번호마다 최근 감사보고서를 찾아 실적을 읽어 본다(저장하지 않음). 실패하면 표 앞부분을 남긴다."""
+    cfg = config.load("dart")
+    client = Client(budget=10 * len(codes) + 10, interval=cfg.get("interval", 0.2))
+    out = []
+    for code in codes:
+        row: dict[str, Any] = {"corp_code": code}
+        try:
+            rep = audit_report(client, code, today)
+            row["report"] = rep
+            if rep:
+                text = audit_document(client, rep["rcept_no"])
+                got = audit_income(text)
+                row.update(got)
+                if raw > 0 and ("why" in got or "revenue" not in got):
+                    raw -= 1
+                    i = text.find("손익계산서")
+                    row["snippet"] = " ".join(_TAG.sub(" ", text[max(0, i):i + 6000]).split())[:1500]
+        except (DartError, LimitReached) as e:
+            row["error"] = str(e)
+        out.append(row)
+    return out

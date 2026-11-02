@@ -1,0 +1,41 @@
+# 시험: 비상장 회사의 감사보고서에서 실적(매출·영업이익·당기순이익)을 읽을 수 있는지 본다. 아무것도 저장하지 않는다.
+# 결과가 맞으면 매일 수집의 회사 기본정보에 넣는다(docs/decisions.md 2026-11-02 회사).
+# 수동 실행: GitHub > Actions > dart-audit-check > Run workflow
+name: dart-audit-check
+
+on:
+  workflow_dispatch:
+    inputs:
+      codes:
+        description: 쉼표로 구분한 DART 고유번호
+        required: true
+      raw:
+        description: 못 읽은 회사 이만큼은 손익계산서 앞부분을 로그에 남긴다
+        required: false
+        default: "3"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 감사보고서 실적 시험
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          CODES: ${{ inputs.codes }}
+          RAW: ${{ inputs.raw }}
+        run: uv run --no-dev jobpost dart-audit --codes "$CODES" --raw "${RAW:-3}"
