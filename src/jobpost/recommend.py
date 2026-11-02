@@ -164,7 +164,9 @@ def posting_text(p: dict[str, Any], screen: dict[str, Any], body: str | None, fa
         years = ", ".join(f"{y.get('area', '')} {y.get('min', '')}년" for y in f.get("years") or [])
         out += ("\n[공고 정리]\n"
                 f"직급: {f.get('level')} / 필수 스킬: {', '.join(f.get('required_skills') or []) or '-'} / "
-                f"우대 스킬: {', '.join(f.get('preferred_skills') or []) or '-'} / 연수 요건: {years or '-'}")
+                f"우대 스킬: {', '.join(f.get('preferred_skills') or []) or '-'} / 연수 요건: {years or '-'} / "
+                f"학력: {f.get('degree') or '-'}"
+                f"{' (전공 ' + ', '.join(f.get('majors') or []) + ' ' + (f.get('major_need') or '') + ')' if f.get('majors') else ''}")
     return out
 
 
