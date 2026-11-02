@@ -19,6 +19,7 @@ def reasons(
     filters: dict[str, Any],
     job_type: str | None = None,
     employment: list[str] | None = None,
+    job_type2: str | None = None,
 ) -> list[tuple[str, str]]:
     """걸린 이유(통과면 빈 목록). (종류, 값): keyword 제외 키워드, company 제외 회사, job 직무 유형 id,
     company_type 기업 구분, career 경력, region 지역, employment 고용 형태. 제외 키워드·회사에 걸리면 그것만, 아니면 걸린 조건 전부.
@@ -32,7 +33,8 @@ def reasons(
 
     # 직무 유형이 아직 분류되지 않은 공고(오늘 새로 들어와 AI가 못 본 것)는 통과시킨다
     allowed_jobs = filters.get("job_types")
-    if allowed_jobs and job_type and job_type not in allowed_jobs:
+    # 보조 직무 유형(job_type2, 데이터·AI 일이 큰 그 밖 공고)이 맞아도 통과
+    if allowed_jobs and job_type and job_type not in allowed_jobs and job_type2 not in allowed_jobs:
         out.append(("job", job_type))
 
     allowed_types = filters.get("company_types")

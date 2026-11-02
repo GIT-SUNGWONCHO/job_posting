@@ -103,6 +103,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
                 "group": registry.group(key, r.get("company", "")),
             }
         job_type = next(((x.get("job_type") or {}).get("id") for x in [r, *same] if x.get("job_type")), None)
+        job_type2 = next((jobtypes.secondary_of(x) for x in [r, *same] if jobtypes.secondary_of(x)), None)
         client_type = next((x["client_type"] for x in [r, *same] if x.get("client_type")), None)
         first_seen = min([r.get("first_seen", "")] + [d.get("first_seen", "") for d in same])
         backfill = is_backfill([r, *same], first_seen)
@@ -128,6 +129,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
             "firstSeen": first_seen,
             **({"backfill": True} if backfill else {}),
             "jobType": job_type,
+            "jobType2": job_type2,
             "hasBody": body is not None,
             "sources": [link(r)] + [link(d) for d in same],
         }

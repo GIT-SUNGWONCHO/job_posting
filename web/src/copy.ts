@@ -73,6 +73,7 @@ export const copy = {
   job: {
     back: '뒤로',
     jobType: '직무',
+    withSecondary: (main: string, sub: string) => `${main} · ${sub}(보조)`,
     career: '경력',
     deadline: '마감',
     regions: '근무지',

@@ -15,7 +15,7 @@ export function passes(p: Posting, c: Company | undefined, f: Filters): boolean 
 
   // 아직 분류 전인 공고(오늘 새로 들어온 것)는 통과
   const jobs = f.job_types
-  if (jobs && jobs.length && p.jobType && !jobs.includes(p.jobType)) return false
+  if (jobs && jobs.length && p.jobType && !jobs.includes(p.jobType) && !(p.jobType2 && jobs.includes(p.jobType2))) return false
 
   const types = f.company_types
   // 헤드헌팅 공고는 서치펌 대신 의뢰 회사 구분으로 거른다

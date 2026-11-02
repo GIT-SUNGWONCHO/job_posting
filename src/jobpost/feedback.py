@@ -262,7 +262,7 @@ def funnel(screen: dict[str, Any], user: str, user_filters: dict[str, Any]) -> l
         found = filters.reasons(
             title=p["title"], company=c.get("name", ""), company_type=CompanyType(p.get("clientType") or c.get("type", "그 외")),
             career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
-            filters=user_filters, job_type=p.get("jobType"), employment=p.get("employment"))
+            filters=user_filters, job_type=p.get("jobType"), employment=p.get("employment"), job_type2=p.get("jobType2"))
         kinds[p["id"]] = {k for k, _ in found}
     out = [f"FILTER\t{user[:8]}\t" + json.dumps(user_filters, ensure_ascii=False)]
     left = real

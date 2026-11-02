@@ -199,6 +199,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
             company_type=posting_type(registry, company_key(p.company), p.company, p.client_type),
             career_min=p.career_min, career_max=p.career_max, regions=p.regions, filters=personal,
             job_type=(store.state[p.uid].get("job_type") or {}).get("id"), employment=p.employment_types,
+            job_type2=jobtypes.secondary_of(store.state[p.uid]),
         )
         passed += ok
     summary.update({

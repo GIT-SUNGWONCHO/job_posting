@@ -77,6 +77,17 @@ def family(t: str) -> str:
     return "data" if t in DATA_FAMILY else "other"
 
 
+SECONDARY_VERSION = 1
+
+
+def secondary_of(rec: dict[str, Any]) -> str | None:
+    """보조 직무 유형: 주 유형이 그 밖(일반 개발·데이터·AI 아님)인데 데이터·AI 일이 큰 공고만(2026-11-02 A).
+    반대 방향(데이터·AI 공고의 보조 '일반 개발')은 저장하지 않는다."""
+    jt = rec.get("job_type") or {}
+    s = jt.get("s")
+    return s if s and family(jt.get("id") or "") == "other" and family(s) == "data" else None
+
+
 def secondary_prompt(lines: list[str]) -> str:
     guide = "\n".join(f"- {t['id']}: {t['name']} — {t['desc']}" for t in taxonomy()["types"])
     return (
@@ -166,7 +177,7 @@ def run(state: dict[str, dict[str, Any]], originals: dict[str, dict[str, Any]], 
     todo = [r for r in state.values()
             if not r.get("closed_on") and not r.get("overseas") and not is_current(r, bool(bodies.get(r["uid"])))]
     summary: dict[str, Any] = {"pending": len(todo), "classified": 0, "calls": 0}
-    if not todo:
+    if not todo and not _secondary_todo(state):
         return summary
     if client is None:
         if not ai.configured():
@@ -203,4 +214,43 @@ def run(state: dict[str, dict[str, Any]], originals: dict[str, dict[str, Any]], 
     summary["pending"] = len(todo) - summary["classified"]
     if errors:
         summary["errors"] = errors
+    sec = run_secondary(state, originals, bodies, client, today)
+    if sec["calls"] or sec["pending"]:
+        summary["secondary"] = sec
     return summary
+
+
+def _secondary_todo(state: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    return [r for r in state.values()
+            if not r.get("closed_on") and not r.get("overseas") and r.get("job_type")
+            and family(r["job_type"]["id"]) == "other"
+            and (r["job_type"].get("s_v") != SECONDARY_VERSION or r["job_type"].get("s_for") != r["job_type"]["id"])]
+
+
+def run_secondary(state: dict[str, dict[str, Any]], originals: dict[str, dict[str, Any]], bodies: dict[str, str],
+                  client: Any, today: str) -> dict[str, Any]:
+    """보조 직무 유형: 주 유형이 그 밖(software, non_data)인 열린 공고 중 아직 안 본 것만, 하루 한도(secondary_max_calls)까지.
+    주 유형이 바뀌면(다시 분류) 보조도 다시 본다."""
+    cfg = config.load("ai")["job_types"]
+    todo = _secondary_todo(state)
+    out: dict[str, Any] = {"pending": len(todo), "found": 0, "calls": 0}
+    todo.sort(key=lambda r: r.get("first_seen", ""), reverse=True)
+    batch = cfg.get("batch", 80)
+    for start in range(0, len(todo), batch):
+        if out["calls"] >= cfg.get("secondary_max_calls", 20):
+            break
+        part = todo[start:start + batch]
+        items = [(r["uid"], r["job_type"]["id"], r.get("title", ""), (originals.get(r["uid"]) or {}).get("categories") or [],
+                  bodies.get(r["uid"], "")) for r in part]
+        out["calls"] += 1
+        try:
+            got = classify_secondary(items, client)
+        except Exception as e:  # 남은 건 내일
+            out["error"] = str(e)[:200]
+            break
+        for r in part:
+            jt = r["job_type"]
+            jt.update({"s": got.get(r["uid"], ""), "s_v": SECONDARY_VERSION, "s_for": jt["id"], "s_on": today})
+            out["found"] += bool(got.get(r["uid"]))
+        out["pending"] -= len(part)
+    return out

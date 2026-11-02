@@ -98,3 +98,25 @@ def test_classify_secondary_keeps_only_other_family():
     items = [("a", "non_data", "CRM 마케팅 데이터 분석", [], ""), ("b", "data_eng", "데이터 엔지니어", [], ""),
              ("c", "analyst", "데이터 분석가", [], ""), ("d", "analyst", "CRM 분석·캠페인 운영", [], "")]
     assert jobtypes.classify_secondary(items, AI()) == {"a": "analyst", "d": "non_data"}
+
+
+def test_secondary_only_for_other_family_and_used_by_filters():
+    from jobpost import filters, jobtypes
+    from jobpost.models import CompanyType
+
+    state = {"a": {"uid": "a", "title": "CRM 마케터", "first_seen": "2026-11-02", "job_type": {"id": "non_data"}},
+             "b": {"uid": "b", "title": "데이터 엔지니어", "first_seen": "2026-11-02", "job_type": {"id": "data_eng"}}}
+
+    class AI:
+        def json(self, prompt, schema):
+            assert "\tCRM 마케터" in prompt and "\t데이터 엔지니어" not in prompt  # 그 밖 계열만 묻는다
+            return [{"i": 0, "s": "analyst"}]
+
+    out = jobtypes.run_secondary(state, {}, {}, AI(), "2026-11-02")
+    assert out["found"] == 1 and jobtypes.secondary_of(state["a"]) == "analyst"
+    assert jobtypes.secondary_of(state["b"]) is None
+    assert not jobtypes._secondary_todo(state)  # 한 번 본 공고는 다시 묻지 않는다
+    kw = dict(title="CRM 마케터", company="x", company_type=CompanyType.LARGE, career_min=None, career_max=None,
+              regions=[], filters={"job_types": ["analyst"]}, job_type="non_data")
+    assert filters.reasons(**kw) == [("job", "non_data")]
+    assert filters.reasons(**kw, job_type2="analyst") == []

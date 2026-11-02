@@ -44,3 +44,9 @@ it('filters by employment type like filters.py', () => {
   expect(passes({ ...base, employment: ['인턴직'] }, large, g)).toBe(false)
   expect(passes({ ...base, employment: [] }, large, g)).toBe(true) // 고용 형태가 없는 공고는 통과
 })
+
+it('passes when only the secondary job type matches', () => {
+  const g: Filters = { job_types: ['analyst'] }
+  expect(passes({ ...base, jobType: 'non_data', jobType2: 'analyst' }, large, g)).toBe(true)
+  expect(passes({ ...base, jobType: 'non_data', jobType2: null }, large, g)).toBe(false)
+})

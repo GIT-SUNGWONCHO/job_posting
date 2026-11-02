@@ -31,6 +31,8 @@ export interface Posting {
   backfill?: boolean
   /** 직무 유형 id. 오늘 들어와 아직 분류 전이면 null */
   jobType: string | null
+  /** 보조 직무 유형: 주 유형이 일반 개발·데이터·AI 아님인데 데이터·AI 일이 큰 공고(필터는 둘 중 하나만 맞아도 통과) */
+  jobType2?: string | null
   /** 본문 파일(bodies/xx.json.gz)에 본문이 있나 */
   hasBody: boolean
   sources: SourceLink[]

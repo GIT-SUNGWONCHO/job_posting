@@ -10,6 +10,7 @@ job_types:
   batch: 80            # 한 번에 보내는 공고 수
   max_calls: 120       # 하루 최대 호출 수(약 9,600건)
   max_minutes: 15
+  secondary_max_calls: 10  # 보조 직무 유형(그 밖 공고의 데이터·AI 일) 하루 최대 호출 수. 처음 쌓인 공고는 며칠에 나눠서
 
 facts:                 # 공고 정리(facts.py): 공고당 1번, 모두 함께 씀
   max_calls: 250       # 하루(실행 한 번) 최대 호출 수. 남은 공고는 다음 날

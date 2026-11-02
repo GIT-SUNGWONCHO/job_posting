@@ -80,7 +80,9 @@ function Detail({ screen, p, today, match, feedback, onFeedback, app, onApp, sho
   const shown = body?.id === p.id ? body : null
   const c = screen.companies[p.company]
   const company = c?.name ?? p.company
-  const jobName = screen.jobTypes?.find((j) => j.id === p.jobType)?.name
+  const jobName0 = screen.jobTypes?.find((j) => j.id === p.jobType)?.name
+  const jobName2 = p.jobType2 ? screen.jobTypes?.find((j) => j.id === p.jobType2)?.name : undefined
+  const jobName = jobName0 && jobName2 ? copy.job.withSecondary(jobName0, jobName2) : jobName0
   const links = p.sources.filter((s) => s.url)
   const rows: [string, ReactNode][] = [
     [copy.job.deadline, <Fragment key="dl"><Deadline p={p} today={today} />{p.deadline && <span className="muted"> · {dateText(p.deadline, true)}</span>}</Fragment>],
