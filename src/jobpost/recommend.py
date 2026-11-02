@@ -3,6 +3,10 @@
 지금은 로직을 정하는 단계라 점수를 AI가 매기고 판단 근거를 남긴다(docs/decisions.md 2026-10-14 매칭).
 AI는 공고마다 비교할 항목을 고르고 항목마다 공고 요구 · 내 근거 · 판정 · 가중치를 적는다. 점수는 코드가 가중치×판정으로
 다시 계산한다. 지침은 config/match_guide.yaml이고, 회차마다 내 피드백을 보고 고친다.
+v2부터 AI는 공고 사실(직급·영어·고용 형태·업종·회사 규모)도 따로 적고, 코드가 원하는 조건(프로필 wants)과 개인 필터의
+고용 형태에 맞춰 상한·가감점을 준다(adjust). 판정 이름은 최종 점수 구간으로 정한다(bands).
+원하는 조건은 AI에 보내지 않아서, 그것만 바꾸면 AI를 다시 부르지 않고 지난 결과에 조정만 다시 한다.
+평가 코멘트에서 뽑은 매칭 메모(match_memos 표)는 지원자 요약 끝에 붙인다. 메모가 바뀌면 다시 매긴다.
 규칙 점수(matching.py)도 함께 남겨서 규칙으로 얼마나 비슷하게 낼 수 있는지 비교한다.
 결과는 Supabase matches 표에 사람마다 통째로 다시 쓴다. 같은 공고 · 프로필 버전 · 지침 버전 · 모델이면 지난 결과를 다시 쓴다.
 """
@@ -20,7 +24,7 @@ from .models import CompanyType
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 3  # 2: 항목별 판단 근거, 3: 이유는 40자 안쪽(공고 상세 두 줄). 지침은 match_guide.yaml의 version으로 따로 센다
+PROMPT_VERSION = 4  # 2: 항목별 판단 근거, 3: 이유 40자 안쪽, 4: 공고 사실을 따로, 판정은 코드가. 지침은 match_guide.yaml version
 
 
 def candidates(screen: dict[str, Any], user_filters: dict[str, Any]) -> list[dict[str, Any]]:
@@ -32,7 +36,7 @@ def candidates(screen: dict[str, Any], user_filters: dict[str, Any]) -> list[dic
         ok, _ = filters.passes(
             title=p["title"], company=c.get("name", ""), company_type=CompanyType(p.get("clientType") or c.get("type", "그 외")),
             career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
-            filters=user_filters, job_type=p.get("jobType"),
+            filters=user_filters, job_type=p.get("jobType"), employment=p.get("employment"),
         )
         if ok:
             out.append(p)
@@ -49,9 +53,18 @@ def schema() -> dict[str, Any]:
         "fit": {"type": "STRING", "enum": list(g["fit"])},
         "weight": {"type": "INTEGER"},
     }}
-    return {"type": "OBJECT", "required": ["items", "verdict", "reason", "gaps"], "properties": {
+    pf = g["posting_facts"]
+    industries = [i["id"] for i in config.load("profile")["industries"]]
+    facts = {"type": "OBJECT", "required": ["level", "english", "employment", "industry", "size"], "properties": {
+        "level": {"type": "STRING", "enum": pf["level"]},
+        "english": {"type": "STRING", "enum": pf["english"]},
+        "employment": {"type": "STRING", "enum": pf["employment"]},
+        "industry": {"type": "STRING", "enum": industries},
+        "size": {"type": "STRING", "enum": pf["size"]},
+    }}
+    return {"type": "OBJECT", "required": ["items", "posting", "reason", "gaps"], "properties": {
         "items": {"type": "ARRAY", "items": item},
-        "verdict": {"type": "STRING", "enum": g["verdicts"]},
+        "posting": facts,
         "reason": {"type": "STRING"},
         "gaps": {"type": "ARRAY", "items": {"type": "STRING"}},
     }}
@@ -65,11 +78,68 @@ def prompt(profile_text: str, posting_text: str) -> str:
         f"- 항목 종류(kind): {', '.join(g['item_kinds'])}\n"
         f"- 판정(fit): {', '.join(g['fit'])}\n"
         "- 항목마다 name은 짧은 이름, posting은 공고가 요구하는 것, me는 지원자 쪽 근거(각 40자 안쪽)\n"
-        f"- verdict: {', '.join(g['verdicts'])} 중 하나\n"
+        "- posting: 공고 사실(level, english, employment, industry, size). 지원자와 상관없이 공고만 보고 적는다\n"
+        "- 업종(industry) id: " + ", ".join(f"{i['id']} {i['name']}" for i in config.load("profile")["industries"]) + "\n"
         "- reason: 이 지원자에게 맞는 이유 한 문장(40자 안쪽, 맞는 점 먼저, 크게 부족한 점이 있으면 뒤에 짧게)\n"
         "- gaps: 크게 부족한 점 최대 3개, 짧게\n\n"
         f"[지원자]\n{profile_text}\n\n[공고]\n{posting_text}"
     )
+
+
+def verdict(score: int) -> str:
+    """최종 점수 구간의 판정 이름(config/match_guide.yaml bands)."""
+    g = config.load("match_guide")
+    for name, low in sorted(g["bands"].items(), key=lambda x: -x[1]):
+        if score >= low:
+            return name
+    return g["below"]
+
+
+def adjust(base: int, facts: dict[str, Any] | None, wants: dict[str, Any] | None, english: str | None,
+           employment_types: list[str] | None) -> tuple[int, list[str]]:
+    """공고 사실을 원하는 조건·개인 필터와 비교해 가감점을 준 뒤 상한을 건다. (최종 점수, 조정 설명)."""
+    facts, wants = facts or {}, wants or {}
+    g = config.load("match_guide")["gates"]
+    notes: list[str] = []
+    score = base
+    industry = facts.get("industry")
+    names = {i["id"]: i["name"] for i in config.load("profile")["industries"]}
+    if industry and industry in (wants.get("industriesLike") or []):
+        score += g["like_industry"]
+        notes.append(f"선호 업종({names.get(industry, industry)}) +{g['like_industry']}")
+    if industry and industry in (wants.get("industriesAvoid") or []):
+        score += g["avoid_industry"]
+        notes.append(f"비선호 업종({names.get(industry, industry)}) {g['avoid_industry']}")
+    sizes = {"작은 회사": 0, "중견": 1, "큰 회사": 2}
+    want_size = {"중견 이상": 1, "큰 회사": 2}.get(wants.get("size") or "")
+    size = sizes.get(facts.get("size") or "")
+    if want_size is not None and size is not None and size < want_size:
+        score += g["smaller_company"]
+        notes.append(f"원하는 규모보다 작은 회사 {g['smaller_company']}")
+    score = max(0, min(100, score))
+    caps: list[tuple[int, str]] = []
+    if wants.get("level") == "실무자" and facts.get("level") == "리더·관리자":
+        caps.append((g["level_cap"], "리더·관리자 공고"))
+    if english and english in config.load("profile").get("english_low", []) and facts.get("english") == "필요":
+        caps.append((g["english_cap"], "영어로 일하는 공고"))
+    emp = facts.get("employment")
+    if employment_types and emp in ("계약직", "인턴", "기타") and not any(a in emp for a in employment_types):
+        caps.append((g["employment_cap"], f"{emp} 공고"))
+    for cap, why in sorted(caps):
+        if score > cap:
+            notes.append(f"{why}라 최대 {cap}점")
+            score = cap
+    return score, notes
+
+
+def finish(row: dict[str, Any], data: dict[str, Any], user_filters: dict[str, Any]) -> dict[str, Any]:
+    """AI 결과(새로 매겼거나 다시 쓰는 것)에 조정·판정을 지금 원하는 조건으로 다시 매긴다."""
+    parts = row.get("parts") or {}
+    if parts.get("kind") != "ai" or "base" not in parts:
+        return row  # v1 결과(공고 사실 없음)는 그대로
+    score, notes = adjust(parts["base"], parts.get("posting"), data.get("wants"), data.get("english"),
+                          user_filters.get("employment_types"))
+    return {**row, "score": score, "parts": {**parts, "adjust": notes, "verdict": verdict(score)}}
 
 
 def score_items(items: list[dict[str, Any]]) -> int:
@@ -116,6 +186,7 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
 
     settings = {r["user_id"]: r.get("filters") or {} for r in db.select("settings", "select=user_id,filters")}
     profiles = db.select("profiles", "select=user_id,data,version")
+    memos = load_memos(db)
     summary: dict[str, Any] = {"settings": len(settings), "profiles": len(profiles), "users": 0, "rows": 0,
                                "ai_new": 0, "ai_reused": 0, "rule_only": 0, "calls": 0, "errors": []}
     # 같은 프로필 내용(계정이 둘이어도)이면 AI 결과를 함께 쓴다: (공고, 프로필 요약 해시) → 결과
@@ -134,6 +205,8 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         user_filters = {**defaults, **settings.get(user, {})}
         rule_profile = profile.rule_view(data)
         ptext = profile.text(data, today) if profile.is_v2(data) else None
+        if ptext and memos.get(user):
+            ptext += "\n[매칭 메모(평가하며 남긴 말에서 뽑음)]\n" + "\n".join(f"- {line}" for line in memos[user])
         phash = hashlib.sha1(ptext.encode()).hexdigest()[:12] if ptext else None
 
         scored = []
@@ -153,13 +226,15 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
             o = old.get(p["id"])
             meta = (o or {}).get("reason_meta") or {}
             same = (o and (o.get("parts") or {}).get("kind") == "ai" and o.get("profile_v") == pv
-                    and o.get("score_v") == guide_v and meta.get("prompt") == PROMPT_VERSION and meta.get("model") == model)
+                    and o.get("score_v") == guide_v and meta.get("prompt") == PROMPT_VERSION and meta.get("model") == model
+                    and (not phash or meta.get("profile_hash") in (None, phash)))
             row = None
             twin = shared.get((p["id"], phash)) if phash else None
             if same or twin:
                 src = o if same else twin
                 row = {k: src[k] for k in ("score", "parts", "matched", "missing", "reason", "reason_meta")}
                 row["parts"] = {**row["parts"], "rule": rule["score"]}
+                row = finish(row, data, user_filters)
                 if phash:  # 예전 결과에는 해시가 없을 수 있어 여기서 붙여 둔다
                     row["reason_meta"] = {**(row["reason_meta"] or {}), "profile_hash": phash}
                     shared[(p["id"], phash)] = row
@@ -174,14 +249,17 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                     reason = (got.get("reason") or "").strip()
                     if len(reason) > cfg.get("reason_chars", 120):
                         reason = reason[:cfg.get("reason_chars", 120) - 1] + "…"
-                    row = {"score": score_items(items),
-                           "parts": {"kind": "ai", "items": items, "verdict": got.get("verdict"), "rule": rule["score"]},
+                    base = score_items(items)
+                    row = {"score": base,
+                           "parts": {"kind": "ai", "items": items, "base": base, "posting": got.get("posting") or {},
+                                     "rule": rule["score"]},
                            "matched": [i["name"] for i in items if i.get("fit") == "충족"],
                            "missing": [g for g in got.get("gaps") or [] if g][:3],
                            "reason": reason or None,
                            "reason_meta": {"model": model, "prompt": PROMPT_VERSION, "on": today.isoformat(),
                                            "profile_hash": phash}}
                     shared[(p["id"], phash)] = row
+                    row = finish(row, data, user_filters)
                     summary["ai_new"] += 1
                     if summary["ai_new"] % 25 == 0:
                         log.info("AI 매칭 %d건", summary["ai_new"])
@@ -213,6 +291,18 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
     if not summary["errors"]:
         summary.pop("errors")
     return summary
+
+
+def load_memos(db: Any) -> dict[str, list[str]]:
+    """사람마다 매칭 메모 줄(match_memos 표). 표가 아직 없으면(SQL을 안 돌렸으면) 빈 것."""
+    try:
+        rows = db.select("match_memos", "select=user_id,memo")
+    except Exception as e:  # 표가 없거나 권한이 없으면 메모 없이 매긴다
+        log.warning("매칭 메모를 읽지 못함: %s", str(e)[:120])
+        return {}
+    if not isinstance(rows, list):
+        return {}
+    return {r["user_id"]: [x for x in (r.get("memo") or {}).get("lines") or [] if x] for r in rows}
 
 
 def make_client(model: str | None = None) -> Any | None:

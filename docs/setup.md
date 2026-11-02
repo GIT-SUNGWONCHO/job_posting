@@ -138,6 +138,10 @@ cd web && npm install && npm run dev
 
 `web/.env`에 Supabase 값이 없으면 로그인 없이 `.dev-data/screen.json.gz`를 읽는다(개발 서버에서만). 검사는 `npm test`, `npm run lint`, `npm run build`.
 
+## 매칭 메모 표(2026-11-02)
+
+Supabase SQL Editor에서 `supabase/migrations/012_match_memos.sql`을 한 번 실행한다. 평가 코멘트에서 뽑은 매칭 메모를 넣는 표다. 실행 전에는 매칭이 메모 없이 돈다.
+
 ## 회차 리포트 받기(암호화)
 
 레포가 공개라 GitHub Actions 로그도 누구나 본다. 그래서 feedback 워크플로는 로그에 건수와 지표만 남기고, 공고별 평가·코멘트·AI 판단 근거(프로필에서 나온 "나:" 문장)·샘플을 바꿀 후보는 받는 쪽 공개 키로 암호화해서만 남긴다. 개인 키는 받는 쪽에만 있고 레포·Secrets·로그 어디에도 두지 않는다.
@@ -153,4 +157,4 @@ cd web && npm install && npm run dev
    openssl cms -decrypt -inform PEM -inkey key.pem -in report.pem
    ```
 
-리포트 줄: `SMP`는 기준 샘플 공고별 점수·판단 근거·내 평가, `CLOSED`는 마감된 샘플, `CAND`는 같은 묶음에서 바꿀 후보다.
+리포트 줄: `SMP`는 기준 샘플 공고별 점수·판단 근거·내 평가, `MEMO`는 매칭 메모, `CLOSED`는 마감된 샘플, `CAND`는 같은 묶음에서 바꿀 후보다. 실행할 때 `memo`를 켜면 리포트 전에 평가 코멘트로 매칭 메모를 새로 뽑는다.

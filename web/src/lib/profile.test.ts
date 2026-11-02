@@ -50,3 +50,9 @@ describe('periodText', () => {
     expect(durationText(36)).toBe('3년')
   })
 })
+
+it('fills missing wants with defaults when loading an older v2 profile', () => {
+  const p = upgrade({ schema: 2, careers: [], wants: { level: '실무자' } })
+  expect(p.wants).toEqual({ level: '실무자', size: '', industriesLike: [], industriesAvoid: [] })
+  expect(upgrade({ schema: 2 }).wants).toEqual({ level: '', size: '', industriesLike: [], industriesAvoid: [] })
+})

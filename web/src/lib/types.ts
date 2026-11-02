@@ -65,6 +65,8 @@ export interface Filters {
   company_types?: CompanyType[]
   career?: { min?: number | null; max?: number | null }
   regions?: string[]
+  /** 보여줄 고용 형태(정규직 등). 고용 형태가 없는 공고는 통과 */
+  employment_types?: string[]
 }
 
 /** 프로필에서 고르는 목록(config/profile.yaml) */
@@ -78,6 +80,9 @@ export interface ProfileOptions {
   degrees: string[]
   major_groups: string[]
   english: string[]
+  /** 원하는 조건: 포지션, 회사 규모(점수에만 반영) */
+  want_levels?: string[]
+  company_sizes?: string[]
 }
 
 /** 공고에서 나온 스킬과 나온 공고 수. 프로필 스킬은 이 안에서 고른다 */

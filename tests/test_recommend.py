@@ -25,6 +25,7 @@ PROFILE = {
     "targetRoles": ["data_eng"],
     "skills": [{"name": "Databricks", "level": 3}, {"name": "Airflow", "level": 2}, {"name": "SQL", "level": 4}],
 }
+FACTS = {"level": "실무자", "english": "필요 없음", "employment": "정규직", "industry": "game", "size": "큰 회사"}
 ITEMS = [
     {"kind": "핵심 업무", "name": "파이프라인 구축", "posting": "Spark 파이프라인", "me": "마트 설계", "fit": "일부", "weight": 50},
     {"kind": "필수 스킬", "name": "Airflow", "posting": "Airflow 필수", "me": "Airflow 2단계", "fit": "충족", "weight": 30},
@@ -36,7 +37,7 @@ class FakeDB:
     def __init__(self, old=None):
         self.rows = {"profiles": [{"user_id": "u1", "data": PROFILE, "version": 3}],
                      "settings": [{"user_id": "u1", "filters": {"company_types": ["대기업"], "job_types": ["data_eng", "analyst"]}}],
-                     "matches": old or []}
+                     "matches": old or [], "match_memos": []}
         self.deleted, self.inserted = [], []
 
     def select(self, table, query="select=*"):
@@ -59,7 +60,7 @@ class FakeAI:
         self.prompts.append(prompt)
         if self.fail_on and self.fail_on in prompt:
             raise RuntimeError("429")
-        return {"items": ITEMS, "verdict": "고려", "reason": "Databricks 마트 경험이 맞음", "gaps": ["Spark 경험"]}
+        return {"items": ITEMS, "posting": FACTS, "reason": "Databricks 마트 경험이 맞음", "gaps": ["Spark 경험"]}
 
 
 def test_score_items_recomputes_from_weights_and_fit():
@@ -78,7 +79,8 @@ def test_run_scores_candidates_with_ai_and_keeps_basis():
     assert ai_row["score"] == 75 and ai_row["parts"]["kind"] == "ai" and ai_row["parts"]["verdict"] == "고려"
     assert ai_row["parts"]["items"] == ITEMS and ai_row["parts"]["rule"] > 0
     assert ai_row["matched"] == ["Airflow", "연차"] and ai_row["missing"] == ["Spark 경험"]
-    assert ai_row["score_v"] == 1 and ai_row["profile_v"] == 3
+    assert ai_row["score_v"] == 2 and ai_row["profile_v"] == 3
+    assert ai_row["parts"]["base"] == 75 and ai_row["parts"]["posting"] == FACTS and ai_row["parts"]["adjust"] == []
     assert by["z:2"]["parts"]["kind"] == "rule"  # AI가 실패하면 규칙 점수만
     # 회사명까지 보낸다
     assert "가람건설" in ai.prompts[0] and "직무별 경력: 데이터 엔지니어" in ai.prompts[0]
@@ -133,3 +135,43 @@ def test_candidates_use_client_type_for_headhunting():
                             "regions": ["서울"], "jobType": "data_eng", "noise": None}]}
     got = recommend.candidates(screen, {"company_types": ["대기업"]})
     assert [p["id"] for p in got] == ["h"]
+
+
+def test_verdict_follows_score_bands():
+    assert [recommend.verdict(x) for x in (100, 80, 79, 60, 59, 0)] == ["지원 추천", "지원 추천", "고려", "고려", "비추천", "비추천"]
+
+
+def test_adjust_applies_preferences_then_caps():
+    wants = {"level": "실무자", "industriesAvoid": ["game"], "industriesLike": ["bank"], "size": "큰 회사"}
+    facts = {**FACTS, "level": "리더·관리자", "english": "필요", "size": "작은 회사"}
+    score, notes = recommend.adjust(95, facts, wants, "못함", ["정규직"])
+    assert score == 50  # 95 - 15(게임) - 15(작은 회사) = 65, 리더·영어 상한 50
+    assert notes == ["비선호 업종(게임) -15", "원하는 규모보다 작은 회사 -15", "리더·관리자 공고라 최대 50점"]
+    assert recommend.adjust(70, {**FACTS, "industry": "bank"}, wants, "능통", ["정규직"]) == (75, ["선호 업종(금융(은행·카드)) +5"])
+    assert recommend.adjust(90, {**FACTS, "employment": "인턴"}, {}, None, ["정규직"]) == (30, ["인턴 공고라 최대 30점"])
+    assert recommend.adjust(90, FACTS, {}, None, None) == (90, [])  # 원하는 조건이 없으면 그대로
+
+
+def test_changing_wants_reuses_ai_and_only_readjusts():
+    first = FakeDB()
+    recommend.run(SCREEN, BODIES, first, FakeAI(), TODAY)
+    old = [{k: r[k] for k in ("posting_id", "score", "parts", "matched", "missing", "reason", "reason_meta",
+                              "profile_v", "score_v")} for r in first.inserted]
+    db, ai = FakeDB(old), FakeAI()
+    db.rows["profiles"] = [{"user_id": "u1", "data": {**PROFILE, "wants": {"industriesAvoid": ["game"]}}, "version": 4}]
+    recommend.run(SCREEN, BODIES, db, ai, TODAY)
+    assert not ai.prompts  # 원하는 조건은 AI에 보내지 않아 다시 묻지 않는다
+    row = next(r for r in db.inserted if r["posting_id"] == "z:1")
+    assert row["score"] == 60 and row["parts"]["verdict"] == "고려" and row["parts"]["adjust"] == ["비선호 업종(게임) -15"]
+
+
+def test_memo_goes_into_prompt_and_changes_the_profile_hash():
+    db, ai = FakeDB(), FakeAI()
+    db.rows["match_memos"] = [{"user_id": "u1", "memo": {"lines": ["코드로 ETL을 직접 개발한 경험 없음"]}}]
+    recommend.run(SCREEN, BODIES, db, ai, TODAY)
+    assert "[매칭 메모" in ai.prompts[0] and "- 코드로 ETL을 직접 개발한 경험 없음" in ai.prompts[0]
+    old = [{k: r[k] for k in ("posting_id", "score", "parts", "matched", "missing", "reason", "reason_meta",
+                              "profile_v", "score_v")} for r in db.inserted]
+    again, ai2 = FakeDB(old), FakeAI()  # 메모가 없어지면 같은 프로필 버전이어도 다시 매긴다
+    recommend.run(SCREEN, BODIES, again, ai2, TODAY)
+    assert ai2.prompts

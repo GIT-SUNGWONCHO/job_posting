@@ -36,3 +36,11 @@ it('uses the client company type for headhunting postings', () => {
   expect(passes({ ...base, headhunter: true, clientType: '대기업' }, firm, f)).toBe(true)
   expect(passes({ ...base, headhunter: true }, firm, f)).toBe(false)
 })
+
+it('filters by employment type like filters.py', () => {
+  const g: Filters = { employment_types: ['정규직'] }
+  expect(passes({ ...base, employment: ['정규직'] }, large, g)).toBe(true)
+  expect(passes({ ...base, employment: ['계약직', '정규직'] }, large, g)).toBe(true)
+  expect(passes({ ...base, employment: ['인턴직'] }, large, g)).toBe(false)
+  expect(passes({ ...base, employment: [] }, large, g)).toBe(true) // 고용 형태가 없는 공고는 통과
+})

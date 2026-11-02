@@ -54,3 +54,10 @@ project_parts: [단독, 리드, 참여]
 degrees: [고졸, 전문학사, 학사, 석사, 박사]
 major_groups: [공학(컴퓨터·SW), 공학(기타), 자연(수학·통계·물리), 상경, 인문·사회, 예체능, 기타]
 english: [못함, 읽기·쓰기, 업무 회의, 능통]
+# 영어로 일해야 하는 공고에 점수 상한을 두는 수준(config/match_guide.yaml gates.english_cap)
+english_low: [못함, 읽기·쓰기]
+
+# 원하는 조건: 필터로 빼지 않고 점수에만 반영한다(config/match_guide.yaml gates, docs/decisions.md 2026-11-02).
+# 비우면 상관없음. 업종은 위 industries의 id
+want_levels: [실무자, 리더]
+company_sizes: [중견 이상, 큰 회사]

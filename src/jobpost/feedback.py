@@ -1,8 +1,10 @@
 """회차 리포트: 기준 샘플(config/match_sample.yaml)에서 지금 매칭 결과를 내 평가와 비교한다.
 
 내 평가는 공고에 대한 판단이라 회차와 상관없이 공고별 가장 최근 것을 정답으로 쓴다.
-지표(docs/decisions.md 2026-10-14): 상위 10건 중 ○ 7건 이상, 상위 20건 안 × 1건 이하, ○가 ×보다 위인 비율 85% 이상.
-규칙 점수도 같은 잣대로 잰다.
+지표는 점수 구간으로 잰다(docs/decisions.md 2026-11-02, 구간은 config/match_guide.yaml bands): 80점 이상에 × 0건이고
+○가 절반 이상, 60점 미만에 ○ 0건. 공고가 적은 날도 기준이 같도록 등수가 아니라 점수로 본다. 규칙 점수도 같은 잣대로 잰다.
+평가 코멘트에서 지원자에 대한 메모(경험·역량의 한계와 강점)를 AI로 뽑아 match_memos 표에 둔다(memo_lines).
+매칭이 지원자 요약 끝에 붙여 쓴다. 화면에는 보이지 않는다.
 
 레포가 공개라 실행 로그도 공개다. 로그에는 건수와 지표만 남기고(private=False), 공고별 평가·코멘트·판단 근거
 (프로필에서 나온 "나:" 문장)·바꿀 후보는 비공개 리포트로 따로 만들어 암호화한다(.github/workflows/feedback.yml).
@@ -15,29 +17,39 @@ import json
 from collections.abc import Callable
 from typing import Any
 
+from . import config
+
 LABELS = {"good": "○", "maybe": "△", "bad": "×"}
-GOALS = {"top10_good": 7, "top20_bad": 1, "pairs": 0.85}
+GOALS = {"high_bad": 0, "high_good": 0.5, "low_good": 0}  # 80점 이상 × 수, 80점 이상 ○ 비율, 60점 미만 ○ 수
+
+
+def _bands() -> tuple[int, int]:
+    b = config.load("match_guide")["bands"]
+    return max(b.values()), min(b.values())
 
 
 def metrics(rated: list[str], labels: dict[str, str], score: Callable[[str], float | None]) -> dict[str, Any]:
-    """평가한 공고만으로 순위를 매겨 세 지표를 낸다. 점수가 없는 공고는 뺀다."""
+    """평가한 공고를 점수 구간(높음·중간·낮음)으로 나눠 구간마다 ○△× 수를 센다. 점수가 없는 공고는 뺀다."""
+    hi, lo = _bands()
     have = [pid for pid in rated if score(pid) is not None]
-    ranked = sorted(have, key=lambda pid: -score(pid))  # type: ignore[operator]
-    good = [p for p in have if labels[p] == "good"]
-    bad = [p for p in have if labels[p] == "bad"]
-    pairs = [1.0 if score(g) > score(b) else 0.5 if score(g) == score(b) else 0.0  # type: ignore[operator]
-             for g in good for b in bad]
-    return {"n": len(have), "top10_good": sum(labels[p] == "good" for p in ranked[:10]),
-            "top20_bad": sum(labels[p] == "bad" for p in ranked[:20]),
-            "pairs": sum(pairs) / len(pairs) if pairs else None}
+    band = {pid: "high" if score(pid) >= hi else "mid" if score(pid) >= lo else "low" for pid in have}  # type: ignore[operator]
+    out: dict[str, Any] = {"n": len(have)}
+    for b in ("high", "mid", "low"):
+        out[b] = {k: sum(1 for p in have if band[p] == b and labels[p] == k) for k in LABELS}
+    return out
 
 
 def _metric_line(name: str, m: dict[str, Any]) -> str:
-    pairs = f"{m['pairs'] * 100:.0f}%" if m["pairs"] is not None else "-"
-    ok = (m["top10_good"] >= GOALS["top10_good"] and m["top20_bad"] <= GOALS["top20_bad"]
-          and m["pairs"] is not None and m["pairs"] >= GOALS["pairs"])
-    return (f"  {name}: 상위 10 중 ○ {m['top10_good']}건(목표 7 이상), 상위 20 안 × {m['top20_bad']}건(목표 1 이하), "
-            f"○가 ×보다 위 {pairs}(목표 85% 이상) → {'목표 달성' if ok else '미달'} [평가·점수 있는 {m['n']}건 기준]")
+    hi, lo = _bands()
+    h, low = m["high"], m["low"]
+    n_high = sum(h.values())
+    good_share = h["good"] / n_high if n_high else None
+    ok = (h["bad"] <= GOALS["high_bad"] and good_share is not None and good_share >= GOALS["high_good"]
+          and low["good"] <= GOALS["low_good"])
+    cell = lambda c: " ".join(f"{mark} {c[k]}" for k, mark in LABELS.items())  # noqa: E731
+    return (f"  {name}: {hi}점 이상 {n_high}건({cell(h)}), {lo}~{hi - 1}점 {sum(m['mid'].values())}건({cell(m['mid'])}), "
+            f"{lo}점 미만 {sum(low.values())}건({cell(low)}) → 목표({hi}점 이상 × 0·○ 절반 이상, {lo}점 미만 ○ 0) "
+            f"{'달성' if ok else '미달'} [평가·점수 있는 {m['n']}건 기준]")
 
 
 def report(sample: list[dict[str, Any]], matches: list[dict[str, Any]], rows: list[dict[str, Any]],
@@ -89,12 +101,16 @@ def report(sample: list[dict[str, Any]], matches: list[dict[str, Any]], rows: li
         if not private:
             out.append(f"  [아직 평가 안 함 {sum(1 for pid in ids if pid not in labels)}건]")
             continue
-        out.append("  [점수와 내 평가가 어긋난 공고: ○인데 60점 미만, ×인데 70점 이상]")
+        hi, lo = _bands()
+        out.append(f"  [점수와 내 평가가 어긋난 공고: ○인데 {lo}점 미만, ×인데 {hi}점 이상]")
         for pid in rated:
             s = ai_score(pid)
-            if s is None or not ((labels[pid] == "good" and s < 60) or (labels[pid] == "bad" and s >= 70)):
+            if s is None or not ((labels[pid] == "good" and s < lo) or (labels[pid] == "bad" and s >= hi)):
                 continue
             out.append("    " + _line(pid, info, labels, comments, ms))
+            parts = ms[pid].get("parts") or {}
+            if parts.get("posting") or parts.get("adjust"):
+                out.append(f"      · 공고 사실 {parts.get('posting')} | 조정 {parts.get('adjust') or '-'} | 조정 전 {parts.get('base')}")
             for i in (ms[pid].get("parts") or {}).get("items") or []:
                 out.append(f"      - {i.get('kind')} {i.get('weight')} {i.get('fit')} | {i.get('name')} | "
                            f"공고: {i.get('posting')} | 나: {i.get('me')}")
@@ -174,3 +190,49 @@ def candidates(sample: list[dict[str, Any]], open_postings: list[dict[str, Any]]
             out += [line(f"직무별:{jt}", r) for r in same]
         out += [line("무작위", r) for r in sorted(pool, key=lambda r: _order(r["posting_id"], seed))[:n]]
     return out
+
+
+MEMO_MAX = 12  # 메모 줄 수
+
+
+def memo_prompt(comments: list[dict[str, Any]], current: list[str]) -> str:
+    """comments: [{label, company, title, comment}] 최신 평가만. current: 지금 메모(있으면 고쳐 쓴다)."""
+    lines = [f"- {LABELS.get(c['label'], c['label'])} {c.get('company', '')} | {c.get('title', '')} | {c['comment']}"
+             for c in comments]
+    now = "\n".join(f"- {x}" for x in current) or "(없음)"
+    return (
+        "채용공고를 평가하며 지원자가 남긴 코멘트다(○ 지원할 만함, △ 애매, × 아님). 지원자 본인에 대해 알게 된 것을 "
+        f"짧은 문장 {MEMO_MAX}개 이내로 정리한다. 매칭 AI가 지원자 요약 끝에 붙여 읽는다.\n"
+        "- 경험·역량의 한계와 강점만 쓴다(예: 코드로 ETL을 직접 개발한 경험 없음, 데이터 거버넌스 실무 경력 적음).\n"
+        "- 고용 형태·직급·업종·회사 규모·영어처럼 프로필의 원하는 조건으로 따로 받는 것은 쓰지 않는다.\n"
+        "- 공고 하나에만 해당하는 사실(그 공고가 인턴임 등)은 쓰지 않는다. 코멘트에 없는 내용을 지어내지 않는다.\n"
+        "- 지금 메모와 겹치면 합치고, 새 코멘트와 어긋나면 새 코멘트를 따른다. 각 문장 40자 안쪽.\n\n"
+        f"[지금 메모]\n{now}\n\n[코멘트]\n" + "\n".join(lines)
+    )
+
+
+def memo_schema() -> dict[str, Any]:
+    return {"type": "OBJECT", "required": ["lines"], "properties": {
+        "lines": {"type": "ARRAY", "items": {"type": "STRING"}}}}
+
+
+def latest_comments(rows: list[dict[str, Any]], user: str, titles: dict[str, tuple[str, str]]) -> list[dict[str, Any]]:
+    """한 사람의 공고별 최신 평가 중 코멘트가 있는 것. rows는 updated_at 오름차순. titles: 공고 id → (회사, 제목)."""
+    last: dict[str, dict[str, Any]] = {}
+    for r in rows:
+        if r["user_id"] == user:
+            last[r["posting_id"]] = r
+    out = []
+    for pid, r in last.items():
+        if (r.get("comment") or "").strip():
+            company, title = titles.get(pid, ("", ""))
+            out.append({"label": r["label"], "company": company, "title": title, "comment": r["comment"].strip()})
+    return out
+
+
+def memo_lines(comments: list[dict[str, Any]], current: list[str], client: Any) -> list[str]:
+    """코멘트에서 메모 줄을 뽑는다. 코멘트가 없으면 지금 메모 그대로."""
+    if not comments:
+        return current
+    got = client.json(memo_prompt(comments, current), memo_schema())
+    return [" ".join(str(x).split())[:60] for x in got.get("lines") or [] if str(x).strip()][:MEMO_MAX]

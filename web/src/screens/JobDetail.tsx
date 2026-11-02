@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState, type ReactNode } from 'react'
 import { copy } from '../copy'
 import { BACK_ICON, Deadline, DOWN_ICON, RIGHT_ICON, SectionTitle, Sep } from '../components/ui'
 import type { Application } from '../lib/applications'
+import { bodyLines } from '../lib/body'
 import type { Feedback } from '../lib/feedback'
 import { ApplySection, InterestButton } from './ApplySection'
 import { Basis, MyRating, Verdict } from './MatchSection'
@@ -12,7 +13,6 @@ import { useMatchDetail, type Match } from '../lib/matches'
 import type { Body, Posting, Screen } from '../lib/types'
 
 // 본문의 소제목(담당업무, 자격요건 등). 수집처마다 [대괄호]나 이모지가 붙기도 한다
-const HEADING = /^(\p{Extended_Pictographic}\s*)?\[?(소개|포지션 소개|회사 소개|담당\s*업무|주요\s*업무|자격\s*요건|필수\s*요건|우대\s*사항|혜택\s*및\s*복지|복지\s*및\s*혜택|채용\s*절차|전형\s*절차|근무\s*조건|근무\s*환경|기타\s*사항|유의\s*사항|보상|접수\s*방법|마감\s*기한|사내\s*문화)\]?$/u
 
 
 export function JobDetail({ screen, posting, today, match, feedback, onFeedback, app, onApp, showRating = true, panel = false }: {
@@ -117,8 +117,8 @@ function Detail({ screen, p, today, match, feedback, onFeedback, app, onApp, sho
         {shown?.body && (
           <>
             <div className={bodyOpen ? 'body-text' : 'body-text folded'}>
-              {shown.body.text.split('\n').map((line, i) =>
-                HEADING.test(line.trim()) ? <h3 key={i}>{line.trim().replace(/^\[|\]$/g, '')}</h3> : <p key={i}>{line}</p>,
+              {bodyLines(shown.body.text).map((b, i) =>
+                b.kind === 'h' ? <h3 key={i}>{b.text}</h3> : <p key={i} className={b.kind === 'li' ? 'li' : undefined}>{b.text}</p>,
               )}
             </div>
             {!bodyOpen && <button type="button" className="btn block more" onClick={() => setBodyOpen(true)}>{copy.job.bodyMore}</button>}

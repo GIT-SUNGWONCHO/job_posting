@@ -36,6 +36,14 @@ export interface Skill {
   level: number // 1~4, 0은 아직 안 고름
 }
 
+/** 원하는 조건: 필터로 빼지 않고 점수에만 반영한다(config/match_guide.yaml gates). 빈 값은 상관없음 */
+export interface Wants {
+  level: string // 실무자 · 리더
+  size: string // 중견 이상 · 큰 회사
+  industriesLike: string[] // config/profile.yaml industries의 id
+  industriesAvoid: string[]
+}
+
 export interface Profile {
   schema: 2
   careers: Career[]
@@ -44,7 +52,10 @@ export interface Profile {
   education: { degree: string; major: string; majorGroup: string }
   certs: { name: string; year: string }[]
   english: string
+  wants: Wants
 }
+
+export const emptyWants: Wants = { level: '', size: '', industriesLike: [], industriesAvoid: [] }
 
 export const emptyProfile: Profile = {
   schema: 2,
@@ -54,6 +65,7 @@ export const emptyProfile: Profile = {
   education: { degree: '', major: '', majorGroup: '' },
   certs: [],
   english: '',
+  wants: emptyWants,
 }
 
 export const emptyCareer = (): Career => ({ company: '', industry: '', start: '', end: '', title: '', roles: [] })
@@ -64,7 +76,10 @@ const NON_DATA_ROLES = new Set(['pi', 'sales_md'])
 
 /** 예전(v1) 프로필을 v2 모양으로 옮긴다. 옮길 곳이 애매한 프로젝트는 가장 최근 경력 아래에 모은다 */
 export function upgrade(data: Record<string, unknown>): Profile {
-  if (data.schema === 2) return { ...emptyProfile, ...(data as Partial<Profile>) } as Profile
+  if (data.schema === 2) {
+    const p = { ...emptyProfile, ...(data as Partial<Profile>) } as Profile
+    return { ...p, wants: { ...emptyWants, ...(p.wants ?? {}) } }
+  }
   const jobs = (data.jobs as { company: string; start: string; end: string; role: string }[] | undefined) ?? []
   const careers: Career[] = jobs.map((j) => ({ ...emptyCareer(), company: j.company, start: j.start, end: j.end,
     roles: j.role ? [{ ...emptyRole(), role: 'other', roleName: j.role, start: j.start, end: j.end }] : [] }))

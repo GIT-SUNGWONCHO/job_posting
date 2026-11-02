@@ -35,6 +35,10 @@ export function passes(p: Posting, c: Company | undefined, f: Filters): boolean 
     const remoteOk = regions.includes('원격') && ['재택', '원격', '리모트'].some((w) => title.includes(w))
     if (!remoteOk && !p.regions.some((r) => regions.some((a) => r.includes(a)))) return false
   }
+
+  // 고용 형태: "인턴직"처럼 붙어 오는 표기가 있어 포함으로 본다. 고용 형태가 없는 공고(리멤버)는 통과
+  const emp = f.employment_types
+  if (emp && emp.length && p.employment.length && !p.employment.some((e) => emp.some((a) => e.includes(a)))) return false
   return true
 }
 

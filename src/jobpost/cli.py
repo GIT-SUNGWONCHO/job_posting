@@ -6,7 +6,7 @@ import argparse
 import json
 import logging
 import sys
-from datetime import date
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 from . import (
@@ -23,6 +23,7 @@ from . import (
     recommend,
     screen,
 )
+from .store import Store
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -56,6 +57,9 @@ def main(argv: list[str] | None = None) -> int:
     r = sub.add_parser("feedback", help="회차 리포트: 로그에는 건수·지표만, --out에는 공고별 평가·판단 근거·바꿀 후보(비공개)")
     r.add_argument("--data-dir", type=Path, default=Path("data"))
     r.add_argument("--out", type=Path, help="비공개 리포트를 쓸 파일(워크플로가 암호화한다. 로그에 찍지 않는다)")
+
+    mm = sub.add_parser("memo", help="매칭 메모: 평가 코멘트에서 지원자에 대한 메모를 AI로 뽑아 match_memos 표에 쓴다")
+    mm.add_argument("--data-dir", type=Path, default=Path("data"))
 
     n = sub.add_parser("notify", help="아침 알림: 연결한 사람마다 새 공고 요약을 보낸다(채널은 config/notify.yaml)")
     n.add_argument("--data-dir", type=Path, default=Path("data"))
@@ -208,10 +212,37 @@ def main(argv: list[str] | None = None) -> int:
                 every += page
                 if len(page) < 1000:
                     break
+            memos = recommend.load_memos(store)
+            memo_out = [f"MEMO\t{user[:8]}\t{line}" for user, ls in memos.items() for line in ls]
             lines = (feedback.report(sample, matches, rows) + feedback.sample_dump(sample, matches, rows)
-                     + feedback.candidates(sample, built["postings"], names, every))
+                     + memo_out + feedback.candidates(sample, built["postings"], names, every))
             args.out.write_text("\n".join(lines) + "\n", encoding="utf-8")
             logging.info("비공개 리포트 %d줄을 파일에 씀", len(lines))
+    if args.cmd == "memo":
+        if not db.configured() or not ai.configured():
+            logging.info("Supabase나 GEMINI_API_KEY가 없어 매칭 메모를 건너뜀")
+            return 0
+        store = db.DB()
+        store.check_server_key()
+        rows = store.select("feedback", "select=user_id,posting_id,label,comment,updated_at&order=updated_at")
+        state = Store(args.data_dir).state
+        titles = {uid: (r.get("company", ""), r.get("title", "")) for uid, r in state.items()}
+        current = {r["user_id"]: r for r in store.select("match_memos", "select=user_id,memo,version")}
+        client = ai.Gemini()
+        changed = 0
+        for user in sorted({r["user_id"] for r in rows}):
+            old = current.get(user) or {}
+            before = (old.get("memo") or {}).get("lines") or []
+            comments = feedback.latest_comments(rows, user, titles)
+            lines = feedback.memo_lines(comments, before, client)
+            if lines != before:
+                store.insert("match_memos", [{"user_id": user, "version": (old.get("version") or 0) + 1,
+                                              "updated_at": datetime.now(UTC).isoformat(),
+                                              "memo": {"lines": lines, "comments": len(comments), "model": client.model,
+                                                       "on": date.today().isoformat()}}])
+                changed += 1
+        # 메모 내용은 로그에 남기지 않는다(공개 로그). 회차 리포트의 암호화한 부분에서 본다
+        logging.info("매칭 메모: 사람 %d명 중 %d명 바뀜", len({r["user_id"] for r in rows}), changed)
     return 0
 
 

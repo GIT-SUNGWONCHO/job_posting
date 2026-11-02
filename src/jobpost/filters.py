@@ -18,9 +18,10 @@ def reasons(
     regions: list[str],
     filters: dict[str, Any],
     job_type: str | None = None,
+    employment: list[str] | None = None,
 ) -> list[tuple[str, str]]:
     """걸린 이유(통과면 빈 목록). (종류, 값): keyword 제외 키워드, company 제외 회사, job 직무 유형 id,
-    company_type 기업 구분, career 경력, region 지역. 제외 키워드·회사에 걸리면 그것만, 아니면 걸린 조건 전부.
+    company_type 기업 구분, career 경력, region 지역, employment 고용 형태. 제외 키워드·회사에 걸리면 그것만, 아니면 걸린 조건 전부.
     제외에 안 걸리고 항상 보여줄 회사면 통과."""
     out = [("keyword", kw) for kw in filters.get("exclude_keywords") or [] if kw.replace(" ", "") in title.replace(" ", "")]
     out += [("company", c) for c in filters.get("exclude_companies") or [] if c and c in company]
@@ -50,6 +51,11 @@ def reasons(
         remote_ok = "원격" in allowed_regions and any(w in title for w in ("재택", "원격", "리모트"))
         if not remote_ok and not any(any(a in r for a in allowed_regions) for r in regions):
             out.append(("region", ", ".join(regions)))
+
+    # 고용 형태: "인턴직"·"정규직(수습)"처럼 붙어 오는 표기가 있어 포함으로 본다. 정보가 없으면 통과
+    allowed_emp = filters.get("employment_types")
+    if allowed_emp and employment and not any(a in e for e in employment for a in allowed_emp):
+        out.append(("employment", ", ".join(employment)))
     return out
 
 

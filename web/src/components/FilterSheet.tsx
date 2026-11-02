@@ -3,8 +3,10 @@ import { copy } from '../copy'
 import type { CompanyType, Filters, JobType } from '../lib/types'
 
 const TYPES: CompanyType[] = ['대기업', '공기업·공공기관', '외국계', '그 외']
+// 수집처 표기("인턴직" 등)를 포함으로 맞춘다(filter.ts)
+const EMPLOYMENT = ['정규직', '계약직', '인턴', '파견직', '프리랜서']
 
-export type FilterSection = 'jobs' | 'types' | 'career' | 'regions'
+export type FilterSection = 'jobs' | 'types' | 'career' | 'regions' | 'employment'
 
 function toggle<T>(list: T[], v: T): T[] {
   return list.includes(v) ? list.filter((x) => x !== v) : [...list, v]
@@ -28,6 +30,7 @@ export function FilterSheet({ value, defaults, jobTypes, regions, focus, onSave,
   const jobs = draft.job_types ?? []
   const types = draft.company_types ?? []
   const picked = draft.regions ?? []
+  const employment = draft.employment_types ?? []
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
@@ -79,6 +82,17 @@ export function FilterSheet({ value, defaults, jobTypes, regions, focus, onSave,
               <button key={r} type="button" className={picked.includes(r) ? 'chip selected' : 'chip'} aria-pressed={picked.includes(r)}
                 onClick={() => setDraft({ ...draft, regions: toggle(picked, r) })}>
                 {r}
+              </button>
+            ))}
+          </div>
+        </section>
+        <section id="filter-employment" className="sheet-section">
+          <h2>{copy.filter.employment}</h2>
+          <div className="chips wrap">
+            {EMPLOYMENT.map((e) => (
+              <button key={e} type="button" className={employment.includes(e) ? 'chip selected' : 'chip'} aria-pressed={employment.includes(e)}
+                onClick={() => setDraft({ ...draft, employment_types: toggle(employment, e) })}>
+                {e}
               </button>
             ))}
           </div>

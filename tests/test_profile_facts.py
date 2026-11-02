@@ -76,7 +76,8 @@ def test_feedback_metrics_and_report():
     labels = {"a": "good", "b": "good", "c": "bad", "d": "maybe"}
     scores = {"a": 90, "b": 50, "c": 70, "d": 60}
     m = feedback.metrics(list(labels), labels, scores.get)
-    assert m == {"n": 4, "top10_good": 2, "top20_bad": 1, "pairs": 0.5}  # a>c, b<c
+    assert m == {"n": 4, "high": {"good": 1, "maybe": 0, "bad": 0}, "mid": {"good": 0, "maybe": 1, "bad": 1},
+                 "low": {"good": 1, "maybe": 0, "bad": 0}}  # 구간: 80 이상 a, 60~79 c·d, 60 미만 b
 
     sample = [{"id": k, "company": "회사", "title": f"공고 {k}"} for k in "abcde"]
     item = {"kind": "핵심 업무", "weight": 60, "fit": "충족", "name": "파이프라인", "posting": "-", "me": "-"}
@@ -86,12 +87,13 @@ def test_feedback_metrics_and_report():
     rows.append({"user_id": "u1", "posting_id": "b", "label": "good", "comment": "핵심 업무가 딱 맞음", "match_key": "g2"})
     text = "\n".join(feedback.report(sample, matches, rows))
     assert "기준 샘플 5건 중 평가 4건 ○ 2 △ 1 × 1, AI 결과 4건 (지침 v1 · fake)" in text
-    assert "AI 점수: 상위 10 중 ○ 2건" in text and "○가 ×보다 위 50%" in text and "미달" in text
-    assert "규칙 점수: 상위 10 중 ○ 2건" in text  # 규칙 점수가 다 같으면 반반
+    assert "AI 점수: 80점 이상 1건(○ 1 △ 0 × 0), 60~79점 2건(○ 0 △ 1 × 1), 60점 미만 1건(○ 1 △ 0 × 0)" in text
+    assert "미달" in text  # 60점 미만에 ○가 있다
+    assert "규칙 점수: 80점 이상 4건(○ 2 △ 1 × 1)" in text  # 규칙 점수가 다 80
     assert "○ AI 50(고려) 규칙 80 | 회사 | 공고 b | 코멘트: 핵심 업무가 딱 맞음" in text  # ○인데 60 미만
-    assert "× AI 70(고려)" in text and "[아직 평가 안 함 1건]" in text
+    assert "[아직 평가 안 함 1건]" in text
     public = "\n".join(feedback.report(sample, matches, rows, private=False))  # 공개 로그용: 건수·지표만
-    assert "AI 점수: 상위 10 중 ○ 2건" in public and "[아직 평가 안 함 1건]" in public
+    assert "AI 점수: 80점 이상 1건" in public and "[아직 평가 안 함 1건]" in public
     assert "공고 b" not in public and "코멘트" not in public and "나:" not in public
     dump = feedback.sample_dump(sample, matches, rows)
     assert len(dump) == 4 and dump[0].startswith("SMP\t") and '"score": 90' in dump[0]
@@ -119,3 +121,27 @@ def test_feedback_candidates_replace_closed_sample():
     assert [c["id"] for c in cands if c["group"] == "판단 갈림"] == ["p0", "p1", "p2"]  # AI 점수가 있는 것만, 차이 큰 순
     assert {c["jobType"] for c in cands if c["group"] == "직무별:data_eng"} == {"data_eng"}
     assert all(c["company"] == "회사" for c in cands) and not any(c["id"] in {"s1", "same", "gone"} for c in cands)
+
+
+class FakeMemoAI:
+    model = "fake"
+
+    def __init__(self):
+        self.prompts = []
+
+    def json(self, prompt, schema):
+        self.prompts.append(prompt)
+        return {"lines": ["코드로 ETL을 직접 개발한 경험 없음", "  영어 업무   어려움 "]}
+
+
+def test_memo_uses_latest_comments_only():
+    rows = [{"user_id": "u1", "posting_id": "a", "label": "maybe", "comment": "예전 생각"},
+            {"user_id": "u1", "posting_id": "a", "label": "bad", "comment": "elt를 코드로 날개발해 본 적 없음"},
+            {"user_id": "u1", "posting_id": "b", "label": "good", "comment": None},
+            {"user_id": "u2", "posting_id": "a", "label": "good", "comment": "다른 사람"}]
+    got = feedback.latest_comments(rows, "u1", {"a": ("회사A", "데이터 엔지니어")})
+    assert got == [{"label": "bad", "company": "회사A", "title": "데이터 엔지니어", "comment": "elt를 코드로 날개발해 본 적 없음"}]
+    ai = FakeMemoAI()
+    assert feedback.memo_lines(got, ["예전 메모"], ai) == ["코드로 ETL을 직접 개발한 경험 없음", "영어 업무 어려움"]
+    assert "× 회사A | 데이터 엔지니어 | elt를" in ai.prompts[0] and "- 예전 메모" in ai.prompts[0]
+    assert feedback.memo_lines([], ["그대로"], ai) == ["그대로"] and len(ai.prompts) == 1  # 코멘트가 없으면 AI를 부르지 않는다

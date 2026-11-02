@@ -168,3 +168,13 @@ def test_search_firm_and_client_from_title():
     assert client_from_title("AI Engineer, AX (바이오, 대기업 계열)") is CompanyType.LARGE
     assert client_from_title("외국계 해운 IT기업 Data Architect 경력직 채용") is CompanyType.FOREIGN
     assert client_from_title("[주요SI업체] AI 플랫폼 Architect") is None
+
+
+def test_filter_by_employment_type():
+    f = {"employment_types": ["정규직"]}
+    args = dict(title="t", company="c", company_type=CompanyType.LARGE, career_min=None, career_max=None, regions=[])
+    assert passes(**args, filters=f, employment=["정규직"])[0]
+    assert passes(**args, filters=f, employment=["계약직", "정규직"])[0]  # 하나라도 맞으면 통과
+    assert passes(**args, filters=f, employment=["인턴직"]) == (False, "employment")
+    assert passes(**args, filters=f, employment=[])[0]  # 고용 형태를 안 주는 수집처(리멤버)는 통과
+    assert passes(**args, filters={}, employment=["계약직"])[0]

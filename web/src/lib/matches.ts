@@ -11,7 +11,7 @@ export interface Match {
   score: number
   /** AI 의견 한 줄 */
   reason: string | null
-  /** 지원 추천 · 고려 · 비추천(AI가 매겼을 때만) */
+  /** 지원 추천 · 고려 · 비추천(AI가 매겼을 때만, 지침 v2부터는 점수 구간 80 · 60으로 정한다) */
   verdict: string | null
   kind: 'ai' | 'rule'
   /** 내 평가(피드백) */
@@ -31,6 +31,9 @@ export interface MatchDetail extends Match {
   items: MatchItem[]
   /** 같은 공고의 규칙 점수(비교용) */
   rule: number | null
+  /** 원하는 조건으로 조정하기 전 점수와 조정 설명(지침 v2부터) */
+  base: number | null
+  adjust: string[]
   matched: string[]
   missing: string[]
   model: string | null
@@ -88,6 +91,8 @@ export async function loadMatchDetail(postingId: string): Promise<MatchDetail | 
     kind: parts.kind === 'ai' ? 'ai' : 'rule',
     items: (parts.items as MatchItem[] | undefined) ?? [],
     rule: (parts.rule as number | undefined) ?? null,
+    base: (parts.base as number | undefined) ?? null,
+    adjust: (parts.adjust as string[] | undefined) ?? [],
     matched: (r.matched as string[]) ?? [],
     missing: (r.missing as string[]) ?? [],
     model: (meta.model as string | null) ?? null,

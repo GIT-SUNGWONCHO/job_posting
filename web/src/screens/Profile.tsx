@@ -3,7 +3,7 @@ import { copy } from '../copy'
 import { BACK_ICON, DOWN_ICON, SEARCH_ICON, SectionTitle } from '../components/ui'
 import {
   careerTotals, durationText, emptyCareer, emptyProfile, emptyProject, emptyRole, loadProfile, months, periodText, roleLabel,
-  roleYears, saveProfile, type Career, type Profile as P, type Project, type Role,
+  roleYears, saveProfile, type Career, type Profile as P, type Project, type Role, type Wants,
 } from '../lib/profile'
 import { goBack, href } from '../lib/route'
 import type { ProfileOptions, SkillOption } from '../lib/types'
@@ -20,7 +20,7 @@ const PENCIL = (
   <svg className="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z" /><path d="m13.5 6.5 4 4" /></svg>
 )
 
-type Editing = { kind: 'career'; index: number } | { kind: 'skills' } | { kind: 'target' } | { kind: 'edu' }
+type Editing = { kind: 'career'; index: number } | { kind: 'skills' } | { kind: 'target' } | { kind: 'edu' } | { kind: 'wants' }
 
 // 프로필: 보기가 먼저, 덩어리마다 연필로 그 덩어리만 편집(경력은 회사 하나씩 한 페이지).
 // 경력은 회사 > 직무(점과 세로선) > 프로젝트(회색 상자), 회사마다 프로젝트를 접는다. 저장하면 버전이 하나 오른다
@@ -88,6 +88,9 @@ export function Profile({ options, skillOptions, panel = false }: {
   }
   if (editing?.kind === 'edu') {
     return <EduEdit profile={profile} opts={opts} {...edit} onSave={(p) => save({ ...profile, ...p })} />
+  }
+  if (editing?.kind === 'wants') {
+    return <WantsEdit value={profile.wants} opts={opts} {...edit} onSave={(wants) => save({ ...profile, wants })} />
   }
   return <ProfileView profile={profile} opts={opts} panel={panel} loading={state === 'loading'} onEdit={setEditing} />
 }
@@ -159,6 +162,20 @@ function ProfileView({ profile, opts, panel, loading, onEdit }: {
         <SectionTitle right={pencil(t.targetRoles, { kind: 'target' })}>{t.targetRoles}</SectionTitle>
         {profile.targetRoles.length === 0 ? <p className="note">{t.noTarget}</p>
           : <span className="v">{profile.targetRoles.map((r) => names[r] ?? r).join(' · ')}</span>}
+      </section>
+
+      <section className="section">
+        <SectionTitle right={pencil(t.wants, { kind: 'wants' })}>{t.wants}</SectionTitle>
+        <div className="kv2 wide plain">
+          <span className="k">{t.wantLevel}</span>
+          <span className="v">{profile.wants.level || t.any}</span>
+          <span className="k">{t.wantSize}</span>
+          <span className="v">{profile.wants.size || t.any}</span>
+          <span className="k">{t.likeIndustries}</span>
+          <span className="v">{profile.wants.industriesLike.map((x) => industries[x] ?? x).join(' · ') || '-'}</span>
+          <span className="k">{t.avoidIndustries}</span>
+          <span className="v">{profile.wants.industriesAvoid.map((x) => industries[x] ?? x).join(' · ') || '-'}</span>
+        </div>
       </section>
 
       <section className="section">
@@ -464,6 +481,52 @@ function EduEdit({ profile, opts, busy, failed, cancel, onSave }: EditProps & {
             <button type="button" className="small-del" onClick={() => setCerts(without(certs, i))}>{t.remove}</button>
           </div>
         ))}
+      </div>
+    </div>
+  )
+}
+
+/** 하나만 고르거나 안 고르는(상관없음) 칩 줄 */
+function OneOf({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (v: string) => void }) {
+  return (
+    <>
+      <SectionTitle>{label}</SectionTitle>
+      <div className="chips wrap">
+        {['', ...options].map((o) => (
+          <button key={o || 'any'} type="button" className={value === o ? 'chip selected' : 'chip'} aria-pressed={value === o}
+            onClick={() => onChange(o)}>{o || t.any}</button>
+        ))}
+      </div>
+    </>
+  )
+}
+
+function WantsEdit({ value, opts, busy, failed, cancel, onSave }: EditProps & { value: Wants; opts: ProfileOptions; onSave: (v: Wants) => void }) {
+  const [v, setV] = useState(value)
+  const pick = (key: 'industriesLike' | 'industriesAvoid', other: 'industriesLike' | 'industriesAvoid', id: string) => {
+    const on = v[key].includes(id)
+    // 선호와 비선호에 같은 업종이 동시에 들어가지 않게
+    setV({ ...v, [key]: on ? v[key].filter((x) => x !== id) : [...v[key], id], [other]: v[other].filter((x) => x !== id) })
+  }
+  const industryChips = (key: 'industriesLike' | 'industriesAvoid', other: 'industriesLike' | 'industriesAvoid') => (
+    <div className="chips wrap">
+      {opts.industries.filter((i) => i.id !== 'other').map((i) => {
+        const on = v[key].includes(i.id)
+        return <button key={i.id} type="button" className={on ? 'chip selected' : 'chip'} aria-pressed={on} onClick={() => pick(key, other, i.id)}>{i.name}</button>
+      })}
+    </div>
+  )
+  return (
+    <div className="page detail edit-page">
+      <EditTop title={t.wants} busy={busy} failed={failed} onCancel={cancel} onSave={() => onSave(v)} />
+      <div className="edit-body">
+        <p className="note">{t.wantsHelp}</p>
+        <OneOf label={t.wantLevel} value={v.level} options={opts.want_levels ?? []} onChange={(level) => setV({ ...v, level })} />
+        <OneOf label={t.wantSize} value={v.size} options={opts.company_sizes ?? []} onChange={(size) => setV({ ...v, size })} />
+        <SectionTitle>{t.likeIndustries}</SectionTitle>
+        {industryChips('industriesLike', 'industriesAvoid')}
+        <SectionTitle>{t.avoidIndustries}</SectionTitle>
+        {industryChips('industriesAvoid', 'industriesLike')}
       </div>
     </div>
   )

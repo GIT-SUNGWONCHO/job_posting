@@ -58,6 +58,13 @@ export function Basis({ detail, fit }: { detail: MatchDetail; fit?: Record<strin
           )
         })}
       </div>
+      {detail.adjust.length > 0 && (
+        <div className="basis-adjust">
+          <b>{t.adjust}</b>
+          {detail.base !== null && <span className="muted-sm">{t.adjustBase(detail.base)}</span>}
+          <ul>{detail.adjust.map((a) => <li key={a}>{a}</li>)}</ul>
+        </div>
+      )}
     </section>
   )
 }
