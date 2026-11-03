@@ -554,3 +554,13 @@ def test_foreign_owner_rule():
     assert foreign_owner("미국 소재 Tesla, Inc.", None) == "미국"
     assert foreign_owner("네이버㈜", None) is None
     assert foreign_owner("최대주주 등의 지분을 보유", None) is None
+
+
+def test_foreign_owner_rule_v2():
+    from jobpost.dart import foreign_owner
+    assert foreign_owner("㈜영원무역홀딩스 유의적인 영향력을미치는 기업 GOLDWIN Inc", None) is None
+    assert foreign_owner("(주)DB Inc.", None) is None
+    assert foreign_owner("였던 Manpower Holdings는 전기 중 (주)티가든비에 지분 전액을 매각", None) is None
+    assert foreign_owner("인 EQT AB와 그 종속기업 에스케이쉴더스 주식회사가", None)
+    assert foreign_owner("MKG Asia Ltd.", None, 13.45) is None
+    assert foreign_owner("Fubon Life Insurance Co., Ltd.", None, 88.3)

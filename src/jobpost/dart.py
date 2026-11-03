@@ -852,9 +852,13 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                     break
         # 외국계 근거: 지배기업(감사보고서)·최대주주(사업보고서)를 읽어 owner에 둔다(회사마다 1건, 실적을 다시 받으면 다시)
         owner_todo = [c for c, g in basics.items() if "owner" not in g and g.get("finance")]
+        rejudge = [g["owner"] for g in basics.values() if g.get("owner") and g["owner"].get("rule") != OWNER_RULE]
         summary["owners"] = 0
-        if owner_todo:
+        if owner_todo or rejudge:
             oidx = idx or index(corp_codes(client, cache, today))
+            for o in rejudge:  # 규칙만 바뀌었으면 받아 둔 이름으로 다시 판정(요청 없음)
+                o["foreign"] = foreign_owner(o["name"], oidx, o.get("rate"))
+                o["rule"] = OWNER_RULE
             for code in owner_todo:
                 try:
                     basics[code]["owner"] = fetch_owner(client, code, basics[code]["finance"], oidx)
@@ -1037,14 +1041,25 @@ _COUNTRIES = ("미국", "일본", "중국", "홍콩", "싱가포르", "독일", 
 _COUNTRY = re.compile("(" + "|".join(_COUNTRIES) + r")\s*(?:소재|법인|에\s*소재|의)")
 
 
-def foreign_owner(name: str, idx: Index | None) -> str | None:
-    """지배기업·최대주주 글이 외국 회사면 근거 말(외국 회사 표기 또는 나라), 아니면 None."""
-    if not name:
+_KOREAN_CO = re.compile(r"\(주\)|㈜|주식회사|유한회사|유한책임회사")
+_PAST = re.compile(r"^\s*(?:이?었던|였던|었던)")
+OWNER_RULE = 2  # 외국 판정 규칙 판. 올리면 다음 실행에서 받아 둔 이름으로 다시 판정한다(요청 없음)
+# 2(2026-11-03): 국내 회사 표기가 외국 표기보다 먼저 나오면 국내, "…였던"(예전 지배기업)은 판정 안 함, 최대주주는 50% 이상만
+
+
+def foreign_owner(name: str, idx: Index | None, rate: float | None = None) -> str | None:
+    """지배기업·최대주주 글이 외국 회사면 근거 말(외국 회사 표기 또는 나라), 아니면 None.
+    rate: 최대주주 지분율(%). 50% 미만이면 지배한다고 보지 않는다(컬리의 13% 최대주주 같은 투자사)."""
+    if not name or _PAST.match(name) or (rate is not None and rate < 50):
         return None
     country = _COUNTRY.search(name)
-    latin = _FOREIGN_SUFFIX.search(name) and re.search(r"[A-Za-z]{3,}", name)
+    latin = _FOREIGN_SUFFIX.search(name) if re.search(r"[A-Za-z]{3,}", name) else None
     if not (country or latin):
         return None
+    first_foreign = min(m.start() for m in (country, latin) if m)
+    korean = _KOREAN_CO.search(name)
+    if korean and korean.start() < first_foreign:
+        return None  # "㈜영원무역홀딩스 … GOLDWIN Inc"처럼 국내 회사가 먼저 나온다
     core = re.split(r"[(（,]|입니다|이며", name)[0].strip()
     if idx is not None and not country and idx.get(company_key(core)):
         return None  # 같은 이름의 국내 DART 회사가 있다(SK Inc. 같은 국내 회사의 영문 표기)
@@ -1058,7 +1073,8 @@ def fetch_owner(client: Client, corp_code: str, finance: dict[str, Any], idx: In
         got = audit_parent(audit_document(client, finance["rcept_no"]))
         if not got:
             return None
-        return {"name": got["name"], "source": "감사보고서 지배기업", "foreign": foreign_owner(got["name"], idx)}
+        return {"name": got["name"], "source": "감사보고서 지배기업", "foreign": foreign_owner(got["name"], idx),
+                "rule": OWNER_RULE}
     year = finance.get("year")
     if not year:
         return None
@@ -1074,7 +1090,8 @@ def fetch_owner(client: Client, corp_code: str, finance: dict[str, Any], idx: In
             best, rate = nm, v
     if not best:
         return None
-    return {"name": best, "source": "사업보고서 최대주주", "rate": rate, "foreign": foreign_owner(best, idx)}
+    return {"name": best, "source": "사업보고서 최대주주", "rate": rate, "foreign": foreign_owner(best, idx, rate),
+            "rule": OWNER_RULE}
 
 
 def audit_finance(client: Client, corp_code: str, today: date) -> dict[str, Any] | None:
