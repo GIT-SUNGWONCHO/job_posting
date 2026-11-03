@@ -83,26 +83,41 @@ def fetch_groups(key: str, ym: str | None = None, session: requests.Session | No
     raise RuntimeError("공정위 목록이 비었다")
 
 
+def _alio_page(s: requests.Session, page: int, variant: int) -> dict[str, Any] | None:
+    base = {"jidtDptm": "", "area": "", "apbaNa": "", "apba_id": "", "pageNo": page}
+    if variant == 0:
+        r = s.post(ALIO_URL, json={**base, "apbaType": []}, headers=UA, timeout=60)
+    elif variant == 1:
+        r = s.post(ALIO_URL, json={**base, "apbaType": [""]}, headers=UA, timeout=60)
+    elif variant == 2:
+        r = s.post(ALIO_URL, json={**base, "apbaType": "", "pageNo": str(page)}, headers=UA, timeout=60)
+    else:
+        r = s.post(ALIO_URL, data={**base, "apbaType": ""}, headers=UA, timeout=60)
+    try:
+        body = r.json()
+    except ValueError:
+        return None
+    return body.get("organList") if isinstance(body, dict) else None
+
+
 def fetch_alio(session: requests.Session | None = None) -> dict[str, Any]:
+    """알리오 화면이 부르는 목록을 그대로 부른다. 요청 모양이 맞는 것을 차례로 찾는다(2026-11-03 첫 모양은 서버 오류)."""
     s = session or requests.Session()
+    s.get("https://www.alio.go.kr/organ/organDisclosureList.do", headers=UA, timeout=60)  # 세션 쿠키
+    variant = next((v for v in range(4) if _alio_page(s, 1, v)), None)
+    if variant is None:
+        raise RuntimeError("알리오 목록 요청 모양을 찾지 못했다")
     out: list[dict[str, Any]] = []
     page, last = 1, 1
-    s.get("https://www.alio.go.kr/organ/organDisclosureList.do", headers=UA, timeout=60)  # 세션 쿠키
     while page <= last:
-        r = s.post(ALIO_URL, json={"apbaType": [], "jidtDptm": "", "area": "", "apbaNa": "", "apba_id": "",
-                                   "pageNo": page}, headers=UA, timeout=60)
-        r.raise_for_status()
-        body = r.json()
-        if "organList" not in body:
-            raise RuntimeError(f"알리오 응답 모양이 다름: {r.text[:300]}")
-        ol = body["organList"]
-        last = int(ol["page"]["totalPage"])
-        out += ol["result"]
+        ol = _alio_page(s, page, variant) or {}
+        last = int((ol.get("page") or {}).get("totalPage") or 0)
+        out += ol.get("result") or []
         page += 1
         time.sleep(0.3)
     orgs = [{"name": o.get("apbaNa", ""), "key": company_key(o.get("apbaNa", "")), "type": o.get("typeNa", ""),
              "ministry": o.get("jidtNa", ""), "id": o.get("apbaId") or o.get("apba_id") or ""} for o in out]
-    return {"fetched": date.today().isoformat(), "orgs": orgs}
+    return {"fetched": date.today().isoformat(), "variant": variant, "orgs": orgs}
 
 
 def nps_download(session: requests.Session | None = None) -> tuple[bytes, str]:
