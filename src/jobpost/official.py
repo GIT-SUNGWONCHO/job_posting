@@ -21,6 +21,7 @@ from collections import defaultdict
 from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import unquote
 from xml.etree import ElementTree
 
 import requests
@@ -56,6 +57,7 @@ def _items(xml: bytes) -> tuple[list[dict[str, str]], int, str]:
 def fetch_groups(key: str, ym: str | None = None, session: requests.Session | None = None) -> dict[str, Any]:
     """지정 기업집단 소속회사 전부. ym(YYYYMM)을 비우면 올해 05, 없으면 작년 05."""
     s = session or requests.Session()
+    key = unquote(key.strip())  # 공공데이터포털 '인코딩' 키를 넣어도 두 번 인코딩되지 않게
     today = date.today()
     tries = [ym] if ym else [f"{today.year}05", f"{today.year - 1}05"]
     for y in tries:
@@ -85,11 +87,15 @@ def fetch_alio(session: requests.Session | None = None) -> dict[str, Any]:
     s = session or requests.Session()
     out: list[dict[str, Any]] = []
     page, last = 1, 1
+    s.get("https://www.alio.go.kr/organ/organDisclosureList.do", headers=UA, timeout=60)  # 세션 쿠키
     while page <= last:
         r = s.post(ALIO_URL, json={"apbaType": [], "jidtDptm": "", "area": "", "apbaNa": "", "apba_id": "",
                                    "pageNo": page}, headers=UA, timeout=60)
         r.raise_for_status()
-        ol = r.json()["organList"]
+        body = r.json()
+        if "organList" not in body:
+            raise RuntimeError(f"알리오 응답 모양이 다름: {r.text[:300]}")
+        ol = body["organList"]
         last = int(ol["page"]["totalPage"])
         out += ol["result"]
         page += 1
@@ -111,7 +117,7 @@ def nps_download(session: requests.Session | None = None) -> tuple[bytes, str]:
                   data={"publicDataDetailPk": dpk, "publicDataPk": pk, "atchFileId": "", "fileDetailSn": sn,
                         "publicDataTyCode": "PR0051"}).json()
     fid, fsn = info["atchFileId"], info["fileDetailSn"]
-    name = info["dataSetFileDetailInfo"].get("orginlFileNm") or ""
+    name = (info.get("fileDataRegistVO") or {}).get("orginlFileNm") or info["dataSetFileDetailInfo"].get("dataNm") or ""
     lim = s.post(f"{DG}/cmm/cmm/check-limit.json", data={"atchFileId": fid, "fileDetailSn": fsn},
                  headers=UA, timeout=60).json()
     if lim.get("needCaptcha"):
