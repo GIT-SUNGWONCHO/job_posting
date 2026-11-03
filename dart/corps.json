@@ -440,12 +440,11 @@
 "stock_code": "030200"
 },
 "ktcloud": {
-"checked": "2026-10-21",
+"checked": "2026-11-03",
 "corp_code": "01628946",
 "corp_name": "케이티클라우드",
-"how": "override",
-"mv": 3,
-"override": "01628946",
+"how": "name",
+"mv": 6,
 "stock_code": null
 },
 "ktds": {
@@ -1707,20 +1706,20 @@
 "why": "none"
 },
 "기아": {
-"checked": "2026-10-23",
+"checked": "2026-11-03",
+"corp_code": "00106641",
+"corp_name": "기아",
+"how": "override",
+"mv": 6,
+"override": "기아",
+"stock_code": "000270"
+},
+"기아자동차": {
+"checked": "2026-11-03",
 "corp_code": "00106641",
 "corp_name": "기아",
 "how": "listed",
 "mv": 6,
-"stock_code": "000270"
-},
-"기아자동차": {
-"checked": "2026-10-21",
-"corp_code": "00106641",
-"corp_name": "기아",
-"how": "override",
-"mv": 3,
-"override": "기아",
 "stock_code": "000270"
 },
 "기어세컨드": {
