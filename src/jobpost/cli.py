@@ -95,6 +95,9 @@ def main(argv: list[str] | None = None) -> int:
     sc.add_argument("--key", required=True, choices=["company_types", "regions", "employment_types", "career"])
     ms = sub.add_parser("match-stats", help="시험: 규칙 점수 구간별 AI 판정·내 평가·공고 수(로그에는 건수만)")
     ms.add_argument("--data-dir", type=Path, default=Path("data"))
+    ps = sub.add_parser("prescreen-trial", help="시험: 사전 거르기(조건·규칙 v2·규칙 v3·AI 묶음)가 줄이는 양과 잃는 정답 수(로그에는 건수만)")
+    ps.add_argument("--data-dir", type=Path, default=Path("data"))
+    ps.add_argument("--ai-sample", type=int, default=300, help="AI 묶음 거르기를 시험할 공고 수(30건에 1번 호출)")
     da = sub.add_parser("dart-audit", help="시험: DART 고유번호마다 최근 감사보고서에서 실적을 읽어 본다(저장 없음)")
     da.add_argument("--codes", required=True, help="쉼표로 구분한 DART 고유번호")
     da.add_argument("--raw", type=int, default=3, help="못 읽은 회사 이만큼은 손익계산서 앞부분을 남긴다")
@@ -196,6 +199,15 @@ def main(argv: list[str] | None = None) -> int:
                                 facts.load(args.data_dir), only=only)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
+    if args.cmd == "prescreen-trial":
+        from . import prescreen
+        store = db.DB()
+        rated = {r["posting_id"] for r in store.select("feedback", "select=posting_id")}
+        built, bodies = screen.build(args.data_dir, keep=rated)
+        client = recommend.make_client() if args.ai_sample > 0 else None
+        print("\n".join(prescreen.trial(built, bodies, facts.load(args.data_dir), store, client, date.today(),
+                                        ai_sample=args.ai_sample)))
+        return 0
     if args.cmd == "match-stats":
         built, bodies = screen.build(args.data_dir)
         print("\n".join(recommend.stats(built, bodies, db.DB(), date.today())))

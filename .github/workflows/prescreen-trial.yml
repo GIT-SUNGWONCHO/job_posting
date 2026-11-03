@@ -1,0 +1,46 @@
+# 시험: 사전 거르기(조건·규칙 v2·규칙 v3·AI 묶음)가 내 분야 공고를 얼마나 줄이고 정답(내 평가 ○, AI 지원 추천)을 얼마나 잃는지.
+# 저장 없음. 로그가 공개라 건수만 낸다. AI 묶음은 ai_sample건에 30건당 1번 호출.
+# 수동 실행: GitHub > Actions > prescreen-trial > Run workflow
+name: prescreen-trial
+
+on:
+  workflow_dispatch:
+    inputs:
+      ai_sample:
+        description: AI 묶음 거르기를 시험할 공고 수(0이면 AI 안 부름)
+        required: false
+        default: "300"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+      - name: 시험
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          AI_SAMPLE: ${{ inputs.ai_sample }}
+        run: uv run --no-dev jobpost prescreen-trial --data-dir data --ai-sample "${AI_SAMPLE:-300}" | tee -a "$GITHUB_STEP_SUMMARY"
