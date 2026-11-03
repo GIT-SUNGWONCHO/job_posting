@@ -1,0 +1,35 @@
+# 시험: 외부 페이지를 GitHub Actions에서 받아 묶음(artifact)으로 남긴다. 새 데이터 출처의 모양을 볼 때만 쓴다(data 브랜치에 저장하지 않음).
+# 수동 실행: GitHub > Actions > fetch-probe > Run workflow
+name: fetch-probe
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 공백으로 구분한 주소(10개까지)
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 받기
+        env:
+          URLS: ${{ inputs.urls }}
+        run: |
+          mkdir -p out
+          i=0
+          for u in $URLS; do
+            i=$((i+1))
+            code=$(curl -sL -o "out/$i.bin" -w '%{http_code} %{content_type} %{size_download}' -A 'Mozilla/5.0 (jobpost fetch-probe)' --max-time 60 "$u" || echo fail)
+            echo "$i $code $u" | tee -a out/index.txt
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: probe
+          path: out
+          retention-days: 3
