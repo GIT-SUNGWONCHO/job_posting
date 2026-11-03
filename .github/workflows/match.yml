@@ -19,6 +19,14 @@ on:
         description: 공고 정리도 할지(AI 한도를 매칭에 아끼려면 끈다)
         type: boolean
         default: true
+      max_calls:
+        description: 매칭 최대 AI 호출 수(비우면 config/ai.yaml, 따라잡기 때 늘림)
+        required: false
+        default: ""
+      minutes:
+        description: 매칭 최대 시간(분, 비우면 config/ai.yaml)
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -30,7 +38,7 @@ concurrency:
 jobs:
   match:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 150
     env:
       TZ: Asia/Seoul
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -70,10 +78,14 @@ jobs:
         env:
           SCOPE: ${{ inputs.scope }}
           MODEL: ${{ inputs.model }}
+          MAX_CALLS: ${{ inputs.max_calls }}
+          MINUTES: ${{ inputs.minutes }}
         run: |
           args=(--data-dir data)
           if [ "$SCOPE" = "sample" ]; then args+=(--sample); fi
           if [ -n "$MODEL" ]; then args+=(--model "$MODEL"); fi
+          if [ -n "$MAX_CALLS" ]; then args+=(--max-calls "$MAX_CALLS"); fi
+          if [ -n "$MINUTES" ]; then args+=(--max-minutes "$MINUTES"); fi
           uv run --no-dev jobpost match "${args[@]}"
 
       - name: data 브랜치에 커밋

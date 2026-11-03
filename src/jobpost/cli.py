@@ -53,6 +53,8 @@ def main(argv: list[str] | None = None) -> int:
     m.add_argument("--data-dir", type=Path, default=Path("data"))
     m.add_argument("--sample", action="store_true", help="기준 샘플(config/match_sample.yaml)만 다시 매긴다")
     m.add_argument("--model", help="이번 실행만 다른 모델로(회차 시험)")
+    m.add_argument("--max-calls", type=int, help="이번 실행 최대 AI 호출 수(비우면 config/ai.yaml match.max_calls). 따라잡기용")
+    m.add_argument("--max-minutes", type=float, help="이번 실행 최대 시간(분)")
 
     jc = sub.add_parser("jobtypes-check", help="시험: 보조 직무 유형을 골라 보고 지금 분류와 비교한다(저장 없음)")
     jc.add_argument("--data-dir", type=Path, default=Path("data"))
@@ -206,7 +208,8 @@ def main(argv: list[str] | None = None) -> int:
         store = db.DB()
         store.check_server_key()
         summary = recommend.run(built, bodies, store, recommend.make_client(args.model), date.today(),
-                                facts.load(args.data_dir), only=only)
+                                facts.load(args.data_dir), only=only, max_calls=args.max_calls,
+                                max_minutes=args.max_minutes)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
     if args.cmd == "method-compare":

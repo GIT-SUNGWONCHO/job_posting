@@ -191,7 +191,8 @@ def sample_ids() -> list[str]:
 
 
 def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | None, today: date,
-        facts: dict[str, dict[str, Any]] | None = None, only: set[str] | None = None) -> dict[str, Any]:
+        facts: dict[str, dict[str, Any]] | None = None, only: set[str] | None = None,
+        max_calls: int | None = None, max_minutes: float | None = None) -> dict[str, Any]:
     """only가 있으면 그 공고(기준 샘플)만 개인 필터와 상관없이 매기고, 그 공고의 줄만 바꾼다."""
     cfg = config.load("ai").get("match") or {}
     guide_v = config.load("match_guide")["version"]
@@ -199,8 +200,8 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
     texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
     facts = facts or {}
     model = getattr(client, "model", None)
-    calls_left = cfg.get("max_calls", 330)
-    deadline = time.monotonic() + cfg.get("max_minutes", 35) * 60
+    calls_left = max_calls or cfg.get("max_calls", 330)
+    deadline = time.monotonic() + (max_minutes or cfg.get("max_minutes", 35)) * 60
 
     settings = {r["user_id"]: r.get("filters") or {} for r in db.select("settings", "select=user_id,filters")}
     profiles = db.select("profiles", "select=user_id,data,version")
