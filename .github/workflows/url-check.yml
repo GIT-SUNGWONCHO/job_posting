@@ -1,0 +1,28 @@
+# 시험: 외부 사이트가 GitHub Actions에서 열리는지 HTTP 응답 코드만 본다(아무것도 저장하지 않음).
+# 새 데이터 출처(공공기관·기업집단 목록 등)를 붙이기 전에 돌린다.
+# 수동 실행: GitHub > Actions > url-check > Run workflow
+name: url-check
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 공백으로 구분한 주소
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 응답 코드
+        env:
+          URLS: ${{ inputs.urls }}
+        run: |
+          for u in $URLS; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -A 'Mozilla/5.0 (jobpost url-check)' --max-time 20 "$u" || echo fail)
+            echo "$code $u"
+          done
