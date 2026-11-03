@@ -1,0 +1,71 @@
+# 공식 목록: 공정위 기업집단 소속회사 · 알리오 공공기관 · 국민연금 사업장(직원 수는 화면에 안 보이고 규모 확인에만)을 data/official/에 받는다.
+# 기업 구분 기준은 docs/collection.md '새 기준'. 국민연금 파일은 매월 22일쯤 새로 올라와서 매월 25일에 받는다.
+# 수동 실행: GitHub > Actions > official > Run workflow
+name: official
+
+on:
+  schedule:
+    - cron: "7 3 25 * *"  # 매월 25일 12:07 KST
+  workflow_dispatch:
+    inputs:
+      what:
+        description: 쉼표로 구분(groups, public, nps)
+        required: false
+        default: "groups,public,nps"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect  # 수집과 겹치지 않게
+  cancel-in-progress: false
+
+jobs:
+  official:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 공식 목록 받기
+        shell: bash
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+          WHAT: ${{ inputs.what }}
+        run: |
+          set +e
+          uv run --no-dev jobpost official --data-dir data --what "${WHAT:-groups,public,nps}" | tee official.json
+          code=${PIPESTATUS[0]}
+          echo '### 공식 목록' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat official.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+
+      - name: data 브랜치에 커밋
+        if: always()
+        working-directory: data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A official
+          if git diff --cached --quiet; then
+            echo "바뀐 데이터 없음"
+            exit 0
+          fi
+          git commit -q -m "official $(date +%F)"
+          for i in 1 2 3; do git push origin data && break; sleep $((i * 10)); done

@@ -20,6 +20,7 @@ from . import (
     jobtypes,
     notes,
     notify,
+    official,
     pipeline,
     publish,
     recommend,
@@ -87,6 +88,9 @@ def main(argv: list[str] | None = None) -> int:
     d.add_argument("--raw", type=int, default=0, help="처음 이만큼의 DART 응답을 로그에 남긴다(해석 확인용)")
     d.add_argument("--minutes", type=float, help="이 시간(분)이 지나면 멈춘다(비우면 config/dart.yaml max_minutes)")
     d.add_argument("--find", help="쉼표로 구분한 말: DART 회사 목록에서 이 말이 들어간 이름을 로그에 남긴다(손으로 이을 때)")
+    of = sub.add_parser("official", help="공식 목록(공정위 기업집단 소속회사·알리오 공공기관·국민연금 사업장)을 data/official/에 받는다")
+    of.add_argument("--data-dir", type=Path, default=Path("data"))
+    of.add_argument("--what", default="groups,public,nps", help="쉼표로 구분: groups, public, nps")
     da = sub.add_parser("dart-audit", help="시험: DART 고유번호마다 최근 감사보고서에서 실적을 읽어 본다(저장 없음)")
     da.add_argument("--codes", required=True, help="쉼표로 구분한 DART 고유번호")
     da.add_argument("--raw", type=int, default=3, help="못 읽은 회사 이만큼은 손익계산서 앞부분을 남긴다")
@@ -151,6 +155,11 @@ def main(argv: list[str] | None = None) -> int:
         print()
         # 한도·실패로 멈춰도 받은 만큼은 저장했으니 다음 단계(화면용 파일)는 계속한다
         return 0
+    if args.cmd == "official":
+        import os
+        summary = official.run(args.data_dir, args.what.split(","), os.environ.get("DATA_GO_KR_KEY"))
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        return 0 if not any("error" in v for v in summary.values()) else 1
     if args.cmd == "dart-audit":
         if not dart.configured():
             logging.info("DART 키(DART_API_KEY)가 없음")
