@@ -1,4 +1,4 @@
-"""매칭 점수. 계산법은 config/matching.yaml, 스킬 사전은 config/skills.yaml.
+"""매칭 점수. 계산법은 config/matching.yaml, 스킬 사전은 config/taxonomy/skills.yaml.
 
 점수는 AI 없이 규칙으로만 낸다(같은 입력이면 늘 같은 점수). 매칭 이유 문장은 따로 AI가 쓴다.
 """

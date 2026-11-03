@@ -1,0 +1,194 @@
+"""기준 목록(코드 + 이름): config/taxonomy/의 직무 분야·직무 유형·업종·스킬·고정 선택지를 읽고 검사한다.
+
+규칙은 docs/taxonomy.md. 코드는 다시 쓰지 않고, 갈라지면 retired와 replaced_by를 남긴다. 데이터는 아직 legacy id로
+저장돼 있어서(코드로 옮기기 전), 다른 모듈은 config.load("job_types"·"skills"·"profile"·"match_guide")로 예전 모양의
+보기를 받는다. 보기는 이 모듈이 만들고, 원본은 config/taxonomy/ 한 곳이다.
+"""
+
+from __future__ import annotations
+
+import re
+from functools import cache
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+DIR = Path(__file__).resolve().parents[2] / "config" / "taxonomy"
+
+CODE_RE = {
+    "field": re.compile(r"JF\d{2}"),
+    "type": re.compile(r"JT\d{3}"),
+    "industry_group": re.compile(r"IN\d{2}"),
+    "industry": re.compile(r"IN\d{4}"),
+    "skill": re.compile(r"SK\d{4}"),
+    "skill_group": re.compile(r"SG\d{2}"),
+    "interchangeable": re.compile(r"IS\d{2}"),
+    "enum": re.compile(r"[A-Z]{2}\d{2}"),
+}
+
+
+class TaxonomyError(ValueError):
+    pass
+
+
+@cache
+def raw(name: str) -> dict[str, Any]:
+    with (DIR / f"{name}.yaml").open(encoding="utf-8") as f:
+        return yaml.safe_load(f) or {}
+
+
+def _active(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [x for x in items if not x.get("retired")]
+
+
+# ---------- 목록 ----------
+
+def fields() -> list[dict[str, Any]]:
+    return raw("jobs")["fields"]
+
+
+def job_types() -> list[dict[str, Any]]:
+    return raw("jobs")["types"]
+
+
+def industry_groups() -> list[dict[str, Any]]:
+    return raw("industries")["groups"]
+
+
+def industries() -> list[dict[str, Any]]:
+    """중분류(판정·저장 단위). 각 항목에 group(대분류 코드)을 붙인다."""
+    return [{**it, "group": g["code"]} for g in industry_groups() for it in g.get("items") or []]
+
+
+def skills() -> list[dict[str, Any]]:
+    return raw("skills")["skills"]
+
+
+def enum(key: str) -> list[dict[str, Any]]:
+    return raw("enums")[key]
+
+
+def names(key: str) -> list[str]:
+    """고정 선택지 이름 목록(지금 데이터·지시문에 쓰는 값)."""
+    return [x["name"] for x in _active(enum(key))]
+
+
+# ---------- 검사 ----------
+
+def validate() -> None:
+    """코드 형식·중복, 상위·관계 코드가 있는지, replaced_by가 있는 코드를 가리키는지. 틀리면 TaxonomyError."""
+    seen: dict[str, str] = {}
+
+    def add(code: str, kind: str, where: str) -> None:
+        if not CODE_RE[kind].fullmatch(code or ""):
+            raise TaxonomyError(f"{where}: 코드 형식이 틀림 {code!r}({kind})")
+        if code in seen:
+            raise TaxonomyError(f"{where}: 코드 {code}가 겹침({seen[code]})")
+        seen[code] = where
+
+    for f in fields():
+        add(f["code"], "field", "jobs.fields")
+    for t in job_types():
+        add(t["code"], "type", "jobs.types")
+        if t.get("field") not in {f["code"] for f in fields()}:
+            raise TaxonomyError(f"jobs.types {t['code']}: 없는 분야 {t.get('field')}")
+    for g in industry_groups():
+        add(g["code"], "industry_group", "industries.groups")
+        for it in g.get("items") or []:
+            add(it["code"], "industry", "industries.items")
+            if not it["code"].startswith(g["code"]):
+                raise TaxonomyError(f"industries {it['code']}: 대분류 {g['code']}로 시작해야 함")
+    for g in raw("skills")["groups"]:
+        add(g["code"], "skill_group", "skills.groups")
+    group_codes = {g["code"] for g in raw("skills")["groups"]}
+    for s in skills():
+        add(s["code"], "skill", "skills.skills")
+        if not set(s.get("groups") or []) <= group_codes:
+            raise TaxonomyError(f"skills {s['code']}: 없는 묶음 {s.get('groups')}")
+    skill_codes = {s["code"] for s in skills()}
+    for s in skills():
+        if s.get("broader") and s["broader"] not in skill_codes:
+            raise TaxonomyError(f"skills {s['code']}: 없는 넓은 개념 {s['broader']}")
+    for i in raw("skills").get("interchangeable") or []:
+        add(i["code"], "interchangeable", "skills.interchangeable")
+        if not set(i["members"]) <= skill_codes:
+            raise TaxonomyError(f"skills {i['code']}: 없는 스킬 {set(i['members']) - skill_codes}")
+    for key, items in raw("enums").items():
+        prefixes = {x["code"][:2] for x in items}
+        if len(prefixes) != 1:
+            raise TaxonomyError(f"enums.{key}: 한 목록은 한 접두어 {prefixes}")
+        for x in items:
+            add(x["code"], "enum", f"enums.{key}")
+    for item in [*fields(), *job_types(), *industries(), *skills()]:
+        for r in item.get("replaced_by") or []:
+            if r not in seen:
+                raise TaxonomyError(f"{item['code']}: replaced_by {r} 없음")
+    legacy = [x["legacy"] for x in [*fields(), *job_types()] if x.get("legacy")]
+    if len(legacy) != len(set(legacy)):
+        raise TaxonomyError("jobs: legacy id가 겹침")
+
+
+# ---------- 지난 id ↔ 코드 ----------
+
+def code_of(legacy: str | None) -> str | None:
+    """저장된 지난 id(직무 유형·분야·업종) → 코드. 모르면 None."""
+    if not legacy:
+        return None
+    legacy = raw("jobs").get("legacy_aliases", {}).get(legacy, legacy)
+    for x in [*fields(), *job_types(), *industries()]:
+        if x.get("legacy") == legacy:
+            return x["code"]
+    return None
+
+
+# ---------- 예전 모양 보기(코드로 옮기기 전까지 다른 모듈이 읽는 것) ----------
+
+@cache
+def job_types_view() -> dict[str, Any]:
+    """jobtypes.py가 읽는 모양: 데이터·AI 직무 유형(family data) + 그 밖의 직무 분야(family other), id는 legacy."""
+    j = raw("jobs")
+    types = [{"id": t["legacy"], "code": t["code"], "name": t["name"], "short": t.get("short", t["name"]),
+              "desc": t["desc"], **({"direction": False} if t.get("direction") is False else {})}
+             for t in _active(job_types())]
+    types += [{"id": f["legacy"], "code": f["code"], "name": f["name"], "short": f.get("short", f["name"]),
+               "family": "other", "direction": False, "desc": f["desc"]}
+              for f in _active(fields()) if f["code"] != "JF01"]
+    return {"version": j["version"], "field": fields()[0]["name"], "legacy": j.get("legacy_aliases") or {},
+            "types": types}
+
+
+@cache
+def skills_view() -> dict[str, Any]:
+    """matching.py가 읽는 모양: {묶음 이름: [{name, aliases, code}]}, interchangeable: [[이름]]."""
+    s = raw("skills")
+    by_code = {x["code"]: x for x in skills()}
+    groups: dict[str, list[dict[str, Any]]] = {g["name"]: [] for g in s["groups"]}
+    gname = {g["code"]: g["name"] for g in s["groups"]}
+    for x in _active(skills()):
+        for g in x.get("groups") or []:
+            groups[gname[g]].append({"name": x["name"], "aliases": x.get("aliases") or [], "code": x["code"]})
+    return {"version": s["version"], "groups": groups,
+            "interchangeable": [[by_code[m]["name"] for m in i["members"]] for i in s.get("interchangeable") or []],
+            "stopwords": s.get("stopwords") or []}
+
+
+def profile_extras() -> dict[str, Any]:
+    """profile.yaml에 합치는 목록: 업종(id는 legacy), 숙련도·역할·학력·전공·영어·원하는 직급."""
+    return {
+        "version": raw("industries")["version"],
+        "industries": [{"id": x["legacy"], "name": x["name"], "code": x["code"]} for x in _active(industries())],
+        "skill_levels": [{"level": x["level"], "name": x["name"], "desc": x["desc"]} for x in enum("skill_levels")],
+        "project_parts": names("project_parts"),
+        "degrees": names("degrees"),
+        "major_groups": names("major_groups"),
+        "english": names("english_levels"),
+        "english_low": [x["name"] for x in enum("english_levels") if x.get("low")],
+        "want_levels": names("want_levels"),
+    }
+
+
+def match_guide_extras() -> dict[str, Any]:
+    return {"item_kinds": names("item_kinds"),
+            "posting_facts": {"level": names("match_levels"), "english": names("match_english"),
+                              "employment": names("match_employment")}}

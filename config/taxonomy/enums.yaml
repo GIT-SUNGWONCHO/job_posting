@@ -1,0 +1,118 @@
+# 고정 선택지: 목록마다 2글자 + 2자리 코드. 이름(name)은 지금 데이터·화면·AI 지시문에 그대로 쓰는 값이다.
+# 코드는 다시 쓰지 않는다. 이름을 바꾸면 그 이름을 쓰는 곳(공고 정리·매칭 지시문)의 버전을 함께 올린다.
+
+company_types:  # CT 기업 구분
+  - {code: CT01, name: "공기업·공공기관"}
+  - {code: CT02, name: "대기업"}
+  - {code: CT03, name: "외국계"}
+  - {code: CT04, name: "중견"}
+  - {code: CT05, name: "중소·스타트업"}
+  - {code: CT06, name: "확인 안 됨"}
+  - {code: CT07, name: "그 외"}
+exception_reasons:  # EX 기업 구분·업종 예외 이유
+  - {code: EX01, name: "DART 없음"}
+  - {code: EX02, name: "DART 틀림"}
+  - {code: EX03, name: "기타"}
+posting_levels:  # LV 공고 직급(공고 정리)
+  - {code: LV01, name: "주니어"}
+  - {code: LV02, name: "미들"}
+  - {code: LV03, name: "시니어"}
+  - {code: LV04, name: "리드·매니저"}
+  - {code: LV05, name: "적혀 있지 않음"}
+manages:  # MG 사람 관리 여부(공고 정리)
+  - {code: MG01, name: "팀장(사람 관리)"}
+  - {code: MG02, name: "테크 리드(관리 없음)"}
+  - {code: MG03, name: "실무자"}
+  - {code: MG04, name: "적혀 있지 않음"}
+scopes:  # SC 책임 범위(업무 꼬리표)
+  - {code: SC01, name: "총괄·결정"}
+  - {code: SC02, name: "수행"}
+  - {code: SC03, name: "운영·유지"}
+  - {code: SC04, name: "보조"}
+posting_degrees:  # PD 공고 학력 요건(공고 정리)
+  - {code: PD01, name: "무관"}
+  - {code: PD02, name: "학사"}
+  - {code: PD03, name: "석사"}
+  - {code: PD04, name: "박사"}
+  - {code: PD05, name: "적혀 있지 않음"}
+needs:  # NE 필요 정도(전공·영어)
+  - {code: NE01, name: "필수"}
+  - {code: NE02, name: "우대"}
+  - {code: NE03, name: "적혀 있지 않음"}
+employment:  # EM 고용 형태(공고 정리)
+  - {code: EM01, name: "정규직"}
+  - {code: EM02, name: "계약직"}
+  - {code: EM03, name: "인턴"}
+  - {code: EM04, name: "파견"}
+  - {code: EM05, name: "프리랜서"}
+  - {code: EM06, name: "적혀 있지 않음"}
+english_uses:  # EU 영어 쓰는 곳(공고 정리)
+  - {code: EU01, name: "회의·협업"}
+  - {code: EU02, name: "문서·보고"}
+  - {code: EU03, name: "고객 응대"}
+  - {code: EU04, name: "공고가 영어"}
+work_modes:  # WM 근무 방식(공고 정리)
+  - {code: WM01, name: "출근"}
+  - {code: WM02, name: "하이브리드"}
+  - {code: WM03, name: "재택"}
+  - {code: WM04, name: "적혀 있지 않음"}
+item_kinds:  # IK 매칭 항목 종류
+  - {code: IK01, name: "핵심 업무"}
+  - {code: IK02, name: "필수 스킬"}
+  - {code: IK03, name: "우대 스킬"}
+  - {code: IK04, name: "경력 연수·직급"}
+  - {code: IK05, name: "도메인·업종"}
+  - {code: IK06, name: "학력·전공"}
+  - {code: IK07, name: "자격증"}
+  - {code: IK08, name: "어학"}
+  - {code: IK09, name: "기타"}
+fits:  # FT 매칭 판정
+  - {code: FT01, name: "충족"}
+  - {code: FT02, name: "일부"}
+  - {code: FT03, name: "미충족"}
+  - {code: FT04, name: "정보 없음"}
+match_levels:  # PL 매칭 공고 사실: 직급
+  - {code: PL01, name: "실무자"}
+  - {code: PL02, name: "리더·관리자"}
+  - {code: PL03, name: "주니어"}
+  - {code: PL04, name: "정보 없음"}
+match_english:  # PE 매칭 공고 사실: 영어
+  - {code: PE01, name: "필요"}
+  - {code: PE02, name: "필요 없음"}
+match_employment:  # PM 매칭 공고 사실: 고용 형태
+  - {code: PM01, name: "정규직"}
+  - {code: PM02, name: "계약직"}
+  - {code: PM03, name: "인턴"}
+  - {code: PM04, name: "기타"}
+  - {code: PM05, name: "정보 없음"}
+project_parts:  # PP 프로젝트 역할(프로필)
+  - {code: PP01, name: "단독"}
+  - {code: PP02, name: "리드"}
+  - {code: PP03, name: "참여"}
+degrees:  # DG 학력(프로필)
+  - {code: DG01, name: "고졸"}
+  - {code: DG02, name: "전문학사"}
+  - {code: DG03, name: "학사"}
+  - {code: DG04, name: "석사"}
+  - {code: DG05, name: "박사"}
+major_groups:  # MJ 전공 계열(프로필)
+  - {code: MJ01, name: "공학(컴퓨터·SW)"}
+  - {code: MJ02, name: "공학(기타)"}
+  - {code: MJ03, name: "자연(수학·통계·물리)"}
+  - {code: MJ04, name: "상경"}
+  - {code: MJ05, name: "인문·사회"}
+  - {code: MJ06, name: "예체능"}
+  - {code: MJ07, name: "기타"}
+want_levels:  # WL 원하는 직급(프로필)
+  - {code: WL01, name: "실무자"}
+  - {code: WL02, name: "리더"}
+skill_levels:  # SL 스킬 숙련도(프로필)
+  - {code: SL01, level: 1, name: "기초", desc: "배우거나 작은 업무에 써 봄"}
+  - {code: SL02, level: 2, name: "실무", desc: "있는 것을 고치거나 도움 받아 만듦"}
+  - {code: SL03, level: 3, name: "숙련", desc: "혼자 설계·구축·운영"}
+  - {code: SL04, level: 4, name: "전문", desc: "기준을 세우고 가르치거나 검토"}
+english_levels:  # EL 영어 수준(프로필). low: 영어로 일하는 공고에 점수 상한(config/match_guide.yaml gates.english_cap)
+  - {code: EL01, name: "못함", low: true}
+  - {code: EL02, name: "읽기·쓰기", low: true}
+  - {code: EL03, name: "업무 회의"}
+  - {code: EL04, name: "능통"}

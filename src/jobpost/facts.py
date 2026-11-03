@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from . import bodyread, config, jobtypes, matching, recommend
+from . import bodyread, config, jobtypes, matching, recommend, taxonomy
 
 log = logging.getLogger(__name__)
 
@@ -22,14 +22,15 @@ PROMPT_VERSION = 2  # 2(2026-11-03): 업무마다 일의 종류(직무 유형)·
 BODY_CHARS = 3500  # 자격요건·우대사항은 본문 뒤쪽에 있어서 넉넉히 보낸다
 FILE = "facts.jsonl"
 
-LEVELS = ["주니어", "미들", "시니어", "리드·매니저", "적혀 있지 않음"]
-MANAGES = ["팀장(사람 관리)", "테크 리드(관리 없음)", "실무자", "적혀 있지 않음"]
-SCOPES = ["총괄·결정", "수행", "운영·유지", "보조"]  # 업무마다 책임 범위(직무와 상관없이 쓰는 말)
-EMPLOYMENT = ["정규직", "계약직", "인턴", "파견", "프리랜서", "적혀 있지 않음"]
-ENGLISH_USES = ["회의·협업", "문서·보고", "고객 응대", "공고가 영어"]
-DEGREES = ["무관", "학사", "석사", "박사", "적혀 있지 않음"]
-NEEDS = ["필수", "우대", "적혀 있지 않음"]
-WORK = ["출근", "하이브리드", "재택", "적혀 있지 않음"]
+# 고정 선택지(코드 + 이름)는 config/taxonomy/enums.yaml. 여기서는 이름을 쓴다(지시문·저장 값)
+LEVELS = taxonomy.names("posting_levels")
+DEGREES = taxonomy.names("posting_degrees")
+NEEDS = taxonomy.names("needs")
+WORK = taxonomy.names("work_modes")
+MANAGES = taxonomy.names("manages")
+SCOPES = taxonomy.names("scopes")  # 업무마다 책임 범위(직무와 상관없이 쓰는 말)
+EMPLOYMENT = taxonomy.names("employment")
+ENGLISH_USES = taxonomy.names("english_uses")
 
 
 def industries() -> dict[str, str]:

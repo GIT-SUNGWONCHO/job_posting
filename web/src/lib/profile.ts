@@ -14,7 +14,7 @@ export interface Project {
 }
 
 export interface Role {
-  role: string // config/profile.yaml roles의 id
+  role: string // config/profile.yaml roles의 id(코드는 code 칸)
   roleName?: string // role이 other일 때 직접 쓴 이름
   start: string
   end: string
@@ -24,7 +24,7 @@ export interface Role {
 
 export interface Career {
   company: string
-  industry: string // config/profile.yaml industries의 id
+  industry: string // config/taxonomy/industries.yaml의 legacy id
   start: string
   end: string
   title: string // 직급
@@ -39,7 +39,7 @@ export interface Skill {
 /** 원하는 조건: 필터로 빼지 않고 점수에만 반영한다(config/match_guide.yaml gates). 빈 값은 상관없음 */
 export interface Wants {
   level: string // 실무자 · 리더
-  industriesLike: string[] // config/profile.yaml industries의 id
+  industriesLike: string[] // config/taxonomy/industries.yaml의 legacy id
   industriesAvoid: string[]
 }
 

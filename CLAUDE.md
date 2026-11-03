@@ -14,11 +14,12 @@
 | 수집 기준: 범위, 중복, 기업 구분, 수집처에서 확인된 사실 | `docs/collection.md` |
 | 내용·형식·화면 원칙, 회사 리서치 모듈 | `docs/content-rules.md` |
 | 용어와 표기 | `docs/glossary.md` |
+| 기준 목록(직무·업종·스킬·고정 선택지) 코드 규칙 | `docs/taxonomy.md` |
 | 결정 기록(날짜 · 결정 · 이유 · 다시 볼 조건) | `docs/decisions.md` |
 | 대시보드 | https://careermap-web.oroloov.workers.dev (초대한 사람만 로그인) |
 | 운영 설정: Supabase, Cloudflare, 키 넣는 곳 | `docs/setup.md` |
 | 개발 흐름(다른 프로젝트에도 쓰는 진행 방식) | `docs/dev-workflow.md` |
-| 실제 값: 수집 범위, 개인 필터, 직무 유형, 스킬 사전, 매칭 점수·지침·기준 샘플, 프로필 목록(업종·직무), 아침 알림, AI 모델, 그룹 규칙, 회사 별칭, DART | `config/*.yaml` |
+| 실제 값: 기준 목록(`config/taxonomy/`: 직무 분야·유형, 업종, 스킬 사전, 고정 선택지), 수집 범위, 개인 필터, 매칭 점수·지침·기준 샘플, 프로필 목록(업종·직무), 아침 알림, AI 모델, 그룹 규칙, 회사 별칭, DART | `config/*.yaml` |
 | 수집 데이터 | `data` 브랜치(형식은 그 브랜치 README) |
 
 ## 지금 단계
@@ -61,7 +62,8 @@ src/jobpost/
   filters.py       개인 필터(보는 목록에서만 거름)
   store.py         data 폴더 형식
   pipeline.py      하루 수집 한 번의 순서
-  jobtypes.py      직무 유형 분류(목록은 config/job_types.yaml, AI가 고름)
+  taxonomy.py      기준 목록(config/taxonomy/, 코드 + 이름) 읽기·검사, 옮기기 전 보기(지난 id)
+  jobtypes.py      직무 유형 분류(목록은 config/taxonomy/jobs.yaml, AI가 고름)
   dart.py          회사 기본정보: 공고 회사를 DART와 잇고 기업개황·주요 계정·직원 현황·주요 공시를 data/dart/에(설정 config/dart.yaml). DART는 여기서만 부른다
   official.py      공식 목록: 공정위 기업집단 소속회사·공공기관(지정·지방공기업·지방출자출연)·국민연금 사업장을 data/official/에(매월 official.yml)
   company_class.py 기업 구분: 공적 근거(공공기관 목록·공정위·DART 지배기업·매출·국민연금)를 순서대로 보고 구분과 근거를 정함
@@ -72,7 +74,7 @@ src/jobpost/
   facts.py         공고 정리: 매칭 대상 공고의 매칭 항목·업무 꼬리표(일의 종류·책임 범위)를 공고당 1번 AI로(data/facts.jsonl), 스킬 목록
   prescreen.py     사전 거르기 시험(조건·규칙 v3·AI 묶음), methods.py 매칭 방식 비교 시험(A~D)
   profile.py       프로필 v2(경력 > 직무 구간 > 프로젝트, 숙련도): 직무별 연수, AI에 보낼 요약
-  matching.py      규칙 점수(비교용, config/matching.yaml + 스킬 사전 config/skills.yaml)
+  matching.py      규칙 점수(비교용, config/matching.yaml + 스킬 사전 config/taxonomy/skills.yaml)
   recommend.py     사람마다 매칭: 후보 공고를 AI가 매기고 판단 근거·공고 사실을 남김(지침 config/match_guide.yaml), 영어·고용 형태 상한과 원하는 조건 표시, Supabase matches에 씀
   feedback.py      회차 리포트: 로그에는 지표만, 공고별 평가·판단 근거·샘플 바꿀 후보는 암호화(feedback.yml). 평가 코멘트로 매칭 메모(match_memos)
   notify.py        아침 알림: 사람마다 첫 통(필터 통과 새 공고 전부 · 마감 임박)과 둘째 통(필터 밖 새 공고와 걸린 이유), 모두 접어서 켜 둔 채널로 보냄, 알림 연결(설정 config/notify.yaml)

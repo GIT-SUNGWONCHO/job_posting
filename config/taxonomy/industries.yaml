@@ -1,0 +1,67 @@
+# 업종(IN): 대분류(IN + 2자리)와 중분류(IN + 대분류 2 + 2자리). 판정에 상위를 쓴다(같은 중분류 충족, 같은 대분류 일부).
+# 임시(2026-11-03): 지금 23개를 대분류로 묶어 코드만 붙였다. KSIC 대조(B)로 확정하기 전에는 데이터에 코드를 쓰지 않는다.
+# legacy: 저장된 지난 id. 바꾸면 version을 올린다(공고 정리가 업종 경험을 이 목록으로 적어서 다시 뽑는다).
+
+version: 1
+draft: true
+
+groups:
+  - code: IN01
+    name: 금융
+    items:
+      - {code: IN0101, name: 금융(은행·카드), legacy: bank}
+      - {code: IN0102, name: 금융(증권·자산운용), legacy: securities}
+      - {code: IN0103, name: 보험, legacy: insurance}
+      - {code: IN0104, name: 핀테크·간편결제, legacy: fintech}
+  - code: IN02
+    name: 유통·소비재
+    items:
+      - {code: IN0201, name: 이커머스·유통, legacy: commerce}
+      - {code: IN0202, name: 소비재(패션·뷰티·생활·가구), legacy: consumer}
+      - {code: IN0203, name: 식품·외식, legacy: food}
+  - code: IN03
+    name: 제조
+    items:
+      - {code: IN0301, name: 자동차·모빌리티 제조, legacy: auto}
+      - {code: IN0302, name: 전자·반도체, legacy: electronics}
+      - {code: IN0303, name: 화학·소재·에너지, legacy: chemical}
+      - {code: IN0304, name: 중공업·조선·방산·항공, legacy: heavy}
+  - code: IN04
+    name: IT·통신
+    items:
+      - {code: IN0401, name: IT 플랫폼·포털, legacy: platform}
+      - {code: IN0402, name: 게임, legacy: game}
+      - {code: IN0403, name: SI·IT 서비스·컨설팅, legacy: it_service}
+      - {code: IN0404, name: 통신, legacy: telecom}
+  - code: IN05
+    name: 미디어·콘텐츠
+    items:
+      - {code: IN0501, name: 미디어·엔터·콘텐츠, legacy: media}
+  - code: IN06
+    name: 건설·부동산
+    items:
+      - {code: IN0601, name: 건설·부동산, legacy: construction}
+  - code: IN07
+    name: 물류·운송
+    items:
+      - {code: IN0701, name: 물류·운송, legacy: logistics}
+  - code: IN08
+    name: 의료·바이오
+    items:
+      - {code: IN0801, name: 의료·헬스케어·바이오, legacy: health}
+  - code: IN09
+    name: 교육
+    items:
+      - {code: IN0901, name: 교육, legacy: education}
+  - code: IN10
+    name: 공공
+    items:
+      - {code: IN1001, name: 공공·공기업, legacy: public}
+  - code: IN11
+    name: 여행·숙박·레저
+    items:
+      - {code: IN1101, name: 여행·숙박·레저, legacy: travel}
+  - code: IN99
+    name: 기타
+    items:
+      - {code: IN9901, name: 기타, legacy: other}

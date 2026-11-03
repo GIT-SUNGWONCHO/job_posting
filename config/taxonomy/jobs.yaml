@@ -1,0 +1,194 @@
+# 직무 분야(JF)와 직무 유형(JT). 코드 규칙은 docs/taxonomy.md. 코드는 다시 쓰지 않고 번호도 다시 매기지 않는다.
+# 이름·설명은 고쳐도 된다. 설명(desc)은 AI 분류 지시문에 들어가므로 바꾸면 version을 올린다(열린 공고를 다시 분류).
+# legacy: 데이터에 저장된 지난 id(코드로 옮기기 전까지 이 id로 읽고 쓴다). 갈라지면 retired와 replaced_by를 남긴다.
+# 직무 유형은 분야를 옮길 수 있어 코드에 분야를 넣지 않고 field 칸에 적는다.
+
+version: 3  # 3: 데이터 분석가 설명을 넓힘
+# 지난 판 id → 지금 id(마감돼 다시 분류하지 않는 공고를 셀 때)
+legacy_aliases:
+  software: f_sw
+  non_data: f_other
+
+fields:
+  - {code: JF01, name: AI·데이터, legacy: ai_data}
+  - code: JF02
+    name: SW 개발
+    short: SW 개발
+    legacy: f_sw
+    desc: "백엔드·프론트엔드·풀스택·앱·임베디드·게임·QA·보안·클라우드·DevOps·시스템·네트워크 등 일반 소프트웨어·IT 개발과 운영"
+  - code: JF03
+    name: 기획·전략
+    short: 기획·전략
+    legacy: f_planning
+    desc: "경영·사업 기획, 일반 서비스·웹 기획, PM·PO(데이터·AI가 주가 아닌), 경영 컨설팅, 업무 프로세스 혁신(PI)"
+  - code: JF04
+    name: 경영지원·법무·사무
+    short: 경영지원·법무·사무
+    legacy: f_admin
+    desc: "총무, 경영지원, 법무, 비서, 일반 사무"
+  - code: JF05
+    name: 인사·HR
+    short: 인사·HR
+    legacy: f_hr
+    desc: "인사, 채용, HRD·HRM, 노무"
+  - code: JF06
+    name: 회계·세무·재무
+    short: 회계·세무·재무
+    legacy: f_finance
+    desc: "회계, 세무, 재무, 감사, IR·공시"
+  - code: JF07
+    name: 마케팅·광고·MD
+    short: 마케팅·광고·MD
+    legacy: f_marketing
+    desc: "브랜드·퍼포먼스·CRM·콘텐츠 마케팅, 광고, 홍보, MD, 그로스 마케팅"
+  - code: JF08
+    name: 영업
+    short: 영업
+    legacy: f_sales
+    desc: "제품·법인·해외·IT·기술 영업, 영업관리·지원"
+  - code: JF09
+    name: 고객상담·서비스
+    short: 고객상담·서비스
+    legacy: f_cs
+    desc: "고객 상담, 고객센터, 매장·리테일 운영, 서비스직"
+  - code: JF10
+    name: 디자인
+    short: 디자인
+    legacy: f_design
+    desc: "UI·UX, 그래픽, 제품·산업, 영상·편집 디자인"
+  - code: JF11
+    name: 엔지니어링·R&D
+    short: 엔지니어링·R&D
+    legacy: f_engineering
+    desc: "기계·전기·전자·반도체·화학·통신 엔지니어링, 설계, 하드웨어, 로봇, 일반 R&D 연구원"
+  - code: JF12
+    name: 제조·생산·품질
+    short: 제조·생산·품질
+    legacy: f_manufacturing
+    desc: "생산, 공정·생산관리, 품질관리, 공장 운영"
+  - code: JF13
+    name: 물류·무역·운송
+    short: 물류·무역·운송
+    legacy: f_logistics
+    desc: "물류, 구매·자재, 유통, 무역, 운전·배송"
+  - code: JF14
+    name: 금융·보험
+    short: 금융·보험
+    legacy: f_banking
+    desc: "금융 사무·심사, 보험, 투자·애널리스트(데이터 분석이 주가 아닌), 펀드 운용"
+  - code: JF15
+    name: 교육
+    short: 교육
+    legacy: f_education
+    desc: "강사, 교사, 교수설계, 교육 운영"
+  - code: JF16
+    name: 건설·건축·시설
+    short: 건설·건축·시설
+    legacy: f_construction
+    desc: "건축, 토목, 시공, 시설관리, 안전관리, 부동산"
+  - code: JF17
+    name: 의료·바이오
+    short: 의료·바이오
+    legacy: f_medical
+    desc: "의사·간호, 의료기사, 제약·바이오·임상 연구(데이터 분석이 주가 아닌)"
+  - code: JF18
+    name: 미디어·콘텐츠·문화
+    short: 미디어·콘텐츠·문화
+    legacy: f_media
+    desc: "PD, 영상편집, 기자·에디터, 작가, 통번역, 크리에이터"
+  - code: JF19
+    name: 공공·복지
+    short: 공공·복지
+    legacy: f_public
+    desc: "사회복지, 공공기관 일반 행정"
+  - code: JF20
+    name: 외식·식음료
+    short: 외식·식음료
+    legacy: f_food
+    desc: "조리, 제과제빵, 바리스타, 외식 매장"
+  - code: JF21
+    name: 그 밖의 직무
+    short: 그 밖
+    legacy: f_other
+    desc: "위 어디에도 맞지 않는 직무(장비 수리·하드디스크 데이터 복구, 단순 노무 등)"
+
+types:
+  - code: JT001
+    name: 데이터 엔지니어
+    short: 데이터 엔지니어
+    field: JF01
+    legacy: data_eng
+    desc: "데이터 파이프라인·ETL, 데이터 플랫폼, DW·데이터 레이크·레이크하우스, 데이터 인프라 구축·운영, Spark·Kafka·Airflow 같은 데이터 처리 기술 중심 개발"
+  - code: JT002
+    name: 애널리틱스 엔지니어
+    short: 애널리틱스 엔지니어
+    field: JF01
+    legacy: analytics_eng
+    desc: "분석용 데이터 마트·지표 체계·시맨틱 레이어 구축, dbt·SQL 모델링, BI 대시보드·리포트 개발과 운영(BI 엔지니어)"
+  - code: JT003
+    name: 데이터 아키텍트·거버넌스
+    short: 데이터 아키텍트
+    field: JF01
+    legacy: data_arch
+    desc: "데이터 아키텍처(DA), 데이터 모델링, 데이터 표준·품질·메타데이터·MDM, 데이터 거버넌스, AI 거버넌스(AI 윤리·리스크·규제 대응)"
+  - code: JT004
+    name: DBA·DB 엔지니어
+    short: DBA
+    field: JF01
+    legacy: dba
+    desc: "데이터베이스 운영·튜닝·이행, DBA"
+  - code: JT005
+    name: 데이터 분석가
+    short: 데이터 분석가
+    field: JF01
+    legacy: analyst
+    desc: "데이터 분석 전반(사업·서비스·그로스·마케팅·운영·재무·리스크 등), 지표 분석과 인사이트 도출, 통계 분석, BI 활용. 대시보드·마트를 만드는 일이 주 업무면 애널리틱스 엔지니어"
+  - code: JT006
+    name: 데이터 사이언티스트
+    short: 데이터 사이언티스트
+    field: JF01
+    legacy: data_sci
+    desc: "예측·통계 모델링, 실험 설계, 데이터 사이언스"
+  - code: JT007
+    name: ML 엔지니어
+    short: ML 엔지니어
+    field: JF01
+    legacy: ml_eng
+    desc: "머신러닝·딥러닝 모델 개발(추천·검색·랭킹·컴퓨터 비전·음성·NLP·로봇·자율주행 인지 등)"
+  - code: JT008
+    name: MLOps·AI 플랫폼
+    short: MLOps
+    field: JF01
+    legacy: mlops
+    desc: "모델 학습·서빙 파이프라인, ML·AI 플랫폼, GPU·AI 인프라"
+  - code: JT009
+    name: AI 엔지니어(LLM·에이전트)
+    short: AI 엔지니어
+    field: JF01
+    legacy: ai_eng
+    desc: "LLM·생성형 AI 응용, RAG, AI 에이전트, AI 서비스 개발, 프롬프트 엔지니어링, FDE"
+  - code: JT010
+    name: AI 연구
+    short: AI 연구
+    field: JF01
+    legacy: research
+    desc: "AI·ML 연구원, 리서치 사이언티스트, 논문·신기술 연구, 교수·연구교수"
+  - code: JT011
+    name: AI·데이터 기획·PM
+    short: 기획·PM
+    field: JF01
+    legacy: planning
+    desc: "AI·데이터 서비스 기획, PM·PO, AX·DX 전략. 조직을 이끄는 자리도 실제 업무가 기획·전략이면 여기(관리 여부는 공고 정리에서 따로 본다)"
+  - code: JT012
+    name: AI·데이터 컨설팅·사업
+    short: 컨설팅·사업
+    field: JF01
+    legacy: consulting
+    desc: "AI·데이터 컨설팅, 솔루션 아키텍트·프리세일즈, 사업개발, 교육·강의"
+  - code: JT013
+    name: 데이터 수집·라벨링
+    short: 라벨링
+    field: JF01
+    legacy: labeling
+    direction: false
+    desc: "데이터 라벨링·어노테이션·수집·입력·검수, AI 학습 데이터 작업, AI 평가·튜터, 사무용 데이터 관리"

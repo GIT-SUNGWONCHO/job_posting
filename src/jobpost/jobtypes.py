@@ -1,4 +1,4 @@
-"""직무 유형 분류. 목록은 config/job_types.yaml(고정, 버전 관리), 고르는 건 AI다.
+"""직무 유형 분류. 목록은 config/taxonomy/jobs.yaml(고정, 버전 관리), 고르는 건 AI다.
 
 AI는 제목, 수집처 분류, 본문의 주요 업무 앞부분(있으면)을 보고 직무 유형 하나를 고른다. 결과는 state.jsonl의
 공고마다 job_type에 목록 버전, 지시문 버전, 모델, 본문을 봤는지와 함께 남긴다(docs/content-rules.md 내용 원칙 5).
@@ -34,7 +34,7 @@ def names() -> dict[str, str]:
 
 
 def current_id(t: str | None) -> str | None:
-    """지난 판의 id를 지금 id로(마감돼 다시 분류하지 않는 공고를 셀 때). config/job_types.yaml legacy."""
+    """지난 판의 id를 지금 id로(마감돼 다시 분류하지 않는 공고를 셀 때). config/taxonomy/jobs.yaml legacy."""
     return (taxonomy().get("legacy") or {}).get(t or "", t) if t else t
 
 
