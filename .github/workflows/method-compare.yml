@@ -1,0 +1,51 @@
+# 시험: 매칭 방식 A(지금)·B(항목 풀)·C(고정 틀)·D(AI 바로 점수)를 내 평가(○△×)로 견준다. 저장 없음, 로그에는 지표만.
+# 평가한 공고마다 방식 하나에 AI 1번(B·C·D면 3번).
+# 수동 실행: GitHub > Actions > method-compare > Run workflow
+name: method-compare
+
+on:
+  workflow_dispatch:
+    inputs:
+      methods:
+        description: 새로 매길 방식(B·C·D 중)
+        required: false
+        default: "BCD"
+      limit:
+        description: 평가한 공고 중 앞에서 이만큼만(비우면 전부)
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+      - name: 시험
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          METHODS: ${{ inputs.methods }}
+          LIMIT: ${{ inputs.limit }}
+        run: uv run --no-dev jobpost method-compare --data-dir data --methods "${METHODS:-BCD}" ${LIMIT:+--limit "$LIMIT"} | tee -a "$GITHUB_STEP_SUMMARY"
