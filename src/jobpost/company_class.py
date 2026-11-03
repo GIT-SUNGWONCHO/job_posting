@@ -2,7 +2,7 @@
 
 구분: 공공 · 대기업 · 외국계 · 중견 · 중소·스타트업 · 확인 안 됨. 표시: 상장.
 근거 순서:
-1. 알리오 공공기관 목록 → 공공
+1. 공공기관 목록(재정경제부 공공기관 지정현황 · 행정안전부 지방공기업 · 지방출자출연기관) → 공공
 2. 공정위 대규모기업집단 소속회사 → 대기업. DART 법인등록번호가 같으면(group_keys의 '#번호'), 번호가 없으면 회사 키
    또는 이어진 DART 법인 이름의 키가 같을 때
 3. DART 감사보고서 지배기업이나 사업보고서 최대주주가 외국 회사 → 외국계(dart.foreign_owner).
@@ -65,14 +65,16 @@ class Result:
 
 
 def classify(key: str, *, corp: dict[str, Any] | None, basics: dict[str, Any] | None,
-             group_keys: dict[str, str], public_keys: set[str], nps: dict[str, tuple[int, int]],
+             group_keys: dict[str, str], public_keys: dict[str, str] | set[str], nps: dict[str, tuple[int, int]],
              source_type: str) -> Result:
     corp = corp or {}
     code = corp.get("corp_code")
     listed = bool(corp.get("stock_code"))
     dart_key = corp.get("dart_key")
-    if key in public_keys or (dart_key and dart_key in public_keys):
-        return Result("공기업·공공기관", "알리오 공공기관", listed)
+    pk = key if key in public_keys else dart_key if dart_key and dart_key in public_keys else None
+    if pk:
+        label = public_keys.get(pk) if isinstance(public_keys, dict) else None
+        return Result("공기업·공공기관", label or "공공기관 목록", listed)
     jurir = ((basics or {}).get("company") or {}).get("jurir_no")
     g = (group_keys.get(f"#{jurir}") if jurir else None) or group_keys.get(key) \
         or (group_keys.get(dart_key) if dart_key else None)

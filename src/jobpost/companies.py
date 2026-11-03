@@ -152,7 +152,7 @@ class CompanyRegistry:
                 public = official.load(base, "public")
                 ev = {"groups": company_class.group_index(groups), "corps": _j("corps.json"),
                       "basics": _j("basics.json"), "nps": official.load_nps(base),
-                      "public": {o["key"] for o in public.get("orgs") or []}}
+                      "public": {o["key"]: o.get("list") or "공공기관 목록" for o in public.get("orgs") or []}}
             self._official = ev
         return self._official
 

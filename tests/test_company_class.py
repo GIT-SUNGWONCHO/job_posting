@@ -16,7 +16,7 @@ def test_sme_limit_by_industry():
 def test_order_of_evidence():
     fin = {"finance": {"years": [{"revenue": 2000e8}]}, "company": {"industry_code": "62010"}}
     corp = {"corp_code": "1", "corp_name": "가나"}
-    assert _c(public={"가나"}).type == "공기업·공공기관"
+    assert _c(public={"가나": "공공기관 지정현황(재정경제부)"}).basis == "공공기관 지정현황(재정경제부)"
     assert _c(groups={"가나": "가나그룹"}, corp=corp, basics=fin).type == "대기업"
     assert _c(corp={**corp, "dart_key": "다라"}, groups={"다라": "다라그룹"}).type == "대기업"
     assert _c(corp=corp, basics=fin).type == "중견"
