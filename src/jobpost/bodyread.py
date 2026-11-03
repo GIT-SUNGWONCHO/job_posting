@@ -129,7 +129,7 @@ def run(data_dir: Path, wanted: list[str], details: dict[str, dict[str, Any]], c
                      "model": getattr(client, "model", None), "on": today}
         summary["done"] += 1
         if not text:
-            summary["empty"] += 1
+            summary["blank"] = summary.get("blank", 0) + 1  # 읽었지만 글이 없던 이미지(pending 계산에는 done으로 셈)
         if summary["done"] % 20 == 0:
             save(data_dir, rows)
             log.info("본문 읽기 %d/%d건", summary["done"], len(todo))
