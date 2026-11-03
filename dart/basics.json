@@ -94,6 +94,7 @@
 "foreign": null,
 "name": "포스코홀딩스㈜",
 "rate": 52.8,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -155,6 +156,7 @@
 "foreign": null,
 "name": "더제니스홀딩스",
 "rate": 52.53,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -411,6 +413,7 @@
 "foreign": null,
 "name": "(유)와이피씨",
 "rate": 25.21,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -499,6 +502,7 @@
 "foreign": null,
 "name": "흥국생명보험(주)",
 "rate": 40.06,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -554,6 +558,7 @@
 "foreign": null,
 "name": "한솔홀딩스(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -669,6 +674,7 @@
 "foreign": null,
 "name": "(주)E1",
 "rate": 81.79,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -867,6 +873,7 @@
 "foreign": null,
 "name": "삼성생명보험",
 "rate": 29.39,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -922,6 +929,7 @@
 "foreign": null,
 "name": "HD현대(주)",
 "rate": 73.85,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -1083,6 +1091,7 @@
 "foreign": null,
 "name": "정몽진",
 "rate": 20.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -1194,6 +1203,7 @@
 "foreign": null,
 "name": "(주)케이씨씨",
 "rate": 36.03,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -1469,6 +1479,7 @@
 "foreign": null,
 "name": "(주)LS",
 "rate": 48.46,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -1715,6 +1726,7 @@
 "foreign": null,
 "name": "LG전자㈜",
 "rate": 36.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -1971,6 +1983,7 @@
 "foreign": null,
 "name": "구자은",
 "rate": 3.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -2112,6 +2125,7 @@
 "foreign": null,
 "name": "LG전자(주)",
 "rate": 40.79,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -2338,6 +2352,7 @@
 "foreign": null,
 "name": "현대자동차",
 "rate": 25.35,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -2519,6 +2534,7 @@
 "foreign": null,
 "name": "현대자동차",
 "rate": 35.17,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -2620,6 +2636,7 @@
 "foreign": null,
 "name": "(주)동주",
 "rate": 14.02,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -2751,6 +2768,7 @@
 "foreign": null,
 "name": "(주)농심홀딩스",
 "rate": 32.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -2852,6 +2870,7 @@
 "foreign": null,
 "name": "김영훈",
 "rate": 39.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -2904,6 +2923,7 @@
 "foreign": null,
 "name": "(주)아이엠금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -3160,6 +3180,7 @@
 "foreign": null,
 "name": "㈜대림",
 "rate": 48.27,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -3221,6 +3242,7 @@
 "owner": {
 "foreign": null,
 "name": "인 대신증권(주)가 작성하며 해당 지배회사의 정보는 아래와 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -3412,6 +3434,7 @@
 "foreign": null,
 "name": "한화에어로스페이스(주)",
 "rate": 30.44,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -3568,6 +3591,7 @@
 "foreign": null,
 "name": "미래에셋캐피탈㈜",
 "rate": 33.13,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -3759,6 +3783,7 @@
 "foreign": null,
 "name": "윤재승",
 "rate": 11.64,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -4012,6 +4037,7 @@
 "foreign": null,
 "name": "미래에셋증권",
 "rate": 22.01,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -4075,6 +4101,7 @@
 "foreign": null,
 "name": "신창재",
 "rate": 33.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -4288,6 +4315,7 @@
 "foreign": null,
 "name": "(주)한화",
 "rate": 43.24,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -4439,6 +4467,7 @@
 "foreign": null,
 "name": "교보생명보험(주)",
 "rate": 84.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -4575,6 +4604,7 @@
 "foreign": null,
 "name": "CJ제일제당(주)",
 "rate": 40.16,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -4641,6 +4671,7 @@
 "foreign": null,
 "name": "하나금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -4837,6 +4868,7 @@
 "foreign": null,
 "name": "한진칼",
 "rate": 26.13,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -5093,6 +5125,7 @@
 "foreign": null,
 "name": "롯데케미칼(주)",
 "rate": 46.94,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -5211,6 +5244,7 @@
 "owner": {
 "foreign": null,
 "name": "Johnson Controls International Plc 1",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -5452,6 +5486,7 @@
 "foreign": null,
 "name": "DB손해보험(주)",
 "rate": 26.71,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -5597,6 +5632,7 @@
 "foreign": null,
 "name": "디오홀딩스(유)",
 "rate": 23.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -5872,6 +5908,7 @@
 "foreign": null,
 "name": "조현준",
 "rate": 41.02,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -6053,6 +6090,7 @@
 "foreign": null,
 "name": "(재)두산연강재단",
 "rate": 21.28,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -6184,6 +6222,7 @@
 "foreign": null,
 "name": "김   식",
 "rate": 22.09,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -6364,6 +6403,7 @@
 "foreign": null,
 "name": "유진기업(주)",
 "rate": 23.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -6530,6 +6570,7 @@
 "foreign": null,
 "name": "이화경",
 "rate": 32.63,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -6582,6 +6623,7 @@
 "foreign": null,
 "name": "㈜메리츠금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -6723,6 +6765,7 @@
 "foreign": null,
 "name": "이은우",
 "rate": 14.51,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -6979,6 +7022,7 @@
 "foreign": null,
 "name": "김남정",
 "rate": 53.74,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -7235,6 +7279,7 @@
 "foreign": null,
 "name": "구광모",
 "rate": 16.27,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -7491,6 +7536,7 @@
 "foreign": null,
 "name": "허창수",
 "rate": 5.95,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -7727,6 +7773,7 @@
 "foreign": null,
 "name": "㈜LX홀딩스",
 "rate": 27.83,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -7914,6 +7961,7 @@
 "foreign": null,
 "name": "농협금융지주(주)",
 "rate": 61.94,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -7966,6 +8014,7 @@
 "foreign": null,
 "name": "(주)KB금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -8032,6 +8081,7 @@
 "foreign": null,
 "name": "롯데케미칼",
 "rate": 44.02,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -8087,6 +8137,7 @@
 "foreign": null,
 "name": "(주)롯데홀딩스",
 "rate": 60.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -8362,6 +8413,7 @@
 "foreign": null,
 "name": "롯데지주㈜",
 "rate": 40.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -8568,6 +8620,7 @@
 "foreign": null,
 "name": "신동빈",
 "rate": 13.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -8824,6 +8877,7 @@
 "foreign": null,
 "name": "롯데지주(주)",
 "rate": 45.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -8873,6 +8927,7 @@
 "foreign": null,
 "name": "삼성전자(주)",
 "rate": 68.45,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -9148,6 +9203,7 @@
 "foreign": null,
 "name": "(주)하림지주",
 "rate": 54.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -9289,6 +9345,7 @@
 "foreign": null,
 "name": "㈜보령홀딩스",
 "rate": 29.71,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -9545,6 +9602,7 @@
 "foreign": null,
 "name": "포스코홀딩스(주)",
 "rate": 70.71,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -9706,6 +9764,7 @@
 "foreign": null,
 "name": "중흥토건㈜",
 "rate": 40.6,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -9761,6 +9820,7 @@
 "foreign": null,
 "name": "㈜케이티",
 "rate": 69.54,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -10017,6 +10077,7 @@
 "foreign": null,
 "name": "애경자산관리(주)",
 "rate": 18.91,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -10133,6 +10194,7 @@
 "foreign": null,
 "name": "이성엽",
 "rate": 26.46,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -10229,6 +10291,7 @@
 "foreign": null,
 "name": "(주)MSHC",
 "rate": 20.84,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -10375,6 +10438,7 @@
 "foreign": null,
 "name": "현대제철(주)",
 "rate": 31.12,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -10631,6 +10695,7 @@
 "foreign": null,
 "name": "삼성전자",
 "rate": 22.58,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -10818,6 +10883,7 @@
 "foreign": null,
 "name": "삼성물산(주)",
 "rate": 19.34,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -10976,6 +11042,7 @@
 "foreign": null,
 "name": "삼성생명보험㈜",
 "rate": 71.86,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -11232,6 +11299,7 @@
 "foreign": null,
 "name": "삼성SDI",
 "rate": 11.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -11274,6 +11342,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "도 GEC에서 GE HealthCare Technologies Inc로 변경되었습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -11430,6 +11499,7 @@
 "foreign": null,
 "name": "삼성전자(주)",
 "rate": 19.44,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -11686,6 +11756,7 @@
 "foreign": null,
 "name": "삼성전자(주)",
 "rate": 23.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -11942,6 +12013,7 @@
 "foreign": null,
 "name": "삼성생명보험㈜",
 "rate": 8.51,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -12198,6 +12270,7 @@
 "foreign": null,
 "name": "삼성전자",
 "rate": 15.23,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -12419,6 +12492,7 @@
 "foreign": null,
 "name": "㈜한화",
 "rate": 32.18,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -12461,6 +12535,7 @@
 "owner": {
 "foreign": null,
 "name": "Hewlett-Packard Enterprise Company의 주식을 기준으로 한 Stock option",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -12617,6 +12692,7 @@
 "foreign": null,
 "name": "김   원",
 "rate": 6.59,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -12738,6 +12814,7 @@
 "foreign": null,
 "name": "삼양라운드스퀘어(주)",
 "rate": 35.48,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -12909,6 +12986,7 @@
 "foreign": null,
 "name": "(주)씨엔씨기술",
 "rate": 22.2,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -13123,6 +13201,7 @@
 "foreign": null,
 "name": "CJ주식회사",
 "rate": 47.11,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -13254,6 +13333,7 @@
 "foreign": null,
 "name": "(주)포스코",
 "rate": 48.85,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -13424,6 +13504,7 @@
 "foreign": null,
 "name": "CJ제일제당(주)",
 "rate": 46.26,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -13570,6 +13651,7 @@
 "foreign": null,
 "name": "㈜녹십자홀딩스",
 "rate": 50.06,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -13867,6 +13949,7 @@
 "foreign": null,
 "name": "SK(주)",
 "rate": 43.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -13958,6 +14041,7 @@
 "foreign": null,
 "name": "SK(주)",
 "rate": 67.63,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -14214,6 +14298,7 @@
 "foreign": null,
 "name": "최창원",
 "rate": 41.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -14359,6 +14444,7 @@
 "foreign": null,
 "name": "이성호",
 "rate": 42.36,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -14414,6 +14500,7 @@
 "foreign": null,
 "name": "(주)신세계인터내셔날",
 "rate": 95.44,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -14610,6 +14697,7 @@
 "foreign": null,
 "name": "동원산업(주)",
 "rate": 71.04,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -14793,6 +14881,7 @@
 "foreign": null,
 "name": "한화생명(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -14934,6 +15023,7 @@
 "foreign": null,
 "name": "이지선",
 "rate": 8.11,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -15190,6 +15280,7 @@
 "foreign": null,
 "name": "정유경",
 "rate": 29.15,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -15296,6 +15387,7 @@
 "foreign": null,
 "name": "티앤엠커뮤니케이션즈",
 "rate": 25.38,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -15348,6 +15440,7 @@
 "foreign": null,
 "name": "신한금융지주회사",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -15400,6 +15493,7 @@
 "foreign": null,
 "name": "신한금융지주회사",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -15578,6 +15672,7 @@
 "foreign": null,
 "name": "현대자동차",
 "rate": 22.17,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -15633,6 +15728,7 @@
 "foreign": null,
 "name": "SK(주)",
 "rate": 51.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -15799,6 +15895,7 @@
 "foreign": null,
 "name": "(주)지에스",
 "rate": 50.7,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -15857,6 +15954,7 @@
 "foreign": null,
 "name": "(주)신한금융지주회사",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -16061,6 +16159,7 @@
 "foreign": null,
 "name": "㈜대한항공",
 "rate": 63.88,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -16239,6 +16338,7 @@
 "foreign": null,
 "name": "삼성생명",
 "rate": 15.43,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -16450,6 +16550,7 @@
 "foreign": null,
 "name": "에이케이홀딩스(주)",
 "rate": 45.08,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -16596,6 +16697,7 @@
 "foreign": null,
 "name": "(주)엘지",
 "rate": 44.96,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -16852,6 +16954,7 @@
 "foreign": null,
 "name": "SK(주)",
 "rate": 40.64,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -16968,6 +17071,7 @@
 "foreign": null,
 "name": "(주)다우데이타",
 "rate": 36.56,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -17079,6 +17183,7 @@
 "foreign": null,
 "name": "(주)LG",
 "rate": 35.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -17200,6 +17305,7 @@
 "foreign": null,
 "name": "(주)GS",
 "rate": 58.62,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -17346,6 +17452,7 @@
 "foreign": null,
 "name": "장 세 준",
 "rate": 17.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -17467,6 +17574,7 @@
 "foreign": null,
 "name": "제리코파트너스(주)",
 "rate": 34.87,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -17742,6 +17850,7 @@
 "foreign": null,
 "name": "SK디스커버리(주)",
 "rate": 72.08,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -17953,6 +18062,7 @@
 "foreign": null,
 "name": "명운산업개발(주)",
 "rate": 9.55,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -18209,6 +18319,7 @@
 "foreign": null,
 "name": "기아(주)",
 "rate": 17.27,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -18375,6 +18486,7 @@
 "foreign": null,
 "name": "씨엠제이씨㈜",
 "rate": 17.02,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -18644,6 +18756,7 @@
 "foreign": null,
 "name": "삼성전자",
 "rate": 25.24,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -18830,6 +18943,7 @@
 "foreign": null,
 "name": "김홍국",
 "rate": 21.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -19086,6 +19200,7 @@
 "foreign": null,
 "name": "이재현",
 "rate": 42.07,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -19277,6 +19392,7 @@
 "foreign": null,
 "name": "한화자산운용(주)",
 "rate": 46.08,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -19348,6 +19464,7 @@
 "foreign": null,
 "name": "아이엠금융지주",
 "rate": 87.88,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -19604,6 +19721,7 @@
 "foreign": null,
 "name": "이화영",
 "rate": 7.87,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -19656,6 +19774,7 @@
 "foreign": null,
 "name": "신한금융지주회사",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -19869,6 +19988,7 @@
 "foreign": null,
 "name": "기획재정부",
 "rate": 59.5,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -20035,6 +20155,7 @@
 "foreign": null,
 "name": "이 재 용",
 "rate": 19.76,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -20291,6 +20412,7 @@
 "foreign": null,
 "name": "이웅열",
 "rate": 48.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -20472,6 +20594,7 @@
 "foreign": null,
 "name": "㈜코오롱",
 "rate": 72.7,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -20543,6 +20666,7 @@
 "foreign": null,
 "name": "코오롱인더스트리(주)",
 "rate": 80.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -20601,6 +20725,7 @@
 "foreign": null,
 "name": "하나금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -20876,6 +21001,7 @@
 "foreign": null,
 "name": "이호진",
 "rate": 29.48,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -21012,6 +21138,7 @@
 "foreign": null,
 "name": "임석원",
 "rate": 21.41,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -21268,6 +21395,7 @@
 "foreign": null,
 "name": "서경배",
 "rate": 54.97,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -21469,6 +21597,7 @@
 "foreign": null,
 "name": "포스코홀딩스",
 "rate": 65.38,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -21630,6 +21759,7 @@
 "foreign": null,
 "name": "(주)포스코",
 "rate": 56.87,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -21886,6 +22016,7 @@
 "foreign": null,
 "name": "포스코홀딩스(주)",
 "rate": 58.2,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -22142,6 +22273,7 @@
 "foreign": null,
 "name": "국민연금공단",
 "rate": 7.96,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -22330,6 +22462,7 @@
 "foreign": null,
 "name": "한솔홀딩스(주)",
 "rate": 20.26,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -22372,6 +22505,7 @@
 "owner": {
 "foreign": null,
 "name": "C",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -22548,6 +22682,7 @@
 "foreign": null,
 "name": "롯데케미칼(주)",
 "rate": 43.5,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -22764,6 +22899,7 @@
 "foreign": null,
 "name": "롯데쇼핑㈜",
 "rate": 65.25,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -22890,6 +23026,7 @@
 "foreign": null,
 "name": "(주)NICE홀딩스",
 "rate": 44.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -23066,6 +23203,7 @@
 "foreign": null,
 "name": "SECOM CO., LTD.",
 "rate": 25.65,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -23108,6 +23246,7 @@
 "owner": {
 "foreign": null,
 "name": "ALPS ALPINE North America",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -23150,6 +23289,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Amway (Europe) Limited Denmark Holdco I Aps 지배기업 Alticor Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -23208,6 +23348,7 @@
 "foreign": null,
 "name": "(주)하나금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -23394,6 +23535,7 @@
 "foreign": null,
 "name": "SK㈜",
 "rate": 30.57,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -23632,6 +23774,7 @@
 "foreign": null,
 "name": "김남호",
 "rate": 9.19,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -23783,6 +23926,7 @@
 "foreign": null,
 "name": "한국산업은행",
 "rate": 32.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -24039,6 +24183,7 @@
 "foreign": null,
 "name": "한국전력공사",
 "rate": 51.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -24290,6 +24435,7 @@
 "foreign": null,
 "name": "한국전력공사",
 "rate": 51.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -24332,6 +24478,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -24498,6 +24645,7 @@
 "foreign": null,
 "name": "㈜두산",
 "rate": 30.39,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -24754,6 +24902,7 @@
 "foreign": null,
 "name": "정  부\n(기후에너지환경부)",
 "rate": 34.55,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -25014,6 +25163,7 @@
 "foreign": null,
 "name": "조현범",
 "rate": 42.03,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -25056,6 +25206,7 @@
 "owner": {
 "foreign": null,
 "name": "케이티 관계회사 케이티에스테이트 기타 특수관계자 케이티클라우드",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -25114,6 +25265,7 @@
 "foreign": null,
 "name": "한국투자금융지주(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -25166,6 +25318,7 @@
 "foreign": null,
 "name": "주식회사KB금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -25362,6 +25515,7 @@
 "foreign": null,
 "name": "한화에너지㈜",
 "rate": 22.15,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -25589,9 +25743,10 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "(주)DB Inc.",
 "rate": 19.52,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -25848,6 +26003,7 @@
 "foreign": null,
 "name": "에이치엘홀딩스㈜",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -25900,6 +26056,7 @@
 "foreign": null,
 "name": "KB금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -26055,6 +26212,7 @@
 "foreign": null,
 "name": "하임 유한회사",
 "rate": 18.95,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -26154,6 +26312,7 @@
 "foreign": null,
 "name": "㈜비에스보성",
 "rate": 86.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -26410,6 +26569,7 @@
 "foreign": null,
 "name": "(주)한화",
 "rate": 36.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -26546,6 +26706,7 @@
 "foreign": null,
 "name": "김남호",
 "rate": 16.83,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -26702,6 +26863,7 @@
 "foreign": null,
 "name": "한진칼",
 "rate": 30.2,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -26765,6 +26927,7 @@
 "foreign": null,
 "name": "(주)메리츠금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -27059,6 +27222,7 @@
 "foreign": null,
 "name": "현대자동차",
 "rate": 20.95,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -27334,6 +27498,7 @@
 "foreign": null,
 "name": "정몽규",
 "rate": 33.68,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -27505,6 +27670,7 @@
 "foreign": null,
 "name": "현대홀딩스컴퍼니㈜",
 "rate": 20.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -27691,6 +27857,7 @@
 "foreign": null,
 "name": "현대모비스",
 "rate": 22.36,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -27947,6 +28114,7 @@
 "foreign": null,
 "name": "SK스퀘어(주)",
 "rate": 20.07,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -28108,6 +28276,7 @@
 "foreign": null,
 "name": "기아(주)",
 "rate": 18.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -28364,6 +28533,7 @@
 "foreign": null,
 "name": "HD현대㈜",
 "rate": 35.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -28430,6 +28600,7 @@
 "foreign": null,
 "name": "KB금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -28626,6 +28797,7 @@
 "foreign": null,
 "name": "롯데지주(주)",
 "rate": 25.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -28681,6 +28853,7 @@
 "foreign": null,
 "name": "지에스에너지(주)",
 "rate": 50.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -28922,6 +29095,7 @@
 "foreign": null,
 "name": "삼성생명",
 "rate": 7.3,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -29008,6 +29182,7 @@
 "foreign": null,
 "name": "화천기공\n(주)",
 "rate": 32.22,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -29060,6 +29235,7 @@
 "foreign": null,
 "name": "티시스(주)",
 "rate": 86.96,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -29112,6 +29288,7 @@
 "foreign": null,
 "name": "DB손해보험㈜",
 "rate": 99.07,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -29164,6 +29341,7 @@
 "foreign": null,
 "name": "(주)하나금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -29206,6 +29384,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 MetLife Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -29427,6 +29606,7 @@
 "foreign": null,
 "name": "김용우",
 "rate": 21.51,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 4
@@ -29568,6 +29748,7 @@
 "foreign": null,
 "name": "(주)넥센",
 "rate": 46.48,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -29722,6 +29903,7 @@
 "foreign": null,
 "name": "농협경제지주(주)",
 "rate": 57.91,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -29903,6 +30085,7 @@
 "foreign": null,
 "name": "(주)다우데이타",
 "rate": 45.2,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -30159,6 +30342,7 @@
 "foreign": null,
 "name": "최태원",
 "rate": 17.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -30238,6 +30422,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)하나금융지주(지분율 100%)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -30280,6 +30465,7 @@
 "owner": {
 "foreign": null,
 "name": "으로 FY2021 중 USD 5",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -30341,6 +30527,7 @@
 "foreign": null,
 "name": "㈜LX인터내셔널",
 "rate": 75.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -30512,6 +30699,7 @@
 "foreign": null,
 "name": "현대자동차㈜",
 "rate": 4.86,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -30572,6 +30760,7 @@
 "owner": {
 "foreign": null,
 "name": "로부터 자본(기타자본)을 불입받은 것으로 보아 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -30614,6 +30803,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)대한항공 기타 특수관계자 한국공항(주)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -30656,6 +30846,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Zimmer Biomet Holdings Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -30772,6 +30963,7 @@
 "foreign": null,
 "name": "(주)파워넷",
 "rate": 37.97,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -30827,6 +31019,7 @@
 "foreign": null,
 "name": "(주)신세계",
 "rate": 60.02,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -30958,6 +31151,7 @@
 "foreign": null,
 "name": "윤나라",
 "rate": 27.92,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -31214,6 +31408,7 @@
 "foreign": null,
 "name": "윤상현",
 "rate": 31.75,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -31256,6 +31451,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Oracle Corporation",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -31298,6 +31494,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 Atlas Copco AB는 종속기업의 종업원에게 Atlas Copco AB의 지분상품을 주식선택권으로 부여하고 있으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -31358,6 +31555,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜KB금융지주는 회사의",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -31413,6 +31611,7 @@
 "foreign": null,
 "name": "(주)이랜드월드",
 "rate": 44.76,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -31474,6 +31673,7 @@
 "foreign": null,
 "name": "롯데지주㈜",
 "rate": 46.04,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -31535,6 +31735,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜에쓰쎄븐 종속회사 ㈜에쓰티케이",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -31590,6 +31791,7 @@
 "foreign": null,
 "name": "현대자동차(주)",
 "rate": 59.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -31645,6 +31847,7 @@
 "foreign": null,
 "name": "(주)우리금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -31700,6 +31903,7 @@
 "foreign": null,
 "name": "이마트",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -31766,6 +31970,7 @@
 "foreign": null,
 "name": "한국리테일카드홀딩스(주)",
 "rate": 59.83,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -32022,6 +32227,7 @@
 "foreign": null,
 "name": "홍석조",
 "rate": 32.4,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -32163,6 +32369,7 @@
 "foreign": null,
 "name": "(주)이마트",
 "rate": 43.86,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -32399,6 +32606,7 @@
 "foreign": null,
 "name": "서성석",
 "rate": 22.61,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -32441,6 +32649,7 @@
 "owner": {
 "foreign": null,
 "name": "AC Nielsen Company of Canada 기타특수관계자 The Nielsen Company (Europe) SarlA",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -32519,6 +32728,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)메가마트(지분율 53",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -32729,6 +32939,7 @@
 "foreign": null,
 "name": "(주)벽산",
 "rate": 46.33,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -32781,6 +32992,7 @@
 "foreign": null,
 "name": "㈜롯데파이낸셜",
 "rate": 51.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -32836,6 +33048,7 @@
 "foreign": null,
 "name": "현대자동차㈜",
 "rate": 36.96,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -32972,6 +33185,7 @@
 "foreign": null,
 "name": "㈜LG유플러스",
 "rate": 58.61,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -33108,6 +33322,7 @@
 "foreign": null,
 "name": "㈜케이티스튜디오지니",
 "rate": 35.97,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -33156,6 +33371,7 @@
 "owner": {
 "foreign": null,
 "name": "인 씨제이(주)와 브랜드 사용 계약에 따라 씨제이(주)의 그룹 공동 브랜드를 사용하고 있으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -33198,6 +33414,7 @@
 "owner": {
 "foreign": null,
 "name": "포스코홀딩스㈜ 지배기업 ㈜포스코이앤씨 기타특수관계자(주1) ㈜포스코",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -33382,6 +33599,7 @@
 "foreign": null,
 "name": "LS전선(주)",
 "rate": 67.82,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -33473,6 +33691,7 @@
 "foreign": null,
 "name": "이창우",
 "rate": 23.53,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -33632,6 +33851,7 @@
 "foreign": null,
 "name": "(주)동성케미컬",
 "rate": 38.01,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -33793,6 +34013,7 @@
 "foreign": null,
 "name": "㈜LG",
 "rate": 38.25,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -33848,6 +34069,7 @@
 "foreign": null,
 "name": "(주)GS",
 "rate": 70.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -34064,6 +34286,7 @@
 "foreign": null,
 "name": "(주)신세계",
 "rate": 39.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -34175,6 +34398,7 @@
 "foreign": null,
 "name": "(주)이머니",
 "rate": 31.56,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -34326,6 +34550,7 @@
 "foreign": null,
 "name": "코오롱인더스트리(주)",
 "rate": 66.68,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -34512,6 +34737,7 @@
 "foreign": null,
 "name": "에스케이\n텔레콤(주)",
 "rate": 99.14,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -34751,6 +34977,7 @@
 "foreign": null,
 "name": "중소기업은행",
 "rate": 8.06,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -34865,8 +35092,9 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "㈜영원무역홀딩스 유의적인 영향력을미치는 기업 GOLDWIN Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -34909,6 +35137,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Omnicom Group Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -34951,6 +35180,7 @@
 "owner": {
 "foreign": null,
 "name": "뱅커스트릿 주식회사 - - 15",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -35006,6 +35236,7 @@
 "foreign": null,
 "name": "박현주",
 "rate": 34.32,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -35107,6 +35338,7 @@
 "foreign": null,
 "name": "황철주",
 "rate": 25.5,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -35159,6 +35391,7 @@
 "foreign": null,
 "name": "우리금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -35201,6 +35434,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "AB InBev는 회사의 경영진과 종업원에 대한 주식기준보상제도를 시행하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -35256,6 +35490,7 @@
 "foreign": null,
 "name": "(주)한화",
 "rate": 49.8,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -35380,6 +35615,7 @@
 "foreign": null,
 "name": "(주)에이치비콥",
 "rate": 13.54,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -35636,6 +35872,7 @@
 "foreign": null,
 "name": "한국광해광업공단",
 "rate": 36.27,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -35822,6 +36059,7 @@
 "foreign": null,
 "name": "김범수",
 "rate": 13.28,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -35864,6 +36102,7 @@
 "owner": {
 "foreign": null,
 "name": "CENTERBRIDGE BUSINESS SERVICES LIMITED 97",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -35925,6 +36164,7 @@
 "foreign": null,
 "name": "박현주",
 "rate": 60.19,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -36115,6 +36355,7 @@
 "foreign": null,
 "name": "진원홀딩스컴퍼니(주)",
 "rate": 18.17,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -36241,6 +36482,7 @@
 "foreign": null,
 "name": "(주)케이티",
 "rate": 70.49,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -36497,6 +36739,7 @@
 "foreign": null,
 "name": "정부",
 "rate": 26.15,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -36623,6 +36866,7 @@
 "foreign": null,
 "name": "KOO BENNETT(구본호)",
 "rate": 39.44,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -36739,6 +36983,7 @@
 "foreign": null,
 "name": "서정선",
 "rate": 17.49,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -36895,6 +37140,7 @@
 "foreign": null,
 "name": "김택진",
 "rate": 12.2,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -36986,6 +37232,7 @@
 "foreign": null,
 "name": "유용석",
 "rate": 18.88,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -37242,6 +37489,7 @@
 "foreign": null,
 "name": "김정근",
 "rate": 12.46,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -37388,6 +37636,7 @@
 "foreign": null,
 "name": "(주)바텍이우홀딩스",
 "rate": 46.37,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -37484,6 +37733,7 @@
 "foreign": null,
 "name": "(주)삼양사",
 "rate": 50.02,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -37600,6 +37850,7 @@
 "foreign": null,
 "name": "CJ(주)",
 "rate": 40.07,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -37776,6 +38027,7 @@
 "foreign": null,
 "name": "국민연금기금",
 "rate": 9.25,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -37864,6 +38116,7 @@
 "foreign": null,
 "name": "조성우",
 "rate": 14.67,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -38008,6 +38261,7 @@
 "foreign": null,
 "name": "김장중",
 "rate": 19.77,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -38192,6 +38446,7 @@
 "foreign": null,
 "name": "(주)이마트",
 "rate": 55.47,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -38232,8 +38487,9 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "오씨아이홀딩스 주식회사 지배기업의 종속기업 오씨아이 주식회사OCI Enterprises Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -38490,6 +38746,7 @@
 "foreign": null,
 "name": "(주)다우기술",
 "rate": 41.55,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -38596,6 +38853,7 @@
 "foreign": null,
 "name": "안철수",
 "rate": 16.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -38852,6 +39110,7 @@
 "foreign": null,
 "name": "정몽원",
 "rate": 27.63,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -39086,6 +39345,7 @@
 "foreign": null,
 "name": "주식회사 현대지에프홀딩스",
 "rate": 41.2,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -39177,6 +39437,7 @@
 "foreign": null,
 "name": "현대자동차(주)",
 "rate": 41.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -39433,6 +39694,7 @@
 "foreign": null,
 "name": "현대자동차",
 "rate": 33.77,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -39689,6 +39951,7 @@
 "foreign": null,
 "name": "씨제이(주)",
 "rate": 50.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -39790,6 +40053,7 @@
 "foreign": null,
 "name": "(주)아이디스홀딩스",
 "rate": 38.47,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -39832,6 +40096,7 @@
 "owner": {
 "foreign": null,
 "name": "Merck KGaA",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -39903,6 +40168,7 @@
 "foreign": null,
 "name": "신한금융지주회사",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -40001,6 +40267,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)제너시스 192",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -40074,6 +40341,7 @@
 "foreign": null,
 "name": "GS에너지(주)",
 "rate": 51.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -40284,6 +40552,7 @@
 "foreign": null,
 "name": "(주)LS네트웍스",
 "rate": 60.98,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -40410,6 +40679,7 @@
 "foreign": null,
 "name": "화천기공(주)",
 "rate": 12.16,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -40452,6 +40722,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -40507,6 +40778,7 @@
 "foreign": null,
 "name": "HD한국조선해양㈜",
 "rate": 81.5,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -40617,6 +40889,7 @@
 "foreign": null,
 "name": "(주)유수홀딩스",
 "rate": 44.12,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -40856,6 +41129,7 @@
 "foreign": null,
 "name": "한화에어로스페이스(주)",
 "rate": 46.73,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -40965,6 +41239,7 @@
 "foreign": null,
 "name": "미래에셋증권㈜",
 "rate": 56.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -41020,6 +41295,7 @@
 "foreign": null,
 "name": "동원산업(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -41081,6 +41357,7 @@
 "foreign": null,
 "name": "덴티스트리인베스트먼트(주)",
 "rate": 83.6,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -41324,6 +41601,7 @@
 "foreign": null,
 "name": "(주)케이티",
 "rate": 50.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -41366,6 +41644,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "각각 아일랜드와 미국 캘리포니아주에 설립된 Apple Operations International Limited와 Apple Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -41432,6 +41711,7 @@
 "foreign": null,
 "name": "현대건설",
 "rate": 38.62,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -41581,6 +41861,7 @@
 "foreign": null,
 "name": "에이치디씨㈜",
 "rate": 39.99,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -41672,6 +41953,7 @@
 "foreign": null,
 "name": "정   욱",
 "rate": 23.91,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -41733,6 +42015,7 @@
 "foreign": null,
 "name": "김동진",
 "rate": 31.37,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -41989,6 +42272,7 @@
 "foreign": null,
 "name": "(주)LG",
 "rate": 31.52,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -42245,6 +42529,7 @@
 "foreign": null,
 "name": "㈜LG",
 "rate": 34.74,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -42351,6 +42636,7 @@
 "foreign": null,
 "name": "엔에이치엔페이코㈜",
 "rate": 42.33,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -42477,6 +42763,7 @@
 "foreign": null,
 "name": "에이치디씨(주)",
 "rate": 48.26,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -42537,6 +42824,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)이마트 공동기업 캡스톤일반사모투자신탁39호전문(주1)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -42793,6 +43081,7 @@
 "foreign": null,
 "name": "정의선",
 "rate": 20.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -43039,6 +43328,7 @@
 "foreign": null,
 "name": "한화임팩트㈜",
 "rate": 32.77,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -43145,6 +43435,7 @@
 "foreign": null,
 "name": "신홍식",
 "rate": 14.08,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -43314,6 +43605,7 @@
 "foreign": null,
 "name": "현대자동차",
 "rate": 31.59,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -43488,6 +43780,7 @@
 "foreign": null,
 "name": "주식회사 비마이프렌즈",
 "rate": 31.35,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -43579,6 +43872,7 @@
 "foreign": null,
 "name": "유홍준",
 "rate": 26.32,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -43720,6 +44014,7 @@
 "foreign": null,
 "name": "박동석",
 "rate": 36.02,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -43886,6 +44181,7 @@
 "foreign": null,
 "name": "(주)폴라리스우노",
 "rate": 16.59,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -44012,6 +44308,7 @@
 "foreign": null,
 "name": "(주)위지트",
 "rate": 30.77,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -44163,6 +44460,7 @@
 "foreign": null,
 "name": "(주)케이티",
 "rate": 29.3,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -44349,6 +44647,7 @@
 "foreign": null,
 "name": "(주)케이티아이에스",
 "rate": 11.61,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -44460,6 +44759,7 @@
 "foreign": null,
 "name": "김다산",
 "rate": 25.18,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -44623,6 +44923,7 @@
 "foreign": null,
 "name": "㈜에프넷",
 "rate": 37.46,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -44912,6 +45213,7 @@
 "foreign": null,
 "name": "국민연금공단",
 "rate": 9.03,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -44998,6 +45300,7 @@
 "foreign": null,
 "name": "유준호",
 "rate": 32.94,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -45050,6 +45353,7 @@
 "foreign": null,
 "name": "KB금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -45199,6 +45503,7 @@
 "foreign": null,
 "name": "박성찬",
 "rate": 11.73,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -45273,6 +45578,7 @@
 "foreign": null,
 "name": "서정진",
 "rate": 69.12,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -45504,6 +45810,7 @@
 "foreign": null,
 "name": "(주)새로닉스",
 "rate": 13.64,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -45640,6 +45947,7 @@
 "foreign": null,
 "name": "(주)쎄인트인터내셔널",
 "rate": 25.76,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -45856,6 +46164,7 @@
 "foreign": null,
 "name": "㈜LG",
 "rate": 35.26,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -45977,6 +46286,7 @@
 "foreign": null,
 "name": "김경서",
 "rate": 24.36,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -46327,6 +46637,7 @@
 "foreign": null,
 "name": "에이치디한국조선해양㈜",
 "rate": 35.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -46468,6 +46779,7 @@
 "foreign": null,
 "name": "김종현",
 "rate": 13.35,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -46569,6 +46881,7 @@
 "foreign": null,
 "name": "조준희",
 "rate": 14.13,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -46611,6 +46924,7 @@
 "owner": {
 "foreign": null,
 "name": "transcosmos",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -46903,6 +47217,7 @@
 "foreign": null,
 "name": "(주)현대지에프홀딩스",
 "rate": 57.36,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -47159,6 +47474,7 @@
 "foreign": null,
 "name": "(주)셀트리온홀딩스",
 "rate": 24.44,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -47275,6 +47591,7 @@
 "foreign": null,
 "name": "김종훈\n(등기)",
 "rate": 10.4,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -47381,6 +47698,7 @@
 "foreign": null,
 "name": "임 창 완",
 "rate": 45.93,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -47497,6 +47815,7 @@
 "foreign": null,
 "name": "조현준",
 "rate": 35.26,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -47563,6 +47882,7 @@
 "foreign": null,
 "name": "소테리아비드코에스씨에스피",
 "rate": 68.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -47828,6 +48148,7 @@
 "foreign": null,
 "name": "삼성에스디에스(주)",
 "rate": 62.4,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -47914,6 +48235,7 @@
 "foreign": null,
 "name": "김동식",
 "rate": 33.55,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -47954,8 +48276,9 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "었던 General Motors Corporation은 2009년 6월 1일자로 파산보호신청을 하였고",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -48142,6 +48465,7 @@
 "foreign": null,
 "name": "(주)대웅",
 "rate": 52.29,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -48298,6 +48622,7 @@
 "foreign": null,
 "name": "(주)현대지에프홀딩스",
 "rate": 35.06,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -48359,6 +48684,7 @@
 "foreign": null,
 "name": "(주)GS",
 "rate": 89.67,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -48612,6 +48938,7 @@
 "foreign": null,
 "name": "김남구",
 "rate": 20.7,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -48738,6 +49065,7 @@
 "foreign": null,
 "name": "유비벨록스(주)",
 "rate": 34.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -48852,6 +49180,7 @@
 "foreign": null,
 "name": "남재국",
 "rate": 31.12,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49001,6 +49330,7 @@
 "foreign": null,
 "name": "박관호",
 "rate": 39.33,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49127,6 +49457,7 @@
 "foreign": null,
 "name": "손진형",
 "rate": 48.54,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49243,6 +49574,7 @@
 "foreign": null,
 "name": "권은영",
 "rate": 17.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49359,6 +49691,7 @@
 "foreign": null,
 "name": "권오수",
 "rate": 30.87,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49518,6 +49851,7 @@
 "foreign": null,
 "name": "아시아나항공(주)",
 "rate": 76.22,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49560,6 +49894,7 @@
 "owner": {
 "foreign": null,
 "name": "단암홀딩스(주) 기타 특수관계자 단암엔지니어링(주)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -49612,6 +49947,7 @@
 "foreign": "외국 회사 표기",
 "name": "Fubon Life Insurance Co., Ltd.\n (푸본생명보험)",
 "rate": 88.3,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49691,6 +50027,7 @@
 "foreign": null,
 "name": "한화\n임팩트(주)",
 "rate": 50.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49825,6 +50162,7 @@
 "foreign": null,
 "name": "에스이노베이션 신기술조합",
 "rate": 35.85,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -49971,6 +50309,7 @@
 "foreign": null,
 "name": "㈜컴투스홀딩스",
 "rate": 29.68,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -50031,6 +50370,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -50197,6 +50537,7 @@
 "foreign": null,
 "name": "에스케이\n에코플랜트(주)",
 "rate": 35.62,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -50239,6 +50580,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -50319,6 +50661,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -50508,6 +50851,7 @@
 "foreign": null,
 "name": "(주)케이티",
 "rate": 43.06,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -50657,6 +51001,7 @@
 "foreign": null,
 "name": "서울대학교병원",
 "rate": 32.86,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -50778,6 +51123,7 @@
 "foreign": null,
 "name": "김태주",
 "rate": 20.96,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -50889,6 +51235,7 @@
 "foreign": null,
 "name": "(주)이글루코퍼레이션",
 "rate": 31.04,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -50931,6 +51278,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Adecco Personnel Pte Ltd",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -51187,6 +51535,7 @@
 "foreign": null,
 "name": "허용수",
 "rate": 5.26,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -51343,6 +51692,7 @@
 "foreign": null,
 "name": "주식회사\n 엘아이지",
 "rate": 37.74,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -51385,6 +51735,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 Chubb Limited 가",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -51641,6 +51992,7 @@
 "foreign": null,
 "name": "한앤코개발홀딩스(유)",
 "rate": 47.42,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -51683,6 +52035,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 EQT AB와 그 종속기업 (*1) 당기 중 에스케이쉴더스 주식회사가 최상위지배기업이었던 코리아시큐리티홀딩스 주식회사를 흡수합병하였습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -51725,6 +52078,7 @@
 "owner": {
 "foreign": null,
 "name": "LION CORPORATION(지분율 100%)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -51882,6 +52236,7 @@
 "foreign": null,
 "name": "양태회",
 "rate": 42.81,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -51988,6 +52343,7 @@
 "foreign": null,
 "name": "최대규",
 "rate": 21.16,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -52147,6 +52503,7 @@
 "foreign": null,
 "name": "(주)에이치비테크놀러지",
 "rate": 19.98,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -52273,6 +52630,7 @@
 "foreign": null,
 "name": "㈜코오롱",
 "rate": 25.11,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -52454,6 +52812,7 @@
 "foreign": null,
 "name": "김영화",
 "rate": 15.38,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -52620,6 +52979,7 @@
 "foreign": null,
 "name": "㈜LX홀딩스",
 "rate": 33.08,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -52781,6 +53141,7 @@
 "foreign": null,
 "name": "정성민",
 "rate": 17.34,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -53041,6 +53402,7 @@
 "foreign": null,
 "name": "임재환",
 "rate": 15.8,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -53129,6 +53491,7 @@
 "foreign": null,
 "name": "㈜시너지이노베이션",
 "rate": 52.22,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -53258,6 +53621,7 @@
 "foreign": null,
 "name": "주식회사 에이치티아이엔티",
 "rate": 44.93,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -53300,6 +53664,7 @@
 "owner": {
 "foreign": null,
 "name": "및관계기업의 투자자가 투자자산을 피투자자의 보고된 성과와 순자산에 근거하지 않고직접적인 지분 투자에 근거한 회계처리로 표시한 재무제표",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -53556,6 +53921,7 @@
 "foreign": null,
 "name": "이동채",
 "rate": 18.84,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -53687,6 +54053,7 @@
 "foreign": null,
 "name": "(주)셀트리온",
 "rate": 54.8,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -53747,6 +54114,7 @@
 "owner": {
 "foreign": null,
 "name": "하나금융지주 주식회사(지분율 100%)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -54021,6 +54389,7 @@
 "foreign": null,
 "name": "㈜호텔롯데",
 "rate": 38.14,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -54063,6 +54432,7 @@
 "owner": {
 "foreign": null,
 "name": "주식회사 엔엑스씨",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -54316,6 +54686,7 @@
 "foreign": null,
 "name": "국민연금공단",
 "rate": 8.66,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -54455,6 +54826,7 @@
 "foreign": null,
 "name": "차근식",
 "rate": 11.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -54749,6 +55121,7 @@
 "foreign": null,
 "name": "에이케이홀딩스(주)",
 "rate": 50.37,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -54969,6 +55342,7 @@
 "foreign": null,
 "name": "두산포트폴리오홀딩스(주)",
 "rate": 38.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -55011,6 +55385,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)금강쿼츠 (2) 당기와 전기 중 특수관계자와의 거래 내역은 다음과 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -55147,6 +55522,7 @@
 "foreign": null,
 "name": "정성이",
 "rate": 17.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -55438,6 +55814,7 @@
 "foreign": null,
 "name": "박종철",
 "rate": 26.35,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -55579,6 +55956,7 @@
 "foreign": null,
 "name": "고영홀딩스",
 "rate": 20.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -55621,6 +55999,7 @@
 "owner": {
 "foreign": null,
 "name": "와이비파트너스㈜ - 8",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -55828,6 +56207,7 @@
 "foreign": null,
 "name": "(주)아모레퍼시픽홀딩스",
 "rate": 38.04,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -55883,6 +56263,7 @@
 "foreign": null,
 "name": "한국이커머스홀딩스㈜",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -55963,6 +56344,7 @@
 "owner": {
 "foreign": null,
 "name": "현대자동차㈜ 및 기아㈜ 등 기타특수관계자(*) (*) 당사가 속해 있는 현대자동차기업집단 소속회사가 포함되어 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -56053,6 +56435,7 @@
 "foreign": null,
 "name": "(주)케이티",
 "rate": 92.66,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -56149,6 +56532,7 @@
 "foreign": null,
 "name": "김정웅",
 "rate": 34.4,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -56290,6 +56674,7 @@
 "foreign": null,
 "name": "(주)비지에프",
 "rate": 69.95,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -56369,6 +56754,7 @@
 "foreign": null,
 "name": "현대자동차(주)",
 "rate": 38.27,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -56467,6 +56853,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -56509,6 +56896,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜티와이홀딩스 관계기업 (유)해운대미디어플러스 기타 특수관계자 ㈜에스비에스",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -56610,6 +56998,7 @@
 "foreign": null,
 "name": "(주)탑코",
 "rate": 68.65,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -56652,6 +57041,7 @@
 "owner": {
 "foreign": null,
 "name": "한국항공우주산업(주) 한국항공우주산업(주) 기타 특수관계자 Korea Aerospace F",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -56791,6 +57181,7 @@
 "foreign": null,
 "name": "정   한",
 "rate": 33.8,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -56907,6 +57298,7 @@
 "owner": {
 "foreign": null,
 "name": "주식회사 엔엑스씨",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -56949,6 +57341,7 @@
 "owner": {
 "foreign": null,
 "name": "으로부터 총 242",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -57065,6 +57458,7 @@
 "foreign": null,
 "name": "안병철",
 "rate": 30.4,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -57176,6 +57570,7 @@
 "foreign": null,
 "name": "㈜웅진",
 "rate": 58.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -57332,6 +57727,7 @@
 "foreign": null,
 "name": "㈜네오위즈홀딩스",
 "rate": 31.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -57626,6 +58022,7 @@
 "foreign": null,
 "name": "SK㈜",
 "rate": 52.09,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -57770,6 +58167,7 @@
 "foreign": null,
 "name": "씨제이(주)",
 "rate": 40.94,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -57812,6 +58210,7 @@
 "owner": {
 "foreign": null,
 "name": "(상위지배기업 및 그 관계기업 포함) 지배기업의 종속기업",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -57961,6 +58360,7 @@
 "foreign": null,
 "name": "정현규",
 "rate": 21.54,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -58077,6 +58477,7 @@
 "foreign": null,
 "name": "조규곤",
 "rate": 19.25,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -58248,6 +58649,7 @@
 "foreign": null,
 "name": "주성씨앤에어",
 "rate": 17.61,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -58374,6 +58776,7 @@
 "foreign": null,
 "name": "엔에이치엔㈜",
 "rate": 45.26,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -58440,6 +58843,7 @@
 "foreign": null,
 "name": "신한금융지주회사",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -58501,6 +58905,7 @@
 "foreign": null,
 "name": "김동관",
 "rate": 50.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -58543,6 +58948,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 Infineon Technologies Asia Pacific Pte",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -58689,6 +59095,7 @@
 "foreign": null,
 "name": "아시아나항공㈜",
 "rate": 41.89,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -58884,6 +59291,7 @@
 "foreign": null,
 "name": "(주)대한항공",
 "rate": 54.91,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -58964,6 +59372,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -59044,6 +59453,7 @@
 "owner": {
 "foreign": null,
 "name": "및 최상위 지배기업의 국내소재 종속기업을 하나의 납세단위로 보아 과세소득을 통산하여 법인세를 신고 납부하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -59180,6 +59590,7 @@
 "foreign": null,
 "name": "㈜시공테크",
 "rate": 26.17,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -59222,6 +59633,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -59300,8 +59712,9 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "였던 Manpower Holdings는 전기 중 (주)티가든비에 지분 전액을 매각하여 지배회사가 변경되었습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -59423,6 +59836,7 @@
 "foreign": null,
 "name": "주식회사 올인이룸",
 "rate": 26.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -59575,6 +59989,7 @@
 "foreign": null,
 "name": "문영우",
 "rate": 34.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -59617,6 +60032,7 @@
 "owner": {
 "foreign": null,
 "name": "인 (주)우리금융지주는 2019년 1월 11일부터 연결납세제도를 적용하여 법인세를 신고 및 납부하고 있으므로",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -59675,6 +60091,7 @@
 "foreign": null,
 "name": "농협금융지주\n주식회사",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -59842,6 +60259,7 @@
 "foreign": null,
 "name": "(주)디에스티아이",
 "rate": 41.56,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -59913,6 +60331,7 @@
 "foreign": null,
 "name": "㈜LS",
 "rate": 92.63,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -59968,6 +60387,7 @@
 "foreign": null,
 "name": "(주)엘에스",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -60114,6 +60534,7 @@
 "foreign": null,
 "name": "(주)풍산홀딩스",
 "rate": 38.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -60367,6 +60788,7 @@
 "foreign": null,
 "name": "국민연금공단",
 "rate": 8.68,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -60549,6 +60971,7 @@
 "foreign": null,
 "name": "(주)LX홀딩스",
 "rate": 30.07,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -60715,6 +61138,7 @@
 "foreign": null,
 "name": "장병규",
 "rate": 15.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -60757,6 +61181,7 @@
 "owner": {
 "foreign": null,
 "name": "과 지배기업",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -60948,6 +61373,7 @@
 "foreign": null,
 "name": "김종준",
 "rate": 18.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -61029,6 +61455,7 @@
 "owner": {
 "foreign": null,
 "name": "인 네이버 주식회사와 간이분할합병의 방식으로 흡수합병되었습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -61084,6 +61511,7 @@
 "foreign": null,
 "name": "삼성에스디에스(주)",
 "rate": 81.77,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -61215,6 +61643,7 @@
 "foreign": null,
 "name": "(주)이테크시스템",
 "rate": 43.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -61386,6 +61815,7 @@
 "foreign": null,
 "name": "㈜코오롱",
 "rate": 33.43,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -61449,6 +61879,7 @@
 "foreign": null,
 "name": "(주)아이엠금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -61590,6 +62021,7 @@
 "foreign": null,
 "name": "박병욱",
 "rate": 24.25,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -61645,6 +62077,7 @@
 "foreign": null,
 "name": "신한은행",
 "rate": 14.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -61711,6 +62144,7 @@
 "foreign": null,
 "name": "HL만도(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -61802,6 +62236,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -61937,6 +62372,7 @@
 "owner": {
 "foreign": null,
 "name": "인 (주)드림텍으로부터 지급보증을 제공받고 있습니다(주석18 참조)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -62036,6 +62472,7 @@
 "foreign": null,
 "name": "SK이노베이션(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -62091,6 +62528,7 @@
 "foreign": null,
 "name": "SK이노베이션㈜",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -62133,6 +62571,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "세계최대의 전자 결제 네트워크를 운영하는 Visa Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -62175,6 +62614,7 @@
 "owner": {
 "foreign": null,
 "name": "일진다이아몬드 주식회사 5",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -62227,6 +62667,7 @@
 "foreign": null,
 "name": "KB금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -62358,6 +62799,7 @@
 "foreign": null,
 "name": "(주)다우기술",
 "rate": 32.59,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -62494,6 +62936,7 @@
 "foreign": null,
 "name": "(주)하림지주",
 "rate": 57.37,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -62747,6 +63190,7 @@
 "foreign": null,
 "name": "조정호",
 "rate": 55.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -62883,6 +63327,7 @@
 "foreign": null,
 "name": "(주)삼양홀딩스",
 "rate": 59.97,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -62925,6 +63370,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)이루온(지분율 100%)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -62973,6 +63419,7 @@
 "owner": {
 "foreign": null,
 "name": "CJ(주)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -63053,6 +63500,7 @@
 "owner": {
 "foreign": null,
 "name": "인 주식회사 두잉씨앤에스로부터 물적분할하여 분할신설되었습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -63113,6 +63561,7 @@
 "owner": {
 "foreign": null,
 "name": "GungHo Online Entertainment",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -63369,6 +63818,7 @@
 "foreign": null,
 "name": "정용진",
 "rate": 28.85,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -63584,6 +64034,7 @@
 "foreign": null,
 "name": "김선현",
 "rate": 40.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -63840,6 +64291,7 @@
 "foreign": null,
 "name": "삼성물산",
 "rate": 43.06,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -64115,6 +64567,7 @@
 "foreign": null,
 "name": "SK(주)",
 "rate": 64.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -64368,6 +64821,7 @@
 "foreign": null,
 "name": "(주)오케이저축은행",
 "rate": 3.49,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -64504,6 +64958,7 @@
 "foreign": null,
 "name": "남궁선",
 "rate": 14.55,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -64665,6 +65120,7 @@
 "foreign": null,
 "name": "삼양홀딩스",
 "rate": 61.83,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -64781,6 +65237,7 @@
 "foreign": null,
 "name": "(주)바텍이우홀딩스",
 "rate": 31.62,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -64842,6 +65299,7 @@
 "foreign": null,
 "name": "(주)GS",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -64897,6 +65355,7 @@
 "foreign": null,
 "name": "롯데렌탈(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -65083,6 +65542,7 @@
 "foreign": null,
 "name": "방준혁",
 "rate": 24.12,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -65125,6 +65585,7 @@
 "owner": {
 "foreign": null,
 "name": "삼성물산㈜ 지배기업(*1) 삼성에피스홀딩스㈜ 종속기업 SAMSUNG BIOEPIS UK LIMITED",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -65188,6 +65649,7 @@
 "foreign": null,
 "name": "농업협동조합중앙회",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -65240,6 +65702,7 @@
 "foreign": null,
 "name": "농협금융지주(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -65292,6 +65755,7 @@
 "foreign": null,
 "name": "농협금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -65439,6 +65903,7 @@
 "foreign": null,
 "name": "Hongkong Tigermed Co., Ltd",
 "rate": 59.34,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -65481,6 +65946,7 @@
 "owner": {
 "foreign": null,
 "name": "인 네이버 주식회사의 보통주 주식가격을 기준으로 하는 차액결제형 주식기준보상제도를 운영하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -65600,6 +66066,7 @@
 "foreign": null,
 "name": "박치영",
 "rate": 58.39,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -65642,6 +66109,7 @@
 "owner": {
 "foreign": null,
 "name": "보배건설(주) 13",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -65684,6 +66152,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -65755,6 +66224,7 @@
 "foreign": null,
 "name": "메리츠증권(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -65816,6 +66286,7 @@
 "foreign": null,
 "name": "넷마블㈜",
 "rate": 78.5,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -66015,6 +66486,7 @@
 "foreign": null,
 "name": "에이케이홀딩스",
 "rate": 60.3,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -66241,6 +66713,7 @@
 "foreign": null,
 "name": "한국앤컴퍼니(주)",
 "rate": 30.67,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -66515,6 +66988,7 @@
 "foreign": null,
 "name": "콜마홀딩스㈜",
 "rate": 26.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -66672,6 +67146,7 @@
 "foreign": null,
 "name": "김병수",
 "rate": 24.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -66826,6 +67301,7 @@
 "foreign": null,
 "name": "(주)덕인",
 "rate": 31.64,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -66878,6 +67354,7 @@
 "foreign": null,
 "name": "(주)\n우리금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -67012,8 +67489,9 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "제이씨인슈어런스플랫폼제1호 유한회사 제이씨인슈어런스플랫폼제1호 유한회사 종속기업 Rich&Co Singapore Pte",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -67094,6 +67572,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)미디어윌홀딩스 (2) 당기와 전기 중 특수관계자와의 거래 내역은 다음과 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -67174,6 +67653,7 @@
 "owner": {
 "foreign": null,
 "name": "인 네이버 주식회사와 종속기업 및 기타특수관계자에게 광고운영",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -67272,6 +67752,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -67363,6 +67844,7 @@
 "foreign": null,
 "name": "최백준",
 "rate": 34.01,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -67605,6 +68087,7 @@
 "foreign": null,
 "name": "이진우",
 "rate": 26.3,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -67660,6 +68143,7 @@
 "foreign": null,
 "name": "SK네트웍스(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -67721,6 +68205,7 @@
 "foreign": null,
 "name": "SK이노베이션(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -67862,6 +68347,7 @@
 "foreign": null,
 "name": "임경환",
 "rate": 32.19,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -68063,6 +68549,7 @@
 "foreign": null,
 "name": "조원태",
 "rate": 5.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -68234,6 +68721,7 @@
 "foreign": null,
 "name": "이준호",
 "rate": 29.65,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -68297,6 +68785,7 @@
 "owner": {
 "foreign": null,
 "name": "인 회사와 종속기업인 주식회사 넥스트플로어지하연구소를 합병하고 이후 라인게",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -68357,6 +68846,7 @@
 "owner": {
 "foreign": null,
 "name": "교보생명보험주식회사(지분율 100%)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -68412,6 +68902,7 @@
 "foreign": null,
 "name": "㈜이마트",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -68454,6 +68945,7 @@
 "owner": {
 "foreign": null,
 "name": "인 Telefonaktiebolaget LM Ericsson으로 부터 국가 위험 등급별 연체일에 따른 기대손실율을 제공받고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -68509,6 +69001,7 @@
 "foreign": null,
 "name": "(주)LS",
 "rate": 95.09,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -68561,6 +69054,7 @@
 "foreign": null,
 "name": "DL㈜",
 "rate": 70.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -68712,6 +69206,7 @@
 "foreign": null,
 "name": "코스맥스비티아이",
 "rate": 27.23,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -68868,6 +69363,7 @@
 "foreign": null,
 "name": "김가람",
 "rate": 41.37,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -68910,6 +69406,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -69018,6 +69515,7 @@
 "foreign": null,
 "name": "배현섭",
 "rate": 33.01,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -69060,6 +69558,7 @@
 "owner": {
 "foreign": null,
 "name": "발행한 주식으로 결제되는 주식결제형 주식보상",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -69102,6 +69601,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -69256,6 +69756,7 @@
 "foreign": null,
 "name": "이경민",
 "rate": 39.13,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -69336,6 +69837,7 @@
 "owner": {
 "foreign": null,
 "name": "삼성전자㈜",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -69510,6 +70012,7 @@
 "owner": {
 "foreign": null,
 "name": "인 피터인더스트리얼솔루션㈜를 합병하였습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -69552,6 +70055,7 @@
 "owner": {
 "foreign": null,
 "name": "Coupang",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -69691,6 +70195,7 @@
 "foreign": null,
 "name": "(주)원익홀딩스",
 "rate": 31.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -69898,6 +70403,7 @@
 "foreign": null,
 "name": "유한책임회사 에스오큐알아이",
 "rate": 19.73,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -69940,6 +70446,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "SoftBank Group Corp",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -70079,6 +70586,7 @@
 "foreign": null,
 "name": "김선중",
 "rate": 24.18,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -70235,6 +70743,7 @@
 "foreign": null,
 "name": "콜마홀딩스(주)",
 "rate": 44.63,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -70491,6 +71000,7 @@
 "foreign": null,
 "name": "두산에너빌리티㈜",
 "rate": 48.17,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -70673,6 +71183,7 @@
 "foreign": null,
 "name": "조종암",
 "rate": 36.56,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -70725,6 +71236,7 @@
 "foreign": null,
 "name": "하나금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -70871,6 +71383,7 @@
 "foreign": null,
 "name": "에이치엘홀딩스(주)",
 "rate": 30.25,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -70947,6 +71460,7 @@
 "foreign": null,
 "name": "SK가스(주)",
 "rate": 45.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -71045,6 +71559,7 @@
 "owner": {
 "foreign": null,
 "name": "삼성물산 주식회사",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -71146,6 +71661,7 @@
 "foreign": null,
 "name": "이경일",
 "rate": 10.45,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -71310,6 +71826,7 @@
 "foreign": null,
 "name": "(주)삼양사",
 "rate": 72.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -71486,6 +72003,7 @@
 "foreign": "외국 회사 표기",
 "name": "BCPE Centur Investments, LP",
 "rate": 54.16,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -71528,6 +72046,7 @@
 "owner": {
 "foreign": null,
 "name": "LTIP(Long Term Incentive Program)의 주식기준보상 프로그램을 운영하여 당사의",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -71583,6 +72102,7 @@
 "foreign": null,
 "name": "한국투자금융지주(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -71744,6 +72264,7 @@
 "foreign": null,
 "name": "천희정",
 "rate": 12.81,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -71850,6 +72371,7 @@
 "foreign": null,
 "name": "골프존홀딩스",
 "rate": 22.01,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -71956,6 +72478,7 @@
 "foreign": null,
 "name": "㈜크래프톤",
 "rate": 45.07,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -72060,6 +72583,7 @@
 "foreign": null,
 "name": "씨제이제일제당㈜",
 "rate": 61.95,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -72262,6 +72786,7 @@
 "foreign": null,
 "name": "손주은",
 "rate": 15.49,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -72502,6 +73027,7 @@
 "foreign": null,
 "name": "조덕수",
 "rate": 15.41,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -72544,6 +73070,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -72683,6 +73210,7 @@
 "foreign": null,
 "name": "최찬욱",
 "rate": 11.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -72744,6 +73272,7 @@
 "foreign": null,
 "name": "㈜신세계",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -72805,6 +73334,7 @@
 "foreign": null,
 "name": "마국성",
 "rate": 28.73,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -73019,6 +73549,7 @@
 "foreign": null,
 "name": "엘에스전선(주)",
 "rate": 63.35,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -73059,8 +73590,9 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "였던 Manpower Holdings는 전기 중 (주)티가든비에 지분 전액을 매각하여 최상위지배회사가 변경되었습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -73220,6 +73752,7 @@
 "foreign": null,
 "name": "(주)두산",
 "rate": 68.11,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -73331,6 +73864,7 @@
 "foreign": null,
 "name": "정종민",
 "rate": 29.92,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -73373,6 +73907,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)위메이드 (주)위메이드 지배기업 (주)위메이드맥스 (주)위메이드맥스 종속기업 (주)라이크잇게",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -73532,6 +74067,7 @@
 "foreign": null,
 "name": "(주)슈프리마에이치큐",
 "rate": 28.08,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -73701,6 +74237,7 @@
 "foreign": null,
 "name": "(주)카카오",
 "rate": 27.16,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -73743,6 +74280,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Trailblazer Ltd",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -73877,6 +74415,7 @@
 "foreign": null,
 "name": "안재천",
 "rate": 26.25,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -74039,6 +74578,7 @@
 "foreign": null,
 "name": "김창수",
 "rate": 11.28,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -74195,6 +74735,7 @@
 "foreign": null,
 "name": "㈜카카오",
 "rate": 37.57,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -74261,6 +74802,7 @@
 "foreign": null,
 "name": "조만호",
 "rate": 52.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -74314,6 +74856,7 @@
 "owner": {
 "foreign": null,
 "name": "하의 사업결합동일지배기업하의 사업결합거래에 대해서는 장부가액법을 적용하여 관련 자산ㆍ부채를 재무제표상의 장부금액으로 평가하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -74374,6 +74917,7 @@
 "owner": {
 "foreign": null,
 "name": "인 ㈜카카오와 인프라서비스 제공 등의 사업 제휴서비스 계약을 체결하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -74416,6 +74960,7 @@
 "owner": {
 "foreign": null,
 "name": "BCC Inspire Aggregator",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -74534,6 +75079,7 @@
 "owner": {
 "foreign": null,
 "name": "또는 피투자자에 대하여 공동지배력이나 유의적인 영향력이 있는 투자자가 투자자산을 원가법 또는 기업회계기준서 제1109호 ‘금융상품’에 따른 방법",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -74668,6 +75214,7 @@
 "foreign": null,
 "name": "김원태",
 "rate": 18.27,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -74731,9 +75278,10 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "MKG Asia Ltd.",
 "rate": 13.45,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -74943,6 +75491,7 @@
 "foreign": null,
 "name": "조응준",
 "rate": 20.34,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -75084,6 +75633,7 @@
 "foreign": null,
 "name": "전성호",
 "rate": 13.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -75340,6 +75890,7 @@
 "foreign": null,
 "name": "㈜에코프로",
 "rate": 40.84,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -75400,6 +75951,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -75559,6 +76111,7 @@
 "foreign": null,
 "name": "김형철",
 "rate": 27.7,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -75693,6 +76246,7 @@
 "foreign": null,
 "name": "윤재훈",
 "rate": 48.27,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -75933,6 +76487,7 @@
 "foreign": null,
 "name": "키맥스 주식회사",
 "rate": 19.74,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -76169,6 +76724,7 @@
 "foreign": null,
 "name": "HD현대㈜",
 "rate": 55.32,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -76295,6 +76851,7 @@
 "foreign": null,
 "name": "HD한국조선해양(주)",
 "rate": 53.57,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -76403,6 +76960,7 @@
 "foreign": null,
 "name": "비씨카드㈜",
 "rate": 33.72,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -76617,6 +77175,7 @@
 "foreign": null,
 "name": "방시혁",
 "rate": 30.86,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -76659,6 +77218,7 @@
 "owner": {
 "foreign": null,
 "name": "없으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -76915,6 +77475,7 @@
 "foreign": null,
 "name": "정몽준",
 "rate": 26.6,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -77171,6 +77732,7 @@
 "foreign": null,
 "name": "HD현대사이트솔루션(주)",
 "rate": 37.59,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -77427,6 +77989,7 @@
 "foreign": null,
 "name": "HD현대㈜",
 "rate": 35.74,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -77469,6 +78032,7 @@
 "owner": {
 "foreign": null,
 "name": "엔에이치엔㈜ 신한은행 12",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -77547,6 +78111,7 @@
 "owner": {
 "foreign": null,
 "name": "Terapin Studios",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -77683,6 +78248,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜카카오 53",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -77759,6 +78325,7 @@
 "foreign": null,
 "name": "이승건",
 "rate": 15.44,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -77807,6 +78374,7 @@
 "owner": {
 "foreign": null,
 "name": "라인플러스 주식회사 193",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -77946,6 +78514,7 @@
 "foreign": null,
 "name": "박영준",
 "rate": 22.52,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -78060,6 +78629,7 @@
 "foreign": null,
 "name": "정한섭",
 "rate": 64.77,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -78102,6 +78672,7 @@
 "owner": {
 "foreign": null,
 "name": "및관계기업의 투자자가 투자자산을 피투자자의 보고된 성과와 순자산에 근거하지 않고직접적인 지분 투자에 근거한 회계처리로 표시한 재무제표",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -78144,6 +78715,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -78265,6 +78837,7 @@
 "foreign": null,
 "name": "매일홀딩스\n(주)",
 "rate": 31.79,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -78406,6 +78979,7 @@
 "foreign": null,
 "name": "한국정보인증(주)",
 "rate": 30.42,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -78517,6 +79091,7 @@
 "foreign": null,
 "name": "이정수",
 "rate": 24.2,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -78733,6 +79308,7 @@
 "foreign": null,
 "name": "(주)오리온홀딩스",
 "rate": 37.37,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -78854,6 +79430,7 @@
 "foreign": null,
 "name": "㈜카카오",
 "rate": 46.14,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -79030,6 +79607,7 @@
 "foreign": null,
 "name": "코오롱",
 "rate": 39.27,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -79072,6 +79650,7 @@
 "owner": {
 "foreign": null,
 "name": "인 네이버 주식회사가 회사의 주식 100%를 소유하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -79114,6 +79693,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜에치와이 당사가 지배력을 가진 기업(*1) ㈜부릉라이더스",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -79278,6 +79858,7 @@
 "foreign": null,
 "name": "(주)지란지교시큐리티",
 "rate": 36.71,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -79339,6 +79920,7 @@
 "foreign": null,
 "name": "㈜카카오",
 "rate": 57.2,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -79520,6 +80102,7 @@
 "foreign": null,
 "name": "이석중",
 "rate": 39.96,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -79631,6 +80214,7 @@
 "foreign": null,
 "name": "정동섭",
 "rate": 30.81,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -79867,6 +80451,7 @@
 "foreign": null,
 "name": "롯데지주(주)",
 "rate": 48.13,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -79978,6 +80563,7 @@
 "foreign": null,
 "name": "이비젼유한회사",
 "rate": 42.71,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -80155,6 +80741,7 @@
 "foreign": null,
 "name": "삼성전자주식회사",
 "rate": 35.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -80291,6 +80878,7 @@
 "foreign": null,
 "name": "롯데지주㈜",
 "rate": 66.1,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -80522,6 +81110,7 @@
 "foreign": null,
 "name": "(주)비지에프",
 "rate": 30.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -80564,6 +81153,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜더원그룹 유의적인 영향력 행사기업 ㈜컴투스홀딩스 종속기업 - 관계기업(주1) ㈜코드",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -80660,6 +81250,7 @@
 "foreign": null,
 "name": "이성진",
 "rate": 25.73,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -80856,6 +81447,7 @@
 "foreign": null,
 "name": "SK디스커버리",
 "rate": 40.79,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -80911,6 +81503,7 @@
 "foreign": null,
 "name": "시러큐스서브코(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -80953,6 +81546,7 @@
 "owner": {
 "foreign": null,
 "name": "RUDBECIKIA",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -81297,6 +81891,7 @@
 "foreign": null,
 "name": "넷마블(주)",
 "rate": 79.49,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -81458,6 +82053,7 @@
 "foreign": null,
 "name": "남이현",
 "rate": 11.67,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -81518,6 +82114,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "홍콩에서 영업을 영위하고 홍콩증권거래소에 상장된 AIA Group Limited",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -81677,6 +82274,7 @@
 "foreign": null,
 "name": "유태준",
 "rate": 13.51,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -81719,6 +82317,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -81799,6 +82398,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)엔피 지배기업의 종속기업 (주)리얼피치 공동기업 HSCPENTA MARKETING CO",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -81847,6 +82447,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Softbank Group Corp",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -81927,6 +82528,7 @@
 "owner": {
 "foreign": null,
 "name": "또는 피투자자에 대하여 공동지배력이나 유의적인 영향력이 있는 투자자가 투자자산을 원가법 또는 기업회계기준서 제1109호 '금융상품'에 따른 방법",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -82119,6 +82721,7 @@
 "foreign": null,
 "name": "엘에스일렉트릭(주)",
 "rate": 30.65,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -82330,6 +82933,7 @@
 "foreign": null,
 "name": "권충식",
 "rate": 16.63,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -82393,6 +82997,7 @@
 "foreign": null,
 "name": "송치형",
 "rate": 25.51,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -82642,6 +83247,7 @@
 "foreign": null,
 "name": "주식회사 에코프로",
 "rate": 43.7,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -82702,6 +83308,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)씨제이 - 4",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -82878,6 +83485,7 @@
 "foreign": null,
 "name": "남운성",
 "rate": 19.13,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -83059,6 +83667,7 @@
 "foreign": null,
 "name": "㈜효성",
 "rate": 20.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -83315,6 +83924,7 @@
 "foreign": null,
 "name": "㈜효성",
 "rate": 32.84,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -83571,6 +84181,7 @@
 "foreign": null,
 "name": "(주)효성",
 "rate": 32.47,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -83624,6 +84235,7 @@
 "owner": {
 "foreign": null,
 "name": "인 롯데쇼핑(주)는 법률 등에 위반하지 않는 한 의무이행을 반대하지 아니할 것을 확인하였습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -83760,6 +84372,7 @@
 "foreign": null,
 "name": "SK케미칼(주)",
 "rate": 66.37,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -83914,6 +84527,7 @@
 "foreign": null,
 "name": "김현태",
 "rate": 36.06,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -83993,6 +84607,7 @@
 "foreign": null,
 "name": "키움증권(주)",
 "rate": 98.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -84124,6 +84739,7 @@
 "foreign": null,
 "name": "이예하",
 "rate": 15.38,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -84255,6 +84871,7 @@
 "foreign": null,
 "name": "최우식",
 "rate": 13.63,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -84321,6 +84938,7 @@
 "owner": {
 "foreign": null,
 "name": "또는 피투자자에 대하여 공동지배력이나 유의적인 영향력이 있는 투자자가 투자자산을 원가법 또는 기업회계기준서 제1109호 '금융상품'에 따른 방법",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -84363,6 +84981,7 @@
 "owner": {
 "foreign": null,
 "name": ") 스탠드컴퍼니 주식회사 1",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -84616,6 +85235,7 @@
 "foreign": null,
 "name": "우리금융지주 우리사주조합",
 "rate": 5.75,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -84658,6 +85278,7 @@
 "owner": {
 "foreign": null,
 "name": "메가존㈜ 메가존㈜ 유의적인영향력을미치는 회사 주식회사 케이티",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -84912,9 +85533,10 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "Aptiv Technologies AG",
 "rate": 41.55,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -84957,6 +85579,7 @@
 "owner": {
 "foreign": null,
 "name": "인 당사는 별도재무제표에서 종속기업",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -84999,6 +85622,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜투케이엠 ㈜투케이엠 관계기업(*1) - ㈜아이티센코어 기타특수관계자1(*2",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -85041,6 +85665,7 @@
 "owner": {
 "foreign": null,
 "name": "주식회사 엠지에스피브이홀딩스 종속기업 리딩잡 주식회사 (2) 당기와 전기 중 당사의 특수관계자와의 주요 거래내역은 다음과 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -85177,6 +85802,7 @@
 "foreign": null,
 "name": "이정원",
 "rate": 12.05,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -85369,6 +85995,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -85411,6 +86038,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 Newberry Global Limited는 주주총회 결의에 의거하여 당사의",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -85453,6 +86081,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)이스트소프트)에 매수 청구 가능- 상환전환우선주식(146",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -85681,6 +86310,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -85723,6 +86353,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)사람인 지배기업 24",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -85849,6 +86480,7 @@
 "foreign": null,
 "name": "김형태",
 "rate": 38.43,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -85940,6 +86572,7 @@
 "foreign": null,
 "name": "이정주",
 "rate": 39.33,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -86166,6 +86799,7 @@
 "foreign": null,
 "name": "SK이노베이션(주)",
 "rate": 53.35,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -86208,6 +86842,7 @@
 "owner": {
 "foreign": null,
 "name": "금융자산 양도 후 양도자산에 대한 권리를 행사할 수 없고",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -86520,6 +87155,7 @@
 "foreign": null,
 "name": "HD한국조선해양㈜",
 "rate": 69.23,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -86626,6 +87262,7 @@
 "foreign": null,
 "name": "이정근",
 "rate": 32.88,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -86668,6 +87305,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 Hamee Corporation",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -86834,6 +87472,7 @@
 "foreign": null,
 "name": "백승욱",
 "rate": 6.76,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -86876,6 +87515,7 @@
 "owner": {
 "foreign": null,
 "name": "한컴밸류 신기술 조합1호 한컴밸류 신기술 조합1호 (*) 전기 중 한컴밸류 신기술 조합1호가 ㈜럭스로보의 지분을 양수하여 최대주주가 되었습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -87062,6 +87702,7 @@
 "foreign": null,
 "name": "황영규",
 "rate": 7.85,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -87104,6 +87745,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜NICE홀딩스 6",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -87164,6 +87806,7 @@
 "owner": {
 "foreign": null,
 "name": "며, 당사는 특허만료의약품등의 상업부문을 영위하며 판매를 주된 사업으로 하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -87313,6 +87956,7 @@
 "foreign": null,
 "name": "김학성",
 "rate": 24.93,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -87587,6 +88231,7 @@
 "foreign": null,
 "name": "두산에너빌리티㈜",
 "rate": 34.78,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -87667,6 +88312,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜한국고용정보 915",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -87709,6 +88355,7 @@
 "owner": {
 "foreign": null,
 "name": "Jones Lang LaSalle International",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -87751,6 +88398,7 @@
 "owner": {
 "foreign": null,
 "name": "인 씨제이(주)와 브랜드 사용 계약에 따라 씨제이(주)의 그룹 공동 브랜드를 사용하고 있으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -87817,6 +88465,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Concentrix Corporation",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -88008,6 +88657,7 @@
 "foreign": null,
 "name": "정몽익",
 "rate": 27.15,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -88088,6 +88738,7 @@
 "owner": {
 "foreign": null,
 "name": "Netflix",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -88168,6 +88819,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -88210,6 +88862,7 @@
 "owner": {
 "foreign": null,
 "name": "LTIP(Long-Term Incentive Program)의 주식기준보상 프로그램을 운영하여 당사의",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -88313,6 +88966,7 @@
 "foreign": null,
 "name": "에스케이에스마이데이터 유한회사",
 "rate": 21.09,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -88449,6 +89103,7 @@
 "owner": {
 "foreign": null,
 "name": "종속기업에 대하여 자산을 매각한 거래(\"하향판매\")로 인하여 발생한 미실현손익은 전액 제거하여 지분법적용투자주식에 가감하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -88585,6 +89240,7 @@
 "owner": {
 "foreign": null,
 "name": "매일홀딩스 주식회사",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -88701,6 +89357,7 @@
 "foreign": null,
 "name": "이상훈",
 "rate": 33.7,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -88781,6 +89438,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -88948,6 +89606,7 @@
 "foreign": null,
 "name": "패스트파이브㈜",
 "rate": 17.03,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -88990,6 +89649,7 @@
 "owner": {
 "foreign": null,
 "name": "없습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -89149,6 +89809,7 @@
 "foreign": null,
 "name": "(주)에스엠엔터테인먼트",
 "rate": 42.58,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -89285,6 +89946,7 @@
 "owner": {
 "foreign": null,
 "name": "및 최상위 지배기업은 없습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -89327,6 +89989,7 @@
 "owner": {
 "foreign": null,
 "name": "SendBird",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -89387,6 +90050,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Tye Soon Ltd",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -89534,6 +90198,7 @@
 "foreign": null,
 "name": "배영근",
 "rate": 46.48,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 4
@@ -89889,6 +90554,7 @@
 "foreign": null,
 "name": "(주)케이티지니뮤직",
 "rate": 38.41,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -89969,6 +90635,7 @@
 "owner": {
 "foreign": null,
 "name": "없습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -90121,6 +90788,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "PM-International AG(LUX) 기타특수관계자 PM-International AG(DE)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -90277,6 +90945,7 @@
 "foreign": null,
 "name": "전배문",
 "rate": 34.14,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -90319,6 +90988,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "미국에 본점을 둔 Alphabet Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -90361,6 +91031,7 @@
 "owner": {
 "foreign": null,
 "name": "으로부터 출자 받은 것으로 보아 부여일에 지분상품의 공정가치로 측정되며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -90459,6 +91130,7 @@
 "owner": {
 "foreign": null,
 "name": "Tesla",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -90613,6 +91285,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)바텍이우홀딩스 (주)바텍이우홀딩스 지배기업 (주)레이언스 (주)레이언스 종속기업 MYVET IMAGING INC",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -90812,6 +91485,7 @@
 "foreign": null,
 "name": "윤문태",
 "rate": 25.56,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -90864,6 +91538,7 @@
 "foreign": null,
 "name": "이성헌",
 "rate": 19.94,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -91005,6 +91680,7 @@
 "foreign": null,
 "name": "유범령",
 "rate": 49.51,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -91139,6 +91815,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)세아홀딩스 동일 지배하에 있는 기업 ㈜세아엘앤에스",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -91389,6 +92066,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 Merlin Entertainments Ltd",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -91469,6 +92147,7 @@
 "owner": {
 "foreign": null,
 "name": "인 회사에 흡수합병 후 2024년 7월 5일자로 인적분할 하였습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -91549,6 +92228,7 @@
 "owner": {
 "foreign": null,
 "name": "등의 현황은 다음과 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -91885,6 +92565,7 @@
 "foreign": null,
 "name": "블랙마운틴홀딩스(주)",
 "rate": 17.91,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -91946,6 +92627,7 @@
 "foreign": null,
 "name": "키움증권(주)",
 "rate": 98.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -92107,6 +92789,7 @@
 "foreign": null,
 "name": "김진국",
 "rate": 8.88,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -92220,6 +92903,7 @@
 "foreign": null,
 "name": "윤준호",
 "rate": 21.53,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -92406,6 +93090,7 @@
 "foreign": null,
 "name": "박민우",
 "rate": 13.18,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -92522,6 +93207,7 @@
 "foreign": null,
 "name": "이영신",
 "rate": 26.74,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -92564,6 +93250,7 @@
 "owner": {
 "foreign": null,
 "name": "인 씨제이(주)의 종속ㆍ관계ㆍ공동기업 등 기타 특수관계자(*2) 주식회사 콘텐트리중앙 그룹사",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -92750,6 +93437,7 @@
 "foreign": null,
 "name": "㈜LG화학",
 "rate": 79.38,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -92861,6 +93549,7 @@
 "foreign": null,
 "name": "송형석",
 "rate": 40.09,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -92914,6 +93603,7 @@
 "owner": {
 "foreign": null,
 "name": "SK(주)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -93170,6 +93860,7 @@
 "foreign": null,
 "name": "DL㈜",
 "rate": 23.15,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -93231,6 +93922,7 @@
 "foreign": null,
 "name": "DL㈜",
 "rate": 88.9,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -93273,6 +93965,7 @@
 "owner": {
 "foreign": null,
 "name": "인 주식회사 비바리퍼블리카는 회사의 종업원에게 지배기업의주식선택권을 부여하였습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -93374,6 +94067,7 @@
 "foreign": null,
 "name": "LS전선(주)",
 "rate": 43.51,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -93416,6 +94110,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)엘에스 1",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -93496,6 +94191,7 @@
 "owner": {
 "foreign": null,
 "name": "및 당기 중 회사와 매출 등 거래 또는 채권ㆍ채무잔액이 있는 주요 기타 특수관계자는 다음과 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -93988,6 +94684,7 @@
 "foreign": null,
 "name": "황승주",
 "rate": 50.99,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -94028,8 +94725,9 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "(주)야놀자 지배기업 Yanolja Cloud Pte",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -94260,6 +94958,7 @@
 "owner": {
 "foreign": null,
 "name": "썬더홀딩스 유한회사 기타의 특수관계자 ㈜에스브릿지",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -94358,6 +95057,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)에이치앤씨솔루션 DNC GLOVI CO",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -94400,6 +95100,7 @@
 "owner": {
 "foreign": null,
 "name": "현대자동차(주) 13",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -94480,6 +95181,7 @@
 "owner": {
 "foreign": null,
 "name": "으로부터 출자 받은 것으로 보아 부여일에 지분상품의 공정가치로 측정되며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -94830,6 +95532,7 @@
 "foreign": null,
 "name": "구본준",
 "rate": 20.37,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -95160,6 +95863,7 @@
 "foreign": null,
 "name": "㈜에코프로",
 "rate": 31.09,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -95340,6 +96044,7 @@
 "foreign": null,
 "name": "김성준",
 "rate": 32.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -95464,6 +96169,7 @@
 "owner": {
 "foreign": null,
 "name": "으로부터 출자 받은 것으로 보아 부여일에 지분상품의 공정가치로 측정되며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -95543,6 +96249,7 @@
 "foreign": null,
 "name": "오상훈",
 "rate": 29.23,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -95585,6 +96292,7 @@
 "owner": {
 "foreign": null,
 "name": "ㆍ 투자자 또는 참여자가 일시적차이의 소멸시점을 통제할 수 있고",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -95757,6 +96465,7 @@
 "foreign": null,
 "name": "이광후",
 "rate": 30.42,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -95799,6 +96508,7 @@
 "owner": {
 "foreign": null,
 "name": "기타 63",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -95947,6 +96657,7 @@
 "foreign": null,
 "name": "이성호",
 "rate": 26.83,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -95989,6 +96700,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)카카오 (주)카카오 지배기업 (주)카카오게",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -96132,6 +96844,7 @@
 "foreign": null,
 "name": "임대근",
 "rate": 31.69,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -96223,6 +96936,7 @@
 "foreign": null,
 "name": "공경철",
 "rate": 22.79,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -96265,6 +96979,7 @@
 "owner": {
 "foreign": null,
 "name": "없습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -96336,6 +97051,7 @@
 "foreign": null,
 "name": "SK이노베이션㈜",
 "rate": 90.33,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -96668,6 +97384,7 @@
 "foreign": null,
 "name": "SK㈜",
 "rate": 32.14,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -96710,6 +97427,7 @@
 "owner": {
 "foreign": null,
 "name": "메가존(주) 지배기업 메가존클라우드(주) 기타 특수관계자 주식회사 케이티",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -96788,6 +97506,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "Macquarie Group Limited 지배기업 신코페이션홀딩스 유한회사 종속기업 (주)드림누리 S&I Europe sp",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -96830,6 +97549,7 @@
 "owner": {
 "foreign": null,
 "name": "지에스건설㈜ - - 64 980 종속기업 ZEIT C&A NANJING Co",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -96941,6 +97661,7 @@
 "foreign": null,
 "name": "한앤코세미콘머티리얼즈홀딩스 유한회사\n(舊.한앤코30호 유한회사)",
 "rate": 85.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -97263,6 +97984,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜휴맥스모빌리티(*1) 지배기업에 유의적인 영향력을 행사하는 기업 ㈜휴맥스 및 스틱인베스트먼트㈜ 지배기업의 종속기업 ㈜하이파킹(*2)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -97430,6 +98152,7 @@
 "foreign": null,
 "name": "포스코홀딩스(주)",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -97556,6 +98279,7 @@
 "foreign": null,
 "name": "이정현",
 "rate": 49.64,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -97786,6 +98510,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -97920,6 +98645,7 @@
 "owner": {
 "foreign": null,
 "name": "주식회사 케이티 종속기업 (주)오픈클라우드랩 관계기업 개봉피에프브이(주)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -97962,6 +98688,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -98004,6 +98731,7 @@
 "owner": {
 "foreign": null,
 "name": "Enuma",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -98309,6 +99037,7 @@
 "foreign": null,
 "name": "남명용",
 "rate": 46.4,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -98443,6 +99172,7 @@
 "foreign": null,
 "name": "배성환",
 "rate": 24.44,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -98485,6 +99215,7 @@
 "owner": {
 "foreign": null,
 "name": "유진유니콘사모투자합자회사 관계기업 (주)코너마켓",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -98565,6 +99296,7 @@
 "owner": {
 "foreign": null,
 "name": "네이버 주식회사",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -98607,6 +99339,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -98725,6 +99458,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -98854,6 +99588,7 @@
 "owner": {
 "foreign": null,
 "name": "㈜차케어스로 변경되었습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -99156,6 +99891,7 @@
 "owner": {
 "foreign": null,
 "name": "두나무 주식회사 두나무 주식회사 기타특수관계자 주식회사 하이브 주식회사 하이브 지배기업의 관계기업 기타특수관계자 Levvels",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -99236,6 +99972,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -99316,6 +100053,7 @@
 "owner": {
 "foreign": null,
 "name": "지분법을 적용하지 않음 시장성 없는 지분증권 취득원가로 평가하되 손상차손에 대해서는 제6장 ‘금융자산ㆍ금융부채’의 제2절 ‘유가증권’의 문단 6",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -99485,6 +100223,7 @@
 "owner": {
 "foreign": null,
 "name": "기업명 지분율(%) 당기말 전기말 EDU EDISON LTD",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -99720,6 +100459,7 @@
 "foreign": null,
 "name": "정지성",
 "rate": 19.23,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -99932,6 +100672,7 @@
 "owner": {
 "foreign": null,
 "name": "인 컴바인드딜리버리플랫폼인베스트먼트㈜를 합병하였습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -100099,6 +100840,7 @@
 "foreign": null,
 "name": "정성진",
 "rate": 18.51,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -100269,6 +101011,7 @@
 "foreign": null,
 "name": "(주)코오롱",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -100349,6 +101092,7 @@
 "owner": {
 "foreign": null,
 "name": "Delta Electronics",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -100391,6 +101135,7 @@
 "owner": {
 "foreign": null,
 "name": ", 종속기업 및 당기 중 회사와 매출 등 거래 또는 채권ㆍ채무 잔액이 있는 관계기업 및 기타 특수관계자는 다음과 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -100443,6 +101188,7 @@
 "foreign": null,
 "name": "(주)우리금융지주",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -100521,6 +101267,7 @@
 "owner": {
 "foreign": null,
 "name": "과 관계기업의 투자자가 투자자산을 피투자자의 보고된 성과와 순자산에 근거하지 않고직접적인 지분 투자에 근거한 회계처리로 표시한 재무제표",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -100747,6 +101494,7 @@
 "foreign": null,
 "name": "(주)현대지에프홀딩스",
 "rate": 39.3,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -100927,6 +101675,7 @@
 "foreign": null,
 "name": "㈜한화",
 "rate": 36.31,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -100975,6 +101724,7 @@
 "owner": {
 "foreign": null,
 "name": "인 주식회사 비바리퍼블리카는 회사의 종업원에게 지배기업의 주식선택권과 양도제한조건부주식(Restricted Stock Unit)을 부여하였습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101111,6 +101861,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101191,6 +101942,7 @@
 "owner": {
 "foreign": null,
 "name": "아이앤에프컨설팅(주) 1",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101289,6 +102041,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 Bolttech Holdings Limited",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101407,6 +102160,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101449,6 +102203,7 @@
 "owner": {
 "foreign": null,
 "name": "최대주주의 지배기업주식에 대한 우리사주조합 출연분으로써 제1102호 '주식기준보상' 에 따른 비용인식액",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101603,6 +102358,7 @@
 "owner": {
 "foreign": null,
 "name": "인 (주)제이와이피엔터테인먼트와 지식재산권 등의 사용에 대한 로열티 계약을 체결하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101683,6 +102439,7 @@
 "owner": {
 "foreign": null,
 "name": "자본금의 50%에 달할 때까지 매결산기에 금전에 의한 이익 배당액의 10% 이상을 이익준비금으로 적립하도록 규정되어 있으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101763,6 +102520,7 @@
 "owner": {
 "foreign": null,
 "name": "와의 계약에따라 판매 및 마케팅",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101805,6 +102563,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101903,6 +102662,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)메타넷글로벌 지배기업 (주)메타넷엑스(구",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -101994,6 +102754,7 @@
 "owner": {
 "foreign": null,
 "name": "(*) LG전자 주식회사 지배기업 Bear Robotics",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -102244,6 +103005,7 @@
 "owner": {
 "foreign": null,
 "name": "Moreh",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -102514,6 +103276,7 @@
 "owner": {
 "foreign": null,
 "name": "당사의 종업원 및 유사용역제공자에게 양도제한조건부주식(RSU)을 부여하고 있으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -102958,6 +103721,7 @@
 "foreign": null,
 "name": "OCI 홀딩스㈜",
 "rate": 44.97,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -103076,6 +103840,7 @@
 "owner": {
 "foreign": null,
 "name": "인 Salesforce",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -103118,6 +103883,7 @@
 "owner": {
 "foreign": null,
 "name": "소유주지분 (1",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -103300,6 +104066,7 @@
 "foreign": null,
 "name": "김동현",
 "rate": 15.28,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -103436,6 +104203,7 @@
 "owner": {
 "foreign": null,
 "name": "없습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -103628,6 +104396,7 @@
 "foreign": null,
 "name": "박재필",
 "rate": 20.3,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -103688,6 +104457,7 @@
 "owner": {
 "foreign": null,
 "name": "및 종속회사는 없으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -103806,6 +104576,7 @@
 "owner": {
 "foreign": null,
 "name": "한미사이언스(주) 기타의 특수관계자 한미약품(주)",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -104036,6 +104807,7 @@
 "owner": {
 "foreign": null,
 "name": ")으로써",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -104165,6 +104937,7 @@
 "foreign": null,
 "name": "서상덕",
 "rate": 14.62,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -104292,6 +105065,7 @@
 "foreign": null,
 "name": "김태호",
 "rate": 11.96,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -104352,6 +105126,7 @@
 "owner": {
 "foreign": null,
 "name": "인 MARQ VISION INC",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -104666,6 +105441,7 @@
 "foreign": null,
 "name": "SK디스커버리㈜",
 "rate": 30.98,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -104764,6 +105540,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -104936,6 +105713,7 @@
 "owner": {
 "foreign": null,
 "name": "자가 되는 때에만 재무상태표에 인식하고",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -105016,6 +105794,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)더밸류앤코",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -105117,6 +105896,7 @@
 "owner": {
 "foreign": null,
 "name": "또는 피투자자에 대하여 공동지배력이나 유의적인 영향력이 있는 투자자가 투자자산을 원가법 또는 기업회계기준서 제1109호 '금융상품'에 따른 방법",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -105461,6 +106241,7 @@
 "owner": {
 "foreign": null,
 "name": "연법인세자산을 인식하지 아니하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -105625,6 +106406,7 @@
 "foreign": null,
 "name": "서영진",
 "rate": 69.21,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -105705,6 +106487,7 @@
 "owner": {
 "foreign": null,
 "name": "(전기) (단위:천원) 특수관계자명 이자비용 매출 자금차입(상환) 기타매입 한글과컴퓨터 - 112",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -106207,6 +106990,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)원익홀딩스 기타특수관계자 (주)원익",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -106267,6 +107051,7 @@
 "owner": {
 "foreign": null,
 "name": "및 최상위 지배기업은 없으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -106360,6 +107145,7 @@
 "foreign": null,
 "name": "(주)한화",
 "rate": 100.0,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -106431,6 +107217,7 @@
 "foreign": null,
 "name": "하경식",
 "rate": 18.84,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -106473,6 +107260,7 @@
 "owner": {
 "foreign": null,
 "name": "또는 피투자자에 대하여 공동지배력이나 유의적인 영향력이 있는 투자자가 투자자산을 원가법 또는 기업회계기준서 제1109호'금융상품'에 따른 방법",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -106553,6 +107341,7 @@
 "owner": {
 "foreign": null,
 "name": "바디프랜드㈜ 바디프랜드㈜ 종속기업 Medical AI",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -106752,6 +107541,7 @@
 "foreign": null,
 "name": "(주)한화",
 "rate": 33.95,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -107245,6 +108035,7 @@
 "foreign": null,
 "name": "㈜GS",
 "rate": 58.62,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -107323,8 +108114,9 @@
 ]
 },
 "owner": {
-"foreign": "외국 회사 표기",
+"foreign": null,
 "name": "(*1) 주식회사 안랩 주식회사 안랩 기타 특수관계자 Ahnlab Inc",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -107367,6 +108159,7 @@
 "owner": {
 "foreign": null,
 "name": "(주)케이티 95",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -107409,6 +108202,7 @@
 "owner": {
 "foreign": null,
 "name": "없습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -107480,6 +108274,7 @@
 "owner": {
 "foreign": null,
 "name": "및 매출 등 거래 또는 채권ㆍ채무 잔액이 있는 기타특수관계자는 다음과 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -107598,6 +108393,7 @@
 "owner": {
 "foreign": null,
 "name": "및 관계기업의 내역은 다음과 같습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -107690,6 +108486,7 @@
 "owner": {
 "foreign": null,
 "name": "인 주식회사 엔씨소프트로부터 물적분할하여 설립되었습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -107788,6 +108585,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -107904,6 +108702,7 @@
 "owner": {
 "foreign": null,
 "name": "비버홀딩스(유) 비버홀딩스(유) 종속기업 (주)스마트시스템즈",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -107946,6 +108745,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -108082,6 +108882,7 @@
 "owner": {
 "foreign": null,
 "name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -108426,6 +109227,7 @@
 "owner": {
 "foreign": null,
 "name": "없으며",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -108638,6 +109440,7 @@
 "owner": {
 "foreign": null,
 "name": "인 (주)비바리퍼블리카와 회사의",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -108794,6 +109597,7 @@
 "owner": {
 "foreign": null,
 "name": "소유주 (9",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -109180,6 +109984,7 @@
 "owner": {
 "foreign": null,
 "name": "인 Superb AI",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
@@ -109462,6 +110267,7 @@
 "foreign": null,
 "name": "삼성물산",
 "rate": 43.06,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -109556,6 +110362,7 @@
 "foreign": null,
 "name": "김   원",
 "rate": 5.8,
+"rule": 2,
 "source": "사업보고서 최대주주"
 },
 "v": 3
@@ -109616,6 +110423,7 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "PERSOL Holdings Co",
+"rule": 2,
 "source": "감사보고서 지배기업"
 },
 "v": 4
