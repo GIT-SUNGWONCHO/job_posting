@@ -167,7 +167,8 @@ class CompanyRegistry:
                 corp["dart_key"] = company_key(corp["corp_name"])
             self._results[key] = company_class.classify(
                 key, corp=corp, basics=ev["basics"].get(corp.get("corp_code") or ""), group_keys=ev["groups"],
-                public_keys=ev["public"], nps=ev["nps"], source_type=self.source_type(key, name).value)
+                public_keys=ev["public"], nps=ev["nps"], source_type=self.source_type(key, name).value,
+                manual=(config.load("company_class").get("overrides") or {}).get(key))
         return self._results[key]
 
     def update(self, company_types: dict[str, set[str]], names: dict[str, str], today: str) -> None:

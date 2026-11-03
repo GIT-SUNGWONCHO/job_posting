@@ -46,3 +46,9 @@ def test_foreign_from_dart_owner():
     domestic = {**fin, "owner": {"name": "가나㈜", "source": "감사보고서 지배기업", "foreign": None}}
     assert _c(corp=corp, basics=domestic, src="외국계").type == "중견"  # 수집처 표시를 버림
     assert _c(corp=corp, basics=fin, src="외국계").basis == "수집처 표시"  # 아직 안 읽음
+
+
+def test_manual_exception_comes_first():
+    r = cc.classify("가나", corp=None, basics=None, group_keys={}, public_keys={}, nps={}, source_type="그 외",
+                    manual={"type": "중견", "basis": "2025 감사보고서 매출 1,900억"})
+    assert (r.type, r.basis) == ("중견", "직접 확인: 2025 감사보고서 매출 1,900억")

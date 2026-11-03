@@ -66,10 +66,13 @@ class Result:
 
 def classify(key: str, *, corp: dict[str, Any] | None, basics: dict[str, Any] | None,
              group_keys: dict[str, str], public_keys: dict[str, str] | set[str], nps: dict[str, tuple[int, int]],
-             source_type: str) -> Result:
+             source_type: str, manual: dict[str, Any] | None = None) -> Result:
     corp = corp or {}
     code = corp.get("corp_code")
     listed = bool(corp.get("stock_code"))
+    if manual and manual.get("type"):
+        # 예외(config/company_class.yaml): 사람이 근거를 확인해 정한 구분
+        return Result(manual["type"], f"직접 확인: {manual.get('basis') or ''}".strip(), listed)
     dart_key = corp.get("dart_key")
     pk = key if key in public_keys else dart_key if dart_key and dart_key in public_keys else None
     if pk:
