@@ -7,7 +7,7 @@ competitors: 2
 min_code: 3
 
 # 직무 환경·도구: 그 회사 공고 본문(열린 공고와 지난 공고, 헤드헌터 공고 제외)에서 찾은 도구.
-# 스킬 사전(config/skills.yaml)과 따로 둔다. 사전은 매칭용이라 비슷한 도구·개념을 묶지만(Redash → Superset, 컨테이너 → Docker),
+# 스킬 사전(config/taxonomy/skills.yaml)과 따로 둔다. 사전은 매칭용이라 비슷한 도구·개념을 묶지만(Redash → Superset, 컨테이너 → Docker),
 # 이 칸은 공고에 적힌 제품 이름 그대로 보여준다. 이름마다 찾을 말: 영문은 단어 경계로 찾고 세 글자 이하는 대소문자까지 맞춘다.
 # 다른 뜻으로 많이 쓰이는 말은 넣지 않는다(EMR 전자의무기록, S3, Glue, Synapse, Dataflow, 스파크플러스).
 # 칸마다 공고에 많이 나온 순으로 max_per_slot개까지.

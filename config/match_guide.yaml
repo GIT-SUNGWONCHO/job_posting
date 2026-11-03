@@ -14,7 +14,7 @@
 
 version: 6
 
-# 항목 종류(item_kinds)와 공고 사실 선택지(posting_facts)는 config/taxonomy/enums.yaml(코드 + 이름)
+# 항목 종류(item_kinds)와 공고 사실 선택지(posting_facts)는 config/taxonomy/enums.yaml의 item_kinds(IK)와 match_levels·match_english·match_employment(PL·PE·PM)
 
 # 판정과 점수 비율. 점수 = 가중치 × 비율의 합(가중치 합이 100이 되게 맞춘 뒤). 코드가 다시 계산한다
 fit:
@@ -32,7 +32,7 @@ below: 비추천
 
 # 점수 상한: 할 수 없는 공고만 그 점수를 넘지 못하게 한다. 취향(원하는 조건)은 점수에 넣지 않는다
 gates:
-  english_cap: 65      # 영어가 config/profile.yaml english_low인데 영어로 일해야 하는 공고(영어만 부족한 공고는 △로 봤다)
+  english_cap: 65      # 영어 수준이 config/taxonomy/enums.yaml english_levels에서 low인데 영어로 일해야 하는 공고(영어만 부족한 공고는 △로 봤다)
   employment_cap: 30   # 개인 필터의 고용 형태 밖인데 필터에서 못 거른 공고(고용 형태를 안 주는 수집처)
   no_body_cap: 70      # 본문 글이 300자 미만(원문이 이미지뿐이고 아직 못 읽음): 제목만 보고는 지원 추천을 주지 않는다
 

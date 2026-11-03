@@ -31,8 +31,10 @@ def test_job_types_view_matches_old_file():
 def test_skills_view_matches_old_file():
     o, n = old("skills"), config.load("skills")
     assert n["version"] == o["version"] and n["interchangeable"] == o["interchangeable"]
-    assert {g: [(i["name"], i["aliases"]) for i in items] for g, items in n["groups"].items()} == \
-        {g: [(i["name"], i.get("aliases") or []) for i in items] for g, items in o["groups"].items()}
+    # 2026-11-03 리뷰: Databricks를 데이터 처리 묶음에도 넣었다(묶음은 보기용, 판정·찾기 결과는 같다)
+    got = {g: [(i["name"], i["aliases"]) for i in items if not (g == "데이터 처리" and i["name"] == "Databricks")]
+           for g, items in n["groups"].items()}
+    assert got == {g: [(i["name"], i.get("aliases") or []) for i in items] for g, items in o["groups"].items()}
 
 
 def test_profile_and_guide_views_match_old_files():

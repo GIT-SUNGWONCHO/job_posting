@@ -12,7 +12,7 @@ exclude_keywords:
 always_companies: []
 exclude_companies: []
 
-# 보여줄 직무 유형(config/job_types.yaml의 id). 아직 분류 안 된 공고는 통과
+# 보여줄 직무 유형(config/taxonomy/jobs.yaml의 legacy id, 코드로 옮기기 전). 아직 분류 안 된 공고는 통과
 job_types:
   - data_eng
   - data_arch

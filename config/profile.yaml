@@ -13,7 +13,7 @@ roles:
   - {id: mlops, name: MLOps·AI 플랫폼, code: JT008}
   - {id: planning, name: AI·데이터 기획·PM, code: JT011}
   - {id: pi, name: 업무 프로세스 혁신(PI) 기획, job_type: f_planning, code: JF03}
-  - {id: sales_md, name: 영업·MD, job_type: f_sales, code: JF08}
+  - {id: sales_md, name: 영업·MD, job_type: f_sales, code: JF08}  # MD는 JF07(마케팅·광고·MD)이지만 영업으로 셈
   - {id: other, name: 기타(직접 입력)}
 
 # 원하는 조건(선호·비선호 업종, 원하는 직급)은 표시만 한다(docs/decisions.md 2026-11-02). 선택지는 config/taxonomy/

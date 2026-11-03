@@ -124,9 +124,9 @@ def validate() -> None:
         for r in item.get("replaced_by") or []:
             if r not in seen:
                 raise TaxonomyError(f"{item['code']}: replaced_by {r} 없음")
-    legacy = [x["legacy"] for x in [*fields(), *job_types()] if x.get("legacy")]
+    legacy = [x["legacy"] for x in [*fields(), *job_types(), *industries()] if x.get("legacy")]
     if len(legacy) != len(set(legacy)):
-        raise TaxonomyError("jobs: legacy id가 겹침")
+        raise TaxonomyError("지난 id(직무·업종)가 겹침")
 
 
 # ---------- 지난 id ↔ 코드 ----------
@@ -149,7 +149,8 @@ def job_types_view() -> dict[str, Any]:
     """jobtypes.py가 읽는 모양: 데이터·AI 직무 유형(family data) + 그 밖의 직무 분야(family other), id는 legacy."""
     j = raw("jobs")
     types = [{"id": t["legacy"], "code": t["code"], "name": t["name"], "short": t.get("short", t["name"]),
-              "desc": t["desc"], **({"direction": False} if t.get("direction") is False else {})}
+              "desc": t["desc"], **({"direction": False} if t.get("direction") is False else {}),
+              **({"family": "other"} if t.get("field") != "JF01" else {})}  # 계열은 분야로 정한다
              for t in _active(job_types())]
     types += [{"id": f["legacy"], "code": f["code"], "name": f["name"], "short": f.get("short", f["name"]),
                "family": "other", "direction": False, "desc": f["desc"]}

@@ -32,7 +32,7 @@ skills:
   - {code: SK0014, name: ETL, kind: 방법·개념, groups: [SG02], aliases: [ELT, 데이터 파이프라인, Data Pipeline]}
   - {code: SK0015, name: 실시간 처리, kind: 방법·개념, groups: [SG02], aliases: [스트리밍, Streaming, 실시간 데이터]}
   - {code: SK0016, name: Pandas, kind: 도구·플랫폼, groups: [SG02], aliases: []}
-  - {code: SK0017, name: Databricks, kind: 도구·플랫폼, groups: [SG03], aliases: [데이터브릭스, Unity Catalog, Delta Lake]}
+  - {code: SK0017, name: Databricks, kind: 도구·플랫폼, groups: [SG02, SG03], aliases: [데이터브릭스, Unity Catalog, Delta Lake]}
   - {code: SK0018, name: Snowflake, kind: 도구·플랫폼, groups: [SG03], aliases: [스노우플레이크]}
   - {code: SK0019, name: BigQuery, kind: 도구·플랫폼, groups: [SG03], aliases: [빅쿼리]}
   - {code: SK0020, name: Redshift, kind: 도구·플랫폼, groups: [SG03], aliases: []}
@@ -60,32 +60,32 @@ skills:
   - {code: SK0042, name: Looker, kind: 도구·플랫폼, groups: [SG05], aliases: [Looker Studio]}
   - {code: SK0043, name: Superset, kind: 도구·플랫폼, groups: [SG05], aliases: [Redash, Metabase]}
   - {code: SK0044, name: Excel, kind: 도구·플랫폼, groups: [SG05], aliases: [엑셀]}
-  - {code: SK0045, name: 통계 분석, kind: 도구·플랫폼, groups: [SG05], aliases: [통계, Statistics, 회귀분석]}
-  - {code: SK0046, name: A/B 테스트, kind: 도구·플랫폼, groups: [SG05], aliases: [A/B Test, AB 테스트, 실험 설계]}
-  - {code: SK0047, name: 데이터 시각화, kind: 도구·플랫폼, groups: [SG05], aliases: [대시보드, Dashboard, 시각화]}
-  - {code: SK0048, name: 로그 분석, kind: 도구·플랫폼, groups: [SG05], aliases: [GA4, Google Analytics, Amplitude, Mixpanel]}
-  - {code: SK0049, name: 데이터 모델링, kind: 도구·플랫폼, groups: [SG06], aliases: [Data Modeling, 데이터모델링, ERD, 논리 모델, 물리 모델]}
-  - {code: SK0050, name: 데이터 거버넌스, kind: 도구·플랫폼, groups: [SG06], aliases: [Data Governance, 데이터거버넌스]}
-  - {code: SK0051, name: 메타데이터, kind: 도구·플랫폼, groups: [SG06], aliases: [Metadata, 데이터 카탈로그, Data Catalog, DataHub, OpenMetadata, Collibra]}
-  - {code: SK0052, name: 데이터 품질, kind: 도구·플랫폼, groups: [SG06], aliases: [Data Quality, 데이터품질, DQ]}
-  - {code: SK0053, name: 데이터 표준, kind: 도구·플랫폼, groups: [SG06], aliases: [표준화, MDM, 마스터 데이터]}
-  - {code: SK0054, name: 온톨로지, kind: 도구·플랫폼, groups: [SG06], aliases: [Ontology, 지식 그래프, Knowledge Graph]}
-  - {code: SK0055, name: 머신러닝, kind: 도구·플랫폼, groups: [SG07], aliases: [Machine Learning, ML, 기계학습]}
-  - {code: SK0056, name: 딥러닝, kind: 도구·플랫폼, groups: [SG07], aliases: [Deep Learning]}
+  - {code: SK0045, name: 통계 분석, kind: 방법·개념, groups: [SG05], aliases: [통계, Statistics, 회귀분석]}
+  - {code: SK0046, name: A/B 테스트, kind: 방법·개념, groups: [SG05], aliases: [A/B Test, AB 테스트, 실험 설계]}
+  - {code: SK0047, name: 데이터 시각화, kind: 방법·개념, groups: [SG05], aliases: [대시보드, Dashboard, 시각화]}
+  - {code: SK0048, name: 로그 분석, kind: 방법·개념, groups: [SG05], aliases: [GA4, Google Analytics, Amplitude, Mixpanel]}
+  - {code: SK0049, name: 데이터 모델링, kind: 방법·개념, groups: [SG06], aliases: [Data Modeling, 데이터모델링, ERD, 논리 모델, 물리 모델]}
+  - {code: SK0050, name: 데이터 거버넌스, kind: 방법·개념, groups: [SG06], aliases: [Data Governance, 데이터거버넌스]}
+  - {code: SK0051, name: 메타데이터, kind: 방법·개념, groups: [SG06], aliases: [Metadata, 데이터 카탈로그, Data Catalog, DataHub, OpenMetadata, Collibra]}
+  - {code: SK0052, name: 데이터 품질, kind: 방법·개념, groups: [SG06], aliases: [Data Quality, 데이터품질, DQ]}
+  - {code: SK0053, name: 데이터 표준, kind: 방법·개념, groups: [SG06], aliases: [표준화, MDM, 마스터 데이터]}
+  - {code: SK0054, name: 온톨로지, kind: 방법·개념, groups: [SG06], aliases: [Ontology, 지식 그래프, Knowledge Graph]}
+  - {code: SK0055, name: 머신러닝, kind: 방법·개념, groups: [SG07], aliases: [Machine Learning, ML, 기계학습]}
+  - {code: SK0056, name: 딥러닝, kind: 방법·개념, groups: [SG07], aliases: [Deep Learning]}
   - {code: SK0057, name: PyTorch, kind: 도구·플랫폼, groups: [SG07], aliases: [파이토치]}
   - {code: SK0058, name: TensorFlow, kind: 도구·플랫폼, groups: [SG07], aliases: [텐서플로우, Keras]}
-  - {code: SK0059, name: MLOps, kind: 도구·플랫폼, groups: [SG07], aliases: [MLflow, Kubeflow, 모델 서빙, Model Serving, Triton]}
-  - {code: SK0060, name: LLM, kind: 도구·플랫폼, groups: [SG07], aliases: [대규모 언어 모델, 거대 언어 모델, GPT, Claude, Gemini, ChatGPT]}
-  - {code: SK0061, name: RAG, kind: 도구·플랫폼, groups: [SG07], aliases: [검색 증강]}
-  - {code: SK0062, name: AI 에이전트, kind: 도구·플랫폼, groups: [SG07], aliases: [Agent, Agentic, 에이전트, MCP, Multi-Agent]}
+  - {code: SK0059, name: MLOps, kind: 방법·개념, groups: [SG07], aliases: [MLflow, Kubeflow, 모델 서빙, Model Serving, Triton]}
+  - {code: SK0060, name: LLM, kind: 방법·개념, groups: [SG07], aliases: [대규모 언어 모델, 거대 언어 모델, GPT, Claude, Gemini, ChatGPT]}
+  - {code: SK0061, name: RAG, kind: 방법·개념, groups: [SG07], aliases: [검색 증강]}
+  - {code: SK0062, name: AI 에이전트, kind: 방법·개념, groups: [SG07], aliases: [Agent, Agentic, 에이전트, MCP, Multi-Agent]}
   - {code: SK0063, name: LangChain, kind: 도구·플랫폼, groups: [SG07], aliases: [LangGraph, LlamaIndex]}
-  - {code: SK0064, name: 파인튜닝, kind: 도구·플랫폼, groups: [SG07], aliases: [Fine-tuning, Fine tuning, LoRA, SFT, RLHF]}
-  - {code: SK0065, name: 프롬프트 엔지니어링, kind: 도구·플랫폼, groups: [SG07], aliases: [Prompt Engineering, 프롬프트]}
-  - {code: SK0066, name: NLP, kind: 도구·플랫폼, groups: [SG07], aliases: [자연어 처리, 자연어처리]}
-  - {code: SK0067, name: 컴퓨터 비전, kind: 도구·플랫폼, groups: [SG07], aliases: [Computer Vision, Vision AI, OpenCV, 비전 AI, 영상 처리, 이미지 처리]}
-  - {code: SK0068, name: 추천 시스템, kind: 도구·플랫폼, groups: [SG07], aliases: [Recommendation, Recommender, 추천 모델, 개인화 추천]}
-  - {code: SK0069, name: 검색, kind: 도구·플랫폼, groups: [SG07], aliases: [Search, 검색 엔진, 랭킹]}
-  - {code: SK0070, name: 시계열, kind: 도구·플랫폼, groups: [SG07], aliases: [Time Series, 시계열 예측, 수요 예측]}
+  - {code: SK0064, name: 파인튜닝, kind: 방법·개념, groups: [SG07], aliases: [Fine-tuning, Fine tuning, LoRA, SFT, RLHF]}
+  - {code: SK0065, name: 프롬프트 엔지니어링, kind: 방법·개념, groups: [SG07], aliases: [Prompt Engineering, 프롬프트]}
+  - {code: SK0066, name: NLP, kind: 방법·개념, groups: [SG07], aliases: [자연어 처리, 자연어처리]}
+  - {code: SK0067, name: 컴퓨터 비전, kind: 방법·개념, groups: [SG07], aliases: [Computer Vision, Vision AI, OpenCV, 비전 AI, 영상 처리, 이미지 처리]}
+  - {code: SK0068, name: 추천 시스템, kind: 방법·개념, groups: [SG07], aliases: [Recommendation, Recommender, 추천 모델, 개인화 추천]}
+  - {code: SK0069, name: 검색, kind: 방법·개념, groups: [SG07], aliases: [Search, 검색 엔진, 랭킹]}
+  - {code: SK0070, name: 시계열, kind: 방법·개념, groups: [SG07], aliases: [Time Series, 시계열 예측, 수요 예측]}
   - {code: SK0071, name: Git, kind: 도구·플랫폼, groups: [SG08], aliases: [GitHub, GitLab]}
   - {code: SK0072, name: Jira, kind: 도구·플랫폼, groups: [SG08], aliases: [Confluence]}
 
