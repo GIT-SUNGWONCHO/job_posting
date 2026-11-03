@@ -146,11 +146,11 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
 
 
 def candidates_for_all(screen: dict[str, Any], settings: list[dict[str, Any]]) -> list[str]:
-    """사람마다 개인 필터를 통과한 공고의 합집합. 최근 공고부터."""
+    """사람마다 매칭 대상(내 분야 공고, recommend.match_scope)의 합집합. 최근 공고부터."""
     defaults = config.load("filters")
     seen: dict[str, str] = {}
     for user_filters in [{**defaults, **(s.get("filters") or {})} for s in settings] or [defaults]:
-        for p in recommend.candidates(screen, user_filters):
+        for p in recommend.candidates(screen, recommend.match_scope(user_filters)):
             seen[p["id"]] = p.get("firstSeen", "")
     return sorted(seen, key=lambda pid: (seen[pid], pid), reverse=True)
 

@@ -25,7 +25,7 @@ SCREEN = {
          "careerMax": None, "career": "경력 5년 이상", "regions": ["서울"], "noise": None},
         {"id": "z:2", "company": "a", "title": "Data Analyst", "jobType": "analyst", "careerMin": None,
          "careerMax": None, "career": "연차 무관", "regions": ["서울"], "noise": None},
-        {"id": "z:3", "company": "b", "title": "Data Engineer", "jobType": "data_eng", "careerMin": 5,
+        {"id": "z:3", "company": "b", "title": "Backend Engineer", "jobType": "software", "careerMin": 5,
          "careerMax": None, "career": "경력 5년 이상", "regions": ["서울"], "noise": None},
     ],
 }
@@ -89,7 +89,7 @@ def test_run_scores_candidates_with_ai_and_keeps_basis():
     s = recommend.run(SCREEN, BODIES, db, ai, TODAY)
     assert s["ai_new"] == 1 and s["rule_only"] == 1 and s["rows"] == 2 and s["errors"] == ["429"]
     by = {r["posting_id"]: r for r in db.inserted}
-    assert set(by) == {"z:1", "z:2"}  # z:3은 기업 구분 필터에서 빠짐
+    assert set(by) == {"z:1", "z:2"}  # z:3은 내 분야(직무 유형)가 아니라 빠짐
     ai_row = by["z:1"]
     assert ai_row["score"] == 75 and ai_row["parts"]["kind"] == "ai" and ai_row["parts"]["verdict"] == "고려"
     assert ai_row["parts"]["items"] == ITEMS and ai_row["parts"]["rule"] > 0
@@ -233,3 +233,10 @@ def test_gemini_moves_to_next_key_on_quota(monkeypatch):
     g = ai.Gemini(session=Session())
     g.min_interval = 0
     assert g.json("p", {}) == {"ok": 1} and used == ["k1", "k2"]
+
+
+def test_matching_target_ignores_view_only_conditions():
+    """기업 구분·경력·지역·고용 형태는 보기에서만 거른다. 매칭 대상은 내 분야(직무 유형)와 제외 키워드·회사로만"""
+    f = {"job_types": ["data_eng"], "company_types": ["대기업"], "regions": ["부산"], "exclude_keywords": ["Analyst"]}
+    got = recommend.candidates(SCREEN, recommend.match_scope(f))
+    assert [p["id"] for p in got] == ["z:1"]

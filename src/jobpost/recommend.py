@@ -28,6 +28,15 @@ log = logging.getLogger(__name__)
 PROMPT_VERSION = 4  # 2: 항목별 판단 근거, 3: 이유 40자 안쪽, 4: 공고 사실을 따로, 판정은 코드가. 지침은 match_guide.yaml version
 
 
+# 매칭 대상(내 분야 공고): 직무 유형과 '절대 안 봄'(제외 키워드·회사)만으로 정한다. 기업 구분·경력·지역·고용 형태는
+# 조건 필터라 보기에서만 거른다(바꾸면 바로 보이게 미리 다 매겨 둠, docs/decisions.md 2026-11-03)
+SCOPE_KEYS = ("job_types", "exclude_keywords", "exclude_companies", "always_companies")
+
+
+def match_scope(user_filters: dict[str, Any]) -> dict[str, Any]:
+    return {k: user_filters[k] for k in SCOPE_KEYS if k in user_filters}
+
+
 def candidates(screen: dict[str, Any], user_filters: dict[str, Any]) -> list[dict[str, Any]]:
     out = []
     for p in screen["postings"]:
@@ -214,13 +223,14 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         phash = hashlib.sha1(ptext.encode()).hexdigest()[:12] if ptext else None
 
         scored = []
-        pool = [p for p in screen["postings"] if p["id"] in only] if only is not None else candidates(screen, user_filters)
+        pool = ([p for p in screen["postings"] if p["id"] in only] if only is not None
+                else candidates(screen, match_scope(user_filters)))
         for p in pool:
             body = texts.get(p["id"])
             rule = matching.score(rule_profile, p, matching.extract_skills(body) if body else None, today)
             scored.append((rule, p))
-        # 한도가 모자라면 규칙 점수가 높은 공고부터 AI에 묻는다
-        scored.sort(key=lambda x: (x[0]["score"], x[1].get("firstSeen", ""), x[1]["id"]), reverse=True)
+        # 한도가 모자라면 새 공고부터 AI에 묻는다(아침 알림에 나가는 공고 먼저). 같은 날이면 규칙 점수가 높은 것부터
+        scored.sort(key=lambda x: (x[1].get("firstSeen", ""), x[0]["score"], x[1]["id"]), reverse=True)
 
         old = {r["posting_id"]: r for r in db.select(
             "matches", f"select=posting_id,score,parts,matched,missing,reason,reason_meta,profile_v,score_v&user_id=eq.{user}")}
