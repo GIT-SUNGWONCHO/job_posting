@@ -27,7 +27,10 @@ class CompanyType(StrEnum):
     LARGE = "대기업"
     PUBLIC = "공기업·공공기관"
     FOREIGN = "외국계"
-    OTHER = "그 외"
+    MID = "중견"
+    SMALL = "중소·스타트업"
+    UNKNOWN = "확인 안 됨"
+    OTHER = "그 외"  # 공식 목록이 없을 때(수집처 표시만), 의뢰 회사 구분을 모를 때
 
 
 class Posting(BaseModel):

@@ -123,6 +123,7 @@ export const copy = {
     failed: '저장하지 못했어요. 다시 시도해 주세요',
   },
   company: {
+    typeBasis: (basis: string) => `기업 구분 근거: ${basis}`,
     hiring: '채용',
     daily: '매일',
     star: '관심 회사에 넣기',

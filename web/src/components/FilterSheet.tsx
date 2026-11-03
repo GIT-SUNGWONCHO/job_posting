@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { copy } from '../copy'
 import type { CompanyType, Filters, JobType } from '../lib/types'
 
-const TYPES: CompanyType[] = ['대기업', '공기업·공공기관', '외국계', '그 외']
+const TYPES: CompanyType[] = ['대기업', '공기업·공공기관', '외국계', '중견', '중소·스타트업', '확인 안 됨']
 // 수집처 표기("인턴직" 등)를 포함으로 맞춘다(filter.ts)
 const EMPLOYMENT = ['정규직', '계약직', '인턴', '파견직', '프리랜서']
 

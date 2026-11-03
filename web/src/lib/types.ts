@@ -1,6 +1,6 @@
 // 화면용 파일 형식. 만드는 쪽은 src/jobpost/screen.py
 export type DeadlineType = 'date' | 'always' | 'until_filled'
-export type CompanyType = '대기업' | '공기업·공공기관' | '외국계' | '그 외'
+export type CompanyType = '대기업' | '공기업·공공기관' | '외국계' | '중견' | '중소·스타트업' | '확인 안 됨' | '그 외'
 
 export interface SourceLink {
   source: string
@@ -57,6 +57,8 @@ export interface Company {
   name: string
   type: CompanyType
   group: string | null
+  /** 기업 구분 근거(공정위 기업집단 ○○, DART 매출 ○억(기준 ○억), 수집처 표시 …). 옛 파일에는 없다 */
+  typeBasis?: string
 }
 
 export interface Filters {

@@ -196,9 +196,9 @@ def test_jobkorea_headhunting_rows():
     assert (p.deadline_type, p.deadline) == (DeadlineType.DATE, date(2027, 1, 27))
     # 헤드헌터 이름은 읽지 않는다
     assert "홍길동" not in json.dumps(p.raw, ensure_ascii=False)
-    # 중견기업 의뢰는 "그 외"
+    # 중견기업 의뢰는 "중견"(2026-11-03부터)
     second = jobkorea.parse_item(rows[1], "데이터분석가")
-    assert second.raw["client_label"] == "중견기업" and second.client_type == "그 외"
+    assert second.raw["client_label"] == "중견기업" and second.client_type == "중견"
 
 
 def test_jobkorea_client_label():

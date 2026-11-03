@@ -97,10 +97,12 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
         key = r.get("company_key") or r.get("company", "")
         if key not in companies:
             name = r.get("company") or (registry.data.get(key) or {}).get("name") or key
+            cls = registry.classify(key, r.get("company", ""))
             companies[key] = {
                 "name": clean_company(html.unescape(name)),
                 "type": registry.company_type(key, r.get("company", "")).value,
                 "group": registry.group(key, r.get("company", "")),
+                **({"typeBasis": cls.basis} if cls else {}),  # 기업 구분 근거(docs/collection.md '새 기준')
             }
         job_type = next(((x.get("job_type") or {}).get("id") for x in [r, *same] if x.get("job_type")), None)
         job_type2 = next((jobtypes.secondary_of(x) for x in [r, *same] if jobtypes.secondary_of(x)), None)

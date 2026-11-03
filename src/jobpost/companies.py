@@ -10,8 +10,9 @@ import json
 import re
 from functools import cache
 from pathlib import Path
+from typing import Any
 
-from . import config
+from . import company_class, config
 from .models import CompanyType
 from .normalize import clean_company, company_key
 
@@ -126,11 +127,48 @@ def posting_type(registry: CompanyRegistry, key: str, name: str, client_type: st
 
 
 class CompanyRegistry:
+    """수집처 표시(data/companies.json)와, 공식 목록(data/official/groups.json)이 있으면 새 기준(company_class)으로 정한
+    기업 구분. 공식 목록이 없으면(처음, 시험 데이터) 수집처 표시만 쓴다."""
+
     def __init__(self, path: Path):
         self.path = path
         self.data: dict[str, dict] = {}
         if path.exists():
             self.data = json.loads(path.read_text(encoding="utf-8"))
+        self._official: dict[str, Any] | None = None
+        self._results: dict[str, Any] = {}
+
+    def _evidence(self) -> dict[str, Any]:
+        """새 기준에 쓰는 근거(data 폴더의 dart/, official/). 한 번만 읽는다."""
+        if self._official is None:
+            from . import official
+            base = self.path.parent
+            groups = official.load(base, "groups")
+            ev: dict[str, Any] = {}
+            if groups.get("companies"):
+                def _j(name: str) -> dict:
+                    p = base / "dart" / name
+                    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+                public = official.load(base, "public")
+                ev = {"groups": company_class.group_index(groups), "corps": _j("corps.json"),
+                      "basics": _j("basics.json"), "nps": official.load_nps(base),
+                      "public": {o["key"] for o in public.get("orgs") or []}}
+            self._official = ev
+        return self._official
+
+    def classify(self, key: str, name: str = "") -> company_class.Result | None:
+        """새 기준 결과(구분·근거). 공식 목록이 없으면 None."""
+        ev = self._evidence()
+        if not ev:
+            return None
+        if key not in self._results:
+            corp = dict(ev["corps"].get(key) or {})
+            if corp.get("corp_name"):
+                corp["dart_key"] = company_key(corp["corp_name"])
+            self._results[key] = company_class.classify(
+                key, corp=corp, basics=ev["basics"].get(corp.get("corp_code") or ""), group_keys=ev["groups"],
+                public_keys=ev["public"], nps=ev["nps"], source_type=self.source_type(key, name).value)
+        return self._results[key]
 
     def update(self, company_types: dict[str, set[str]], names: dict[str, str], today: str) -> None:
         for key, types in company_types.items():
@@ -142,6 +180,11 @@ class CompanyRegistry:
                 self.data[key]["name"] = name
 
     def company_type(self, key: str, name: str = "") -> CompanyType:
+        r = self.classify(key, name)
+        return CompanyType(r.type) if r else self.source_type(key, name)
+
+    def source_type(self, key: str, name: str = "") -> CompanyType:
+        """수집처가 붙인 구분(옛 기준). 새 기준의 마지막 근거로만 쓴다."""
         raw = (self.data.get(key) or {}).get("types") or {}
         types = {_TYPE_MAP[t] for t in raw if t in _TYPE_MAP}
         if not types:
@@ -157,7 +200,11 @@ class CompanyRegistry:
         """대기업으로 구분된 회사만 그룹 이름을 붙인다."""
         if self.company_type(key, name) is not CompanyType.LARGE:
             return None
-        return match_group(name or (self.data.get(key) or {}).get("name", ""))
+        named = match_group(name or (self.data.get(key) or {}).get("name", ""))  # 보통 부르는 그룹 이름(SK, CJ) 먼저
+        r = self.classify(key, name)
+        if not named and r and r.basis.startswith("공정위 기업집단 "):
+            return r.basis.removeprefix("공정위 기업집단 ")
+        return named
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)

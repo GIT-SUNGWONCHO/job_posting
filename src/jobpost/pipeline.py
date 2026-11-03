@@ -40,6 +40,9 @@ COLLECTORS = {
 }
 
 
+# 상세를 나중에 받는 구분(큰 회사 공고 먼저)
+_SMALL_TYPES = (CompanyType.SMALL, CompanyType.UNKNOWN, CompanyType.OTHER)
+
 def _collect(name: str, cfg: dict[str, Any], max_pages: int | None) -> tuple[CollectResult, Any]:
     client = Client(min_interval=cfg.get("min_interval", 0.5), max_minutes=cfg.get("max_minutes"),
                     backoff=cfg.get("backoff", 1.0))
@@ -172,7 +175,7 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
                   and not r.get("dup_of") and not r.get("noise")]
         wanted.sort(key=lambda r: r.get("first_seen", ""), reverse=True)
         wanted.sort(key=lambda r: posting_type(
-            registry, r.get("company_key", ""), r.get("company", ""), r.get("client_type")) is CompanyType.OTHER)
+            registry, r.get("company_key", ""), r.get("company", ""), r.get("client_type")) in _SMALL_TYPES)
         ids = [r["uid"].split(":", 1)[1] for r in wanted[:budget]]
         t0 = time.monotonic()
         collector = collectors[name]

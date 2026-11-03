@@ -28,10 +28,11 @@ DETAIL_URL = "https://www.jobkorea.co.kr/Recruit/GI_Read_Comt_Ifrm?Gno={}&PageGb
 HEADERS = {"X-Requested-With": "XMLHttpRequest", "Referer": "https://www.jobkorea.co.kr/recruit/joblist?menucode=duty"}
 PAGE_SIZE = 10  # 헤드헌팅 목록은 한 페이지 10건(pagesize를 줘도 같다)
 
-# 의뢰 회사 설명 앞부분 → 기업 구분. 중견·중소·벤처는 "그 외"
+# 의뢰 회사 설명 앞부분 → 기업 구분(2026-11-03부터 중견·중소·벤처·스타트업도 나눈다)
 CLIENT_LABELS = ("대기업", "중견기업", "중소기업", "외국계", "공기업", "공공기관", "벤처기업", "스타트업")
 CLIENT_TYPES = {"대기업": CompanyType.LARGE, "외국계": CompanyType.FOREIGN,
-                "공기업": CompanyType.PUBLIC, "공공기관": CompanyType.PUBLIC}
+                "공기업": CompanyType.PUBLIC, "공공기관": CompanyType.PUBLIC, "중견기업": CompanyType.MID,
+                "중소기업": CompanyType.SMALL, "벤처기업": CompanyType.SMALL, "스타트업": CompanyType.SMALL}
 DOMESTIC = {"서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북",
             "부산", "울산", "경남", "강원", "제주", "전국"}
 

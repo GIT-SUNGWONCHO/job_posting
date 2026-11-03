@@ -66,6 +66,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
       <header className="detail-head company-intro">
         <h1>{name}</h1>
         {meta.length > 0 && <div className="intro-meta">{meta.map((m, i) => <Fragment key={m}>{i > 0 && <Sep />}<span>{m}</span></Fragment>)}</div>}
+        {c?.typeBasis && <p className="note">{t.typeBasis(c.typeBasis)}</p>}
         {stars.state === 'missing' && <p className="note">{t.starsMissing}</p>}
       </header>
 
