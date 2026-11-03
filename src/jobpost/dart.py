@@ -983,6 +983,21 @@ def audit_income(text: str) -> dict[str, Any]:
     return {"why": "손익계산서 표를 못 찾음"}
 
 
+_PARENT = re.compile(r"(최상위\s*)?지배(?:기업|회사)\s*(?:은|는|이|가)?\s*([^.。]{2,80}?)(?:입니다|이며|이고|임|\.|,)")
+
+
+def audit_parent(text: str) -> dict[str, Any] | None:
+    """감사보고서 주석(회사의 개요·특수관계자)에 적힌 지배기업. 외국계 근거를 찾으려고 읽는다(시험 중, 2026-11-03).
+    {"ultimate": 최상위 지배기업이라고 적혔는지, "name": 지배기업 부분 글, "snippet": 앞뒤 글} 또는 None."""
+    plain = " ".join(_TAG.sub(" ", text).split())
+    found = [m for m in _PARENT.finditer(plain) if not re.match(r"\s*(?:기업|회사)?\s*(?:의|에)", m.group(2))]
+    if not found:
+        return None
+    m = next((x for x in found if x.group(1)), found[0])
+    return {"ultimate": bool(m.group(1)), "name": m.group(2).strip()[:80],
+            "snippet": plain[max(0, m.start() - 60):m.end() + 60]}
+
+
 def audit_finance(client: Client, corp_code: str, today: date) -> dict[str, Any] | None:
     """사업보고서 실적이 없는 비상장 회사: 최근 감사보고서의 당기·전기 실적을 parse_finance와 같은 꼴로.
     basis "감사보고서"(별도 재무제표). 감사보고서가 없거나 표를 못 읽으면 None(요청 실패도 None, 다음 갱신 때 다시)."""
@@ -1025,6 +1040,7 @@ def audit_check(codes: list[str], today: date, raw: int = 0) -> list[dict[str, A
                 text = audit_document(client, rep["rcept_no"])
                 got = audit_income(text)
                 row.update(got)
+                row["parent"] = audit_parent(text)
                 if raw > 0 and "why" in got:
                     raw -= 1
                     i = text.find("손익계산서")

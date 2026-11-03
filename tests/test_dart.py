@@ -536,3 +536,10 @@ def test_audit_finance_returns_two_years_like_annual_reports():
         {"year": 2024, "revenue": 1_000_000_000, "operating": 30_000_000, "net": 20_000_000},
         {"year": 2025, "revenue": 1_234_567_000, "operating": -12_000_000, "net": -15_500_000},
     ]
+
+
+def test_audit_parent_reads_the_controlling_company():
+    doc = "<P>1. 회사의 개요</P><P>회사의 최상위 지배기업은 Oracle Corporation(미국)입니다. 회사는 1989년 설립되었습니다.</P>"
+    got = dart.audit_parent(doc)
+    assert got["ultimate"] and got["name"].startswith("Oracle Corporation")
+    assert dart.audit_parent("<P>지배기업의 소유주에게 귀속되는 당기순이익</P>") is None
