@@ -1,0 +1,33 @@
+# 시험: 규칙 점수로 AI 매칭 대상을 줄여도 되는지 본다(규칙 점수 구간별 AI 판정·내 평가·공고 수). 저장 없음.
+# 로그가 공개라 공고·회사 없이 건수만 낸다.
+# 수동 실행: GitHub > Actions > match-stats > Run workflow
+name: match-stats
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+      - name: 구간별 건수
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: uv run --no-dev jobpost match-stats --data-dir data | tee -a "$GITHUB_STEP_SUMMARY"

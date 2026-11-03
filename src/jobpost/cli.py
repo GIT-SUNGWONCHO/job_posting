@@ -93,6 +93,8 @@ def main(argv: list[str] | None = None) -> int:
     of.add_argument("--what", default="groups,public,nps", help="쉼표로 구분: groups, public, nps")
     sc = sub.add_parser("settings-clear", help="조건 필터의 한 항목을 비운다(= 전부 통과). 사용자가 한 명일 때만(지인이 생기면 화면에서)")
     sc.add_argument("--key", required=True, choices=["company_types", "regions", "employment_types", "career"])
+    ms = sub.add_parser("match-stats", help="시험: 규칙 점수 구간별 AI 판정·내 평가·공고 수(로그에는 건수만)")
+    ms.add_argument("--data-dir", type=Path, default=Path("data"))
     da = sub.add_parser("dart-audit", help="시험: DART 고유번호마다 최근 감사보고서에서 실적을 읽어 본다(저장 없음)")
     da.add_argument("--codes", required=True, help="쉼표로 구분한 DART 고유번호")
     da.add_argument("--raw", type=int, default=3, help="못 읽은 회사 이만큼은 손익계산서 앞부분을 남긴다")
@@ -194,6 +196,10 @@ def main(argv: list[str] | None = None) -> int:
                                 facts.load(args.data_dir), only=only)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
+    if args.cmd == "match-stats":
+        built, bodies = screen.build(args.data_dir)
+        print("\n".join(recommend.stats(built, bodies, db.DB(), date.today())))
+        return 0
     if args.cmd == "jobtypes-check":
         st = Store(args.data_dir)
         out = jobtypes.check_secondary(st.state, st.load_postings(), st.load_details(), ai.Gemini(), n=args.n)

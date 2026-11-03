@@ -16,6 +16,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import time
+from collections import Counter
 from datetime import date
 from typing import Any
 
@@ -318,3 +319,45 @@ def make_client(model: str | None = None) -> Any | None:
     if not ai.configured():
         return None
     return ai.Gemini(model=model or (config.load("ai").get("match") or {}).get("model"))
+
+
+def stats(screen: dict[str, Any], bodies: dict[str, Any], db: Any, today: date) -> list[str]:
+    """시험: 규칙 점수로 AI 매칭 대상을 줄여도 되는지 본다. 로그가 공개라 공고·회사 없이 구간별 건수만 낸다.
+    1) 이미 AI로 매긴 공고: 규칙 점수 구간별 AI 판정과 내 평가(○△×) 수
+    2) 내 분야 열린 공고 전체(직무 유형만): 규칙 점수 구간별 공고 수 = 구간 아래를 건너뛸 때 줄어드는 양"""
+    texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
+    defaults = config.load("filters")
+    settings = {r["user_id"]: r.get("filters") or {} for r in db.select("settings", "select=user_id,filters")}
+    labels: dict[tuple[str, str], str] = {}
+    for r in db.select("feedback", "select=user_id,posting_id,label&order=updated_at"):
+        labels[(r["user_id"], r["posting_id"])] = r["label"]
+    out: list[str] = []
+    n_user = 0
+    for prof in db.select("profiles", "select=user_id,data,version"):
+        user, data = prof["user_id"], prof.get("data") or {}
+        if not profile.has_content(data):
+            continue
+        n_user += 1
+        rp = profile.rule_view(data)
+        jobs = {**defaults, **settings.get(user, {})}.get("job_types")
+        mine = candidates(screen, {"job_types": jobs})
+        rule = {}
+        for p in mine:
+            body = texts.get(p["id"])
+            rule[p["id"]] = matching.score(rp, p, matching.extract_skills(body) if body else None, today)["score"]
+        band = lambda s: min(int(s) // 10 * 10, 90)  # noqa: E731
+        ai = [r for r in db.select("matches", f"select=posting_id,score,parts&user_id=eq.{user}")
+              if (r.get("parts") or {}).get("kind") == "ai"]
+        out.append(f"사람 {n_user}: 내 분야 열린 공고 {len(mine)}, AI로 매긴 공고 {len(ai)}")
+        out.append("규칙 구간 | 내 분야 공고(누적: 이 구간 미만) | AI 매김: 지원 추천/고려/비추천 | AI 80+ | 내 평가 ○/△/×")
+        below = 0
+        for b in range(0, 100, 10):
+            n = sum(1 for s in rule.values() if band(s) == b)
+            got = [r for r in ai if band((r["parts"] or {}).get("rule", 0) or 0) == b]
+            v = Counter((r["parts"] or {}).get("verdict") for r in got)
+            hi = sum(1 for r in got if (r.get("score") or 0) >= 80)
+            lab = Counter(labels.get((user, r["posting_id"])) for r in got)
+            out.append(f"{b:>2}~{b + 9:<2} | {n:>4} (누적 {below:>4}) | {v.get('지원 추천', 0)}/{v.get('고려', 0)}/"
+                       f"{v.get('비추천', 0)} | {hi} | {lab.get('good', 0)}/{lab.get('maybe', 0)}/{lab.get('bad', 0)}")
+            below += n
+    return out
