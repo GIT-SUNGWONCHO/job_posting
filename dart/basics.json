@@ -83437,6 +83437,41 @@
 },
 "v": 4
 },
+"01459805": {
+"company": {
+"ceo": "이상희",
+"founded": "2012-11-01",
+"homepage": "https://sendbird.com",
+"industry_code": "582",
+"market": "기타",
+"name": "(주)센드버드코리아",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260406000264",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 2027090895,
+"operating": 1655604390,
+"revenue": 22621111023,
+"year": 2024
+},
+{
+"net": 1760832732,
+"operating": 1529595146,
+"revenue": 22550325871,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "01461369": {
 "company": {
 "ceo": "박진영",
@@ -87589,6 +87624,22 @@
 },
 "v": 4
 },
+"01547845": {
+"company": {
+"ceo": "김용현, 황도연",
+"founded": "2015-07-15",
+"homepage": "https://www.daangn.com",
+"industry_code": "58222",
+"market": "기타",
+"name": "주식회사 당근마켓",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": null,
+"v": 4
+},
 "01547933": {
 "company": {
 "ceo": "황승주",
@@ -91245,6 +91296,41 @@
 "net": 38704711821,
 "operating": 66945288364,
 "revenue": 997210426217,
+"year": 2025
+}
+]
+},
+"v": 4
+},
+"01629936": {
+"company": {
+"ceo": "용태순",
+"founded": "2016-12-01",
+"homepage": "https://www.catchtable.co.kr",
+"industry_code": "58222",
+"market": "기타",
+"name": "주식회사 와드",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401002691",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": -15429202154,
+"operating": -15063642551,
+"revenue": 17715993933,
+"year": 2024
+},
+{
+"net": -9964800695,
+"operating": -8632245310,
+"revenue": 30118240891,
 "year": 2025
 }
 ]

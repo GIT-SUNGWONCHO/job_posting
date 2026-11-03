@@ -29,10 +29,13 @@
 "why": "none"
 },
 "42dot": {
-"checked": "2026-10-23",
-"corp_code": null,
+"checked": "2026-11-03",
+"corp_code": "01558337",
+"corp_name": "포티투닷",
+"how": "override",
 "mv": 6,
-"why": "none"
+"override": "01558337",
+"stock_code": null
 },
 "ab180": {
 "checked": "2026-10-23",
@@ -2613,10 +2616,13 @@
 "why": "none"
 },
 "당근": {
-"checked": "2026-10-23",
-"corp_code": null,
+"checked": "2026-11-03",
+"corp_code": "01547845",
+"corp_name": "당근마켓",
+"how": "override",
 "mv": 6,
-"why": "none"
+"override": "01547845",
+"stock_code": null
 },
 "대경기술": {
 "checked": "2026-10-29",
@@ -8418,10 +8424,13 @@
 "why": "none"
 },
 "센드버드": {
-"checked": "2026-10-23",
-"corp_code": null,
+"checked": "2026-11-03",
+"corp_code": "01459805",
+"corp_name": "센드버드코리아",
+"how": "override",
 "mv": 6,
-"why": "none"
+"override": "01459805",
+"stock_code": null
 },
 "센시엘": {
 "checked": "2026-10-30",
@@ -16483,10 +16492,13 @@
 "why": "none"
 },
 "캐치테이블": {
-"checked": "2026-10-23",
-"corp_code": null,
+"checked": "2026-11-03",
+"corp_code": "01629936",
+"corp_name": "와드",
+"how": "override",
 "mv": 6,
-"why": "none"
+"override": "01629936",
+"stock_code": null
 },
 "캔디드": {
 "checked": "2026-10-23",
