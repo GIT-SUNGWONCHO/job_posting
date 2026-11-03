@@ -22,7 +22,7 @@ opendart.fss.or.kr 개발가이드·FAQ와 공개된 실제 응답에서 확인�
   짧은 이름이 많다: NAVER, 고영, 코오롱인더, 효성 ITX — 2026-10-22 확인)<corp_eng_name>
   <stock_code>(비상장은 " ")<modify_date>. 약 12만 곳, 비상장 외감법인 포함. 상장 폐지돼도 stock_code가 남는다
 - company.json: corp_name("삼성전자(주)"처럼 법인 표기 포함), corp_cls Y 유가증권 · K 코스닥 · N 코넥스 · E 기타(비상장·상장폐지),
-  ceo_nm(여러 명이면 쉼표), est_dt YYYYMMDD, hm_url(주소 앞 https:// 없음), induty_code(업종 코드, 길이 제각각)
+  jurir_no 법인등록번호 · bizr_no 사업자등록번호, ceo_nm(여러 명이면 쉼표), est_dt YYYYMMDD, hm_url(주소 앞 https:// 없음), induty_code(업종 코드, 길이 제각각)
 - fnlttSinglAcnt.json: 상장사와 사업보고서를 내는 IFRS 비상장사만(그 밖은 013). 연결(CFS)·별도(OFS) 줄이 함께 오고
   사업보고서는 당기·전기·전전기(thstrm·frmtrm·bfefrmtrm) 3년. 기 이름은 "제 55 기"라 해는 요청한 bsns_year로 센다.
   은행 같은 금융사는 매출액 줄이 없다(영업이익(손실)·당기순이익(손실)은 있다). 당기순이익과 당기순이익(손실)이 같은 값으로 둘 다 오기도 한다
@@ -509,6 +509,9 @@ def parse_company(body: dict[str, Any]) -> dict[str, Any]:
         "founded": f"{est[:4]}-{est[4:6]}-{est[6:8]}" if len(est) == 8 else None,
         "homepage": url or None,
         "industry_code": body.get("induty_code") or None,
+        # 법인등록번호·사업자등록번호: 공정위 기업집단 소속회사와 이름이 아니라 번호로 잇는다(2026-11-03)
+        "jurir_no": (body.get("jurir_no") or "").strip() or None,
+        "bizr_no": (body.get("bizr_no") or "").strip() or None,
     }
 
 
@@ -846,6 +849,17 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                 if summary["failed"] >= 20:
                     summary["stopped"] = "실패가 많아 멈춤"
                     break
+        # 번호가 없는 옛 기록은 기업개황만 다시 받아 번호를 채운다(회사마다 1건, 남은 요청 수 안에서)
+        summary["ids_filled"] = 0
+        for code, got in basics.items():
+            comp = got.get("company")
+            if comp is None or "jurir_no" in comp:
+                continue
+            body = client.json("company.json", {"corp_code": code})
+            if body:
+                comp["jurir_no"] = (body.get("jurir_no") or "").strip() or None
+                comp["bizr_no"] = (body.get("bizr_no") or "").strip() or None
+                summary["ids_filled"] += 1
     except Client.Budget:
         summary["stopped"] = "오늘 요청 수나 시간을 다 씀"
     except LimitReached as e:

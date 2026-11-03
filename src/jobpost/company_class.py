@@ -3,7 +3,8 @@
 구분: 공공 · 대기업 · 외국계 · 중견 · 중소·스타트업 · 확인 안 됨. 표시: 상장.
 근거 순서:
 1. 알리오 공공기관 목록 → 공공
-2. 공정위 대규모기업집단 소속회사 → 대기업(회사 키 또는 이어진 DART 법인 이름의 키가 같을 때)
+2. 공정위 대규모기업집단 소속회사 → 대기업. DART 법인등록번호가 같으면(group_keys의 '#번호'), 번호가 없으면 회사 키
+   또는 이어진 DART 법인 이름의 키가 같을 때
 3. 수집처가 외국계로 표시 → 외국계(근거에 '수집처 표시'). 외투기업 목록·감사보고서 지배기업은 다음 단계
 4. DART 실적: 3년 평균 매출이 중소기업기본법 업종별 기준을 넘으면 중견, 아니면 중소·스타트업
 5. DART 실적이 없음: 국민연금 사업장 후보가 있고 모두 300명 미만이면 중소·스타트업(외부감사 대상이 아닌 작은 회사).
@@ -42,6 +43,16 @@ def sme_limit(industry_code: str | None) -> int:
     return 1500
 
 
+def group_index(groups: dict[str, Any]) -> dict[str, str]:
+    """공정위 목록 → {회사 키: 집단, '#법인등록번호': 집단}."""
+    out: dict[str, str] = {}
+    for c in groups.get("companies") or []:
+        out[c["key"]] = c["group"]
+        if c.get("jurirno"):
+            out["#" + c["jurirno"].replace("-", "")] = c["group"]
+    return out
+
+
 SMALL_MAX = 300  # 국민연금 가입자 수가 이보다 적으면 작은 회사로 본다(화면에는 안 보임)
 
 
@@ -61,7 +72,9 @@ def classify(key: str, *, corp: dict[str, Any] | None, basics: dict[str, Any] | 
     dart_key = corp.get("dart_key")
     if key in public_keys or (dart_key and dart_key in public_keys):
         return Result("공기업·공공기관", "알리오 공공기관", listed)
-    g = group_keys.get(key) or (group_keys.get(dart_key) if dart_key else None)
+    jurir = ((basics or {}).get("company") or {}).get("jurir_no")
+    g = (group_keys.get(f"#{jurir}") if jurir else None) or group_keys.get(key) \
+        or (group_keys.get(dart_key) if dart_key else None)
     if g:
         return Result("대기업", f"공정위 기업집단 {g}", listed)
     if source_type == "외국계":

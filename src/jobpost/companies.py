@@ -33,8 +33,13 @@ _CLIENT_WORDS = [("외국계", CompanyType.FOREIGN), ("공기업", CompanyType.P
                  ("대기업", CompanyType.LARGE)]
 
 
+@cache
+def _named_search_firms() -> frozenset[str]:
+    return frozenset(config.load("company_aliases").get("search_firms") or [])
+
+
 def is_search_firm(name: str) -> bool:
-    return bool(_SEARCH_FIRM.search(clean_company(name or "")))
+    return bool(_SEARCH_FIRM.search(clean_company(name or ""))) or company_key(name or "") in _named_search_firms()
 
 
 def client_from_title(title: str) -> CompanyType | None:

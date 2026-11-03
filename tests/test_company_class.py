@@ -30,3 +30,9 @@ def test_no_dart_uses_small_company_check():
     assert _c().type == "확인 안 됨"
     r = _c(src="대기업")
     assert (r.type, r.basis) == ("대기업", "수집처 표시")
+
+
+def test_group_by_corporate_number():
+    gi = cc.group_index({"companies": [{"group": "씨제이", "key": "cj이엔엠", "jurirno": "110111-1234567"}]})
+    b = {"company": {"jurir_no": "1101111234567"}}
+    assert _c(key="cjenm", corp={"corp_code": "1"}, basics=b, groups=gi).basis == "공정위 기업집단 씨제이"
