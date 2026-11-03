@@ -4894,6 +4894,41 @@
 "unlisted": true,
 "v": 4
 },
+"00115463": {
+"company": {
+"ceo": "BUCKWALTER BRADLEY KENT",
+"founded": "1966-01-27",
+"homepage": "https://www.dbefire.com",
+"industry_code": "29192",
+"market": "기타",
+"name": "존슨콘트롤즈인터내셔널코리아주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260106000462",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 412568635,
+"operating": 2287249090,
+"revenue": 212235045412,
+"year": 2024
+},
+{
+"net": 645002508,
+"operating": 1862148292,
+"revenue": 207839714098,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "00115694": {
 "company": {
 "ceo": "곽봉석",
@@ -21882,6 +21917,41 @@
 },
 "v": 3
 },
+"00158574": {
+"company": {
+"ceo": "김규남",
+"founded": "1987-02-21",
+"homepage": "https://www.alps.co.kr",
+"industry_code": "26299",
+"market": "기타",
+"name": "한국알프스 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260618000133",
+"revenue_name": "매출액",
+"year": 2026,
+"years": [
+{
+"net": 3000318908,
+"operating": 10849905520,
+"revenue": 556926243440,
+"year": 2025
+},
+{
+"net": 12504461843,
+"operating": 19264241441,
+"revenue": 665563666619,
+"year": 2026
+}
+]
+},
+"v": 4
+},
 "00158592": {
 "company": {
 "ceo": "배수정, 간치응",
@@ -27648,6 +27718,219 @@
 },
 "v": 4
 },
+"00172291": {
+"company": {
+"ceo": "- 이강수 - 지용구",
+"founded": "1977-08-20",
+"homepage": "https://www.douzone.com",
+"industry_code": "62022",
+"market": "기타",
+"name": "(주)더존비즈온",
+"stock_code": "012510"
+},
+"disclosures": [
+{
+"date": "2026-07-01",
+"rcept_no": "20260701800550",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-06-30",
+"rcept_no": "20260630800126",
+"title": "지속가능경영보고서등관련사항(자율공시)"
+},
+{
+"date": "2026-06-26",
+"rcept_no": "20260626801124",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-06-19",
+"rcept_no": "20260619800680",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-06-12",
+"rcept_no": "20260612800877",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-06-05",
+"rcept_no": "20260605800158",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-05-29",
+"rcept_no": "20260529801468",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-05-29",
+"rcept_no": "20260529801453",
+"title": "기업지배구조보고서공시"
+},
+{
+"date": "2026-05-29",
+"rcept_no": "20260529801381",
+"title": "[기재정정]장래사업ㆍ경영계획(공정공시)"
+},
+{
+"date": "2026-05-29",
+"rcept_no": "20260529801314",
+"title": "[기재정정]타법인주식및출자증권취득결정"
+},
+{
+"date": "2026-05-28",
+"rcept_no": "20260528800610",
+"title": "기타경영사항(자율공시)"
+},
+{
+"date": "2026-05-22",
+"rcept_no": "20260522800675",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-05-19",
+"rcept_no": "20260519800628",
+"title": "기업설명회(IR)개최(안내공시)"
+},
+{
+"date": "2026-05-19",
+"rcept_no": "20260519000237",
+"title": "[기재정정]주요사항보고서(주식교환ㆍ이전결정)"
+},
+{
+"date": "2026-05-15",
+"rcept_no": "20260515801492",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-05-08",
+"rcept_no": "20260508800557",
+"title": "[기재정정]최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-04-27",
+"rcept_no": "20260427800923",
+"title": "투자판단관련주요경영사항"
+},
+{
+"date": "2026-04-27",
+"rcept_no": "20260427800847",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2026-04-27",
+"rcept_no": "20260427800836",
+"title": "[첨부추가]주식소각결정"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326803260",
+"title": "최대주주등소유주식변동신고서(최대주주변경시)"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326803041",
+"title": "최대주주변경"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326802175",
+"title": "대표이사(대표집행임원)변경(안내공시)"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326801968",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-18",
+"rcept_no": "20260318801024",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-10",
+"rcept_no": "20260310801639",
+"title": "[기재정정]매출액또는손익구조30%(대규모법인은15%)이상변경"
+},
+{
+"date": "2026-03-10",
+"rcept_no": "20260310801595",
+"title": "[기재정정]연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-03-05",
+"rcept_no": "20260305801444",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-02-25",
+"rcept_no": "20260225800899",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-04",
+"rcept_no": "20260204800094",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-04",
+"rcept_no": "20260204800090",
+"title": "현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216800995",
+"title": "기타경영사항(자율공시)"
+},
+{
+"date": "2025-11-10",
+"rcept_no": "20251110800055",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2025-11-07",
+"rcept_no": "20251107800001",
+"title": "투자판단관련주요경영사항"
+}
+],
+"employees": {
+"count": 1818,
+"date": "2025-12-31",
+"rcept_no": "20260318001198",
+"salary": 61030253,
+"tenure": 7.1
+},
+"fetched": "2026-11-03",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318001198",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 38515211127,
+"operating": 72364961736,
+"revenue": 354630798397,
+"year": 2023
+},
+{
+"net": 78026871531,
+"operating": 88064046059,
+"revenue": 402332391243,
+"year": 2024
+},
+{
+"net": 92289152067,
+"operating": 127727153412,
+"revenue": 446299245964,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "00173874": {
 "company": {
 "ceo": "대표이사 부회장 강호찬 대표이사 사  장 김현석",
@@ -29562,9 +29845,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260410000193",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 5312916325,
+"operating": 6640167528,
+"revenue": 24429363454,
+"year": 2024
+},
+{
+"net": 8376370926,
+"operating": 9463258525,
+"revenue": 27579005898,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "00208514": {
 "company": {
@@ -38244,6 +38546,22 @@
 ]
 },
 "v": 3
+},
+"00340005": {
+"company": {
+"ceo": "정승식, 정선태",
+"founded": "2000-09-01",
+"homepage": "https://www.midasit.com",
+"industry_code": "58222",
+"market": "기타",
+"name": "(주)마이다스아이티",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": null,
+"v": 4
 },
 "00340096": {
 "company": {
@@ -47264,9 +47582,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403000334",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 70863026388,
+"operating": 74657676233,
+"revenue": 196495558448,
+"year": 2024
+},
+{
+"net": 84920531703,
+"operating": 101339369287,
+"revenue": 237642533585,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "00490090": {
 "company": {
@@ -52916,6 +53253,41 @@
 },
 "v": 3
 },
+"00608954": {
+"company": {
+"ceo": "이철우",
+"founded": "2005-12-07",
+"homepage": null,
+"industry_code": "31322",
+"market": "기타",
+"name": "에스앤케이항공(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260407003224",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1702402546,
+"operating": 1547099852,
+"revenue": 35104694033,
+"year": 2024
+},
+{
+"net": 507224134,
+"operating": -572001378,
+"revenue": 38218185543,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "00612434": {
 "company": {
 "ceo": "임만규",
@@ -55035,9 +55407,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403000397",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 5277144482,
+"operating": 5065896644,
+"revenue": 61450760721,
+"year": 2024
+},
+{
+"net": 6962068317,
+"operating": 7218756080,
+"revenue": 67815155554,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "00656146": {
 "company": {
@@ -55483,9 +55874,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-31",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260409001421",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 28350021376,
+"operating": 2187660655,
+"revenue": 865814321405,
+"year": 2024
+},
+{
+"net": 41508119841,
+"operating": 1314819099,
+"revenue": 1006374491333,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "00671978": {
 "company": {
@@ -57598,13 +58008,32 @@
 {
 "date": "2025-12-26",
 "rcept_no": "20251226000146",
-"title": "회사분할합병결정"
+"title": "[기재정정]회사분할합병결정"
 }
 ],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260327001036",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1263092750,
+"operating": 5014360737,
+"revenue": 107192782676,
+"year": 2024
+},
+{
+"net": 5536041102,
+"operating": 4495620341,
+"revenue": 133144587960,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "00834018": {
 "company": {
@@ -59071,9 +59500,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-22",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260409000787",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 5305794938,
+"operating": 4433616467,
+"revenue": 151050010243,
+"year": 2024
+},
+{
+"net": 3824549552,
+"operating": 6244708085,
+"revenue": 160154880455,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "00876218": {
 "company": {
@@ -60648,6 +61096,41 @@
 ]
 },
 "v": 3
+},
+"00907679": {
+"company": {
+"ceo": "김경아",
+"founded": "2012-02-28",
+"homepage": "https://www.samsungbioepis.com",
+"industry_code": "70113",
+"market": "기타",
+"name": "삼성바이오에피스주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260515003107",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 116696349399,
+"operating": 379865083850,
+"revenue": 1661945751472,
+"year": 2024
+},
+{
+"net": 378488312886,
+"operating": 379865083850,
+"revenue": 1661945751472,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "00908021": {
 "company": {
@@ -64863,9 +65346,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-03",
 "finance": null,
-"v": 3
+"v": 4
 },
 "01026157": {
 "company": {
@@ -67474,9 +67957,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401000177",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": -11258434266,
+"operating": -7906763760,
+"revenue": 231202896467,
+"year": 2024
+},
+{
+"net": -21334016316,
+"operating": -22453467250,
+"revenue": 249495203800,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "01084294": {
 "company": {
@@ -67916,6 +68418,41 @@
 },
 "v": 4
 },
+"01104482": {
+"company": {
+"ceo": "김호현",
+"founded": "2010-06-07",
+"homepage": "https://www.kmri.co.kr",
+"industry_code": "70113",
+"market": "기타",
+"name": "주식회사 한국의약연구소",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260410001237",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -2322194049,
+"operating": -2123044645,
+"revenue": 9075197758,
+"year": 2024
+},
+{
+"net": -2126719002,
+"operating": -1902820323,
+"revenue": 10063426341,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "01105153": {
 "company": {
 "ceo": "박인원, 조길성",
@@ -68131,6 +68668,41 @@
 ]
 },
 "v": 3
+},
+"01114629": {
+"company": {
+"ceo": "이호대",
+"founded": "2007-05-21",
+"homepage": "https://www.wemadeconnect.com",
+"industry_code": "5821",
+"market": "기타",
+"name": "(주)위메이드커넥트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260327000208",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": -14257612496,
+"operating": -3302167887,
+"revenue": 35732412958,
+"year": 2024
+},
+{
+"net": 3489142491,
+"operating": 4112644761,
+"revenue": 62882875671,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "01115266": {
 "company": {
@@ -72032,6 +72604,41 @@
 },
 "v": 4
 },
+"01209653": {
+"company": {
+"ceo": "한기종",
+"founded": "2002-01-22",
+"homepage": null,
+"industry_code": "33910",
+"market": "기타",
+"name": "(주)한울상사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260406000989",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3773337348,
+"operating": 4376522446,
+"revenue": 78700469699,
+"year": 2024
+},
+{
+"net": 3303941869,
+"operating": 3391773411,
+"revenue": 78764425456,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "01209893": {
 "company": {
 "ceo": "김덕구",
@@ -75692,9 +76299,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260402003228",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 399646023,
+"operating": 506312534,
+"revenue": 37479802464,
+"year": 2024
+},
+{
+"net": 157136777,
+"operating": 501599495,
+"revenue": 43753969863,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "01297898": {
 "company": {
@@ -75873,6 +76499,41 @@
 "net": -1002226274,
 "operating": 22742858,
 "revenue": 32457065942,
+"year": 2025
+}
+]
+},
+"v": 4
+},
+"01299364": {
+"company": {
+"ceo": "박태희",
+"founded": "2001-09-03",
+"homepage": "https://www.pentabreed.com",
+"industry_code": "62",
+"market": "기타",
+"name": "주식회사 펜타브리드",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260327000702",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": -1277381592,
+"operating": -762588337,
+"revenue": 16910601589,
+"year": 2024
+},
+{
+"net": 97648428,
+"operating": 684649760,
+"revenue": 15491717533,
 "year": 2025
 }
 ]
@@ -78571,9 +79232,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-03",
 "finance": null,
-"v": 3
+"v": 4
 },
 "01361768": {
 "company": {
@@ -80816,6 +81477,41 @@
 "finance": null,
 "v": 4
 },
+"01407370": {
+"company": {
+"ceo": "윌리엄앤서니슈스터",
+"founded": "2019-05-27",
+"homepage": null,
+"industry_code": "46441",
+"market": "기타",
+"name": "비아트리스코리아 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260402002541",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 18434532107,
+"operating": 20896450428,
+"revenue": 414976013311,
+"year": 2024
+},
+{
+"net": 19983410937,
+"operating": 22329223478,
+"revenue": 427733601154,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "01408555": {
 "company": {
 "ceo": "김경진",
@@ -81248,6 +81944,41 @@
 "net": -9271843807,
 "operating": -3868922571,
 "revenue": 177569060,
+"year": 2025
+}
+]
+},
+"v": 4
+},
+"01421769": {
+"company": {
+"ceo": "손영득, 허대건",
+"founded": "2019-11-01",
+"homepage": "https://ksjob.co.kr",
+"industry_code": "75991",
+"market": "기타",
+"name": "(주)케이에스한국고용정보",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401005014",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 2740076349,
+"operating": 5206088890,
+"revenue": 228806835136,
+"year": 2024
+},
+{
+"net": -3435081093,
+"operating": -1393325829,
+"revenue": 238643167737,
 "year": 2025
 }
 ]
@@ -82722,6 +83453,41 @@
 "finance": null,
 "v": 4
 },
+"01461387": {
+"company": {
+"ceo": "옹후앗유피터",
+"founded": "2011-11-16",
+"homepage": null,
+"industry_code": "45301",
+"market": "기타",
+"name": "세종파츠플러스 유한회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260413000533",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3673128880,
+"operating": 4564560495,
+"revenue": 80908922014,
+"year": 2024
+},
+{
+"net": 4226711922,
+"operating": 5166208795,
+"revenue": 91318017220,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "01461509": {
 "company": {
 "ceo": "윤형석",
@@ -82772,6 +83538,89 @@
 "fetched": "2026-10-21",
 "finance": null,
 "v": 3
+},
+"01462739": {
+"company": {
+"ceo": "배영근",
+"founded": "2005-04-02",
+"homepage": "https://www.bimatrix.co.kr",
+"industry_code": "5822",
+"market": "코스닥",
+"name": "(주)비아이매트릭스",
+"stock_code": "413640"
+},
+"disclosures": [
+{
+"date": "2026-03-30",
+"rcept_no": "20260330900730",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-20",
+"rcept_no": "20260320901597",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226901026",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226900863",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226900665",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-11",
+"rcept_no": "20251211900369",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-11-03",
+"rcept_no": "20251103900121",
+"title": "단일판매ㆍ공급계약체결(자율공시)"
+}
+],
+"employees": {
+"count": 228,
+"date": "2025-12-31",
+"rcept_no": "20260320001308",
+"salary": 81587719,
+"tenure": 4.9
+},
+"fetched": "2026-11-03",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260320001308",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -1796339294,
+"operating": -2700550603,
+"revenue": 25855874322,
+"year": 2023
+},
+{
+"net": 3683027486,
+"operating": 2026649857,
+"revenue": 30866150941,
+"year": 2024
+},
+{
+"net": 2394499300,
+"operating": 866128864,
+"revenue": 31448256831,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "01462757": {
 "company": {
@@ -84348,6 +85197,41 @@
 },
 "v": 4
 },
+"01500677": {
+"company": {
+"ceo": "송광헌",
+"founded": "2001-05-12",
+"homepage": "https://www.pcninc.co.kr",
+"industry_code": "62010",
+"market": "기타",
+"name": "(주)피씨엔",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401003946",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -3474166687,
+"operating": -2694572859,
+"revenue": 26743601352,
+"year": 2024
+},
+{
+"net": 106008780,
+"operating": 1182298767,
+"revenue": 27947109623,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "01502107": {
 "company": {
 "ceo": "조윤성, 조성제",
@@ -84673,6 +85557,41 @@
 "net": 898447003,
 "operating": -365474400,
 "revenue": 18399945658,
+"year": 2025
+}
+]
+},
+"v": 4
+},
+"01506608": {
+"company": {
+"ceo": "장인석",
+"founded": "2012-07-04",
+"homepage": "https://www.ilovej.net",
+"industry_code": "46413",
+"market": "기타",
+"name": "주식회사 제이스타일코리아",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260413002560",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3098294091,
+"operating": 4789981542,
+"revenue": 37490188283,
+"year": 2024
+},
+{
+"net": 686927293,
+"operating": 2137979298,
+"revenue": 36997858876,
 "year": 2025
 }
 ]
@@ -88079,6 +88998,41 @@
 },
 "v": 4
 },
+"01571329": {
+"company": {
+"ceo": "장기환",
+"founded": "2021-05-15",
+"homepage": null,
+"industry_code": "75",
+"market": "기타",
+"name": "쿠팡이츠서비스 유한회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260410003547",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 22812973000,
+"operating": 21658602000,
+"revenue": 1881915329000,
+"year": 2024
+},
+{
+"net": 61432869000,
+"operating": 81768017000,
+"revenue": 2900590696000,
+"year": 2025
+}
+]
+},
+"v": 4
+},
 "01571435": {
 "company": {
 "ceo": "이기섭",
@@ -88195,9 +89149,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-24",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260414000594",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 9065819312,
+"operating": 11765404787,
+"revenue": 40536551103,
+"year": 2024
+},
+{
+"net": 7893351575,
+"operating": 9191687552,
+"revenue": 39224671992,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "01582909": {
 "company": {
@@ -91744,9 +92717,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260413000412",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 351143128,
+"operating": 1653510812,
+"revenue": 85036010124,
+"year": 2024
+},
+{
+"net": 90823090,
+"operating": 112174077,
+"revenue": 92791394584,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "01686427": {
 "company": {
@@ -94443,9 +95435,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260408003413",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 9621744511,
+"operating": 11421216357,
+"revenue": 66654226697,
+"year": 2024
+},
+{
+"net": 8487693805,
+"operating": 9470815310,
+"revenue": 68536076409,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "01756197": {
 "company": {
@@ -100383,9 +101394,28 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-03",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260330001330",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -21805495463,
+"operating": -11080868365,
+"revenue": 339894518,
+"year": 2024
+},
+{
+"net": -41570399632,
+"operating": -17370508986,
+"revenue": 3376354544,
+"year": 2025
+}
+]
+},
+"v": 4
 },
 "01965324": {
 "company": {
@@ -101009,6 +102039,22 @@
 "finance": null,
 "v": 4
 },
+"02005683": {
+"company": {
+"ceo": "박상엽",
+"founded": "2020-01-02",
+"homepage": null,
+"industry_code": "47911",
+"market": "기타",
+"name": "(주)인플루디오",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": null,
+"v": 4
+},
 "02006442": {
 "company": {
 "ceo": "송덕수",
@@ -101021,9 +102067,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-03",
 "finance": null,
-"v": 3
+"v": 4
 },
 "02006789": {
 "company": {
@@ -101168,6 +102214,22 @@
 "fetched": "2026-10-21",
 "finance": null,
 "v": 3
+},
+"02015370": {
+"company": {
+"ceo": "이명진",
+"founded": "2000-04-13",
+"homepage": "https://core-robotics.kr",
+"industry_code": "29280",
+"market": "기타",
+"name": "(주)코어로보틱스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
+"finance": null,
+"v": 4
 },
 "02016528": {
 "company": {
@@ -101843,6 +102905,22 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-11-02",
+"finance": null,
+"v": 4
+},
+"02056827": {
+"company": {
+"ceo": "황경민",
+"founded": "2016-12-01",
+"homepage": "https://www.vpixmedical.com",
+"industry_code": "27309",
+"market": "기타",
+"name": "주식회사 브이픽스메디칼",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-03",
 "finance": null,
 "v": 4
 }
