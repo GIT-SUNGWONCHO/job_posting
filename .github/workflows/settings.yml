@@ -1,0 +1,32 @@
+# 조건 필터의 한 항목을 비운다(= 전부 통과). 사용자가 한 명일 때만 동작한다(지인이 생기면 각자 화면에서 바꾼다).
+# 수동 실행: GitHub > Actions > settings > Run workflow
+name: settings
+
+on:
+  workflow_dispatch:
+    inputs:
+      key:
+        description: 비울 항목(company_types, regions, employment_types, career)
+        required: true
+        default: company_types
+
+permissions:
+  contents: read
+
+jobs:
+  settings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+      - name: 비우기
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          KEY: ${{ inputs.key }}
+        run: uv run --no-dev jobpost settings-clear --key "$KEY"

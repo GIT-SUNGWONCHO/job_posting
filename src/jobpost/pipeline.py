@@ -143,6 +143,12 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         k = company_key(r.get("company", ""))
         if k and r.get("company_key") != k:
             r["company_key"] = k
+        # 서치펌 목록(config/company_aliases.yaml search_firms)이 늘면 저장된 공고에도 바로 헤드헌팅 표시
+        if not r.get("headhunter") and is_search_firm(r.get("company", "")):
+            r["headhunter"] = True
+            if not r.get("client_type"):
+                client = client_from_title(r.get("title", ""))
+                r["client_type"] = client.value if client else None
     new_by_source = Counter(u.split(":")[0] for u in new_uids)
     closed_by_source = Counter(u.split(":")[0] for u in closed_uids)
     for name, s in summary["sources"].items():

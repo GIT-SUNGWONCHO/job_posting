@@ -91,6 +91,8 @@ def main(argv: list[str] | None = None) -> int:
     of = sub.add_parser("official", help="공식 목록(공정위 기업집단 소속회사·알리오 공공기관·국민연금 사업장)을 data/official/에 받는다")
     of.add_argument("--data-dir", type=Path, default=Path("data"))
     of.add_argument("--what", default="groups,public,nps", help="쉼표로 구분: groups, public, nps")
+    sc = sub.add_parser("settings-clear", help="조건 필터의 한 항목을 비운다(= 전부 통과). 사용자가 한 명일 때만(지인이 생기면 화면에서)")
+    sc.add_argument("--key", required=True, choices=["company_types", "regions", "employment_types", "career"])
     da = sub.add_parser("dart-audit", help="시험: DART 고유번호마다 최근 감사보고서에서 실적을 읽어 본다(저장 없음)")
     da.add_argument("--codes", required=True, help="쉼표로 구분한 DART 고유번호")
     da.add_argument("--raw", type=int, default=3, help="못 읽은 회사 이만큼은 손익계산서 앞부분을 남긴다")
@@ -160,6 +162,18 @@ def main(argv: list[str] | None = None) -> int:
         summary = official.run(args.data_dir, args.what.split(","), os.environ.get("DATA_GO_KR_KEY"))
         print(json.dumps(summary, ensure_ascii=False, indent=2))
         return 0 if not any("error" in v for v in summary.values()) else 1
+    if args.cmd == "settings-clear":
+        client = db.DB()
+        rows = client.select("settings", "select=user_id,filters")
+        if len(rows) != 1:
+            print(json.dumps({"skipped": f"설정이 {len(rows)}명분이라 하지 않음(한 명일 때만)"}, ensure_ascii=False))
+            return 1
+        filters = dict(rows[0].get("filters") or {})
+        before = filters.get(args.key)
+        filters[args.key] = [] if args.key != "career" else {}
+        client.update("settings", f"user_id=eq.{rows[0]['user_id']}", {"filters": filters})
+        print(json.dumps({"key": args.key, "before": before, "after": filters[args.key]}, ensure_ascii=False))
+        return 0
     if args.cmd == "dart-audit":
         if not dart.configured():
             logging.info("DART 키(DART_API_KEY)가 없음")

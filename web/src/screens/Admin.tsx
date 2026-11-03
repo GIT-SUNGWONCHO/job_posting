@@ -65,6 +65,7 @@ export function Admin({ screen, showRatings, onShowRatings, onSample }: {
         <MenuRow to={href.list('skills')} label={t.skills} status={(screen.skills ?? []).length.toLocaleString()} />
         <MenuRow to={href.list('jobtypes')} label={t.jobTypes} status={screen.jobTypes.length} />
         <MenuRow to={href.list('industries')} label={t.industries} status={screen.profileOptions?.industries.length} />
+        <MenuRow to={href.list('typecheck')} label={t.typeCheck} status={t.typeCheckDue(typeChecks(screen).filter((r) => r.count >= TYPE_CHECK_MIN).length)} />
       </nav>
       {supabase && (
         <>
@@ -209,6 +210,18 @@ export function CollectionPage({ screen, today }: { screen: Screen; today: strin
 }
 
 const PAGE = 50
+const TYPE_CHECK_MIN = 3 // 공고가 이만큼 이상이면 점검할 차례
+
+/** 기업 구분 점검: 확인 안 됨이거나 근거가 수집처 표시뿐인 회사(헤드헌팅 공고 제외), 열린 공고 많은 순 */
+function typeChecks(screen: Screen): { key: string; name: string; count: number; why: string }[] {
+  const count = new Map<string, number>()
+  for (const p of screen.postings) if (!p.noise && !p.headhunter) count.set(p.company, (count.get(p.company) ?? 0) + 1)
+  return [...count.entries()].flatMap(([key, n]) => {
+    const c = screen.companies[key]
+    if (!c || !(c.type === '확인 안 됨' || c.typeBasis === '수집처 표시')) return []
+    return [{ key, name: c.name, count: n, why: c.type === '확인 안 됨' ? (c.typeBasis ?? c.type) : `${c.type} · ${c.typeBasis}` }]
+  }).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'ko'))
+}
 
 /** 관리 › 목록: 스킬(공고에 나온 스킬, 공고 많은 순, 내 스킬은 숙련도와), 직무 유형(열린 공고 수), 업종 */
 export function ListPage({ screen, kind }: { screen: Screen; kind: ListKind }) {
@@ -225,7 +238,10 @@ export function ListPage({ screen, kind }: { screen: Screen; kind: ListKind }) {
   }, [kind])
   const levels = useMemo(() => screen.profileOptions?.skill_levels ?? [], [screen])
   const mine = useMemo(() => new Map((profile?.skills ?? []).map((s) => [s.name, s.level])), [profile])
-  const rows: { name: string; right?: string; tag?: string }[] = useMemo(() => {
+  const rows: { name: string; right?: string; tag?: string; to?: string }[] = useMemo(() => {
+    if (kind === 'typecheck') {
+      return typeChecks(screen).map((r) => ({ name: r.name, right: t.postings(r.count), tag: r.why, to: href.company(r.key) }))
+    }
     if (kind === 'skills') {
       return (screen.skills ?? []).map((s) => {
         const lv = mine.get(s.name)
@@ -242,7 +258,7 @@ export function ListPage({ screen, kind }: { screen: Screen; kind: ListKind }) {
   }, [kind, screen, mine, levels])
   const query = q.trim().toLowerCase()
   const shown = query ? rows.filter((r) => r.name.toLowerCase().includes(query)) : rows
-  const title = { skills: t.skills, jobtypes: t.jobTypes, industries: t.industries }[kind]
+  const title = { skills: t.skills, jobtypes: t.jobTypes, industries: t.industries, typecheck: t.typeCheck }[kind]
   return (
     <div className="page detail">
       <SubHead title={title} count={rows.length} />
@@ -250,12 +266,20 @@ export function ListPage({ screen, kind }: { screen: Screen; kind: ListKind }) {
         <label className="search-box">{SEARCH_ICON}<input type="search" value={q} placeholder={t.find(title)} aria-label={t.find(title)} onChange={(e) => { setQ(e.target.value); setLimit(PAGE) }} /></label>
         {kind === 'skills' && <span className="muted-sm">{t.skillSort}</span>}
       </div>
+      {kind === 'typecheck' && <p className="note list-note">{t.typeCheckNote}</p>}
       <div className="plain-rows">
         {shown.slice(0, limit).map((r) => (
-          <div key={r.name} className="plain-row">
-            <span className="plain-name"><b>{r.name}</b>{r.tag && <span className="tag">{r.tag}</span>}</span>
-            {r.right && <span className="muted-sm">{r.right}</span>}
-          </div>
+          r.to ? (
+            <a key={r.to} href={r.to} className="plain-row">
+              <span className="plain-name"><b>{r.name}</b>{r.tag && <span className="tag">{r.tag}</span>}</span>
+              {r.right && <span className="muted-sm">{r.right}</span>}
+            </a>
+          ) : (
+            <div key={r.name} className="plain-row">
+              <span className="plain-name"><b>{r.name}</b>{r.tag && <span className="tag">{r.tag}</span>}</span>
+              {r.right && <span className="muted-sm">{r.right}</span>}
+            </div>
+          )
         ))}
       </div>
       {shown.length > limit && (

@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from . import career, config, dart, facts, jobtypes, notify, research
-from .companies import CompanyRegistry, major_candidates
+from .companies import CompanyRegistry, is_search_firm, major_candidates
 from .normalize import career_text, clean_company, common_name, company_key, list_title
 from .store import Store
 
@@ -125,7 +125,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
             "deadline": r.get("deadline"),
             "regions": o.get("regions") or [],
             "employment": o.get("employment_types") or [],
-            "headhunter": bool(r.get("headhunter")),
+            "headhunter": bool(r.get("headhunter")) or is_search_firm(r.get("company", "")),
             **({"clientType": client_type} if client_type else {}),
             "noise": r.get("noise"),
             "firstSeen": first_seen,

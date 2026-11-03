@@ -888,6 +888,9 @@ a.source:hover { text-decoration: underline; }
 .list-tools { padding: 0 var(--gutter); display: flex; flex-direction: column; gap: 12px; }
 .plain-rows { padding: 4px var(--gutter) 0; display: flex; flex-direction: column; }
 .plain-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 48px; }
+a.plain-row { color: inherit; text-decoration: none; }
+.list-note { padding: 8px var(--gutter) 0; }
+.plain-row > .muted-sm { white-space: nowrap; }
 .plain-name { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
 .plain-name b { font-size: var(--fs-body); font-weight: var(--fw-item); }
 .plain-name .tag { font-size: var(--fs-min); font-weight: var(--fw-item); color: var(--accent); white-space: nowrap; }

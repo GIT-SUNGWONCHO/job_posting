@@ -5,6 +5,18 @@ import requests
 
 from jobpost import config, kakao, notify, telegram
 
+
+@pytest.fixture(autouse=True)
+def _fixed_default_filters(monkeypatch):
+    """기본 조건 필터(config/filters.yaml)가 바뀌어도 이 파일의 기대값이 흔들리지 않게 고정한다."""
+    real = config.load
+
+    def load(name):
+        got = real(name)
+        return {**got, "company_types": ["대기업"]} if name == "filters" else got
+    monkeypatch.setattr(config, "load", load)
+
+
 TODAY = date(2026, 10, 17)
 
 

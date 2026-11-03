@@ -2,8 +2,8 @@ import { useSyncExternalStore } from 'react'
 
 // 주소 뒤 #/... 로 화면을 고른다. 서버 설정 없이 새로고침·뒤로 가기가 된다.
 export type CareerSeg = 'market' | 'position' | 'plan'
-export type ListKind = 'skills' | 'jobtypes' | 'industries'
-const LIST_KINDS: ListKind[] = ['skills', 'jobtypes', 'industries']
+export type ListKind = 'skills' | 'jobtypes' | 'industries' | 'typecheck'
+const LIST_KINDS: ListKind[] = ['skills', 'jobtypes', 'industries', 'typecheck']
 const CAREER_SEGS: CareerSeg[] = ['market', 'position', 'plan']
 
 export type Route =
