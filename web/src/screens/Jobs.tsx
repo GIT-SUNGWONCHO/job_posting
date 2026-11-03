@@ -69,7 +69,11 @@ export function Jobs({ screen, passed, filters, defaults, regions, seg, ui, setU
   }, [screen])
   const rated = sample.filter((p) => matches.get(p.id)?.mine).length
   const shown = useMemo(
-    () => sortPostings((ui.sample ? sample : passed).filter((p) => matchesQuery(p, c[p.company], ui.query)), ui.sort, matches),
+    () => {
+      const sorted = sortPostings((ui.sample ? sample : passed).filter((p) => matchesQuery(p, c[p.company], ui.query)), ui.sort, matches)
+      // 평가할 공고: 아직 평가하지 않은 공고 먼저(점수 높은 것만 평가되고 낮은 것이 남지 않게)
+      return ui.sample ? [...sorted.filter((p) => !matches.get(p.id)?.mine), ...sorted.filter((p) => matches.get(p.id)?.mine)] : sorted
+    },
     [passed, sample, c, ui.query, ui.sort, ui.sample, matches],
   )
   // 회사 목록: 기업 구분 필터에 맞는 회사 전부(공고가 없는 주요 기업 포함). 열린 공고가 많은 순.

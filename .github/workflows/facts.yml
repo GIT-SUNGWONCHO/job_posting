@@ -1,0 +1,72 @@
+# 공고 정리 따라잡기: 매칭 대상(내 분야 공고)에서 아직 정리하지 않은 공고를 한 번에 많이 정리한다.
+# 매일 수집에서도 config/ai.yaml facts.max_calls만큼 하지만, 처음 쌓인 공고는 이걸로 나눠 돌린다.
+# Gemini 키는 GEMINI_API_KEY, _2 ~ _5를 차례로 쓴다(앞 키가 한도에 걸리면 다음 키). 키마다 다른 구글 클라우드 프로젝트여야 한도가 늘어난다.
+# 수동 실행: GitHub > Actions > facts > Run workflow
+name: facts
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_calls:
+        description: 이번 실행 최대 호출 수(무료 키 하나에 하루 약 500번)
+        required: false
+        default: "900"
+      minutes:
+        description: 이 시간(분)이 지나면 멈춘다
+        required: false
+        default: "100"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect  # 수집과 겹치지 않게
+  cancel-in-progress: false
+
+jobs:
+  facts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: data 브랜치 연결
+        run: |
+          git fetch --depth=1 origin data
+          git worktree add -B data data origin/data
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+
+      - name: 공고 정리
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+          GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
+          MAX_CALLS: ${{ inputs.max_calls }}
+          MINUTES: ${{ inputs.minutes }}
+        run: uv run --no-dev jobpost facts --data-dir data --max-calls "${MAX_CALLS:-900}" --max-minutes "${MINUTES:-100}" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: data 브랜치에 커밋
+        if: always()
+        working-directory: data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A facts.jsonl
+          if git diff --cached --quiet; then
+            echo "바뀐 데이터 없음"
+            exit 0
+          fi
+          git commit -q -m "facts $(date +%F)"
+          for i in 1 2 3; do git pull -q --rebase origin data; git push origin data && break; sleep $((i * 10)); done

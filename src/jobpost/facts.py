@@ -103,7 +103,7 @@ def posting_text(p: dict[str, Any], company: str, body: str | None) -> str:
 
 
 def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: list[str],
-        client: Any | None, today: str) -> dict[str, Any]:
+        client: Any | None, today: str, max_calls: int | None = None, max_minutes: float | None = None) -> dict[str, Any]:
     """wanted(후보 공고 id, 앞에서부터 먼저)에서 아직 정리하지 않은 것을 하루 한도까지 정리한다."""
     rows = load(data_dir)
     texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
@@ -119,10 +119,11 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
         return summary
     cfg = config.load("ai").get("facts") or {}
     by_id = {p["id"]: p for p in screen["postings"]}
-    deadline = time.monotonic() + cfg.get("max_minutes", 20) * 60
+    limit = max_calls or cfg.get("max_calls", 250)
+    deadline = time.monotonic() + (max_minutes or cfg.get("max_minutes", 20)) * 60
     errors: list[str] = []
     for pid in todo:
-        if summary["calls"] >= cfg.get("max_calls", 250) or time.monotonic() > deadline or len(errors) >= 5:
+        if summary["calls"] >= limit or time.monotonic() > deadline or len(errors) >= 5:
             break
         p = by_id[pid]
         company = (screen["companies"].get(p["company"]) or {}).get("name", "")

@@ -61,6 +61,8 @@ def main(argv: list[str] | None = None) -> int:
     br.add_argument("--data-dir", type=Path, default=Path("data"))
     f = sub.add_parser("facts", help="후보 공고의 매칭 항목을 AI로 정리해 data 폴더 facts.jsonl에 쌓는다")
     f.add_argument("--data-dir", type=Path, default=Path("data"))
+    f.add_argument("--max-calls", type=int, help="이번 실행 최대 호출 수(비우면 config/ai.yaml facts.max_calls). 따라잡기용")
+    f.add_argument("--max-minutes", type=float, help="이번 실행 최대 시간(분)")
 
     r = sub.add_parser("feedback", help="회차 리포트: 로그에는 건수·지표만, --out에는 공고별 평가·판단 근거·바꿀 후보(비공개)")
     r.add_argument("--data-dir", type=Path, default=Path("data"))
@@ -253,7 +255,8 @@ def main(argv: list[str] | None = None) -> int:
             settings = store.select("settings", "select=user_id,filters")
         wanted = facts.candidates_for_all(built, settings)
         client = ai.Gemini() if ai.configured() else None
-        summary = facts.run(args.data_dir, built, bodies, wanted, client, date.today().isoformat())
+        summary = facts.run(args.data_dir, built, bodies, wanted, client, date.today().isoformat(),
+                            max_calls=args.max_calls, max_minutes=args.max_minutes)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
     if args.cmd == "notify":
