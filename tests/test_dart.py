@@ -235,6 +235,9 @@ def test_run_links_fetches_and_respects_budget(tmp_path, monkeypatch):
             return {"status": "000", "list": [{"rcept_dt": "20260301", "report_nm": "감사보고서", "rcept_no": "1"}]}
         if name == "list.json":
             return {"status": "013", "message": "조회된 데이타가 없습니다."}
+        if name == "hyslrSttus.json":
+            return {"status": "000", "list": [{"nm": "가나홀딩스", "trmend_posesn_stock_qota_rt": "20.1"},
+                                              {"nm": "계", "trmend_posesn_stock_qota_rt": "30.0"}]}
         raise AssertionError(name)
 
     s = FakeSession(respond)
@@ -543,3 +546,11 @@ def test_audit_parent_reads_the_controlling_company():
     got = dart.audit_parent(doc)
     assert got["ultimate"] and got["name"].startswith("Oracle Corporation")
     assert dart.audit_parent("<P>지배기업의 소유주에게 귀속되는 당기순이익</P>") is None
+
+
+def test_foreign_owner_rule():
+    from jobpost.dart import foreign_owner
+    assert foreign_owner("Oracle Corporation", None)
+    assert foreign_owner("미국 소재 Tesla, Inc.", None) == "미국"
+    assert foreign_owner("네이버㈜", None) is None
+    assert foreign_owner("최대주주 등의 지분을 보유", None) is None

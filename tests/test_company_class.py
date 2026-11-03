@@ -36,3 +36,13 @@ def test_group_by_corporate_number():
     gi = cc.group_index({"companies": [{"group": "씨제이", "key": "cj이엔엠", "jurirno": "110111-1234567"}]})
     b = {"company": {"jurir_no": "1101111234567"}}
     assert _c(key="cjenm", corp={"corp_code": "1"}, basics=b, groups=gi).basis == "공정위 기업집단 씨제이"
+
+
+def test_foreign_from_dart_owner():
+    corp = {"corp_code": "1"}
+    fin = {"finance": {"years": [{"revenue": 9000e8}]}}
+    oracle = {**fin, "owner": {"name": "Oracle Corporation", "source": "감사보고서 지배기업", "foreign": "외국 회사 표기"}}
+    assert _c(corp=corp, basics=oracle).type == "외국계"
+    domestic = {**fin, "owner": {"name": "가나㈜", "source": "감사보고서 지배기업", "foreign": None}}
+    assert _c(corp=corp, basics=domestic, src="외국계").type == "중견"  # 수집처 표시를 버림
+    assert _c(corp=corp, basics=fin, src="외국계").basis == "수집처 표시"  # 아직 안 읽음

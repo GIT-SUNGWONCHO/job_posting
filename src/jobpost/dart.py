@@ -752,6 +752,7 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
         return (not m or m.get("mv") != MATCH_VERSION
                 or (not m.get("corp_code") and date.fromisoformat(m["checked"]) + retry <= today))
 
+    idx: Index | None = None
     try:
         need = [(k, n) for k, n in todo if due_match(k)]
         listed_old = listed_due(listed_path, today)
@@ -849,6 +850,19 @@ def run(data_dir: Path, today: date, budget: int | None = None, session: request
                 if summary["failed"] >= 20:
                     summary["stopped"] = "실패가 많아 멈춤"
                     break
+        # 외국계 근거: 지배기업(감사보고서)·최대주주(사업보고서)를 읽어 owner에 둔다(회사마다 1건, 실적을 다시 받으면 다시)
+        owner_todo = [c for c, g in basics.items() if "owner" not in g and g.get("finance")]
+        summary["owners"] = 0
+        if owner_todo:
+            oidx = idx or index(corp_codes(client, cache, today))
+            for code in owner_todo:
+                try:
+                    basics[code]["owner"] = fetch_owner(client, code, basics[code]["finance"], oidx)
+                    summary["owners"] += 1
+                except DartError as e:
+                    if isinstance(e, LimitReached):
+                        raise
+                    log.warning("DART 지배기업 %s: %s", code, e)
         # 번호가 없는 옛 기록은 기업개황만 다시 받아 번호를 채운다(회사마다 1건, 남은 요청 수 안에서)
         summary["ids_filled"] = 0
         for code, got in basics.items():
@@ -1010,6 +1024,57 @@ def audit_parent(text: str) -> dict[str, Any] | None:
     m = next((x for x in found if x.group(1)), found[0])
     return {"ultimate": bool(m.group(1)), "name": m.group(2).strip()[:80],
             "snippet": plain[max(0, m.start() - 60):m.end() + 60]}
+
+
+# 외국계 근거(2026-11-03): 지배기업·최대주주 이름이 외국 회사인지. 엄격하게: 외국 회사 표기(Inc, GmbH …)나
+# 외국 소재 말이 있고, 그 이름이 DART에 등록된 국내 회사 이름이 아닐 때만 외국으로 본다
+_FOREIGN_SUFFIX = re.compile(
+    r"(?<![A-Za-z])(Inc|Incorporated|Corp|Corporation|Ltd|Limited|LLC|L\.L\.C|GmbH|AG|S\.A\.S?|SAS|B\.V|BV|N\.V|NV|"
+    r"PLC|Pte|K\.K|S\.p\.A|SE|AB|A/S|Oy|ASA|LP|L\.P|Group|Holdings?)(?![A-Za-z])\.?")
+_COUNTRIES = ("미국", "일본", "중국", "홍콩", "싱가포르", "독일", "프랑스", "영국", "네덜란드", "스위스", "스웨덴", "캐나다",
+              "호주", "아일랜드", "룩셈부르크", "벨기에", "이탈리아", "스페인", "대만", "인도", "덴마크", "핀란드", "노르웨이",
+              "오스트리아", "케이맨", "버뮤다", "버진아일랜드", "말레이시아", "이스라엘", "버지니아", "델라웨어", "캘리포니아")
+_COUNTRY = re.compile("(" + "|".join(_COUNTRIES) + r")\s*(?:소재|법인|에\s*소재|의)")
+
+
+def foreign_owner(name: str, idx: Index | None) -> str | None:
+    """지배기업·최대주주 글이 외국 회사면 근거 말(외국 회사 표기 또는 나라), 아니면 None."""
+    if not name:
+        return None
+    country = _COUNTRY.search(name)
+    latin = _FOREIGN_SUFFIX.search(name) and re.search(r"[A-Za-z]{3,}", name)
+    if not (country or latin):
+        return None
+    core = re.split(r"[(（,]|입니다|이며", name)[0].strip()
+    if idx is not None and not country and idx.get(company_key(core)):
+        return None  # 같은 이름의 국내 DART 회사가 있다(SK Inc. 같은 국내 회사의 영문 표기)
+    return country.group(1) if country else "외국 회사 표기"
+
+
+def fetch_owner(client: Client, corp_code: str, finance: dict[str, Any], idx: Index | None) -> dict[str, Any] | None:
+    """감사보고서 실적이면 그 감사보고서의 지배기업, 사업보고서 실적이면 최대주주(지분율이 가장 큰 사람·회사).
+    {"name", "source", "foreign"(근거 말 또는 None)} 또는 None(찾지 못함)."""
+    if finance.get("basis") == "감사보고서" and finance.get("rcept_no"):
+        got = audit_parent(audit_document(client, finance["rcept_no"]))
+        if not got:
+            return None
+        return {"name": got["name"], "source": "감사보고서 지배기업", "foreign": foreign_owner(got["name"], idx)}
+    year = finance.get("year")
+    if not year:
+        return None
+    body = client.json("hyslrSttus.json", {"corp_code": corp_code, "bsns_year": year, "reprt_code": REPORT_ANNUAL})
+    best, rate = None, -1.0
+    for r in (body or {}).get("list") or []:
+        nm = (r.get("nm") or "").strip()
+        try:
+            v = float((r.get("trmend_posesn_stock_qota_rt") or "0").replace(",", ""))
+        except ValueError:
+            continue
+        if nm and nm not in ("계", "합계") and v > rate:
+            best, rate = nm, v
+    if not best:
+        return None
+    return {"name": best, "source": "사업보고서 최대주주", "rate": rate, "foreign": foreign_owner(best, idx)}
 
 
 def audit_finance(client: Client, corp_code: str, today: date) -> dict[str, Any] | None:

@@ -1,11 +1,12 @@
-"""기업 구분 새 기준(docs/collection.md '새 기준', 시험 중): 공적 근거를 순서대로 찾아 처음 걸리는 근거로 정한다.
+"""기업 구분(docs/collection.md '기업 구분과 그룹'): 공적 근거를 순서대로 찾아 처음 걸리는 근거로 정한다.
 
 구분: 공공 · 대기업 · 외국계 · 중견 · 중소·스타트업 · 확인 안 됨. 표시: 상장.
 근거 순서:
 1. 알리오 공공기관 목록 → 공공
 2. 공정위 대규모기업집단 소속회사 → 대기업. DART 법인등록번호가 같으면(group_keys의 '#번호'), 번호가 없으면 회사 키
    또는 이어진 DART 법인 이름의 키가 같을 때
-3. 수집처가 외국계로 표시 → 외국계(근거에 '수집처 표시'). 외투기업 목록·감사보고서 지배기업은 다음 단계
+3. DART 감사보고서 지배기업이나 사업보고서 최대주주가 외국 회사 → 외국계(dart.foreign_owner).
+   DART에서 읽었는데 외국이 아니면 수집처의 외국계 표시는 버린다. 읽지 못했을 때만 수집처 표시(근거에 '수집처 표시')
 4. DART 실적: 3년 평균 매출이 중소기업기본법 업종별 기준을 넘으면 중견, 아니면 중소·스타트업
 5. DART 실적이 없음: 국민연금 사업장 후보가 있고 모두 300명 미만이면 중소·스타트업(외부감사 대상이 아닌 작은 회사).
    직원 수는 화면에 보이지 않는다
@@ -77,7 +78,12 @@ def classify(key: str, *, corp: dict[str, Any] | None, basics: dict[str, Any] | 
         or (group_keys.get(dart_key) if dart_key else None)
     if g:
         return Result("대기업", f"공정위 기업집단 {g}", listed)
-    if source_type == "외국계":
+    owner = (basics or {}).get("owner")
+    if owner and owner.get("foreign"):
+        return Result("외국계", f"DART {owner['source']} {owner['name'][:40]}", listed)
+    # DART에서 지배기업·최대주주를 읽었는데 외국이 아니면 수집처의 외국계 표시는 믿지 않는다
+    checked = basics is not None and "owner" in basics
+    if source_type == "외국계" and not checked:
         return Result("외국계", "수집처 표시", listed)
     fin = (basics or {}).get("finance") or {}
     years = [y.get("revenue") for y in fin.get("years") or [] if y.get("revenue")]

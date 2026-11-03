@@ -1,4 +1,4 @@
-"""공식 목록: 기업 구분(docs/collection.md '새 기준')의 근거가 되는 공적 자료를 받아 data/official/에 둔다.
+"""공식 목록: 기업 구분(docs/collection.md '기업 구분과 그룹')의 근거가 되는 공적 자료를 받아 data/official/에 둔다.
 
 - 공정위 대규모기업집단 소속회사(공공데이터포털 OpenAPI 15091891, 서비스 키 DATA_GO_KR_KEY 필요).
   매년 5월 1일 기준으로 지정. 응답은 XML, 소속회사마다 소속회사명·법인등록번호·사업자등록번호, 기업집단 이름(unityGrupNm)은
