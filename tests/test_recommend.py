@@ -193,3 +193,29 @@ def test_no_body_caps_score_and_body_arrival_rematches():
     db, ai = FakeDB(old), FakeAI()
     recommend.run(SCREEN, BODIES, db, ai, TODAY)  # 본문 읽기로 본문이 생기면 다시 묻는다
     assert ai.prompts
+
+
+def test_gemini_moves_to_next_key_on_quota(monkeypatch):
+    from jobpost import ai
+    monkeypatch.setenv("GEMINI_API_KEY", "k1")
+    monkeypatch.setenv("GEMINI_API_KEY_2", "k2")
+    monkeypatch.delenv("GEMINI_API_KEY_3", raising=False)
+    used = []
+
+    class Resp:
+        def __init__(self, code, body):
+            self.status_code, self._body, self.text = code, body, ""
+
+        def json(self):
+            return self._body
+
+    class Session:
+        def post(self, url, headers=None, json=None, timeout=None):
+            used.append(headers["x-goog-api-key"])
+            if headers["x-goog-api-key"] == "k1":
+                return Resp(429, {"error": {"details": [{"violations": [{"quotaId": "PerDay", "quotaValue": "500"}]}]}})
+            return Resp(200, {"candidates": [{"content": {"parts": [{"text": "{\"ok\": 1}"}]}}]})
+
+    g = ai.Gemini(session=Session())
+    g.min_interval = 0
+    assert g.json("p", {}) == {"ok": 1} and used == ["k1", "k2"]

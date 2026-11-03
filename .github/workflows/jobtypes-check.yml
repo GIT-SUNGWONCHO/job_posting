@@ -38,5 +38,7 @@ jobs:
       - name: 보조 직무 유형 시험
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
           N: ${{ inputs.n }}
         run: uv run --no-dev jobpost jobtypes-check --data-dir data --n "${N:-160}"

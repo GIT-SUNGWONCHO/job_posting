@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import base64
 import json
+import logging
 import os
 import time
 from typing import Any
@@ -14,6 +15,8 @@ from typing import Any
 import requests
 
 from . import config
+
+log = logging.getLogger(__name__)
 
 URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
@@ -41,6 +44,13 @@ def configured() -> bool:
     return bool(os.environ.get("GEMINI_API_KEY"))
 
 
+def api_keys() -> list[str]:
+    """GEMINI_API_KEY, 그다음 GEMINI_API_KEY_2, _3(있으면). 앞 키가 한도(429)에 걸리면 다음 키로 넘어간다.
+    여러 키는 임시로 쓴다(2026-11-03 사용자 결정, docs/setup.md "Gemini 무료 한도")."""
+    names = ["GEMINI_API_KEY", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3"]
+    return [os.environ[n] for n in names if os.environ.get(n)]
+
+
 class Gemini:
     def __init__(self, session: requests.Session | None = None, model: str | None = None):
         cfg = config.load("ai")
@@ -49,6 +59,8 @@ class Gemini:
         self.session = session or requests.Session()
         self.calls = 0
         self._last = 0.0
+        self.keys = api_keys()
+        self.key_i = 0  # 지금 쓰는 키(한도에 걸리면 다음으로)
 
     def json(self, prompt: str, schema: dict[str, Any], retries: int = 3,
              images: list[tuple[str, bytes]] | None = None) -> Any:
@@ -58,7 +70,8 @@ class Gemini:
         for mime, data in images or []:
             parts.append({"inline_data": {"mime_type": mime, "data": base64.b64encode(data).decode()}})
         last_error = ""
-        for attempt in range(retries):
+        attempt = 0
+        while attempt < retries:
             wait = self.min_interval - (time.monotonic() - self._last)
             if wait > 0:
                 time.sleep(wait)
@@ -66,7 +79,7 @@ class Gemini:
             self.calls += 1
             resp = self.session.post(
                 URL.format(model=self.model),
-                headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"], "Content-Type": "application/json"},
+                headers={"x-goog-api-key": self.keys[self.key_i], "Content-Type": "application/json"},
                 json={
                     "contents": [{"parts": parts}],
                     "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema,
@@ -74,10 +87,16 @@ class Gemini:
                 },
                 timeout=120,
             )
+            if resp.status_code == 429 and self.key_i + 1 < len(self.keys):
+                # 이 키의 한도가 찼으면 다음 키로 바로 다시(키 이름은 남기지만 값은 남기지 않는다)
+                self.key_i += 1
+                log.warning("Gemini 한도(429%s): %d번째 키로 넘어감", _quota(resp), self.key_i + 1)
+                continue
             if resp.status_code == 429 or resp.status_code >= 500:
                 last_error = f"{resp.status_code}{_quota(resp)}"
                 if attempt < retries - 1:  # 마지막 시도 뒤에는 기다리지 않는다
                     time.sleep(20 * (attempt + 1))
+                attempt += 1
                 continue
             if resp.status_code != 200:
                 # 응답 본문에는 키가 없지만 길이는 줄인다
@@ -87,6 +106,7 @@ class Gemini:
                 return json.loads(text)
             except (KeyError, IndexError, ValueError) as e:
                 last_error = f"형식 오류: {e}"
+                attempt += 1
         raise AIError(last_error or "응답 없음")
 
     def grounded(self, prompt: str, retries: int = 2) -> dict[str, Any]:

@@ -77,6 +77,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 | `SUPABASE_URL` | Project URL |
 | `SUPABASE_SECRET_KEY` | secret key |
 | `GEMINI_API_KEY` | aistudio.google.com > Get API key. 직무 유형 분류에 쓴다. 없으면 분류만 건너뛴다 |
+| `GEMINI_API_KEY_2`, `GEMINI_API_KEY_3` | (선택, 임시) 다른 구글 프로젝트의 키. 첫 키가 한도에 걸리면 차례로 쓴다 |
 | `TELEGRAM_BOT_TOKEN` | 텔레그램 봇 토큰(아래 4). 없으면 아침 알림만 건너뛴다 |
 | `KAKAO_REST_KEY` | 카카오 앱 REST API 키(아래 5, 지금은 꺼 둠) |
 | `KAKAO_CLIENT_SECRET` | 카카오 앱 REST API 키의 클라이언트 시크릿 |
@@ -88,7 +89,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 - 실제로 본 것: 11/2 17시(KST)부터 11/3 아침 수집까지 약 500번 부른 뒤 429(한도 초과)가 났다(직무 유형 95 · 본문 읽기 13 · 공고 정리 106 · 매칭 285). 11/2에는 매칭 전체 다시 매기기와 시험이 몰린 날 오후에도 429가 났다.
 - 하루 한도는 미국 태평양 시간 자정에 다시 찬다고 알려져 있다(한국 16~17시, 공식 확인 전).
 - 2026-11-03부터 429가 나면 로그에 한도 종류와 값이 함께 찍힌다(`ai._quota`, 예: `GenerateRequestsPerDayPerProjectPerModel-FreeTier=…`). 다음 429 때 정확한 값을 여기에 옮긴다.
-- 무료 키를 여러 개 만들어 한도를 늘리는 것은 하지 않는다(약관이 한도 우회를 막는다고 알려져 있고, 이 프로젝트 원칙도 무료 한도를 피해 가지 않는 것). 한도가 모자라면 유료 등급(사용 한도 설정)으로 바꾸거나 일을 며칠에 나눈다.
+- 임시로 무료 키를 더 쓸 수 있다(2026-11-03 사용자 결정): GitHub Secrets에 `GEMINI_API_KEY_2`, `GEMINI_API_KEY_3`(다른 구글 클라우드 프로젝트에서 만든 키)를 넣으면, 앞 키가 한도(429)에 걸릴 때 다음 키로 넘어간다(`ai.api_keys`). 약관상 한도 우회로 볼 수 있어 계정 제재 위험은 사용자가 안다. 오래 쓸 방법은 유료 등급(월 사용 한도 설정)이다.
 
 
 넣은 뒤 Actions > collect > Run workflow로 한 번 돌려 "Supabase 저장소에 올림" 줄이 나오는지 본다(2026.10.13 확인. 새 secret 키는 `apikey` 헤더만으로 올라간다). 키가 없으면 화면용 파일은 만들기만 하고 올리지 않는다.
