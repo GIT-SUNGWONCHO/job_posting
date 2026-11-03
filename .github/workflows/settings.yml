@@ -10,7 +10,7 @@ on:
         required: true
         default: company_types
       add:
-        description: 비우지 않고 이 값을 더한다(예: analytics_eng). 비우면 항목을 비운다
+        description: "비우지 않고 이 값을 더한다(예: analytics_eng). 비우면 항목을 비운다"
         required: false
         default: ""
 
