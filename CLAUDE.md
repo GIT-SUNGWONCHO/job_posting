@@ -69,7 +69,8 @@ src/jobpost/
   notes.py         내 리서치 노트: data 브랜치 notes/*.json(정해진 블록)을 확인해 사람마다 Supabase research_notes에 넣는다
   career.py        커리어 지표(시장): 직무 유형 × 기업 구분별 날짜별 공고 수, 경력 요구, 요구 스킬(화면용 파일 career)
   bodyread.py      본문 읽기: 원문이 이미지뿐인 후보 공고의 이미지 글자를 AI로(data/ocr.jsonl). 상세(본문)에 붙는다
-  facts.py         공고 정리: 후보 공고의 매칭 항목을 공고당 1번 AI로(data/facts.jsonl), 스킬 목록
+  facts.py         공고 정리: 매칭 대상 공고의 매칭 항목·업무 꼬리표(일의 종류·책임 범위)를 공고당 1번 AI로(data/facts.jsonl), 스킬 목록
+  prescreen.py     사전 거르기 시험(조건·규칙 v3·AI 묶음), methods.py 매칭 방식 비교 시험(A~D)
   profile.py       프로필 v2(경력 > 직무 구간 > 프로젝트, 숙련도): 직무별 연수, AI에 보낼 요약
   matching.py      규칙 점수(비교용, config/matching.yaml + 스킬 사전 config/skills.yaml)
   recommend.py     사람마다 매칭: 후보 공고를 AI가 매기고 판단 근거·공고 사실을 남김(지침 config/match_guide.yaml), 영어·고용 형태 상한과 원하는 조건 표시, Supabase matches에 씀

@@ -15,7 +15,7 @@ from collections import Counter
 from datetime import date, timedelta
 from typing import Any
 
-from . import matching
+from . import jobtypes, matching
 from .companies import CompanyRegistry, posting_type
 
 VERSION = 3  # 2: 신입·N년 이하를 3년 미만으로, 같은 공고 묶음의 날짜, 스킬 사전 이름(dictionary), 3: 새로 붙인 수집처의 첫날 공고(backfill)는 새 공고로 세지 않음
@@ -38,7 +38,7 @@ def build(state: dict[str, dict[str, Any]], registry: CompanyRegistry, postings:
 
 
 def _key(job: str | None, ctype: str) -> str:
-    return f"{job or 'none'}|{ctype}"
+    return f"{jobtypes.current_id(job) or 'none'}|{ctype}"  # 지난 판 id(software 등)는 지금 id로
 
 
 def daily(state: dict[str, dict[str, Any]], registry: CompanyRegistry, today: date) -> dict[str, Any]:

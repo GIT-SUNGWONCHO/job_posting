@@ -34,13 +34,13 @@ industries:
 roles:
   - {id: data_eng, name: 데이터 엔지니어}
   - {id: data_arch, name: 데이터 아키텍트·거버넌스}
-  - {id: bi_eng, name: BI·애널리틱스 엔지니어, job_type: analyst}
+  - {id: bi_eng, name: BI·애널리틱스 엔지니어, job_type: analytics_eng}
   - {id: analyst, name: 데이터 분석가}
   - {id: ai_eng, name: AI 엔지니어(LLM·에이전트)}
   - {id: mlops, name: MLOps·AI 플랫폼}
   - {id: planning, name: AI·데이터 기획·PM}
-  - {id: pi, name: 업무 프로세스 혁신(PI) 기획}
-  - {id: sales_md, name: 영업·MD}
+  - {id: pi, name: 업무 프로세스 혁신(PI) 기획, job_type: f_planning}
+  - {id: sales_md, name: 영업·MD, job_type: f_sales}
   - {id: other, name: 기타(직접 입력)}
 
 # 스킬 숙련도

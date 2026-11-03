@@ -94,7 +94,8 @@ def main(argv: list[str] | None = None) -> int:
     of.add_argument("--data-dir", type=Path, default=Path("data"))
     of.add_argument("--what", default="groups,public,nps", help="쉼표로 구분: groups, public, nps")
     sc = sub.add_parser("settings-clear", help="조건 필터의 한 항목을 비운다(= 전부 통과). 사용자가 한 명일 때만(지인이 생기면 화면에서)")
-    sc.add_argument("--key", required=True, choices=["company_types", "regions", "employment_types", "career"])
+    sc.add_argument("--key", required=True, choices=["company_types", "regions", "employment_types", "career", "job_types"])
+    sc.add_argument("--add", help="비우지 않고 이 값을 목록에 더한다(예: job_types에 analytics_eng)")
     ms = sub.add_parser("match-stats", help="시험: 규칙 점수 구간별 AI 판정·내 평가·공고 수(로그에는 건수만)")
     ms.add_argument("--data-dir", type=Path, default=Path("data"))
     ps = sub.add_parser("prescreen-trial", help="시험: 사전 거르기(조건·규칙 v2·규칙 v3·AI 묶음)가 줄이는 양과 잃는 정답 수(로그에는 건수만)")
@@ -181,7 +182,10 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         filters = dict(rows[0].get("filters") or {})
         before = filters.get(args.key)
-        filters[args.key] = [] if args.key != "career" else {}
+        if args.add:
+            filters[args.key] = sorted(set(before or []) | {args.add})
+        else:
+            filters[args.key] = [] if args.key != "career" else {}
         client.update("settings", f"user_id=eq.{rows[0]['user_id']}", {"filters": filters})
         print(json.dumps({"key": args.key, "before": before, "after": filters[args.key]}, ensure_ascii=False))
         return 0

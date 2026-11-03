@@ -15,7 +15,7 @@ import logging
 from itertools import combinations
 from typing import Any
 
-from . import config, recommend
+from . import config, facts, recommend
 
 log = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ def frame_items(fact: dict[str, Any] | None) -> list[dict[str, Any]]:
     domain = [names.get(d, d) for d in (f.get("domain_required") or [])]
     degree = f.get("degree") if f.get("degree") not in (None, "적혀 있지 않음", "무관") else ""
     raw = [
-        ("핵심 업무", "주요 업무", "; ".join(f.get("duties") or [])),
+        ("핵심 업무", "주요 업무", "; ".join(facts.duty_texts(f))),
         ("필수 스킬", "필수 스킬", ", ".join(f.get("required_skills") or [])),
         ("경력 연수·직급", "연수·직급", " / ".join(x for x in (years, level) if x)),
         ("도메인·업종", "업종 경험", ", ".join(domain)),
@@ -47,7 +47,8 @@ def frame_items(fact: dict[str, Any] | None) -> list[dict[str, Any]]:
 def pool_items(fact: dict[str, Any] | None) -> list[dict[str, str]]:
     """B 항목 풀: 공고 정리의 요구를 하나씩 항목 후보로."""
     f = _f(fact)
-    out = [{"kind": "핵심 업무", "posting": d} for d in f.get("duties") or []]
+    out = [{"kind": "핵심 업무", "posting": d if isinstance(d, str) else f"{d.get('text', '')} ({d.get('scope', '')})"}
+           for d in f.get("duties") or []]
     out += [{"kind": "필수 스킬", "posting": s} for s in f.get("required_skills") or []]
     out += [{"kind": "우대 스킬", "posting": s} for s in (f.get("preferred_skills") or [])[:8]]
     out += [{"kind": "경력 연수·직급", "posting": f"{y.get('area', '')} {y.get('min', '')}년 이상"} for y in f.get("years") or []]

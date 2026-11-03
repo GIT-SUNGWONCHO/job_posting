@@ -27,7 +27,7 @@ it('passes like filters.py', () => {
 it('filters by job type but lets unclassified postings through', () => {
   const g: Filters = { job_types: ['data_eng', 'ai_eng'] }
   expect(passes(base, large, g)).toBe(true)
-  expect(passes({ ...base, jobType: 'non_data' }, large, g)).toBe(false)
+  expect(passes({ ...base, jobType: 'f_marketing' }, large, g)).toBe(false)
   expect(passes({ ...base, jobType: null }, large, g)).toBe(true)
 })
 
@@ -47,6 +47,6 @@ it('filters by employment type like filters.py', () => {
 
 it('passes when only the secondary job type matches', () => {
   const g: Filters = { job_types: ['analyst'] }
-  expect(passes({ ...base, jobType: 'non_data', jobType2: 'analyst' }, large, g)).toBe(true)
-  expect(passes({ ...base, jobType: 'non_data', jobType2: null }, large, g)).toBe(false)
+  expect(passes({ ...base, jobType: 'f_marketing', jobType2: 'analyst' }, large, g)).toBe(true)
+  expect(passes({ ...base, jobType: 'f_marketing', jobType2: null }, large, g)).toBe(false)
 })

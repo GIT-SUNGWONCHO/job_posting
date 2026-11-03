@@ -171,9 +171,14 @@ def posting_text(p: dict[str, Any], screen: dict[str, Any], body: str | None, fa
     out = head + "\n" + ((body or "")[:body_chars] or "(본문 없음)")
     if fact:
         f = fact["facts"]
-        years = ", ".join(f"{y.get('area', '')} {y.get('min', '')}년" for y in f.get("years") or [])
+        years = ", ".join(f"{y.get('area', '')} {y.get('min', '')}{'~' + str(y['max']) if y.get('max') else ''}년"
+                          for y in f.get("years") or [])
+        duties = [d for d in f.get("duties") or [] if isinstance(d, dict)]
+        tags = "; ".join(f"{d.get('text', '')}({names.get(d.get('kind', ''), d.get('kind', ''))}·{d.get('scope', '')})" for d in duties)
         out += ("\n[공고 정리]\n"
-                f"직급: {f.get('level')} / 필수 스킬: {', '.join(f.get('required_skills') or []) or '-'} / "
+                + (f"업무: {tags}\n" if tags else "")
+                + (f"사람 관리: {f['manages']} / " if f.get("manages") and f["manages"] != "적혀 있지 않음" else "")
+                + f"직급: {f.get('level')} / 필수 스킬: {', '.join(f.get('required_skills') or []) or '-'} / "
                 f"우대 스킬: {', '.join(f.get('preferred_skills') or []) or '-'} / 연수 요건: {years or '-'} / "
                 f"학력: {f.get('degree') or '-'}"
                 f"{' (전공 ' + ', '.join(f.get('majors') or []) + ' ' + (f.get('major_need') or '') + ')' if f.get('majors') else ''}")

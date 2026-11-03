@@ -33,6 +33,19 @@ def names() -> dict[str, str]:
     return {t["id"]: t["name"] for t in taxonomy()["types"]}
 
 
+def current_id(t: str | None) -> str | None:
+    """지난 판의 id를 지금 id로(마감돼 다시 분류하지 않는 공고를 셀 때). config/job_types.yaml legacy."""
+    return (taxonomy().get("legacy") or {}).get(t or "", t) if t else t
+
+
+def data_ids() -> list[str]:
+    return [t["id"] for t in taxonomy()["types"] if t.get("family", "data") == "data"]
+
+
+def other_ids() -> list[str]:
+    return [t["id"] for t in taxonomy()["types"] if t.get("family") == "other"]
+
+
 def is_current(rec: dict[str, Any], has_body: bool = False) -> bool:
     """지금 목록·지시문으로 분류했고, 본문이 있으면 본문까지 보고 분류했는지."""
     jt = rec.get("job_type") or {}
@@ -53,7 +66,8 @@ def prompt(lines: list[str]) -> str:
     return (
         "채용공고를 직무 유형 하나로 분류한다. 제목, 수집처 분류, 본문(주요 업무 앞부분, 없으면 비어 있다)을 보고 "
         "실제로 하게 될 주 업무로 고른다. 제목과 본문이 다르면 본문을 따른다.\n"
-        "제목에 AI나 데이터가 들어가도 주 업무가 마케팅·영업·디자인이면 non_data, 일반 개발이면 software다.\n"
+        "목록은 AI·데이터 직무 유형과, 그 밖의 직무 분야(id가 f_로 시작)다. 주 업무가 데이터·AI가 아니면 그 직무 분야를 고른다. "
+        "제목에 AI나 데이터가 들어가도 주 업무가 마케팅이면 f_marketing, 일반 개발이면 f_sw다.\n"
         "제목에 Solutions·솔루션이 있어도 사내 서비스·플랫폼을 직접 설계·개발·운영하면 개발 직무로 고르고, "
         "고객사 대상 기술영업·프리세일즈·컨설팅일 때만 consulting이다.\n"
         "판단이 어려우면 가장 가까운 것 하나를 고른다.\n\n"
@@ -68,21 +82,17 @@ def schema() -> dict[str, Any]:
         "i": {"type": "INTEGER"}, "t": {"type": "STRING", "enum": ids}}}}
 
 
-DATA_FAMILY = {"data_eng", "data_arch", "dba", "analyst", "data_sci", "ml_eng", "mlops", "ai_eng", "research",
-               "planning", "consulting", "labeling"}
-
-
 def family(t: str) -> str:
-    """직무 계열: 데이터·AI 쪽인지 그 밖(일반 개발 software, 데이터·AI 아님 non_data)인지."""
-    return "data" if t in DATA_FAMILY else "other"
+    """직무 계열: 데이터·AI 직무 유형인지 그 밖의 직무 분야(f_…)인지. 지난 판 id도 받는다."""
+    return "data" if current_id(t) in data_ids() else "other"
 
 
 SECONDARY_VERSION = 1
 
 
 def secondary_of(rec: dict[str, Any]) -> str | None:
-    """보조 직무 유형: 주 유형이 그 밖(일반 개발·데이터·AI 아님)인데 데이터·AI 일이 큰 공고만(2026-11-02 A).
-    반대 방향(데이터·AI 공고의 보조 '일반 개발')은 저장하지 않는다."""
+    """보조 직무 유형: 주 유형이 그 밖의 직무 분야인데 데이터·AI 일이 큰 공고만(2026-11-02 A).
+    반대 방향(데이터·AI 공고의 보조 '그 밖의 분야')은 저장하지 않는다."""
     jt = rec.get("job_type") or {}
     s = jt.get("s")
     return s if s and family(jt.get("id") or "") == "other" and family(s) == "data" else None
@@ -93,10 +103,9 @@ def secondary_prompt(lines: list[str]) -> str:
     return (
         "채용공고마다 주 직무 유형은 이미 정해져 있다(줄의 두 번째 칸). 주 유형은 바꾸지 않는다.\n"
         "주 업무의 상당 부분(절반 가까이)이 다른 계열의 직무이면 그 직무 유형 하나를 s에 적는다. 계열은 둘이다: "
-        "데이터·AI(data_eng, data_arch, dba, analyst, data_sci, ml_eng, mlops, ai_eng, research, planning, consulting, labeling)와 "
-        "그 밖(software, non_data).\n"
-        "예: 주 non_data인 CRM 마케팅 공고가 SQL로 고객 데이터를 직접 분석하는 일이 많으면 s=analyst. "
-        "주 analyst인 공고가 캠페인 운영까지 맡으면 s=non_data.\n"
+        f"데이터·AI({', '.join(data_ids())})와 그 밖의 직무 분야({', '.join(other_ids())}).\n"
+        "예: 주 f_marketing인 CRM 마케팅 공고가 SQL로 고객 데이터를 직접 분석하는 일이 많으면 s=analyst. "
+        "주 analyst인 공고가 캠페인 운영까지 맡으면 s=f_marketing.\n"
         "같은 계열의 직무는 s로 적지 않는다. 제목이나 회사 소개에 AI·데이터라는 말이 들어간 정도, 도구를 쓰는 정도로는 붙이지 않는다. "
         "대부분의 공고는 s가 none이다.\n\n"
         f"직무 유형:\n{guide}\n\n"
@@ -229,7 +238,7 @@ def _secondary_todo(state: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
 
 def run_secondary(state: dict[str, dict[str, Any]], originals: dict[str, dict[str, Any]], bodies: dict[str, str],
                   client: Any, today: str) -> dict[str, Any]:
-    """보조 직무 유형: 주 유형이 그 밖(software, non_data)인 열린 공고 중 아직 안 본 것만, 하루 한도(secondary_max_calls)까지.
+    """보조 직무 유형: 주 유형이 그 밖의 직무 분야(f_…)인 열린 공고 중 아직 안 본 것만, 하루 한도(secondary_max_calls)까지.
     주 유형이 바뀌면(다시 분류) 보조도 다시 본다."""
     cfg = config.load("ai")["job_types"]
     todo = _secondary_todo(state)

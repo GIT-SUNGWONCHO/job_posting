@@ -2,7 +2,7 @@
 # 바꾸면 version을 올린다. 실제로 써 보며 조정한다(기획 문서 "개발하며 정할 것").
 # 점수는 0~100 정수. 세 부분의 합이다.
 
-version: 2  # 2: 스킬 분모를 공고 스킬 수로(위 상한 8 없앰, 최소 5)
+version: 3  # 2: 스킬 분모를 공고 스킬 수로(위 상한 8 없앰, 최소 5) 3: 직무 유형 v2(애널리틱스 엔지니어, f_ 분야)
 
 weights:
   job: 40      # 직무 유형: 희망·현재 직무와 같으면 만점, 가까운 직무면 절반
@@ -11,18 +11,19 @@ weights:
 
 # 가까운 직무 유형(절반 점수)
 related:
-  data_eng: [data_arch, mlops, dba, analyst]
+  data_eng: [data_arch, mlops, dba, analyst, analytics_eng]
   data_arch: [data_eng, dba]
   dba: [data_eng, data_arch]
-  analyst: [data_sci, data_eng]
+  analyst: [data_sci, data_eng, analytics_eng]
+  analytics_eng: [analyst, data_eng, data_arch]
   data_sci: [analyst, ml_eng]
   ml_eng: [data_sci, mlops, ai_eng, research]
   mlops: [ml_eng, data_eng, ai_eng]
-  ai_eng: [ml_eng, mlops, software]
+  ai_eng: [ml_eng, mlops, f_sw]
   research: [ml_eng, data_sci]
-  planning: [consulting]
+  planning: [consulting, f_planning]
   consulting: [planning]
-  software: [ai_eng]
+  f_sw: [ai_eng]
 
 # 공고에서 찾은 스킬이 적으면 판단 근거가 약하니 분모를 최소 이만큼으로 둔다
 skill_min_denominator: 5

@@ -1,4 +1,4 @@
-# 조건 필터의 한 항목을 비운다(= 전부 통과). 사용자가 한 명일 때만 동작한다(지인이 생기면 각자 화면에서 바꾼다).
+# 조건 필터의 한 항목을 비우거나(= 전부 통과) 값을 더한다. 사용자가 한 명일 때만 동작한다(지인이 생기면 각자 화면에서 바꾼다).
 # 수동 실행: GitHub > Actions > settings > Run workflow
 name: settings
 
@@ -6,9 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       key:
-        description: 비울 항목(company_types, regions, employment_types, career)
+        description: 바꿀 항목(company_types, regions, employment_types, career, job_types)
         required: true
         default: company_types
+      add:
+        description: 비우지 않고 이 값을 더한다(예: analytics_eng). 비우면 항목을 비운다
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -29,4 +33,5 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           KEY: ${{ inputs.key }}
-        run: uv run --no-dev jobpost settings-clear --key "$KEY"
+          ADD: ${{ inputs.add }}
+        run: uv run --no-dev jobpost settings-clear --key "$KEY" ${ADD:+--add "$ADD"}

@@ -1,22 +1,32 @@
-# 직무 유형: 직무 분야 "AI·데이터" 안의 좁은 구분. 공고 분류, 개인 필터, 매칭, 커리어 지표에 쓴다.
+# 직무 유형: 직무 분야 "AI·데이터" 안의 좁은 구분과, 그 밖의 직무 분야. 공고 분류, 개인 필터, 매칭, 공고 정리의 업무 꼬리표, 커리어 지표에 쓴다.
+# 구조(v2, 2026-11-03): AI·데이터 직무 유형 13개(family: data) + 다른 직무 분야 19개(family: other, id가 f_로 시작).
+# 다른 분야는 지인이 오기 전에 분야마다 직무 유형으로 나눈다(기획 문서 정할 것). 분야 목록은 잡코리아 대분류를 뼈대로 했다(docs/decisions.md).
 # 고정 목록이고 버전으로 관리한다(docs/content-rules.md "고정 기준은 버전으로").
 # 목록이나 설명을 바꾸면 version을 올린다. 다음 수집 때 열린 공고를 모두 다시 분류한다.
 # desc는 AI 분류 지시문에 그대로 들어간다.
 # short는 좁은 화면(커리어 탭 포지션 맵)에 쓰는 짧은 이름, direction: false는 커리어 방향으로 보지 않는 유형(커리어 탭에서 뺀다).
 # 둘은 분류에 쓰지 않아서 바꿔도 version을 올리지 않는다.
 
-version: 1
+version: 2
 field: AI·데이터
+# 지난 판의 id → 지금 id(마감돼 다시 분류하지 않는 공고를 셀 때)
+legacy:
+  software: f_sw
+  non_data: f_other
 
 types:
   - id: data_eng
     name: 데이터 엔지니어
     short: 데이터 엔지니어
     desc: 데이터 파이프라인·ETL, 데이터 플랫폼, DW·데이터 레이크·레이크하우스, 데이터 인프라 구축·운영, Spark·Kafka·Airflow 같은 데이터 처리 기술 중심 개발
+  - id: analytics_eng
+    name: 애널리틱스 엔지니어
+    short: 애널리틱스 엔지니어
+    desc: 분석용 데이터 마트·지표 체계·시맨틱 레이어 구축, dbt·SQL 모델링, BI 대시보드·리포트 개발과 운영(BI 엔지니어)
   - id: data_arch
     name: 데이터 아키텍트·거버넌스
     short: 데이터 아키텍트
-    desc: 데이터 아키텍처(DA), 데이터 모델링, 데이터 표준·품질·메타데이터·MDM, 데이터 거버넌스
+    desc: 데이터 아키텍처(DA), 데이터 모델링, 데이터 표준·품질·메타데이터·MDM, 데이터 거버넌스, AI 거버넌스(AI 윤리·리스크·규제 대응)
   - id: dba
     name: DBA·DB 엔지니어
     short: DBA
@@ -24,7 +34,7 @@ types:
   - id: analyst
     name: 데이터 분석가
     short: 데이터 분석가
-    desc: 데이터 분석, BI·대시보드, 그로스·마케팅·사업 데이터 분석, 통계 분석
+    desc: 사업·그로스·마케팅·서비스 데이터 분석, 지표 분석과 인사이트 도출, 통계 분석. 대시보드는 쓰는 쪽(만드는 일이 주 업무면 애널리틱스 엔지니어)
   - id: data_sci
     name: 데이터 사이언티스트
     short: 데이터 사이언티스트
@@ -40,7 +50,7 @@ types:
   - id: ai_eng
     name: AI 엔지니어(LLM·에이전트)
     short: AI 엔지니어
-    desc: LLM·생성형 AI 응용, RAG, AI 에이전트, AI 서비스 개발, FDE
+    desc: LLM·생성형 AI 응용, RAG, AI 에이전트, AI 서비스 개발, 프롬프트 엔지니어링, FDE
   - id: research
     name: AI 연구
     short: AI 연구
@@ -48,22 +58,134 @@ types:
   - id: planning
     name: AI·데이터 기획·PM
     short: 기획·PM
-    desc: AI·데이터 서비스 기획, PM·PO, AX·DX 전략, AI·데이터 조직 리더
+    desc: AI·데이터 서비스 기획, PM·PO, AX·DX 전략. 조직을 이끄는 자리도 실제 업무가 기획·전략이면 여기(관리 여부는 공고 정리에서 따로 본다)
   - id: consulting
     name: AI·데이터 컨설팅·사업
     short: 컨설팅·사업
     desc: AI·데이터 컨설팅, 솔루션 아키텍트·프리세일즈, 사업개발, 교육·강의
-  - id: software
-    name: AI 활용 SW 개발
-    short: SW 개발
-    desc: 백엔드·프론트엔드·풀스택·임베디드·QA·보안·DevOps 등 일반 소프트웨어 개발(AI 서비스 회사이거나 AI를 일부 쓰는 경우)
   - id: labeling
     name: 데이터 수집·라벨링
     short: 라벨링
     direction: false
     desc: 데이터 라벨링·어노테이션·수집·입력·검수, AI 학습 데이터 작업, AI 평가·튜터, 사무용 데이터 관리
-  - id: non_data
-    name: 데이터·AI 아닌 직무
-    short: 데이터 아닌 직무
+  # ---- 다른 직무 분야(family: other). 주 업무가 데이터·AI가 아닌 공고와 업무 ----
+  - id: f_sw
+    name: SW 개발
+    short: SW 개발
+    family: other
     direction: false
-    desc: 마케팅·영업·디자인·콘텐츠 제작·회계·인사·생산·물류·장비 수리(하드디스크 데이터 복구 포함) 등 데이터나 AI가 주 업무가 아닌 직무
+    desc: 백엔드·프론트엔드·풀스택·앱·임베디드·게임·QA·보안·클라우드·DevOps·시스템·네트워크 등 일반 소프트웨어·IT 개발과 운영
+  - id: f_planning
+    name: 기획·전략
+    short: 기획·전략
+    family: other
+    direction: false
+    desc: 경영·사업 기획, 일반 서비스·웹 기획, PM·PO(데이터·AI가 주가 아닌), 경영 컨설팅, 업무 프로세스 혁신(PI)
+  - id: f_admin
+    name: 경영지원·법무·사무
+    short: 경영지원·법무·사무
+    family: other
+    direction: false
+    desc: 총무, 경영지원, 법무, 비서, 일반 사무
+  - id: f_hr
+    name: 인사·HR
+    short: 인사·HR
+    family: other
+    direction: false
+    desc: 인사, 채용, HRD·HRM, 노무
+  - id: f_finance
+    name: 회계·세무·재무
+    short: 회계·세무·재무
+    family: other
+    direction: false
+    desc: 회계, 세무, 재무, 감사, IR·공시
+  - id: f_marketing
+    name: 마케팅·광고·MD
+    short: 마케팅·광고·MD
+    family: other
+    direction: false
+    desc: 브랜드·퍼포먼스·CRM·콘텐츠 마케팅, 광고, 홍보, MD, 그로스 마케팅
+  - id: f_sales
+    name: 영업
+    short: 영업
+    family: other
+    direction: false
+    desc: 제품·법인·해외·IT·기술 영업, 영업관리·지원
+  - id: f_cs
+    name: 고객상담·서비스
+    short: 고객상담·서비스
+    family: other
+    direction: false
+    desc: 고객 상담, 고객센터, 매장·리테일 운영, 서비스직
+  - id: f_design
+    name: 디자인
+    short: 디자인
+    family: other
+    direction: false
+    desc: UI·UX, 그래픽, 제품·산업, 영상·편집 디자인
+  - id: f_engineering
+    name: 엔지니어링·R&D
+    short: 엔지니어링·R&D
+    family: other
+    direction: false
+    desc: 기계·전기·전자·반도체·화학·통신 엔지니어링, 설계, 하드웨어, 로봇, 일반 R&D 연구원
+  - id: f_manufacturing
+    name: 제조·생산·품질
+    short: 제조·생산·품질
+    family: other
+    direction: false
+    desc: 생산, 공정·생산관리, 품질관리, 공장 운영
+  - id: f_logistics
+    name: 물류·무역·운송
+    short: 물류·무역·운송
+    family: other
+    direction: false
+    desc: 물류, 구매·자재, 유통, 무역, 운전·배송
+  - id: f_banking
+    name: 금융·보험
+    short: 금융·보험
+    family: other
+    direction: false
+    desc: 금융 사무·심사, 보험, 투자·애널리스트(데이터 분석이 주가 아닌), 펀드 운용
+  - id: f_education
+    name: 교육
+    short: 교육
+    family: other
+    direction: false
+    desc: 강사, 교사, 교수설계, 교육 운영
+  - id: f_construction
+    name: 건설·건축·시설
+    short: 건설·건축·시설
+    family: other
+    direction: false
+    desc: 건축, 토목, 시공, 시설관리, 안전관리, 부동산
+  - id: f_medical
+    name: 의료·바이오
+    short: 의료·바이오
+    family: other
+    direction: false
+    desc: 의사·간호, 의료기사, 제약·바이오·임상 연구(데이터 분석이 주가 아닌)
+  - id: f_media
+    name: 미디어·콘텐츠·문화
+    short: 미디어·콘텐츠·문화
+    family: other
+    direction: false
+    desc: PD, 영상편집, 기자·에디터, 작가, 통번역, 크리에이터
+  - id: f_public
+    name: 공공·복지
+    short: 공공·복지
+    family: other
+    direction: false
+    desc: 사회복지, 공공기관 일반 행정
+  - id: f_food
+    name: 외식·식음료
+    short: 외식·식음료
+    family: other
+    direction: false
+    desc: 조리, 제과제빵, 바리스타, 외식 매장
+  - id: f_other
+    name: 그 밖의 직무
+    short: 그 밖
+    family: other
+    direction: false
+    desc: 위 어디에도 맞지 않는 직무(장비 수리·하드디스크 데이터 복구, 단순 노무 등)

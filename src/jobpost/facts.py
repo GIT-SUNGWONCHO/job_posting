@@ -14,15 +14,19 @@ import time
 from pathlib import Path
 from typing import Any
 
-from . import bodyread, config, matching, recommend
+from . import bodyread, config, jobtypes, matching, recommend
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 1
+PROMPT_VERSION = 2  # 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
 BODY_CHARS = 3500  # 자격요건·우대사항은 본문 뒤쪽에 있어서 넉넉히 보낸다
 FILE = "facts.jsonl"
 
 LEVELS = ["주니어", "미들", "시니어", "리드·매니저", "적혀 있지 않음"]
+MANAGES = ["팀장(사람 관리)", "테크 리드(관리 없음)", "실무자", "적혀 있지 않음"]
+SCOPES = ["총괄·결정", "수행", "운영·유지", "보조"]  # 업무마다 책임 범위(직무와 상관없이 쓰는 말)
+EMPLOYMENT = ["정규직", "계약직", "인턴", "파견", "프리랜서", "적혀 있지 않음"]
+ENGLISH_USES = ["회의·협업", "문서·보고", "고객 응대", "공고가 영어"]
 DEGREES = ["무관", "학사", "석사", "박사", "적혀 있지 않음"]
 NEEDS = ["필수", "우대", "적혀 있지 않음"]
 WORK = ["출근", "하이브리드", "재택", "적혀 있지 않음"]
@@ -34,24 +38,32 @@ def industries() -> dict[str, str]:
 
 def schema() -> dict[str, Any]:
     ids = list(industries())
+    kinds = [t["id"] for t in jobtypes.taxonomy()["types"]]
     strings = {"type": "ARRAY", "items": {"type": "STRING"}}
-    return {"type": "OBJECT", "required": ["level", "duties", "required_skills", "preferred_skills", "years",
+    return {"type": "OBJECT", "required": ["level", "manages", "duties", "required_skills", "preferred_skills", "years",
                                            "domain_required", "domain_preferred", "degree", "majors", "certs",
-                                           "english", "work_mode"],
+                                           "english", "employment", "work_mode"],
             "properties": {
                 "level": {"type": "STRING", "enum": LEVELS},
-                "duties": strings,
+                "manages": {"type": "STRING", "enum": MANAGES},
+                "duties": {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["text", "kind", "scope"], "properties": {
+                    "text": {"type": "STRING"}, "kind": {"type": "STRING", "enum": kinds},
+                    "scope": {"type": "STRING", "enum": SCOPES}}}},
                 "required_skills": strings,
                 "preferred_skills": strings,
                 "years": {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["area", "min"], "properties": {
-                    "area": {"type": "STRING"}, "min": {"type": "INTEGER"}}}},
+                    "area": {"type": "STRING"}, "min": {"type": "INTEGER"}, "max": {"type": "INTEGER"}}}},
                 "domain_required": {"type": "ARRAY", "items": {"type": "STRING", "enum": ids}},
                 "domain_preferred": {"type": "ARRAY", "items": {"type": "STRING", "enum": ids}},
                 "degree": {"type": "STRING", "enum": DEGREES},
                 "majors": strings,
                 "major_need": {"type": "STRING", "enum": NEEDS},
                 "certs": strings,
-                "english": {"type": "STRING", "enum": NEEDS},
+                "english": {"type": "OBJECT", "required": ["need"], "properties": {
+                    "need": {"type": "STRING", "enum": NEEDS},
+                    "uses": {"type": "ARRAY", "items": {"type": "STRING", "enum": ENGLISH_USES}}}},
+                "employment": {"type": "STRING", "enum": EMPLOYMENT},
+                "contract_months": {"type": "INTEGER"},
                 "work_mode": {"type": "STRING", "enum": WORK},
                 "salary": {"type": "STRING"},
             }}
@@ -59,18 +71,36 @@ def schema() -> dict[str, Any]:
 
 def prompt(posting: str) -> str:
     names = ", ".join(f"{k}={v}" for k, v in industries().items())
+    kinds = ", ".join(f"{t['id']}={t['name']}" for t in jobtypes.taxonomy()["types"])
     return (
         "채용공고에서 아래 항목을 뽑는다. 공고에 적힌 것만 뽑고, 적혀 있지 않으면 빈 목록이나 '적혀 있지 않음'으로 둔다.\n"
         "- level: 직급. 제목·본문에 주니어/시니어/리드·매니저 표기나 연차로 드러날 때만\n"
-        "- duties: 주요 업무 3~5개, 각 30자 안쪽\n"
+        "- manages: 사람을 관리하는 팀장 자리인지(팀장), 관리 없이 기술을 이끄는지(테크 리드), 실무자인지\n"
+        "- duties: 주요 업무 3~5개. 업무마다 text(30자 안쪽), kind(그 업무가 어느 직무의 일인지 아래 목록에서 하나), "
+        "scope(책임 범위: 총괄·결정=전체를 맡아 방향을 정하고 이끔, 수행=맡아서 직접 해냄, 운영·유지=있는 것을 맡아 돌림, 보조=일부를 도움)\n"
+        f"  kind 목록: {kinds}\n"
         "- required_skills / preferred_skills: 자격요건(필수)과 우대사항에 나온 기술·도구·방법론 이름. "
         "'Python', 'Spark', 'Airflow', '데이터 모델링'처럼 짧게, 문장 말고 이름만\n"
-        "- years: 연수 요건. 예) '데이터 엔지니어링 5년 이상' → area '데이터 엔지니어링', min 5. 총 경력만 있으면 area '총 경력'\n"
+        "- years: 연수 요건. 예) '데이터 엔지니어링 3~7년' → area '데이터 엔지니어링', min 3, max 7(상한이 없으면 max를 비운다). "
+        "총 경력만 있으면 area '총 경력'\n"
         f"- domain_required / domain_preferred: 특정 업종 경험을 요구·우대할 때 업종 id. 목록: {names}\n"
         "- degree, majors, major_need: 학력, 전공 이름, 전공이 필수인지 우대인지\n"
-        "- certs: 자격증 이름. english: 영어가 필수인지 우대인지. work_mode: 근무 방식. salary: 연봉 표기 그대로(없으면 빈 문자열)\n\n"
+        "- certs: 자격증 이름\n"
+        "- english: need(영어가 필수인지 우대인지)와 uses(영어를 쓰는 곳: 회의·협업, 문서·보고, 고객 응대, 공고가 영어. 적힌 것만)\n"
+        "- employment: 고용 형태, contract_months: 계약직이면 계약 기간(개월, 모르면 비움)\n"
+        "- work_mode: 근무 방식. salary: 연봉 표기 그대로(없으면 빈 문자열)\n\n"
         f"[공고]\n{posting}"
     )
+
+
+def duty_texts(f: dict[str, Any]) -> list[str]:
+    """업무 글 목록. 공고 정리 v1(글만)과 v2(글·종류·범위)를 함께 읽는다."""
+    return [d if isinstance(d, str) else d.get("text", "") for d in f.get("duties") or []]
+
+
+def english_need(f: dict[str, Any]) -> str:
+    e = f.get("english")
+    return (e or {}).get("need", "적혀 있지 않음") if isinstance(e, dict) else (e or "적혀 있지 않음")
 
 
 def load(data_dir: Path) -> dict[str, dict[str, Any]]:

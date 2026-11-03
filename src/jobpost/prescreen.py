@@ -5,15 +5,17 @@
 - 규칙 v3(rule_v3): 공고 정리(AI가 공고마다 1번 뽑은 항목)와 프로필 v2를 코드로 맞대어 0~100. AI 호출 없음
 - AI 묶음(ai_batch): 30건씩 제목·공고 정리만 보여 주고 '명백히 안 맞음'만 고르게 함. 공고 30건에 1번
 
-규칙 v3 배점(지금 규칙 v2와 달리 내 분야 안에서 공짜 점수가 없다):
-- 필수 스킬 40: 공고 필수 스킬(사전에 있는 것, 바꿔 쓸 수 있는 묶음은 하나)마다 내 숙련도
+규칙 v3 배점(지금 규칙 v2와 달리 내 분야 안에서 공짜 점수가 없다. 2026-11-03 공고 정리 v2에 맞춰 업무 부분을 더함):
+- 업무 20: 공고 정리 v2의 업무마다 일의 종류(직무 유형)를 내가 해 본 연수와 비교. 1년 이상 → 1, 가까운 직무(matching.yaml related)
+  → 0.5, 없음 → 0. 책임 범위가 총괄·결정인데 그 직무에서 리드·단독 프로젝트가 없으면 절반. 업무 평균(v1 공고 정리면 0.5, 모름)
+- 필수 스킬 30: 공고 필수 스킬(사전에 있는 것, 바꿔 쓸 수 있는 묶음은 하나)마다 내 숙련도
   3·4 → 1, 2 → 0.7, 1 → 0.3, 없음 → 0의 평균. 필수가 없으면 우대 스킬로, 그것도 없으면 0.5(모름)
-- 연수 25: 공고 연수 요건(영역별 최소)마다 그 영역 내 연수와 비교. 모자람 0 → 1, 1년 → 0.7, 2년 → 0.4, 3년 이상 → 0.
-  여러 요건이면 가장 낮은 것. 요건이 없으면 공고 경력 하한으로
+- 연수 20: 공고 연수 요건(영역별 최소)마다 그 영역 내 연수와 비교. 모자람 0 → 1, 1년 → 0.7, 2년 → 0.4, 3년 이상 → 0.
+  여러 요건이면 가장 낮은 것. 요건이 없으면 공고 경력 하한으로. 상한(max)보다 3년 넘게 많으면 0.5를 곱한다
 - 직급 15: 공고 직급이 주니어인데 내 데이터 경력 7년 이상 → 0, 미들 → 0.6, 시니어·리드 → 1. 적혀 있지 않으면
-  공고 경력 상한보다 3년 넘게 많을 때 0.3, 아니면 1
+  공고 경력 상한보다 3년 넘게 많을 때 0.3, 아니면 1. 사람 관리(팀장) 자리인데 내 프로젝트에 리드가 없으면 0.3
 - 도메인 10: 공고가 특정 업종 경험을 필수로 하면 내 경력 업종에 있을 때만 1
-- 학력 10: 공고가 석사·박사를 적으면 내 학력이 그 이상일 때만 1
+- 학력 5: 공고가 석사·박사를 적으면 내 학력이 그 이상일 때만 1
 공고 정리가 없는 공고는 점수를 내지 않는다(None, 거르지 않음).
 """
 
@@ -25,11 +27,13 @@ from datetime import date
 from typing import Any
 
 from . import config, matching, profile
+from . import facts as facts_mod
 
 log = logging.getLogger(__name__)
 
 RULE_V = 3
-WEIGHTS = {"skills": 40, "years": 25, "level": 15, "domain": 10, "degree": 10}
+WEIGHTS = {"duties": 20, "skills": 30, "years": 20, "level": 15, "domain": 10, "degree": 5}
+LEAD_PARTS = {"리드", "단독"}
 LEVEL_FIT = {4: 1.0, 3: 1.0, 2: 0.7, 1: 0.3}
 DEGREE_RANK = {"고졸": 0, "전문학사": 1, "학사": 2, "석사": 3, "박사": 4}
 # 공고 연수 요건의 영역 글 → 프로필 직무 id(이 직무들의 연수를 더한다). 맞는 말이 없으면 데이터 경력 전체
@@ -48,6 +52,20 @@ def _role_years(data: dict[str, Any], today: date) -> dict[str, float]:
         for r in c.get("roles") or []:
             out[r.get("role", "")] = out.get(r.get("role", ""), 0) + profile.months(r.get("start"), r.get("end"), today) / 12
     return out
+
+
+def _job_years(data: dict[str, Any], today: date) -> tuple[dict[str, float], set[str]]:
+    """(직무 유형별 내 연수, 리드·단독 프로젝트가 있는 직무 유형). 프로필 직무 id를 직무 유형으로(config/profile.yaml roles job_type)."""
+    to_job = {r["id"]: r.get("job_type", r["id"]) for r in config.load("profile")["roles"]}
+    years: dict[str, float] = {}
+    lead: set[str] = set()
+    for c in data.get("careers") or []:
+        for r in c.get("roles") or []:
+            j = to_job.get(r.get("role", ""), r.get("role", ""))
+            years[j] = years.get(j, 0) + profile.months(r.get("start"), r.get("end"), today) / 12
+            if any((pj.get("part") or "") in LEAD_PARTS for pj in r.get("projects") or []):
+                lead.add(j)
+    return years, lead
 
 
 def _years_for(area: str, ry: dict[str, float], total: float, data_years: float) -> float:
@@ -88,6 +106,19 @@ def rule_v3(data: dict[str, Any], posting: dict[str, Any], fact: dict[str, Any] 
             mine[name] = max(mine.get(name, 0), int(s.get("level") or 1))
     total, data_years = profile.career_totals(data, today)
     ry = _role_years(data, today)
+    jy, lead = _job_years(data, today)
+    related = config.load("matching").get("related") or {}
+
+    duty_fits = []
+    for d in f.get("duties") or []:
+        if not isinstance(d, dict) or not d.get("kind"):
+            continue
+        k = d["kind"]
+        fit = 1.0 if jy.get(k, 0) >= 1 else 0.5 if any(jy.get(r, 0) >= 1 for r in related.get(k) or []) else 0.0
+        if d.get("scope") == "총괄·결정" and k not in lead:
+            fit /= 2
+        duty_fits.append(fit)
+    duties = sum(duty_fits) / len(duty_fits) if duty_fits else 0.5
 
     skills = _skill_fit(f.get("required_skills") or [], mine)
     if skills is None:
@@ -97,6 +128,9 @@ def rule_v3(data: dict[str, Any], posting: dict[str, Any], fact: dict[str, Any] 
     reqs = [y for y in f.get("years") or [] if isinstance(y.get("min"), int) and y["min"] > 0]
     if reqs:
         years = min(_short_fit(y["min"] - _years_for(y.get("area") or "", ry, total, data_years)) for y in reqs)
+        if any(isinstance(y.get("max"), int) and y["max"] > 0
+               and _years_for(y.get("area") or "", ry, total, data_years) > y["max"] + 3 for y in reqs):
+            years *= 0.5
     elif posting.get("careerMin"):
         years = _short_fit(posting["careerMin"] - data_years)
     else:
@@ -112,6 +146,8 @@ def rule_v3(data: dict[str, Any], posting: dict[str, Any], fact: dict[str, Any] 
         level = 1.0
     else:
         level = 0.3 if cmax and data_years > cmax + 3 else 1.0
+    if f.get("manages") == "팀장(사람 관리)" and not lead:
+        level = min(level, 0.3)
 
     need = set(f.get("domain_required") or [])
     mine_ind = {c.get("industry") for c in data.get("careers") or []}
@@ -121,7 +157,7 @@ def rule_v3(data: dict[str, Any], posting: dict[str, Any], fact: dict[str, Any] 
     have = DEGREE_RANK.get(((data.get("education") or {}).get("degree")) or "", 2)
     degree = 1.0 if want < 3 or have >= want else 0.0
 
-    parts = {"skills": skills, "years": years, "level": level, "domain": domain, "degree": degree}
+    parts = {"duties": duties, "skills": skills, "years": years, "level": level, "domain": domain, "degree": degree}
     score = round(sum(WEIGHTS[k] * v for k, v in parts.items()))
     why = [k for k, v in parts.items() if v < 0.5]
     return {"score": score, "parts": {k: round(v, 2) for k, v in parts.items()}, "why": why, "v": RULE_V}
@@ -153,7 +189,7 @@ def batch_line(i: int, p: dict[str, Any], fact: dict[str, Any] | None) -> str:
     if fact:
         f = fact.get("facts") or fact
         years = ", ".join(f"{y.get('area', '')} {y.get('min', '')}년" for y in f.get("years") or [])
-        out += (f" | 직급 {f.get('level')} | 업무 {'; '.join((f.get('duties') or [])[:3])} | "
+        out += (f" | 직급 {f.get('level')} | 업무 {'; '.join(facts_mod.duty_texts(f)[:3])} | "
                 f"필수 {', '.join((f.get('required_skills') or [])[:8]) or '-'} | 연수 {years or '-'} | 학력 {f.get('degree') or '-'}")
     return out
 

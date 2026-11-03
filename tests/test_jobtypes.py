@@ -77,7 +77,7 @@ def test_filter_by_job_type_lets_unclassified_through():
     f = {"job_types": ["data_eng", "ai_eng"]}
     args = dict(title="t", company="c", company_type=CompanyType.LARGE, career_min=None, career_max=None, regions=[])
     assert filters.passes(**args, filters=f, job_type="data_eng")[0]
-    assert not filters.passes(**args, filters=f, job_type="non_data")[0]
+    assert not filters.passes(**args, filters=f, job_type="f_marketing")[0]
     assert filters.passes(**args, filters=f, job_type=None)[0]
 
 
@@ -93,18 +93,18 @@ def test_classify_secondary_keeps_only_other_family():
     class AI:
         def json(self, prompt, schema):
             assert "주 유형은 바꾸지 않는다" in prompt
-            return [{"i": 0, "s": "analyst"}, {"i": 1, "s": "data_sci"}, {"i": 2, "s": "none"}, {"i": 3, "s": "non_data"}]
+            return [{"i": 0, "s": "analyst"}, {"i": 1, "s": "data_sci"}, {"i": 2, "s": "none"}, {"i": 3, "s": "f_marketing"}]
 
-    items = [("a", "non_data", "CRM 마케팅 데이터 분석", [], ""), ("b", "data_eng", "데이터 엔지니어", [], ""),
+    items = [("a", "f_marketing", "CRM 마케팅 데이터 분석", [], ""), ("b", "data_eng", "데이터 엔지니어", [], ""),
              ("c", "analyst", "데이터 분석가", [], ""), ("d", "analyst", "CRM 분석·캠페인 운영", [], "")]
-    assert jobtypes.classify_secondary(items, AI()) == {"a": "analyst", "d": "non_data"}
+    assert jobtypes.classify_secondary(items, AI()) == {"a": "analyst", "d": "f_marketing"}
 
 
 def test_secondary_only_for_other_family_and_used_by_filters():
     from jobpost import filters, jobtypes
     from jobpost.models import CompanyType
 
-    state = {"a": {"uid": "a", "title": "CRM 마케터", "first_seen": "2026-11-02", "job_type": {"id": "non_data"}},
+    state = {"a": {"uid": "a", "title": "CRM 마케터", "first_seen": "2026-11-02", "job_type": {"id": "f_marketing"}},
              "b": {"uid": "b", "title": "데이터 엔지니어", "first_seen": "2026-11-02", "job_type": {"id": "data_eng"}}}
 
     class AI:
@@ -117,6 +117,6 @@ def test_secondary_only_for_other_family_and_used_by_filters():
     assert jobtypes.secondary_of(state["b"]) is None
     assert not jobtypes._secondary_todo(state)  # 한 번 본 공고는 다시 묻지 않는다
     kw = dict(title="CRM 마케터", company="x", company_type=CompanyType.LARGE, career_min=None, career_max=None,
-              regions=[], filters={"job_types": ["analyst"]}, job_type="non_data")
-    assert filters.reasons(**kw) == [("job", "non_data")]
+              regions=[], filters={"job_types": ["analyst"]}, job_type="f_marketing")
+    assert filters.reasons(**kw) == [("job", "f_marketing")]
     assert filters.reasons(**kw, job_type2="analyst") == []

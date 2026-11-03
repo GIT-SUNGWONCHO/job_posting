@@ -40,7 +40,7 @@ def test_build_groups_duplicates_and_skips_overseas_and_closed(tmp_path):
     assert p["jobType"] == "data_eng"
     assert p["hasBody"] and bodies["bodies"]["zighang:a"]["source"] == "remember"
     assert {"id": "data_eng", "name": "데이터 엔지니어", "short": "데이터 엔지니어", "direction": True} in built["jobTypes"]
-    assert {"id": "non_data", "direction": False}.items() <= next(t for t in built["jobTypes"] if t["id"] == "non_data").items()
+    assert {"id": "f_marketing", "direction": False}.items() <= next(t for t in built["jobTypes"] if t["id"] == "f_marketing").items()
     assert [x["name"] for x in p["sources"]] == ["직행", "리멤버"]
     assert p["sources"][1]["url"] == "https://r/1"
     assert built["companies"]["회사"] == {"name": "회사", "type": "그 외", "group": None}

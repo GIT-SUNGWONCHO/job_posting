@@ -25,7 +25,7 @@ const m: CareerMetrics = {
 const jobTypes: JobType[] = [
   { id: 'data_eng', name: '데이터 엔지니어', short: '데이터 엔지니어' },
   { id: 'ml_eng', name: 'ML 엔지니어', short: 'ML 엔지니어' },
-  { id: 'non_data', name: '데이터·AI 아닌 직무', direction: false },
+  { id: 'f_marketing', name: '데이터·AI 아닌 직무', direction: false },
 ]
 
 describe('커리어 지표', () => {
