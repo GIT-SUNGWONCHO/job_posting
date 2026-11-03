@@ -22,6 +22,21 @@ class AIError(RuntimeError):
     pass
 
 
+def _quota(resp: requests.Response) -> str:
+    """429 응답에 적힌 한도 종류와 값(예: " GenerateRequestsPerDayPerProjectPerModel-FreeTier=500").
+    무료 한도가 얼마인지 실행 로그로 알 수 있게(키는 응답에 없다)."""
+    try:
+        details = resp.json().get("error", {}).get("details") or []
+    except ValueError:
+        return ""
+    out = []
+    for d in details:
+        for v in d.get("violations") or []:
+            if v.get("quotaId"):
+                out.append(f"{v['quotaId']}={v.get('quotaValue', '?')}")
+    return (" " + ", ".join(out)) if out else ""
+
+
 def configured() -> bool:
     return bool(os.environ.get("GEMINI_API_KEY"))
 
@@ -60,7 +75,7 @@ class Gemini:
                 timeout=120,
             )
             if resp.status_code == 429 or resp.status_code >= 500:
-                last_error = f"{resp.status_code}"
+                last_error = f"{resp.status_code}{_quota(resp)}"
                 if attempt < retries - 1:  # 마지막 시도 뒤에는 기다리지 않는다
                     time.sleep(20 * (attempt + 1))
                 continue
