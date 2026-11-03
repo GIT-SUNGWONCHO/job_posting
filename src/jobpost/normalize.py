@@ -40,16 +40,38 @@ def common_name(name: str) -> str:
     return cleaned
 
 
-def company_key(name: str) -> str:
-    """중복 판단용 회사 키. 법인 표기, 공백, 기호를 지우고 별칭을 적용한다."""
-    cleaned = clean_company(name)
-    aliases: dict[str, str] = config.load("company_aliases").get("aliases", {})
-    compact = PUNCT.sub("", cleaned)
-    for raw, canon in aliases.items():
+_TAIL_ALIAS = re.compile(r"\s*\(([^()]{1,40})\)\s*$")
+
+
+def _key_core(name: str) -> str:
+    """별칭 → 앞부분 한글 읽기를 영문으로 → 끝 "에이아이"를 ai로. 공백·기호는 지운 뒤."""
+    cfg = config.load("company_aliases")
+    compact = PUNCT.sub("", name)
+    for raw, canon in (cfg.get("aliases") or {}).items():
         if compact == PUNCT.sub("", raw):
             compact = PUNCT.sub("", canon)
             break
-    return compact.lower()
+    for prefix, latin in (cfg.get("key_prefixes") or {}).items():
+        if compact.startswith(prefix):
+            compact = latin + compact[len(prefix):]
+            break
+    return re.sub(r"에이아이$", "ai", compact).lower()
+
+
+def company_key(name: str) -> str:
+    """같은 회사 묶기용 회사 키(v2, 2026-11-03, 기준은 docs/collection.md "회사 이름 묶기").
+    1 법인 표기(주식회사, (주), Inc. 등)를 지운다
+    2 끝 괄호가 영문뿐이거나(스트라드비젼(STRADVISION)) 괄호 앞과 같은 회사면(케이비헬스케어(KB헬스케어)) 지운다
+    3 공백·기호를 지우고 별칭(config/company_aliases.yaml aliases)을 적용한다
+    4 앞부분 한글 읽기를 영문으로(에스케이쉴더스 → SK쉴더스, key_prefixes), 끝 "에이아이" → AI
+    5 소문자로"""
+    cleaned = clean_company(name)
+    m = _TAIL_ALIAS.search(cleaned)
+    if m and re.search(r"[가-힣]", cleaned[:m.start()]):
+        inner = m.group(1)
+        if re.fullmatch(r"[A-Za-z0-9 .&'\-]+", inner.strip()) or _key_core(inner) == _key_core(cleaned[:m.start()]):
+            cleaned = cleaned[:m.start()]
+    return _key_core(cleaned)
 
 
 _LEAD_LEGAL = re.compile(r"^\s*(?:\(\s*주\s*\)|㈜|주식회사)\s*")

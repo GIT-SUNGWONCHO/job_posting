@@ -26,10 +26,11 @@ CORPCODE_XML = """<?xml version="1.0" encoding="UTF-8"?>
 
 
 def test_variants_try_korean_reading_of_acronyms():
-    assert dart.variants("cj올리브영", "CJ올리브영(주)") == [("cj올리브영", "key"), ("씨제이올리브영", "reading")]
+    # 회사 키 v2부터 한글 읽기도 같은 키(씨제이올리브영 → cj올리브영)라 공고 키 하나로 찾는다
+    assert dart.variants("cj올리브영", "CJ올리브영(주)") == [("cj올리브영", "key")]
     assert dart.variants("카카오스타일kakaostyle", "카카오스타일(Kakao Style)")[1] == ("카카오스타일", "bare")
     # 긴 영어 단어는 그대로 둔다
-    assert dart.variants("ktcloud", "ktcloud") == [("ktcloud", "key")]
+    assert dart.variants("vercel", "Vercel") == [("vercel", "key")]
 
 
 def test_weak_fallback_names_need_a_listed_company():

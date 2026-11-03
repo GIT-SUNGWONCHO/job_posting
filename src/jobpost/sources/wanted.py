@@ -41,12 +41,12 @@ def pick_company(name: str, known: set[str]) -> str:
     """이미 아는 회사(다른 수집처에서 본 회사 키)와 맞는 이름을 고른다. 처음 보는 회사면 괄호 앞 이름,
     괄호 안 이름이 그 이름의 보통 부르는 이름이면(씨제이올리브영 → CJ올리브영) 그쪽."""
     names = company_names(name)
-    for n in names:
-        if company_key(n) in known:
-            return n
-    if len(names) > 1 and common_name(names[0]) == names[1]:
-        return names[1]
-    return names[0]
+    usual = len(names) > 1 and common_name(names[0]) == names[1]
+    matched = [n for n in names if company_key(n) in known]
+    if matched:
+        # 회사 키 v2부터 씨제이올리브영과 CJ올리브영은 같은 키라 둘 다 맞는다. 보통 부르는 이름을 쓴다
+        return names[1] if usual and names[1] in matched else matched[0]
+    return names[1] if usual else names[0]
 
 
 def _date(value: str | None) -> date | None:

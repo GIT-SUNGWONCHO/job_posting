@@ -189,3 +189,14 @@ def test_subsidiary_from_title_moves_only_named_subsidiaries():
     assert subsidiary_from_title("에이치디씨랩스", "[HDC랩스] AI 엔지니어") is None  # 모회사 이름으로 시작하지 않음
     assert subsidiary_from_title("현대자동차", "[현대자동차그룹] 데이터") is None
     assert subsidiary_from_title("쿠팡", "물류 데이터 분석") is None
+
+
+def test_company_key_v2_merges_readings_and_tail_aliases():
+    from jobpost.normalize import company_key
+    assert company_key("에스케이쉴더스(주)") == company_key("SK쉴더스") == "sk쉴더스"
+    assert company_key("엔에이치엔클라우드") == company_key("NHN클라우드") == "nhn클라우드"
+    assert company_key("NH농협은행") == company_key("엔에이치농협은행") == "nh농협은행"
+    assert company_key("스트라드비젼(STRADVISION)") == company_key("스트라드비젼") == "스트라드비젼"
+    assert company_key("케이비헬스케어(KB헬스케어)") == company_key("케이비헬스케어") == "kb헬스케어"
+    assert company_key("비큐에이아이") == company_key("비큐AI") == "비큐ai"
+    assert company_key("위대한상상(요기요)") != company_key("위대한상상")  # 다른 이름(브랜드)은 그대로 둔다

@@ -173,10 +173,10 @@ def test_wanted_detail():
 
 
 def test_wanted_company_names():
-    known = {"컷백", "cj올리브영", "엔비디아nvidia"}
+    known = {"컷백", "cj올리브영", "엔비디아"}  # 회사 키 v2: 끝의 영문 괄호는 키에서 빠진다
     assert wanted.pick_company("컷백(Cutback)", known) == "컷백"
     assert wanted.pick_company("씨제이올리브영(CJ올리브영)", known) == "CJ올리브영"
-    assert wanted.pick_company("엔비디아(NVIDIA)", known) == "엔비디아(NVIDIA)"
+    assert wanted.pick_company("엔비디아(NVIDIA)", known) == "엔비디아"
     # 처음 보는 회사: 괄호 앞 이름, 다른 이름이 보통 이름이면 그쪽
     assert wanted.pick_company("앤톡(Antock)", set()) == "앤톡"
     assert wanted.pick_company("씨제이이엔엠(CJ이엔엠)", set()) == "CJ이엔엠"

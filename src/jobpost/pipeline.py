@@ -135,6 +135,11 @@ def run(data_dir: Path, sources: list[str] | None = None, max_pages: int | None 
         for p in collected
     }
     new_uids, closed_uids = store.ingest(today, collected, complete, extra)
+    # 회사 키 규칙이 바뀌면(normalize.company_key) 내려간 공고까지 저장된 키를 새 규칙으로 맞춘다
+    for r in store.state.values():
+        k = company_key(r.get("company", ""))
+        if k and r.get("company_key") != k:
+            r["company_key"] = k
     new_by_source = Counter(u.split(":")[0] for u in new_uids)
     closed_by_source = Counter(u.split(":")[0] for u in closed_uids)
     for name, s in summary["sources"].items():
