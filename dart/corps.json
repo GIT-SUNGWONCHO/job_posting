@@ -81,6 +81,12 @@
 "mv": 6,
 "stock_code": null
 },
+"bluegarage": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "bluematter": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -289,6 +295,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": "007070"
+},
+"gs아이": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "ambiguous"
 },
 "hdc랩스": {
 "checked": "2026-10-23",
@@ -939,6 +951,14 @@
 "mv": 6,
 "why": "none"
 },
+"sm컨설팅": {
+"checked": "2026-11-04",
+"corp_code": "01864317",
+"corp_name": "에스엠컨설팅",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "sm티바이오": {
 "checked": "2026-11-03",
 "corp_code": "01598982",
@@ -1503,6 +1523,12 @@
 "mv": 6,
 "why": "none"
 },
+"국가데이터처경인지방데이터청": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "국가데이터처충청지방데이터청": {
 "checked": "2026-10-21",
 "corp_code": null,
@@ -1883,9 +1909,9 @@
 "stock_code": null
 },
 "나상권공인중개사사무소": {
-"checked": "2026-10-22",
+"checked": "2026-11-04",
 "corp_code": null,
-"mv": 5,
+"mv": 6,
 "why": "none"
 },
 "나온소프트": {
@@ -2399,6 +2425,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": "380550"
+},
+"뉴머레이터코리아": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "뉴빌리티": {
 "checked": "2026-10-23",
@@ -3219,6 +3251,12 @@
 },
 "데이터이노텍": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"데이터전략과": {
+"checked": "2026-11-04",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -5251,6 +5289,12 @@
 "mv": 6,
 "why": "none"
 },
+"린인파트너스": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "림앤코": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -6628,6 +6672,14 @@
 "mv": 6,
 "why": "none"
 },
+"바른컴퍼니": {
+"checked": "2026-11-04",
+"corp_code": "00872212",
+"corp_name": "바른컴퍼니",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "바바와이에스": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -6700,6 +6752,12 @@
 },
 "바이오리서치에이아이": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"바이오링크": {
+"checked": "2026-11-04",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -7005,6 +7063,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"베스트아이씨티": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "베스티아소프트": {
 "checked": "2026-10-21",
@@ -7558,6 +7622,14 @@
 "checked": "2026-10-23",
 "corp_code": "01732841",
 "corp_name": "블루개러지",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
+"블루버드": {
+"checked": "2026-11-04",
+"corp_code": "00243304",
+"corp_name": "블루버드",
 "how": "name",
 "mv": 6,
 "stock_code": null
@@ -8502,6 +8574,12 @@
 },
 "서울아산병원": {
 "checked": "2026-10-30",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"서울인공지능고등학교": {
+"checked": "2026-11-04",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -10978,6 +11056,14 @@
 "mv": 6,
 "why": "none"
 },
+"아이피시": {
+"checked": "2026-11-04",
+"corp_code": "01475946",
+"corp_name": "아이피시",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "아이피아": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -11332,6 +11418,14 @@
 "corp_code": null,
 "mv": 6,
 "why": "none"
+},
+"애드민": {
+"checked": "2026-11-04",
+"corp_code": "00982290",
+"corp_name": "애드민",
+"how": "name",
+"mv": 6,
+"stock_code": null
 },
 "애쉬코어테크놀로지스": {
 "checked": "2026-10-23",
@@ -11728,6 +11822,12 @@
 },
 "에버브레인써치": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"에버브레인컨설팅": {
+"checked": "2026-11-04",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -15388,6 +15488,12 @@
 "mv": 6,
 "stock_code": null
 },
+"이음아이앤씨": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "이이씨에스": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -16329,9 +16435,9 @@
 "why": "none"
 },
 "제이케이서치": {
-"checked": "2026-10-21",
+"checked": "2026-11-04",
 "corp_code": null,
-"mv": 3,
+"mv": 6,
 "why": "none"
 },
 "제이케이웍스": {
@@ -16370,6 +16476,12 @@
 },
 "제일솔루션": {
 "checked": "2026-11-02",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"제일정형외과병원": {
+"checked": "2026-11-04",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -17955,6 +18067,12 @@
 },
 "콕스웨이브": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"콘레브": {
+"checked": "2026-11-04",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -20389,6 +20507,12 @@
 "mv": 6,
 "why": "none"
 },
+"플란치과의원": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "플래티어": {
 "checked": "2026-10-23",
 "corp_code": "01454341",
@@ -20994,6 +21118,12 @@
 "mv": 6,
 "why": "none"
 },
+"하이퍼와이즈": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "하이퍼정보": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -21556,6 +21686,12 @@
 "mv": 6,
 "stock_code": null
 },
+"한동대학교": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "한림기업": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -21681,6 +21817,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"한컴즈": {
+"checked": "2026-11-04",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "한컴케어링크": {
 "checked": "2026-10-23",

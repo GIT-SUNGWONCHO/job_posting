@@ -34758,6 +34758,49 @@
 "owner": null,
 "v": 4
 },
+"00243304": {
+"company": {
+"bizr_no": "1208168832",
+"ceo": "이 장 원",
+"founded": "1996-12-16",
+"homepage": "https://www.bluebirdcorp.com",
+"industry_code": "58221",
+"jurir_no": "1101111352741",
+"market": "기타",
+"name": "주식회사 블루버드",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-04",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260310002219",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 20157880766,
+"operating": 15793028722,
+"revenue": 105925239871,
+"year": 2024
+},
+{
+"net": 24429237101,
+"operating": 18986814864,
+"revenue": 133583815894,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "Taiwan Semiconductor Co",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "00243562": {
 "company": {
 "bizr_no": "1168113527",
@@ -63670,6 +63713,49 @@
 "finance": null,
 "v": 4
 },
+"00872212": {
+"company": {
+"bizr_no": "2218103108",
+"ceo": "박정식",
+"founded": "1999-01-01",
+"homepage": null,
+"industry_code": "58190",
+"jurir_no": "1401110002961",
+"market": "기타",
+"name": "(주)바른컴퍼니",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-04",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260406000931",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1587838035,
+"operating": 1410188718,
+"revenue": 16127108091,
+"year": 2024
+},
+{
+"net": 32738850,
+"operating": 293145240,
+"revenue": 13762883882,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "00872425": {
 "company": {
 "bizr_no": "2118666362",
@@ -68499,6 +68585,44 @@
 },
 "v": 3
 },
+"00982290": {
+"company": {
+"bizr_no": "2148663928",
+"ceo": "정승세,정성문",
+"founded": "2000-07-20",
+"homepage": "https://www.admin4u.co.kr",
+"industry_code": "7512",
+"jurir_no": "1101112028846",
+"market": "기타",
+"name": "(주)애드민",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-04",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260406000018",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 2530154688,
+"operating": 770373208,
+"revenue": 53355806613,
+"year": 2024
+},
+{
+"net": 2530639942,
+"operating": 1295435171,
+"revenue": 49537878984,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "00983040": {
 "company": {
 "bizr_no": "2018634368",
@@ -72644,9 +72768,34 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-04",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260410000522",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 644723824,
+"operating": 2788811971,
+"revenue": 130657989553,
+"year": 2024
+},
+{
+"net": 434590111,
+"operating": 2113488419,
+"revenue": 133756240861,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
 },
 "01071041": {
 "company": {
@@ -91738,6 +91887,44 @@
 "finance": null,
 "v": 4
 },
+"01475946": {
+"company": {
+"bizr_no": "1228147376",
+"ceo": "김판수",
+"founded": "1994-06-02",
+"homepage": "https://www.ipc.co.kr",
+"industry_code": "75110",
+"jurir_no": "1201110097164",
+"market": "기타",
+"name": "주식회사 아이피시",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-04",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260331004337",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 62016062,
+"operating": 67714021,
+"revenue": 39473841784,
+"year": 2024
+},
+{
+"net": -1848129886,
+"operating": -1887133722,
+"revenue": 43283471951,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01476051": {
 "company": {
 "bizr_no": "2208691884",
@@ -108037,6 +108224,44 @@
 },
 "v": 4
 },
+"01864317": {
+"company": {
+"bizr_no": "2218600576",
+"ceo": "박성준",
+"founded": "2016-08-16",
+"homepage": "https://smc2014.co.kr",
+"industry_code": "75310",
+"jurir_no": "1648110097853",
+"market": "기타",
+"name": "주식회사 에스엠컨설팅",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-04",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260324000288",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 305400046,
+"operating": 330843702,
+"revenue": 12349676259,
+"year": 2024
+},
+{
+"net": 301175661,
+"operating": 215433458,
+"revenue": 7594953328,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01867749": {
 "company": {
 "bizr_no": "2208799108",
@@ -111124,7 +111349,7 @@
 "bizr_no": "7588703446",
 "ceo": "김연빈",
 "founded": "2025-02-21",
-"homepage": "https://04051",
+"homepage": null,
 "industry_code": "62021",
 "jurir_no": "1101110919027",
 "market": "기타",
@@ -111133,9 +111358,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-04",
 "finance": null,
-"v": 3
+"v": 4
 },
 "01973749": {
 "company": {
@@ -111519,9 +111744,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-04",
 "finance": null,
-"v": 3
+"v": 4
 },
 "02010056": {
 "company": {
