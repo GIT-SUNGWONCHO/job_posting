@@ -57,7 +57,7 @@ def test_facts_run_extracts_wanted_postings_once(tmp_path):
                     "degree": "무관", "majors": [], "certs": [], "english": "적혀 있지 않음", "work_mode": "출근"}
 
     ai = AI()
-    s = facts.run(tmp_path, SCREEN, BODIES, ["z:1", "z:2"], ai, "2026-10-14")
+    s = facts.run(tmp_path, SCREEN, BODIES, ["z:1", "z:2"], ai, "2026-10-14", max_calls=250)
     assert s == {"wanted": 2, "pending": 0, "done": 1, "calls": 1}  # 본문 없는 z:2는 건너뜀
     assert facts.load(tmp_path)["z:1"]["facts"]["level"] == "시니어"
     assert facts.run(tmp_path, SCREEN, BODIES, ["z:1"], ai, "2026-10-15")["pending"] == 0 and len(ai.prompts) == 1
