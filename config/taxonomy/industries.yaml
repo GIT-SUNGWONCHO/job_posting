@@ -4,39 +4,40 @@
 # 하는 일과 상관없이 58·62·63으로 몰려서, 업종은 시장 기준으로 잡고 KSIC는 근거의 하나로 쓴다.
 # legacy: 저장된 지난 id(코드로 옮기기 전까지 읽고 쓴다). 지난 23개는 아래 legacy가 같은 항목으로 이어진다.
 # ksic: 이 업종으로 바로 정해도 되는 KSIC 코드 앞자리(DART induty_code가 이것으로 시작하면). 긴 쪽이 먼저.
+#   DART 코드가 앞자리보다 짧아 여러 업종에 걸치면(예: 649 → 기타 금융과 지주회사) 정하지 않고 generic으로 본다.
 # ksic_generic: 도메인을 알려 주지 않는 KSIC 앞자리. 이 코드면 공고 정리의 회사 도메인(AI)으로 정한다.
 # 바꾸면 version을 올린다(공고 정리가 업종 경험·회사 도메인을 이 목록으로 적어서 다시 뽑는다).
 
 version: 2
 
-ksic_generic: ["58", "62", "63", "70", "72", "73", "64992"]   # 소프트웨어·SI·정보서비스·연구개발·기술서비스·지주회사
+ksic_generic: ["58", "62", "63", "70", "72", "73", "64992", "7151"]   # 소프트웨어·SI·정보서비스·연구개발·기술서비스·지주회사·회사 본부
 
 groups:
   - code: IN01
     name: 금융
     items:
       - {code: IN0101, name: 은행·저축, legacy: bank, ksic: ["641"]}
-      - {code: IN0102, name: 카드·캐피탈·기타 금융, legacy: card_capital, ksic: ["642", "649", "66"]}
-      - {code: IN0103, name: 증권·자산운용, legacy: securities, ksic: ["661", "662"]}
-      - {code: IN0104, name: 보험, legacy: insurance, ksic: ["65"]}
-      - {code: IN0105, name: 핀테크·간편결제, legacy: fintech, ksic: []}
+      - {code: IN0102, name: 카드·캐피탈·기타 금융, legacy: card_capital, ksic: ["649"]}
+      - {code: IN0103, name: 증권·자산운용, legacy: securities, ksic: ["642", "6611", "6612", "66191", "66192"]}
+      - {code: IN0104, name: 보험, legacy: insurance, ksic: ["65", "662"]}
+      - {code: IN0105, name: 핀테크·간편결제, legacy: fintech, ksic: ["66199"]}
   - code: IN02
     name: 유통·커머스
     items:
-      - {code: IN0201, name: 이커머스, legacy: commerce, ksic: ["479"]}
+      - {code: IN0201, name: 이커머스, legacy: commerce, ksic: ["4791"]}
       - {code: IN0202, name: 오프라인 유통·도소매, legacy: retail, ksic: ["45", "46", "47"]}
       - {code: IN0203, name: 무역·상사, legacy: trade, ksic: []}
   - code: IN03
     name: 소비재·식품
     items:
-      - {code: IN0301, name: 패션·뷰티·생활, legacy: consumer, ksic: ["13", "14", "15", "204", "32", "33"]}
+      - {code: IN0301, name: 패션·뷰티·생활, legacy: consumer, ksic: ["13", "14", "15", "2042", "32", "33"]}
       - {code: IN0302, name: 식품·음료·외식, legacy: food, ksic: ["10", "11", "12", "56"]}
   - code: IN04
     name: 제조
     items:
       - {code: IN0401, name: 자동차·부품, legacy: auto, ksic: ["30"]}
-      - {code: IN0402, name: 전자·반도체·디스플레이, legacy: electronics, ksic: ["26"]}
-      - {code: IN0403, name: 기계·로봇·장비, legacy: machinery, ksic: ["28", "29", "34"]}
+      - {code: IN0402, name: 전자·반도체·디스플레이, legacy: electronics, ksic: ["26", "273"]}
+      - {code: IN0403, name: 기계·로봇·장비, legacy: machinery, ksic: ["272", "28", "29", "34"]}
       - {code: IN0404, name: 화학·소재, legacy: chemical, ksic: ["16", "17", "19", "20", "22", "23", "24", "25"]}
       - {code: IN0405, name: 중공업·조선·방산·항공, legacy: heavy, ksic: ["31"]}
   - code: IN05
@@ -51,12 +52,12 @@ groups:
       - {code: IN0602, name: 게임, legacy: game, ksic: ["5821"]}
       - {code: IN0603, name: SI·IT 서비스·클라우드, legacy: it_service, ksic: []}
       - {code: IN0604, name: SW·SaaS 솔루션, legacy: saas, ksic: []}
-      - {code: IN0605, name: 통신, legacy: telecom, ksic: ["61"]}
+      - {code: IN0605, name: 통신, legacy: telecom, ksic: ["612"]}
       - {code: IN0606, name: 보안, legacy: security, ksic: []}
   - code: IN07
     name: 모빌리티·물류
     items:
-      - {code: IN0701, name: 모빌리티 서비스, legacy: mobility, ksic: []}
+      - {code: IN0701, name: 모빌리티 서비스, legacy: mobility, ksic: ["7611"]}
       - {code: IN0702, name: 물류·운송, legacy: logistics, ksic: ["49", "50", "51", "52"]}
   - code: IN08
     name: 미디어·콘텐츠·광고
@@ -69,7 +70,7 @@ groups:
     items:
       - {code: IN0901, name: 병원·의료 서비스, legacy: hospital, ksic: ["86"]}
       - {code: IN0902, name: 제약·바이오, legacy: pharma, ksic: ["21"]}
-      - {code: IN0903, name: 의료기기·디지털 헬스, legacy: health, ksic: ["27"]}
+      - {code: IN0903, name: 의료기기·디지털 헬스, legacy: health, ksic: ["271"]}
   - code: IN10
     name: 교육
     items:
@@ -81,7 +82,7 @@ groups:
   - code: IN12
     name: 전문·사업 서비스
     items:
-      - {code: IN1201, name: 회계·법률·컨설팅, legacy: professional, ksic: ["711", "712", "715", "716", "714"]}
+      - {code: IN1201, name: 회계·법률·컨설팅, legacy: professional, ksic: ["711", "712", "714", "7153", "716"]}
       - {code: IN1202, name: 인력·아웃소싱·사업지원, legacy: outsourcing, ksic: ["74", "75", "76"]}
       - {code: IN1203, name: 연구개발 전문, legacy: rnd, ksic: []}
   - code: IN13

@@ -145,7 +145,13 @@ def industry_from_ksic(ksic: str | None) -> tuple[str | None, str]:
     pairs += [(p, None) for p in raw("industries").get("ksic_generic") or []]
     for p, code in sorted(pairs, key=lambda x: -len(x[0])):
         if k.startswith(p):
+            # 코드가 앞자리보다 짧아 그 아래에 다른 업종(또는 generic)이 있으면 정하지 않는다(예: 649 지주회사 포함)
+            below = {c for q, c in pairs if len(q) > len(k) and q.startswith(k)}
+            if below - {code}:
+                return None, "generic"
             return (code, "ksic") if code else (None, "generic")
+    if any(q.startswith(k) for q, _ in pairs):  # 대응표 앞자리보다 짧은 코드(예: 66)
+        return None, "generic"
     return None, "unmapped"
 
 

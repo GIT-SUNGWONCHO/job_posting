@@ -81,4 +81,18 @@ def test_industry_from_ksic():
     assert taxonomy.industry_from_ksic("58211") == ("IN0602", "ksic")      # 게임 소프트웨어
     assert taxonomy.industry_from_ksic("58221") == (None, "generic")       # 응용 소프트웨어 → 공고 정리로
     assert taxonomy.industry_from_ksic("64992") == (None, "generic")       # 지주회사(649보다 먼저)
+    # 2026-11-04 리뷰에서 고친 것
+    assert taxonomy.industry_from_ksic("64201") == ("IN0103", "ksic")      # 자산운용(642)
+    assert taxonomy.industry_from_ksic("66202") == ("IN0104", "ksic")      # 보험 대리점(662)
+    assert taxonomy.industry_from_ksic("66199") == ("IN0105", "ksic")      # 간편결제
+    assert taxonomy.industry_from_ksic("20494") == ("IN0404", "ksic")      # 화약은 화학(화장품은 2042만)
+    assert taxonomy.industry_from_ksic("27211") == ("IN0403", "ksic")      # 정밀·제어기기는 의료기기가 아님
+    assert taxonomy.industry_from_ksic("76110") == ("IN0701", "ksic")      # 자동차 임대
+    assert taxonomy.industry_from_ksic("71519") == (None, "generic")       # 회사 본부
+    assert taxonomy.industry_from_ksic("47993") == ("IN0202", "ksic")      # 방문판매는 이커머스 아님
+    # DART 코드가 앞자리보다 짧아 여러 업종에 걸치면 정하지 않는다
+    assert taxonomy.industry_from_ksic("649") == (None, "generic")         # 지주회사 포함
+    assert taxonomy.industry_from_ksic("66") == (None, "generic")
+    assert taxonomy.industry_from_ksic("715") == (None, "generic")
+    assert taxonomy.industry_from_ksic("6420") == ("IN0103", "ksic")
     assert taxonomy.industry_from_ksic(None) == (None, "none")
