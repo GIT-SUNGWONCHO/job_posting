@@ -124,9 +124,29 @@ def validate() -> None:
         for r in item.get("replaced_by") or []:
             if r not in seen:
                 raise TaxonomyError(f"{item['code']}: replaced_by {r} 없음")
+    prefixes = [p for it in industries() for p in it.get("ksic") or []] + list(raw("industries").get("ksic_generic") or [])
+    dup = {p for p in prefixes if prefixes.count(p) > 1}
+    if dup:
+        raise TaxonomyError(f"industries: KSIC 앞자리가 두 곳에 있음 {sorted(dup)}")
     legacy = [x["legacy"] for x in [*fields(), *job_types(), *industries()] if x.get("legacy")]
     if len(legacy) != len(set(legacy)):
         raise TaxonomyError("지난 id(직무·업종)가 겹침")
+
+
+# ---------- KSIC → 업종 ----------
+
+def industry_from_ksic(ksic: str | None) -> tuple[str | None, str]:
+    """DART 업종 코드(KSIC) → (업종 중분류 코드 또는 None, 까닭). 긴 앞자리가 먼저.
+    까닭: 'ksic'(대응표로 정함) · 'generic'(도메인을 알려 주지 않는 코드, 공고 정리로) · 'unmapped'(대응표에 없음) · 'none'."""
+    if not ksic:
+        return None, "none"
+    k = str(ksic)
+    pairs = [(p, it["code"]) for it in _active(industries()) for p in it.get("ksic") or []]
+    pairs += [(p, None) for p in raw("industries").get("ksic_generic") or []]
+    for p, code in sorted(pairs, key=lambda x: -len(x[0])):
+        if k.startswith(p):
+            return (code, "ksic") if code else (None, "generic")
+    return None, "unmapped"
 
 
 # ---------- 지난 id ↔ 코드 ----------

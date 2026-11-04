@@ -42,9 +42,9 @@ def test_profile_and_guide_views_match_old_files():
     for k in ("skill_levels", "project_parts", "degrees", "major_groups", "english", "english_low", "want_levels", "roles"):
         got = n[k] if k != "roles" else [{x: v for x, v in r.items() if x != "code"} for r in n[k]]
         assert got == o[k], k
-    # 순서는 대분류로 묶여 바뀌었다(화면 순서만)
-    assert sorted((i["id"], i["name"]) for i in n["industries"]) == sorted((i["id"], i["name"]) for i in o["industries"])
-    assert n["version"] == o["version"]
+    # 업종은 2026-11-04 B로 바뀌었다(시장 기준 38개). 지난 23개 id는 모두 남아 이어진다
+    assert {i["id"] for i in o["industries"]} <= {i["id"] for i in n["industries"]}
+    assert n["version"] == 2
     og, ng = old("match_guide"), config.load("match_guide")
     assert ng["item_kinds"] == og["item_kinds"] and ng["posting_facts"] == og["posting_facts"]
     assert list(ng["fit"]) == taxonomy.names("fits")
@@ -73,3 +73,12 @@ def test_validate_catches_duplicate(monkeypatch):
     monkeypatch.setattr(taxonomy, "raw", lambda name: jobs if name == "jobs" else taxonomy.raw.__wrapped__(name))
     with pytest.raises(taxonomy.TaxonomyError):
         taxonomy.validate()
+
+
+def test_industry_from_ksic():
+    assert taxonomy.industry_from_ksic("64110") == ("IN0101", "ksic")      # 은행
+    assert taxonomy.industry_from_ksic("47912") == ("IN0201", "ksic")      # 무점포 소매 → 이커머스(47보다 479가 먼저)
+    assert taxonomy.industry_from_ksic("58211") == ("IN0602", "ksic")      # 게임 소프트웨어
+    assert taxonomy.industry_from_ksic("58221") == (None, "generic")       # 응용 소프트웨어 → 공고 정리로
+    assert taxonomy.industry_from_ksic("64992") == (None, "generic")       # 지주회사(649보다 먼저)
+    assert taxonomy.industry_from_ksic(None) == (None, "none")

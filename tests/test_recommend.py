@@ -166,7 +166,7 @@ def test_adjust_caps_only_what_the_person_cannot_do():
 def test_want_tags_show_preferences_without_scoring():
     wants = {"level": "실무자", "industriesAvoid": ["game"], "industriesLike": ["bank"]}
     assert recommend.want_tags({**FACTS, "level": "리더·관리자", "industry": "game"}, wants) == ["비선호 업종 게임", "리더·관리자 공고"]
-    assert recommend.want_tags({**FACTS, "industry": "bank"}, wants) == ["선호 업종 금융(은행·카드)"]
+    assert recommend.want_tags({**FACTS, "industry": "bank"}, wants) == ["선호 업종 은행·저축"]
     assert recommend.want_tags(FACTS, {}) == []
 
 
