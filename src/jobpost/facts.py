@@ -11,6 +11,7 @@ import hashlib
 import json
 import logging
 import re
+import threading
 import time
 from pathlib import Path
 from typing import Any
@@ -250,9 +251,9 @@ def posting_text(p: dict[str, Any], company: str, body: str | None) -> str:
 
 def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: list[str],
         client: Any | None, today: str, max_calls: int | None = None, max_minutes: float | None = None,
-        file: str = FILE) -> dict[str, Any]:
+        file: str = FILE, clients: list[Any] | None = None) -> dict[str, Any]:
     """wanted(후보 공고 id, 앞에서부터 먼저)에서 아직 정리하지 않은 것을 하루 한도까지 정리한다.
-    file을 바꾸면(시험) 그 파일에만 쓴다."""
+    file을 바꾸면(시험) 그 파일에만 쓴다. clients(키마다 하나)를 주면 함께 돌린다(따라잡기)."""
     rows = load(data_dir, file)
     texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
     def has_body(pid: str) -> bool:
@@ -283,28 +284,48 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
     limit = max_calls or cfg.get("max_calls", 250)
     deadline = time.monotonic() + (max_minutes or cfg.get("max_minutes", 20)) * 60
     errors: list[str] = []
-    for pid in todo:
-        if summary["calls"] >= limit or time.monotonic() > deadline or len(errors) >= 5:
-            break
-        p = by_id[pid]
-        company = (screen["companies"].get(p["company"]) or {}).get("name", "")
-        summary["calls"] += 1
-        try:
-            text = posting_text(p, company, texts.get(pid))
-            raw = client.json(prompt(text), schema())
-            names = _domain_names()
-            raw["company_domain"] = [names[n] for n in raw.get("company_domain") or [] if n in names]
-            got = clean_domain(raw, text)
-        except Exception as e:  # 남은 건 다음 실행에서
-            errors.append(str(e)[:200])
-            continue
-        rows[pid] = {"uid": pid, "facts": got, "prompt": PROMPT_VERSION, "industries_v": config.load("profile")["version"],
-                     "words": words_hash(),
-                     "model": getattr(client, "model", None), "on": today, "body": has_body(pid)}
-        summary["done"] += 1
-        if summary["done"] % 25 == 0:
-            save(data_dir, rows, file)  # 중간에 멈춰도 한 일은 남긴다
-            log.info("공고 정리 %d/%d건", summary["done"], len(todo))
+    queue = list(todo)
+    lock = threading.Lock()
+    names = _domain_names()
+
+    def work(c: Any) -> None:
+        """클라이언트 하나(키 하나)로 줄에서 공고를 꺼내 정리한다. 여러 개가 함께 돈다(clients)."""
+        while True:
+            with lock:
+                if not queue or summary["calls"] >= limit or time.monotonic() > deadline or len(errors) >= 5:
+                    return
+                pid = queue.pop(0)
+                summary["calls"] += 1
+            p = by_id[pid]
+            company = (screen["companies"].get(p["company"]) or {}).get("name", "")
+            try:
+                text = posting_text(p, company, texts.get(pid))
+                raw = c.json(prompt(text), schema())
+                raw["company_domain"] = [names[n] for n in raw.get("company_domain") or [] if n in names]
+                got = clean_domain(raw, text)
+            except Exception as e:  # 남은 건 다음 실행에서
+                with lock:
+                    errors.append(str(e)[:200])
+                continue
+            with lock:
+                rows[pid] = {"uid": pid, "facts": got, "prompt": PROMPT_VERSION,
+                             "industries_v": config.load("profile")["version"], "words": words_hash(),
+                             "model": getattr(c, "model", None), "on": today, "body": has_body(pid)}
+                summary["done"] += 1
+                if summary["done"] % 25 == 0:
+                    save(data_dir, rows, file)  # 중간에 멈춰도 한 일은 남긴다
+                    log.info("공고 정리 %d/%d건", summary["done"], len(todo))
+
+    workers = clients or [client]
+    if len(workers) == 1:
+        work(workers[0])
+    else:
+        threads = [threading.Thread(target=work, args=(c,)) for c in workers]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        summary["workers"] = len(workers)
     save(data_dir, rows, file)
     summary["pending"] = len(todo) - summary["done"]
     if errors:

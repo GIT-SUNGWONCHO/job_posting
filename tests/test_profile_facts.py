@@ -209,3 +209,27 @@ def test_facts_recompute_domain_without_ai(tmp_path):
     got = facts.load(tmp_path)["p:1"]
     assert got["words"] == facts.words_hash()
     assert sorted((d["code"], d["need"]) for d in got["facts"]["domain_exp"]) == [("IN01", "필수"), ("IN0104", "우대")]
+
+
+def test_facts_run_parallel_clients(tmp_path):
+    """따라잡기: 키마다 클라이언트 하나씩 함께 돌려도 공고마다 한 번만 정리한다."""
+    class AI:
+        model = "fake"
+
+        def __init__(self):
+            self.n = 0
+
+        def json(self, prompt, schema):
+            self.n += 1
+            return {"level": "시니어", "company_domain": ["이커머스"], "domain_quotes": []}
+
+    body = {"text": "데이터 파이프라인 구축 " * 30, "source": "zighang"}
+    screen = {"companies": {"a": {"name": "가나"}},
+              "postings": [{"id": f"z:{i}", "company": "a", "title": "Data Engineer"} for i in range(6)]}
+    bodies = {"bodies": {f"z:{i}": body for i in range(6)}}
+    workers = [AI(), AI(), AI()]
+    s = facts.run(tmp_path, screen, bodies, [f"z:{i}" for i in range(6)], workers[0], "2026-11-06",
+                  max_calls=100, clients=workers)
+    assert s["done"] == 6 and s["calls"] == 6 and s["workers"] == 3
+    assert sum(w.n for w in workers) == 6
+    assert facts.load(tmp_path)["z:3"]["facts"]["company_domain"] == ["IN0201"]  # 이름으로 고르고 코드로 저장

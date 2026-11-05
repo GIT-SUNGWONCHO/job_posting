@@ -64,7 +64,7 @@ jobs:
           if [ -n "$ONLY" ]; then
             uv run --no-dev jobpost facts --data-dir data --only "$ONLY" --max-minutes "${MINUTES:-100}" | tee -a "$GITHUB_STEP_SUMMARY"
           else
-            uv run --no-dev jobpost facts --data-dir data --max-calls "${MAX_CALLS:-900}" --max-minutes "${MINUTES:-100}" | tee -a "$GITHUB_STEP_SUMMARY"
+            uv run --no-dev jobpost facts --data-dir data --parallel --max-calls "${MAX_CALLS:-900}" --max-minutes "${MINUTES:-100}" | tee -a "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: data 브랜치에 커밋

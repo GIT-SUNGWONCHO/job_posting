@@ -53,7 +53,7 @@ def api_keys() -> list[str]:
 
 
 class Gemini:
-    def __init__(self, session: requests.Session | None = None, model: str | None = None):
+    def __init__(self, session: requests.Session | None = None, model: str | None = None, key_index: int = 0):
         cfg = config.load("ai")
         self.model: str = model or cfg["model"]
         self.min_interval: float = cfg.get("min_interval", 4.0)
@@ -61,7 +61,7 @@ class Gemini:
         self.calls = 0
         self._last = 0.0
         self.keys = api_keys()
-        self.key_i = 0  # 지금 쓰는 키(한도에 걸리면 다음으로)
+        self.key_i = min(key_index, max(len(self.keys) - 1, 0))  # 지금 쓰는 키(한도에 걸리면 다음으로)
 
     def json(self, prompt: str, schema: dict[str, Any], retries: int = 3,
              images: list[tuple[str, bytes]] | None = None) -> Any:
