@@ -18,7 +18,7 @@ from . import bodyread, config, jobtypes, matching, recommend, taxonomy
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 3  # 3(2026-11-05): 업종을 코드로, 회사 도메인과 업종 경험(근거 문장 필수)을 나눔. 2 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
+PROMPT_VERSION = 4  # 3·4(2026-11-05): 업종을 코드로, 회사 도메인과 업종 경험(근거 문장 필수)을 나눔(4: 시험 40건 반영). 2 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
 BODY_CHARS = 3500  # 자격요건·우대사항은 본문 뒤쪽에 있어서 넉넉히 보낸다
 FILE = "facts.jsonl"
 
