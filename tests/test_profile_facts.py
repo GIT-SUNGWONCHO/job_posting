@@ -185,9 +185,10 @@ def test_clean_domain():
         "라이브 스트리밍 서비스에 대한 관심",              # 관심만 → 버림
         "이커머스 경험 필수",                            # 본문에 없음 → 버림
     ]}, text)
-    assert [(d["code"], d["need"]) for d in got["domain_exp"]] == [("IN01", "필수")]  # 보험은 금융(대분류) 아래라 빠짐
-    assert got["domain_required"] == ["IN01"] and got["domain_preferred"] == []
+    # 금융 필수 + 보험 우대는 둘 다 남는다(필수/우대가 달라서). 제조는 AI가 빠뜨린 '보험, 금융, 제조 분야' 문장을 코드가 찾아서
+    assert sorted((d["code"], d["need"]) for d in got["domain_exp"]) == [("IN01", "필수"), ("IN0104", "우대"), ("IN04", "우대")]
+    assert got["domain_required"] == ["IN01"] and sorted(got["domain_preferred"]) == ["IN0104", "IN04"]
     assert got["domain_unmatched"] == ["스타트업, 소규모 성장조직 경험"]
     assert got["company_domain"] == ["IN0104", "IN0101"]
-    only_pref = facts.clean_domain({"domain_quotes": ["보험, 금융, 제조 분야의 비즈니스 지식"]}, text)
+    only_pref = facts.clean_domain({"domain_quotes": []}, "우대사항\n- 보험, 금융, 제조 분야의 비즈니스 지식")
     assert [(d["code"], d["need"]) for d in only_pref["domain_exp"]] == [("IN01", "우대"), ("IN04", "우대")]

@@ -18,7 +18,7 @@ from . import bodyread, config, jobtypes, matching, recommend, taxonomy
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 5  # 3~5(2026-11-05): 회사 도메인(코드)과 업종 경험 문장을 나눔. 5: AI는 문장만, 업종·필수/우대는 코드(사전·제목). 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
+PROMPT_VERSION = 5  # (코드 규칙은 다시 계산할 수 있어 버전을 올리지 않는다) 3~5(2026-11-05): 회사 도메인(코드)과 업종 경험 문장을 나눔. 5: AI는 문장만, 업종·필수/우대는 코드(사전·제목). 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
 BODY_CHARS = 3500  # 자격요건·우대사항은 본문 뒤쪽에 있어서 넉넉히 보낸다
 FILE = "facts.jsonl"
 
@@ -123,15 +123,29 @@ def _section(body: str, at: int) -> str | None:
     return kind
 
 
+_EXP = re.compile(r"경험|이해|지식|출신|배경|해\s*보신|해\s*본|수행|근무")
+
+
+def rule_quotes(text: str) -> list[str]:
+    """본문에서 코드로 찾는 업종 경험 문장: 업종 사전 말과 경험·이해 같은 말이 함께 있는 줄(AI가 빠뜨린 문장을 채운다)."""
+    out = []
+    for line in re.split(r"\n|[•ㆍ○◎▶■□]|(?<=[.!?])\s+|(?:^|\s)[-*]\s|\d+[).]\s", text or ""):
+        line = line.strip(" -*,")
+        if 6 <= len(line) <= 200 and _EXP.search(line) and taxonomy.industries_in(line):
+            out.append(line)
+    return out
+
+
 def clean_domain(f: dict[str, Any], text: str) -> dict[str, Any]:
-    """업종 경험(AI 다음, 호출 없음). AI는 문장(domain_quotes)만 뽑고, 코드가 정한다:
+    """업종 경험(AI 다음, 호출 없음). 문장은 AI(domain_quotes)와 코드(rule_quotes)가 함께 찾고, 나머지는 코드가 정한다:
     본문에 없는 문장·관심만 묻는 문장은 버리고, 업종 코드는 사전(industries.yaml words), 필수·우대는 문장이 놓인 제목.
-    같은 코드는 필수만, 대분류가 있으면 그 아래 중분류는 뺀다. 사전에 걸리지 않은 문장은 domain_unmatched(월간 점검).
+    같은 코드는 필수만, 대분류가 같은 필수/우대로 있으면 그 아래 중분류는 뺀다. 사전에 걸리지 않은 문장은 domain_unmatched(월간 점검).
     다른 모듈이 읽는 domain_required·domain_preferred(코드)도 만든다. 회사 도메인은 앞 2개."""
     body = _squash(text)
     keep: dict[str, dict[str, Any]] = {}
     unmatched: list[str] = []
-    for quote in f.get("domain_quotes") or []:
+    quotes = list(dict.fromkeys([*(f.get("domain_quotes") or []), *rule_quotes(text)]))  # AI 문장 + 코드가 찾은 문장
+    for quote in quotes:
         q = _squash(quote).strip("\"'….")
         at = body.find(q)
         if len(q) < 4 or at < 0 or ("관심" in q and not re.search(r"경험|이해|지식", q)):
@@ -146,8 +160,9 @@ def clean_domain(f: dict[str, Any], text: str) -> dict[str, Any]:
         for c in codes:
             if c not in keep or need == "필수":
                 keep[c] = {"code": c, "need": need, "quote": quote}
-    groups = {c for c in keep if len(c) == 4}
-    exp = [d for c, d in keep.items() if not (len(c) == 6 and c[:4] in groups)]
+    # 대분류가 같은 필수/우대로 있으면 그 아래 중분류는 뺀다(금융 필수 + 보험 우대는 둘 다 남김)
+    exp = [d for c, d in keep.items()
+           if not (len(c) == 6 and c[:4] in keep and keep[c[:4]]["need"] == d["need"])]
     return {**f, "company_domain": (f.get("company_domain") or [])[:2], "domain_exp": exp,
             "domain_unmatched": unmatched,
             "domain_required": [d["code"] for d in exp if d["need"] == "필수"],

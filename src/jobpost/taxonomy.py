@@ -193,7 +193,7 @@ def industry_fit(need: str | None, have: set[str]) -> float:
 
 # ---------- 업종 경험 문장 → 업종 코드(맞출 사전 words) ----------
 
-CTX = r"\s*(?=산업|업계|업권|업|도메인|분야|기업|회사|사|펌|서비스|프로젝트|플랫폼)"  # *가 붙은 말 뒤에 와야 하는 말
+CTX = r"\s*(?=산업|업계|업권|업|도메인|분야|기업|회사|사(?![가-힣])|펌|서비스|프로젝트|플랫폼)"  # *가 붙은 말 뒤에 와야 하는 말
 
 
 @cache
@@ -206,6 +206,8 @@ def _word_patterns() -> list[tuple[re.Pattern[str], str, str]]:
             body = r"\s*".join(re.escape(part) for part in word.split())
             if word.isascii():  # 영문은 단어 단위로(WSI 안의 SI는 세지 않음)
                 body = r"(?<![A-Za-z])" + body + r"(?![A-Za-z])"
+            else:  # 한글은 말 앞에 다른 글자가 붙지 않을 때만(강화학습 안의 화학은 세지 않음)
+                body = r"(?<![가-힣])" + body
             out.append((re.compile(body + (CTX if ctx else ""), re.I), x["code"], word))
     return sorted(out, key=lambda p: -len(p[2]))
 

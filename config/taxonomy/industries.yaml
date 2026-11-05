@@ -71,10 +71,10 @@ groups:
     items:
       - {code: IN0801, name: 방송·영상·엔터, legacy: media, ksic: ["59", "60", "90"], words: ["방송", "엔터테인먼트", "미디어", "OTT", "음악", "엔터*", "영상*"]}
       - {code: IN0802, name: 출판·웹툰·콘텐츠, legacy: publishing, ksic: ["581"], words: ["출판", "웹툰", "콘텐츠*"]}
-      - {code: IN0803, name: 광고·마케팅, legacy: advertising, ksic: ["713"], words: ["광고", "애드테크"]}
+      - {code: IN0803, name: 광고·마케팅, legacy: advertising, ksic: ["713"], words: ["애드테크", "광고*"]}
   - code: IN09
     name: 의료·바이오
-    words: ["헬스케어", "의료"]
+    words: ["헬스케어", "의료", "보건의료"]
     items:
       - {code: IN0901, name: 병원·의료 서비스, legacy: hospital, ksic: ["86"], words: ["병원", "의료기관"]}
       - {code: IN0902, name: 제약·바이오, legacy: pharma, ksic: ["21"], words: ["바이오", "임상", "제약*"]}
