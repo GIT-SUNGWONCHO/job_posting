@@ -9,7 +9,8 @@
 #   바로 뒤에 산업·업계·업권·업·도메인·분야·기업·회사·사·펌·서비스·프로젝트·플랫폼이 붙을 때만 센다(예: '보안 업계').
 #   대분류(groups)의 words는 넓은 말(금융, 제조): 그 아래 아무 경력이나 충족. 놓친 문장은 월간 점검에 올라온다.
 # ksic_generic: 도메인을 알려 주지 않는 KSIC 앞자리. 이 코드면 공고 정리의 회사 도메인(AI)으로 정한다.
-# 바꾸면 version을 올린다(공고 정리가 업종 경험·회사 도메인을 이 목록으로 적어서 다시 뽑는다).
+# 항목(코드·이름)을 바꾸면 version을 올린다(공고 정리가 회사 도메인을 이 목록에서 골라서 다시 뽑는다).
+# words만 바꾸면 올리지 않는다: 저장된 문장으로 업종 경험을 AI 없이 다시 계산한다(facts.words_hash).
 
 version: 2
 
@@ -18,18 +19,18 @@ ksic_generic: ["58", "62", "63", "70", "72", "73", "64992", "7151", "4651"]   # 
 groups:
   - code: IN01
     name: 금융
-    words: ["금융", "금융권", "금융사", "파이낸스"]
+    words: ["금융", "금융권", "금융사", "파이낸스", "전자금융", "finance", "financial"]
     items:
-      - {code: IN0101, name: 은행·저축, legacy: bank, ksic: ["641"], words: ["은행", "뱅킹"]}
+      - {code: IN0101, name: 은행·저축, legacy: bank, ksic: ["641"], words: ["은행", "뱅킹", "저축은행", "시중은행", "인터넷전문은행", "banking"]}
       - {code: IN0102, name: 카드·캐피탈·기타 금융, legacy: card_capital, ksic: ["649"], words: ["카드사", "캐피탈", "여신", "카드*"]}
       - {code: IN0103, name: 증권·자산운용, legacy: securities, ksic: ["642", "6611", "6612", "66191", "66192"], words: ["증권", "자산운용", "운용사", "트레이딩", "투자*"]}
-      - {code: IN0104, name: 보험, legacy: insurance, ksic: ["65", "662"], words: ["보험"]}
-      - {code: IN0105, name: 핀테크·간편결제, legacy: fintech, ksic: ["66199"], words: ["핀테크", "간편결제", "PG*", "결제*"]}
+      - {code: IN0104, name: 보험, legacy: insurance, ksic: ["65", "662"], words: ["보험", "손해보험", "생명보험", "장기보험", "재보험", "자동차보험", "insurance"]}
+      - {code: IN0105, name: 핀테크·간편결제, legacy: fintech, ksic: ["66199"], words: ["핀테크", "간편결제", "fintech", "PG*", "결제*"]}
   - code: IN02
     name: 유통·커머스
-    words: ["유통"]
+    words: ["유통*"]
     items:
-      - {code: IN0201, name: 이커머스, legacy: commerce, ksic: ["4791"], words: ["이커머스", "e-commerce", "e커머스", "커머스", "쇼핑몰", "오픈마켓"]}
+      - {code: IN0201, name: 이커머스, legacy: commerce, ksic: ["4791"], words: ["이커머스", "e-commerce", "ecommerce", "e커머스", "커머스", "전자상거래", "미디어커머스", "소셜커머스", "퀵커머스", "쇼핑몰", "오픈마켓"]}
       - {code: IN0202, name: 오프라인 유통·도소매, legacy: retail, ksic: ["45", "46", "47"], words: ["리테일", "오프라인 매장"]}
       - {code: IN0203, name: 무역·상사, legacy: trade, ksic: [], words: ["무역", "상사*"]}
   - code: IN03
@@ -44,9 +45,9 @@ groups:
     items:
       - {code: IN0401, name: 자동차·부품, legacy: auto, ksic: ["30"], words: ["자동차", "완성차"]}
       - {code: IN0402, name: 전자·반도체·디스플레이, legacy: electronics, ksic: ["26", "273"], words: ["반도체", "디스플레이", "전자*"]}
-      - {code: IN0403, name: 기계·로봇·장비, legacy: machinery, ksic: ["272", "28", "29", "34"], words: ["로봇", "이차전지", "2차전지", "배터리", "기계*", "장비*"]}
+      - {code: IN0403, name: 기계·로봇·장비, legacy: machinery, ksic: ["272", "28", "29", "34"], words: ["이차전지", "2차전지", "배터리", "로봇*", "기계*", "장비*"]}
       - {code: IN0404, name: 화학·소재, legacy: chemical, ksic: ["16", "17", "19", "20", "22", "23", "24", "25"], words: ["화학", "석유화학", "철강", "소재*"]}
-      - {code: IN0405, name: 중공업·조선·방산·항공, legacy: heavy, ksic: ["31", "252"], words: ["중공업", "조선", "방산", "국방", "항공", "플랜트"]}
+      - {code: IN0405, name: 중공업·조선·방산·항공, legacy: heavy, ksic: ["31", "252"], words: ["중공업", "조선", "방산", "국방", "플랜트", "항공*"]}
   - code: IN05
     name: 에너지·건설
     items:
@@ -69,15 +70,15 @@ groups:
   - code: IN08
     name: 미디어·콘텐츠·광고
     items:
-      - {code: IN0801, name: 방송·영상·엔터, legacy: media, ksic: ["59", "60", "90"], words: ["방송", "엔터테인먼트", "미디어", "OTT", "음악", "엔터*", "영상*"]}
+      - {code: IN0801, name: 방송·영상·엔터, legacy: media, ksic: ["59", "60", "90"], words: ["방송", "엔터테인먼트", "OTT", "미디어*", "음악", "엔터*", "영상*"]}
       - {code: IN0802, name: 출판·웹툰·콘텐츠, legacy: publishing, ksic: ["581"], words: ["출판", "웹툰", "콘텐츠*"]}
       - {code: IN0803, name: 광고·마케팅, legacy: advertising, ksic: ["713"], words: ["애드테크", "광고*"]}
   - code: IN09
     name: 의료·바이오
-    words: ["헬스케어", "의료", "보건의료"]
+    words: ["헬스케어", "의료", "보건의료", "healthcare"]
     items:
       - {code: IN0901, name: 병원·의료 서비스, legacy: hospital, ksic: ["86"], words: ["병원", "의료기관"]}
-      - {code: IN0902, name: 제약·바이오, legacy: pharma, ksic: ["21"], words: ["바이오", "임상", "제약*"]}
+      - {code: IN0902, name: 제약·바이오, legacy: pharma, ksic: ["21"], words: ["바이오", "임상", "제약바이오", "바이오제약", "제약*"]}
       - {code: IN0903, name: 의료기기·디지털 헬스, legacy: health, ksic: ["271"], words: ["의료기기", "의료 영상", "디지털 헬스"]}
   - code: IN10
     name: 교육
@@ -85,7 +86,7 @@ groups:
       - {code: IN1001, name: 교육·에듀테크, legacy: education, ksic: ["85"], words: ["에듀테크", "교육*"]}
   - code: IN11
     name: 공공
-    words: ["공공", "공공기관", "공기업", "정부"]
+    words: ["공공기관", "공기업", "공공 부문", "공공*", "정부*"]
     items:
       - {code: IN1101, name: 공공기관·공기업, legacy: public, ksic: ["84"]}
   - code: IN12

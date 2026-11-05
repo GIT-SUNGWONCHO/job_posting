@@ -192,3 +192,20 @@ def test_clean_domain():
     assert got["company_domain"] == ["IN0104", "IN0101"]
     only_pref = facts.clean_domain({"domain_quotes": []}, "우대사항\n- 보험, 금융, 제조 분야의 비즈니스 지식")
     assert [(d["code"], d["need"]) for d in only_pref["domain_exp"]] == [("IN01", "우대"), ("IN04", "우대")]
+
+
+def test_facts_recompute_domain_without_ai(tmp_path):
+    """업종 사전·규칙이 바뀌면 저장된 문장으로 업종 경험만 다시 계산한다(AI를 부르지 않음)."""
+    import json as _json
+
+    from jobpost import config, facts
+    body = "자격요건\n- 금융 데이터 분석 경험 3년 이상\n우대사항\n- 보험업 데이터 이해"
+    row = {"uid": "p:1", "prompt": facts.PROMPT_VERSION, "industries_v": config.load("profile")["version"], "body": True,
+           "words": "old", "facts": {"domain_quotes": ["보험업 데이터 이해"], "company_domain": ["IN0104"]}}
+    (tmp_path / facts.FILE).write_text(_json.dumps(row, ensure_ascii=False) + "\n", encoding="utf-8")
+    screen = {"postings": [{"id": "p:1", "company": "c", "title": "데이터 엔지니어"}], "companies": {"c": {"name": "가나보험"}}}
+    out = facts.run(tmp_path, screen, {"bodies": {"p:1": {"text": body}}}, ["p:1"], None, "2026-11-05")
+    assert out["recomputed"] == 1 and out["calls"] == 0
+    got = facts.load(tmp_path)["p:1"]
+    assert got["words"] == facts.words_hash()
+    assert sorted((d["code"], d["need"]) for d in got["facts"]["domain_exp"]) == [("IN01", "필수"), ("IN0104", "우대")]

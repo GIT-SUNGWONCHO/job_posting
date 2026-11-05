@@ -7,6 +7,7 @@ AI가 공고당 한 번 뽑아 data 폴더 facts.jsonl에 둔다. 공고의 것�
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import re
@@ -18,7 +19,7 @@ from . import bodyread, config, jobtypes, matching, recommend, taxonomy
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 5  # (코드 규칙은 다시 계산할 수 있어 버전을 올리지 않는다) 3~5(2026-11-05): 회사 도메인(코드)과 업종 경험 문장을 나눔. 5: AI는 문장만, 업종·필수/우대는 코드(사전·제목). 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
+PROMPT_VERSION = 6  # (업종 사전·코드 규칙은 저장된 문장으로 다시 계산해 버전을 올리지 않는다, words_hash) 6: 회사 도메인을 이름으로 고름. 3~5(2026-11-05): 회사 도메인(코드)과 업종 경험 문장을 나눔. 5: AI는 문장만, 업종·필수/우대는 코드(사전·제목). 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
 BODY_CHARS = 3500  # 자격요건·우대사항은 본문 뒤쪽에 있어서 넉넉히 보낸다
 FILE = "facts.jsonl"
 
@@ -37,13 +38,18 @@ def industries() -> dict[str, str]:
     return {i["id"]: i["name"] for i in config.load("profile")["industries"]}
 
 
-def _industry_list() -> str:
-    """지시문의 회사 도메인 목록(중분류 코드)."""
-    return ", ".join(f"{i['code']} {i['name']}" for i in taxonomy.industries() if not i.get("retired"))
+def _domain_names() -> dict[str, str]:
+    """회사 도메인 선택지: 업종 중분류 이름 → 코드. AI에는 이름으로 고르게 하고(지시문에 목록을 따로 싣지 않아도 됨) 코드로 바꿔 저장."""
+    return {i["name"]: i["code"] for i in taxonomy.industries() if not i.get("retired")}
+
+
+def words_hash() -> str:
+    """업종 사전(words)과 규칙 버전. 바뀌면 저장된 문장으로 업종 경험을 AI 없이 다시 계산한다."""
+    words = [(x["code"], x.get("words") or []) for x in [*taxonomy.industry_groups(), *taxonomy.industries()]]
+    return hashlib.sha1(json.dumps([RULES_V, words], ensure_ascii=False).encode()).hexdigest()[:10]
 
 
 def schema() -> dict[str, Any]:
-    items = [x["code"] for x in taxonomy.industries() if not x.get("retired")]
     kinds = [t["id"] for t in jobtypes.taxonomy()["types"]]
     strings = {"type": "ARRAY", "items": {"type": "STRING"}}
     return {"type": "OBJECT", "required": ["level", "manages", "duties", "required_skills", "preferred_skills", "years",
@@ -59,7 +65,7 @@ def schema() -> dict[str, Any]:
                 "preferred_skills": strings,
                 "years": {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["area", "min"], "properties": {
                     "area": {"type": "STRING"}, "min": {"type": "INTEGER"}, "max": {"type": "INTEGER"}}}},
-                "company_domain": {"type": "ARRAY", "items": {"type": "STRING", "enum": items}},
+                "company_domain": {"type": "ARRAY", "items": {"type": "STRING", "enum": list(_domain_names())}},
                 "domain_quotes": strings,
                 "degree": {"type": "STRING", "enum": DEGREES},
                 "majors": strings,
@@ -88,12 +94,11 @@ def prompt(posting: str) -> str:
         "'Python', 'Spark', 'Airflow', '데이터 모델링'처럼 짧게, 문장 말고 이름만\n"
         "- years: 연수 요건. 예) '데이터 엔지니어링 3~7년' → area '데이터 엔지니어링', min 3, max 7(상한이 없으면 max를 비운다). "
         "총 경력만 있으면 area '총 경력'\n"
-        "- company_domain: 이 공고로 사람을 뽑는 회사가 일하는 시장 1~2개(중분류 코드). 회사 소개·서비스 설명으로 정한다. "
+        "- company_domain: 이 공고로 사람을 뽑는 회사가 일하는 시장 1~2개. 회사 소개·서비스 설명으로 정한다. "
         "헤드헌팅 공고는 서치펌이 아니라 본문의 의뢰 회사 설명('국내 핀테크 유니콘' 등)으로 정하고, 그런 설명이 없으면 비운다"
         "(서치펌 자신의 업종은 적지 않는다)\n"
-        f"  목록: {_industry_list()}\n"
-        "- domain_quotes: 지원자에게 특정 업종의 경험·이해를 요구하거나 우대하는 문장을 본문 그대로 한 문장씩. 없으면 빈 목록. "
-        "회사가 그 업종이라는 것, 담당 업무, 관심만 묻는 문장은 넣지 않는다\n"
+        "- domain_quotes: 지원자에게 특정 업종 경험·이해를 요구·우대하는 문장을 본문 그대로 한 문장씩. "
+        "회사 소개·담당 업무 문장은 빼고, 없으면 빈 목록\n"
         "- degree, majors, major_need: 학력, 전공 이름, 전공이 필수인지 우대인지\n"
         "- certs: 자격증 이름\n"
         "- english: need(영어가 필수인지 우대인지)와 uses(영어를 쓰는 곳: 회의·협업, 문서·보고, 고객 응대, 공고가 영어. 적힌 것만)\n"
@@ -108,55 +113,89 @@ def _squash(text: str) -> str:
 
 
 # 문장이 놓인 본문 제목: 업무 아래면 버리고, 자격·필수면 필수, 우대면 우대(못 찾으면 우대)
-_HEADS = [("업무", r"주요업무|담당업무|업무내용|하는일|직무영역|이런일|Responsibilities|Whatyou'lldo"),
-          ("필수", r"자격(?:요건|조건|사항)|지원자격|필수|이런분|주요확인사항|Requirements|Qualifications"),
-          ("우대", r"우대|Plus|Preferred|더좋아요|있으면좋")]
+# 본문 제목(줄 하나가 통째로 제목일 때만). 순서가 우선순위: 'Preferred Qualifications'는 우대
+_HEADS = [("버림", r"복리후생|혜택|근무조건|근무환경|전형절차|채용절차|지원방법|제출서류|회사소개|기업소개|About|Benefits"),
+          ("업무", r"주요업무|담당업무|업무내용|하는일|직무영역|이런일|Responsibilities|Whatyou'lldo"),
+          ("우대", r"우대|Plus|Preferred|Nicetohave|더좋아요|있으면좋"),
+          ("필수", r"자격(?:요건|조건|사항)|지원자격|필수|이런분|주요확인사항|Requirements|Qualifications")]
+_ITEM = re.compile(r"^\s*(?:[-*•·ㆍ○✓✔]|\d+\)|\(\d+\))")  # 글머리표로 시작하는 줄은 항목이지 제목이 아님
+_HEAD_CHARS = 30  # 공백을 뺀 글자 수가 이보다 긴 줄은 문장으로 본다
 
 
-def _section(body: str, at: int) -> str | None:
-    """squash한 본문에서 at 앞에 마지막으로 나온 제목의 종류."""
-    best, kind = -1, None
-    for k, pat in _HEADS:
-        for m in re.finditer(pat, body[:at], re.I):
-            if m.start() > best:
-                best, kind = m.start(), k
+def _headings(text: str) -> list[tuple[int, str]]:
+    """(squash한 본문에서의 위치, 제목 종류). 글머리표 없이 짧은 줄에서 제목 말을 찾는다."""
+    out, pos = [], 0
+    for line in (text or "").split("\n"):
+        sq = _squash(line)
+        if sq and len(sq) <= _HEAD_CHARS and not _ITEM.match(line):
+            for kind, pat in _HEADS:
+                if re.search(pat, sq, re.I):
+                    out.append((pos, kind))
+                    break
+        pos += len(sq)
+    return out
+
+
+def _section(heads: list[tuple[int, str]], at: int) -> str | None:
+    """at 앞에 마지막으로 나온 제목의 종류(없으면 None)."""
+    kind = None
+    for pos, k in heads:
+        if pos > at:
+            break
+        kind = k
     return kind
 
 
-_EXP = re.compile(r"경험|이해|지식|출신|배경|해\s*보신|해\s*본|수행|근무")
+# 경험을 묻는 말('근무'는 근무 형태 문장에 걸려서 경험·경력이 붙을 때만)
+_EXP = re.compile(r"경험|이해|지식|출신|해\s*보신|해\s*본|수행|근무\s*(?:경험|경력|이력)|근무하신")
+RULES_V = 3  # clean_domain·rule_quotes 규칙을 바꾸면 올린다(저장된 문장으로 AI 없이 다시 계산)
 
 
 def rule_quotes(text: str) -> list[str]:
-    """본문에서 코드로 찾는 업종 경험 문장: 업종 사전 말과 경험·이해 같은 말이 함께 있는 줄(AI가 빠뜨린 문장을 채운다)."""
+    """본문에서 코드로 찾는 업종 경험 문장 후보: 업종 사전 말과 경험·이해 같은 말이 함께 있는 줄(AI가 빠뜨린 문장을 채운다).
+    자격요건·우대 제목 아래 줄만 clean_domain에서 남긴다."""
     out = []
-    for line in re.split(r"\n|[•ㆍ○◎▶■□]|(?<=[.!?])\s+|(?:^|\s)[-*]\s|\d+[).]\s", text or ""):
-        line = line.strip(" -*,")
+    # 'ㆍ'는 앞뒤가 띄어져 있을 때만 글머리표(붙어 있으면 '물류ㆍ제조'처럼 문장 안 구분점)
+    for line in re.split(r"\n|[•○◎▶■□]|\sㆍ\s|(?<=[.!?])\s+|(?:^|\s)[-*]\s|\d+[).]\s", text or ""):
+        line = line.strip(" -*,ㆍ·")
         if 6 <= len(line) <= 200 and _EXP.search(line) and taxonomy.industries_in(line):
             out.append(line)
     return out
 
 
+def _inline_need(q: str) -> str | None:
+    """문장 자체에 붙은 표시: '(우대)', '… 우대', '[필수]' 같은 것만(문장 속 '필수는 아닙니다'는 아님)."""
+    if re.search(r"^[\(\[]?우대[\)\]]|[\(\[]우대[\)\]]|우대$", q):
+        return "우대"
+    if re.search(r"^[\(\[]?필수[\)\]]|[\(\[]필수[\)\]]|필수$", q):
+        return "필수"
+    return None
+
+
 def clean_domain(f: dict[str, Any], text: str) -> dict[str, Any]:
     """업종 경험(AI 다음, 호출 없음). 문장은 AI(domain_quotes)와 코드(rule_quotes)가 함께 찾고, 나머지는 코드가 정한다:
-    본문에 없는 문장·관심만 묻는 문장은 버리고, 업종 코드는 사전(industries.yaml words), 필수·우대는 문장이 놓인 제목.
+    본문에 없는 문장·관심만 묻는 문장·업무/복리후생/회사 소개 아래 문장은 버리고(코드가 찾은 문장은 자격요건·우대 아래만),
+    업종 코드는 사전(industries.yaml words), 필수·우대는 문장 표시 → 문장이 놓인 제목(못 찾으면 우대).
     같은 코드는 필수만, 대분류가 같은 필수/우대로 있으면 그 아래 중분류는 뺀다. 사전에 걸리지 않은 문장은 domain_unmatched(월간 점검).
-    다른 모듈이 읽는 domain_required·domain_preferred(코드)도 만든다. 회사 도메인은 앞 2개."""
+    다른 모듈이 읽는 domain_required·domain_preferred(코드)도 만든다. 회사 도메인은 앞 2개. 저장된 문장으로 다시 계산할 수 있다."""
     body = _squash(text)
+    heads = _headings(text)
     keep: dict[str, dict[str, Any]] = {}
     unmatched: list[str] = []
-    quotes = list(dict.fromkeys([*(f.get("domain_quotes") or []), *rule_quotes(text)]))  # AI 문장 + 코드가 찾은 문장
-    for quote in quotes:
+    ai = list(dict.fromkeys(f.get("domain_quotes") or []))
+    quotes = [(q, True) for q in ai] + [(q, False) for q in rule_quotes(text) if q not in ai]
+    for quote, from_ai in quotes:
         q = _squash(quote).strip("\"'….")
         at = body.find(q)
         if len(q) < 4 or at < 0 or ("관심" in q and not re.search(r"경험|이해|지식", q)):
             continue
-        sec = "우대" if "우대" in q else "필수" if "필수" in q else _section(body, at)
-        if sec == "업무":
+        sec = _section(heads, at)
+        if sec in ("업무", "버림") or (not from_ai and sec not in ("필수", "우대")):
             continue
         codes = taxonomy.industries_in(quote)
         if not codes:
             unmatched.append(quote)
-        need = "필수" if sec == "필수" else "우대"
+        need = _inline_need(q) or ("필수" if sec == "필수" else "우대")
         for c in codes:
             if c not in keep or need == "필수":
                 keep[c] = {"code": c, "need": need, "quote": quote}
@@ -219,15 +258,28 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
     def has_body(pid: str) -> bool:
         return len(texts.get(pid) or "") >= bodyread.MIN_TEXT
 
+    by_id = {p["id"]: p for p in screen["postings"]}
+    summary: dict[str, Any] = {"wanted": len(wanted), "done": 0, "calls": 0}
+    recomputed = 0
+    # 업종 사전·규칙이 바뀌었으면 저장된 문장으로 업종 경험만 다시 계산(AI 호출 없음)
+    wh = words_hash()
+    for pid, row in rows.items():
+        if row.get("prompt") == PROMPT_VERSION and row.get("words") != wh and pid in texts and pid in by_id:
+            company = (screen["companies"].get(by_id[pid]["company"]) or {}).get("name", "")
+            row["facts"] = clean_domain(row["facts"], posting_text(by_id[pid], company, texts.get(pid)))
+            row["words"] = wh
+            recomputed += 1
+    if recomputed:
+        summary["recomputed"] = recomputed
+        save(data_dir, rows, file)
     todo = [pid for pid in wanted if pid in texts and not is_current(rows.get(pid), has_body(pid))]
-    summary: dict[str, Any] = {"wanted": len(wanted), "pending": len(todo), "done": 0, "calls": 0}
+    summary["pending"] = len(todo)
     if not todo:
         return summary
     if client is None:
         summary["skipped"] = "GEMINI_API_KEY 없음"
         return summary
     cfg = config.load("ai").get("facts") or {}
-    by_id = {p["id"]: p for p in screen["postings"]}
     limit = max_calls or cfg.get("max_calls", 250)
     deadline = time.monotonic() + (max_minutes or cfg.get("max_minutes", 20)) * 60
     errors: list[str] = []
@@ -239,11 +291,15 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
         summary["calls"] += 1
         try:
             text = posting_text(p, company, texts.get(pid))
-            got = clean_domain(client.json(prompt(text), schema()), text)
+            raw = client.json(prompt(text), schema())
+            names = _domain_names()
+            raw["company_domain"] = [names[n] for n in raw.get("company_domain") or [] if n in names]
+            got = clean_domain(raw, text)
         except Exception as e:  # 남은 건 다음 실행에서
             errors.append(str(e)[:200])
             continue
         rows[pid] = {"uid": pid, "facts": got, "prompt": PROMPT_VERSION, "industries_v": config.load("profile")["version"],
+                     "words": words_hash(),
                      "model": getattr(client, "model", None), "on": today, "body": has_body(pid)}
         summary["done"] += 1
         if summary["done"] % 25 == 0:
