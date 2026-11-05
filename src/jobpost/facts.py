@@ -148,7 +148,7 @@ def _section(heads: list[tuple[int, str]], at: int) -> str | None:
 
 # 경험을 묻는 말('근무'는 근무 형태 문장에 걸려서 경험·경력이 붙을 때만)
 _EXP = re.compile(r"경험|이해|지식|출신|해\s*보신|해\s*본|수행|근무\s*(?:경험|경력|이력)|근무하신")
-RULES_V = 3  # clean_domain·rule_quotes 규칙을 바꾸면 올린다(저장된 문장으로 AI 없이 다시 계산)
+RULES_V = 4  # clean_domain·rule_quotes 규칙을 바꾸면 올린다(저장된 문장으로 AI 없이 다시 계산)
 
 
 def rule_quotes(text: str) -> list[str]:

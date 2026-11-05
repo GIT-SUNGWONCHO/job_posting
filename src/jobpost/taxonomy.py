@@ -193,7 +193,8 @@ def industry_fit(need: str | None, have: set[str]) -> float:
 
 # ---------- 업종 경험 문장 → 업종 코드(맞출 사전 words) ----------
 
-CTX = r"\s*(?=산업|업(?:계|권|종|체)?(?![가-힣])|도메인|분야|기업|기관|회사|사(?![가-힣])|펌|서비스|프로젝트|플랫폼)"  # *가 붙은 말 뒤에 와야 하는 말
+# 넓은 말(*) 뒤: 바로 산업·분야 등이 오거나, '공공·금융·국방 분야'처럼 나열 뒤에 온다
+CTX = r"(?=(?:\s*[·,/ㆍ]\s*[가-힣A-Za-z]{1,10})*\s*(?:산업|업(?:계|권|종|체)?(?![가-힣])|도메인|분야|기업|기관|회사|사(?![가-힣])|펌|서비스|프로젝트|플랫폼))"  # *가 붙은 말 뒤에 와야 하는 말
 
 
 @cache
@@ -219,7 +220,7 @@ def industries_in(text: str) -> list[str]:
     for pat, code, _ in _word_patterns():
         if pat.search(rest):
             found.append(code)
-            rest = pat.sub(" ", rest)
+            rest = pat.sub("가", rest)  # 지운 자리는 글자 하나로(나열 '공공·금융·국방 분야'이 이어지게)
     found = list(dict.fromkeys(found))
     groups = {c for c in found if len(c) == 4}
     return [c for c in found if not (len(c) == 6 and c[:4] in groups)]
