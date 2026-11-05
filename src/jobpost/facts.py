@@ -313,13 +313,16 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
 
 
 def candidates_for_all(screen: dict[str, Any], settings: list[dict[str, Any]]) -> list[str]:
-    """사람마다 매칭 대상(내 분야 공고, recommend.match_scope)의 합집합. 최근 공고부터."""
+    """사람마다 매칭 대상(내 분야 공고, recommend.match_scope)의 합집합. 누군가의 조건 필터까지 통과해 목록에 보이는
+    공고 먼저(매칭 순서와 같게), 그 안에서 최근 공고부터."""
     defaults = config.load("filters")
     seen: dict[str, str] = {}
+    shown: set[str] = set()
     for user_filters in [{**defaults, **(s.get("filters") or {})} for s in settings] or [defaults]:
         for p in recommend.candidates(screen, recommend.match_scope(user_filters)):
             seen[p["id"]] = p.get("firstSeen", "")
-    return sorted(seen, key=lambda pid: (seen[pid], pid), reverse=True)
+        shown |= {p["id"] for p in recommend.candidates(screen, user_filters)}
+    return sorted(seen, key=lambda pid: (pid in shown, seen[pid], pid), reverse=True)
 
 
 def _norm_skill(name: str) -> str | None:

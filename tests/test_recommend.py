@@ -259,3 +259,15 @@ def test_facts_arrival_rematches():
     db, ai = FakeDB(old), FakeAI()
     recommend.run(SCREEN, BODIES, db, ai, TODAY, facts={"z:1": {"facts": {"level": "시니어"}}})
     assert ai.prompts
+
+
+def test_shown_postings_are_matched_first():
+    """한도가 모자라면 조건 필터까지 통과해 목록에 보이는 공고부터 매긴다(가입·프로필 수정 직후)."""
+    import copy
+    screen = copy.deepcopy(SCREEN)
+    screen["postings"][0]["regions"] = ["부산"]  # z:1은 지역 조건 밖(매칭 대상이지만 목록에는 안 보임)
+    db = FakeDB()
+    db.rows["settings"][0]["filters"]["regions"] = ["서울"]
+    ai = FakeAI()
+    recommend.run(screen, BODIES, db, ai, TODAY, max_calls=1)
+    assert len(ai.prompts) == 1 and "Data Analyst" in ai.prompts[0]

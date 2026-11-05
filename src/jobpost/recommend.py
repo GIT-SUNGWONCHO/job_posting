@@ -234,12 +234,14 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
         scored = []
         pool = ([p for p in screen["postings"] if p["id"] in only] if only is not None
                 else candidates(screen, match_scope(user_filters)))
+        # 조건 필터(경력·지역·고용 형태·기업 구분)까지 통과해 목록에 보이는 공고를 먼저 매긴다(밀린 매칭: 가입·프로필 수정 직후)
+        shown = {p["id"] for p in candidates(screen, user_filters)}
         for p in pool:
             body = texts.get(p["id"])
             rule = matching.score(rule_profile, p, matching.extract_skills(body) if body else None, today)
             scored.append((rule, p))
-        # 한도가 모자라면 새 공고부터 AI에 묻는다(아침 알림에 나가는 공고 먼저). 같은 날이면 규칙 점수가 높은 것부터
-        scored.sort(key=lambda x: (x[1].get("firstSeen", ""), x[0]["score"], x[1]["id"]), reverse=True)
+        # 한도가 모자라면 목록에 보이는 공고 → 새 공고 → 규칙 점수 높은 것 순으로 AI에 묻는다
+        scored.sort(key=lambda x: (x[1]["id"] in shown, x[1].get("firstSeen", ""), x[0]["score"], x[1]["id"]), reverse=True)
 
         old = {r["posting_id"]: r for r in db.select(
             "matches", f"select=posting_id,score,parts,matched,missing,reason,reason_meta,profile_v,score_v&user_id=eq.{user}")}

@@ -99,7 +99,7 @@ def main(argv: list[str] | None = None) -> int:
     of.add_argument("--what", default="groups,public,nps", help="쉼표로 구분: groups, public, nps")
     sc = sub.add_parser("settings-clear", help="조건 필터의 한 항목을 비운다(= 전부 통과). 사용자가 한 명일 때만(지인이 생기면 화면에서)")
     sc.add_argument("--key", required=True, choices=["company_types", "regions", "employment_types", "career", "job_types"])
-    sc.add_argument("--add", help="비우지 않고 이 값을 목록에 더한다(예: job_types에 analytics_eng)")
+    sc.add_argument("--add", help="비우지 않고 이 값을 목록에 더한다(쉼표로 여러 개. 예: job_types에 analytics_eng)")
     mc = sub.add_parser("monthly-check", help="월간 점검: 업종 분포·KSIC·업종 사전 밖 문장·예외 비교(고치지 않음)")
     mc.add_argument("--data-dir", type=Path, default=Path("data"))
     ms = sub.add_parser("match-stats", help="시험: 규칙 점수 구간별 AI 판정·내 평가·공고 수(로그에는 건수만)")
@@ -189,7 +189,7 @@ def main(argv: list[str] | None = None) -> int:
         filters = dict(rows[0].get("filters") or {})
         before = filters.get(args.key)
         if args.add:
-            filters[args.key] = sorted(set(before or []) | {args.add})
+            filters[args.key] = sorted(set(before or []) | {v.strip() for v in args.add.split(",") if v.strip()})
         else:
             filters[args.key] = [] if args.key != "career" else {}
         client.update("settings", f"user_id=eq.{rows[0]['user_id']}", {"filters": filters})
