@@ -249,14 +249,18 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
             o = old.get(p["id"])
             meta = (o or {}).get("reason_meta") or {}
             has_body = len(texts.get(p["id"]) or "") >= bodyread.MIN_TEXT
-            # 본문 없이 매긴 공고에 본문이 생기면(본문 읽기) 다시 묻는다. 예전 결과(body 칸 없음)는 본문이 있던 것으로 본다
+            has_facts = bool((facts.get(p["id"]) or {}).get("facts"))
+            # 본문 없이 매긴 공고에 본문이 생기면(본문 읽기), 공고 정리 없이 매긴 공고에 공고 정리가 생기면 다시 묻는다.
+            # 예전 결과(body·facts 칸 없음)는 있던 것으로 본다
             same = (o and (o.get("parts") or {}).get("kind") == "ai" and o.get("profile_v") == pv
                     and ((o.get("parts") or {}).get("body", True) or not has_body)
+                    and (meta.get("facts", True) or not has_facts)
                     and o.get("score_v") == guide_v and meta.get("prompt") == PROMPT_VERSION and meta.get("model") == model
                     and (not phash or meta.get("profile_hash") in (None, phash)))
             row = None
             twin = shared.get((p["id"], phash)) if phash else None
-            if twin and not ((twin.get("parts") or {}).get("body", True) or not has_body):
+            if twin and not (((twin.get("parts") or {}).get("body", True) or not has_body)
+                             and ((twin.get("reason_meta") or {}).get("facts", True) or not has_facts)):
                 twin = None
             if same or twin:
                 src = o if same else twin
@@ -285,7 +289,7 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                            "missing": [g for g in got.get("gaps") or [] if g][:3],
                            "reason": reason or None,
                            "reason_meta": {"model": model, "prompt": PROMPT_VERSION, "on": today.isoformat(),
-                                           "profile_hash": phash}}
+                                           "profile_hash": phash, "facts": has_facts}}
                     shared[(p["id"], phash)] = row
                     row = finish(row, data, user_filters, p.get("industry"))
                     summary["ai_new"] += 1

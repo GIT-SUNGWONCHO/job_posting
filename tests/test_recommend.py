@@ -243,3 +243,19 @@ def test_matching_target_ignores_view_only_conditions():
     f = {"job_types": ["data_eng"], "company_types": ["대기업"], "regions": ["부산"], "exclude_keywords": ["Analyst"]}
     got = recommend.candidates(SCREEN, recommend.match_scope(f))
     assert [p["id"] for p in got] == ["z:1"]
+
+
+def test_facts_arrival_rematches():
+    """공고 정리 없이 매긴 공고에 공고 정리가 생기면 다시 묻는다(하루 한도를 넘은 날의 새 공고)."""
+    first = FakeDB()
+    recommend.run(SCREEN, BODIES, first, FakeAI(), TODAY)
+    row = next(r for r in first.inserted if r["posting_id"] == "z:1")
+    assert row["reason_meta"]["facts"] is False
+    old = [{k: r[k] for k in ("posting_id", "score", "parts", "matched", "missing", "reason", "reason_meta",
+                              "profile_v", "score_v")} for r in first.inserted]
+    same_db, same_ai = FakeDB(old), FakeAI()
+    recommend.run(SCREEN, BODIES, same_db, same_ai, TODAY)  # 공고 정리가 그대로면 다시 쓰고
+    assert not same_ai.prompts
+    db, ai = FakeDB(old), FakeAI()
+    recommend.run(SCREEN, BODIES, db, ai, TODAY, facts={"z:1": {"facts": {"level": "시니어"}}})
+    assert ai.prompts
