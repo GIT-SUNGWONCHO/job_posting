@@ -65,6 +65,8 @@ def main(argv: list[str] | None = None) -> int:
     f.add_argument("--data-dir", type=Path, default=Path("data"))
     f.add_argument("--max-calls", type=int, help="이번 실행 최대 호출 수(비우면 config/ai.yaml facts.max_calls). 따라잡기용")
     f.add_argument("--max-minutes", type=float, help="이번 실행 최대 시간(분)")
+    f.add_argument("--only", help="시험: 이 공고 id들(쉼표)만 정리해 --out 파일에 쓴다(facts.jsonl은 그대로)")
+    f.add_argument("--out", default="trials/facts_trial.jsonl", help="--only일 때 쓸 파일(data 폴더 안)")
 
     r = sub.add_parser("feedback", help="회차 리포트: 로그에는 건수·지표만, --out에는 공고별 평가·판단 근거·바꿀 후보(비공개)")
     r.add_argument("--data-dir", type=Path, default=Path("data"))
@@ -262,8 +264,10 @@ def main(argv: list[str] | None = None) -> int:
             settings = store.select("settings", "select=user_id,filters")
         wanted = facts.candidates_for_all(built, settings)
         client = ai.Gemini() if ai.configured() else None
-        summary = facts.run(args.data_dir, built, bodies, wanted, client, date.today().isoformat(),
-                            max_calls=args.max_calls, max_minutes=args.max_minutes)
+        trial = [x.strip() for x in (args.only or "").split(",") if x.strip()]
+        summary = facts.run(args.data_dir, built, bodies, trial or wanted, client, date.today().isoformat(),
+                            max_calls=args.max_calls or (len(trial) if trial else None), max_minutes=args.max_minutes,
+                            file=args.out if trial else facts.FILE)
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
     if args.cmd == "notify":

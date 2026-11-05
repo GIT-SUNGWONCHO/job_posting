@@ -96,3 +96,13 @@ def test_industry_from_ksic():
     assert taxonomy.industry_from_ksic("715") == (None, "generic")
     assert taxonomy.industry_from_ksic("6420") == ("IN0103", "ksic")
     assert taxonomy.industry_from_ksic(None) == (None, "none")
+
+
+def test_industry_fit():
+    assert taxonomy.industry_fit("IN01", {"bank"}) == 1.0          # 금융(넓게) 요구, 은행 경력
+    assert taxonomy.industry_fit("IN0104", {"IN0104"}) == 1.0
+    assert taxonomy.industry_fit("IN0104", {"bank"}) == 0.5        # 같은 금융
+    assert taxonomy.industry_fit("IN0104", {"commerce"}) == 0.0
+    assert taxonomy.industry_fit("insurance", set()) == 0.0        # 지난 id도 읽는다
+    assert taxonomy.industry_name("IN01") == "금융"
+    assert taxonomy.industry_name("bank") == "은행·저축"

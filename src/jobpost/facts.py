@@ -18,7 +18,7 @@ from . import bodyread, config, jobtypes, matching, recommend, taxonomy
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 2  # 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
+PROMPT_VERSION = 3  # 3(2026-11-05): 업종을 코드로, 회사 도메인과 업종 경험(근거 문장 필수)을 나눔. 2 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
 BODY_CHARS = 3500  # 자격요건·우대사항은 본문 뒤쪽에 있어서 넉넉히 보낸다
 FILE = "facts.jsonl"
 
@@ -37,12 +37,21 @@ def industries() -> dict[str, str]:
     return {i["id"]: i["name"] for i in config.load("profile")["industries"]}
 
 
+def _industry_list() -> str:
+    """지시문의 업종 목록: 대분류(넓게) 다음 그 중분류."""
+    items = [x for x in taxonomy.industries() if not x.get("retired")]
+    return " / ".join(f"{g['code']} {g['name']}(넓게): " + ", ".join(f"{i['code']} {i['name']}" for i in items
+                                                                     if i["group"] == g["code"])
+                      for g in taxonomy.industry_groups())
+
+
 def schema() -> dict[str, Any]:
-    ids = list(industries())
+    items = [x["code"] for x in taxonomy.industries() if not x.get("retired")]
+    codes = [g["code"] for g in taxonomy.industry_groups()] + items
     kinds = [t["id"] for t in jobtypes.taxonomy()["types"]]
     strings = {"type": "ARRAY", "items": {"type": "STRING"}}
     return {"type": "OBJECT", "required": ["level", "manages", "duties", "required_skills", "preferred_skills", "years",
-                                           "domain_required", "domain_preferred", "degree", "majors", "certs",
+                                           "company_domain", "domain_exp", "degree", "majors", "certs",
                                            "english", "employment", "work_mode"],
             "properties": {
                 "level": {"type": "STRING", "enum": LEVELS},
@@ -54,8 +63,10 @@ def schema() -> dict[str, Any]:
                 "preferred_skills": strings,
                 "years": {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["area", "min"], "properties": {
                     "area": {"type": "STRING"}, "min": {"type": "INTEGER"}, "max": {"type": "INTEGER"}}}},
-                "domain_required": {"type": "ARRAY", "items": {"type": "STRING", "enum": ids}},
-                "domain_preferred": {"type": "ARRAY", "items": {"type": "STRING", "enum": ids}},
+                "company_domain": {"type": "ARRAY", "items": {"type": "STRING", "enum": items}},
+                "domain_exp": {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["code", "need", "quote"], "properties": {
+                    "code": {"type": "STRING", "enum": codes}, "need": {"type": "STRING", "enum": NEEDS[:2]},
+                    "quote": {"type": "STRING"}}}},
                 "degree": {"type": "STRING", "enum": DEGREES},
                 "majors": strings,
                 "major_need": {"type": "STRING", "enum": NEEDS},
@@ -71,7 +82,6 @@ def schema() -> dict[str, Any]:
 
 
 def prompt(posting: str) -> str:
-    names = ", ".join(f"{k}={v}" for k, v in industries().items())
     kinds = ", ".join(f"{t['id']}={t['name']}" for t in jobtypes.taxonomy()["types"])
     return (
         "채용공고에서 아래 항목을 뽑는다. 공고에 적힌 것만 뽑고, 적혀 있지 않으면 빈 목록이나 '적혀 있지 않음'으로 둔다.\n"
@@ -84,7 +94,12 @@ def prompt(posting: str) -> str:
         "'Python', 'Spark', 'Airflow', '데이터 모델링'처럼 짧게, 문장 말고 이름만\n"
         "- years: 연수 요건. 예) '데이터 엔지니어링 3~7년' → area '데이터 엔지니어링', min 3, max 7(상한이 없으면 max를 비운다). "
         "총 경력만 있으면 area '총 경력'\n"
-        f"- domain_required / domain_preferred: 특정 업종 경험을 요구·우대할 때 업종 id. 목록: {names}\n"
+        "- company_domain: 이 공고로 사람을 뽑는 회사가 일하는 시장 1~2개(중분류 코드). 회사 소개·서비스 설명으로 정한다. "
+        "헤드헌팅 공고는 서치펌이 아니라 본문의 의뢰 회사 설명('국내 핀테크 유니콘' 등)으로 정하고, 그런 설명이 없을 때만 비운다\n"
+        "- domain_exp: 지원자에게 특정 업종 경험·이해를 요구하거나 우대하는 문장이 본문에 있을 때만. 회사가 그 업종이라는 것만으로는 "
+        "넣지 않는다. 항목마다 code(문장이 '금융', '제조'처럼 넓으면 대분류, '보험업'처럼 구체적이면 중분류), "
+        "need(자격요건·필수에 있으면 필수, 그 밖은 우대), quote(그 문장을 본문에서 그대로 40자 안쪽). 맞는 업종이 없으면 넣지 않는다\n"
+        f"  업종 목록: {_industry_list()}\n"
         "- degree, majors, major_need: 학력, 전공 이름, 전공이 필수인지 우대인지\n"
         "- certs: 자격증 이름\n"
         "- english: need(영어가 필수인지 우대인지)와 uses(영어를 쓰는 곳: 회의·협업, 문서·보고, 고객 응대, 공고가 영어. 적힌 것만)\n"
@@ -92,6 +107,29 @@ def prompt(posting: str) -> str:
         "- work_mode: 근무 방식. salary: 연봉 표기 그대로(없으면 빈 문자열)\n\n"
         f"[공고]\n{posting}"
     )
+
+
+def _squash(text: str) -> str:
+    return re.sub(r"\s+", "", text or "")
+
+
+def clean_domain(f: dict[str, Any], text: str) -> dict[str, Any]:
+    """업종 경험을 코드로 다듬는다(AI 다음, 호출 없음): 근거 문장이 본문에 없으면 버리고, 필수·우대에 같은 코드면 필수만,
+    대분류와 그 아래 중분류가 함께면 대분류만. 다른 모듈이 읽는 domain_required·domain_preferred(코드)도 만든다."""
+    body = _squash(text)
+    keep: dict[str, dict[str, Any]] = {}
+    for d in f.get("domain_exp") or []:
+        q = _squash(d.get("quote", "")).strip("\"'….")
+        code = d.get("code")
+        if not code or len(q) < 4 or q not in body:
+            continue
+        if code not in keep or d.get("need") == "필수":
+            keep[code] = d
+    groups = {c for c in keep if len(c) == 4}
+    exp = [d for c, d in keep.items() if not (len(c) == 6 and c[:4] in groups)]
+    return {**f, "domain_exp": exp,
+            "domain_required": [d["code"] for d in exp if d.get("need") == "필수"],
+            "domain_preferred": [d["code"] for d in exp if d.get("need") != "필수"]}
 
 
 def duty_texts(f: dict[str, Any]) -> list[str]:
@@ -104,8 +142,8 @@ def english_need(f: dict[str, Any]) -> str:
     return (e or {}).get("need", "적혀 있지 않음") if isinstance(e, dict) else (e or "적혀 있지 않음")
 
 
-def load(data_dir: Path) -> dict[str, dict[str, Any]]:
-    path = data_dir / FILE
+def load(data_dir: Path, file: str = FILE) -> dict[str, dict[str, Any]]:
+    path = data_dir / file
     if not path.exists():
         return {}
     out = {}
@@ -116,9 +154,10 @@ def load(data_dir: Path) -> dict[str, dict[str, Any]]:
     return out
 
 
-def save(data_dir: Path, rows: dict[str, dict[str, Any]]) -> None:
+def save(data_dir: Path, rows: dict[str, dict[str, Any]], file: str = FILE) -> None:
     lines = [json.dumps(rows[k], ensure_ascii=False, sort_keys=True) for k in sorted(rows)]
-    (data_dir / FILE).write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    (data_dir / file).parent.mkdir(parents=True, exist_ok=True)
+    (data_dir / file).write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
 
 
 def is_current(row: dict[str, Any] | None, has_body: bool = False) -> bool:
@@ -134,9 +173,11 @@ def posting_text(p: dict[str, Any], company: str, body: str | None) -> str:
 
 
 def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: list[str],
-        client: Any | None, today: str, max_calls: int | None = None, max_minutes: float | None = None) -> dict[str, Any]:
-    """wanted(후보 공고 id, 앞에서부터 먼저)에서 아직 정리하지 않은 것을 하루 한도까지 정리한다."""
-    rows = load(data_dir)
+        client: Any | None, today: str, max_calls: int | None = None, max_minutes: float | None = None,
+        file: str = FILE) -> dict[str, Any]:
+    """wanted(후보 공고 id, 앞에서부터 먼저)에서 아직 정리하지 않은 것을 하루 한도까지 정리한다.
+    file을 바꾸면(시험) 그 파일에만 쓴다."""
+    rows = load(data_dir, file)
     texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
     def has_body(pid: str) -> bool:
         return len(texts.get(pid) or "") >= bodyread.MIN_TEXT
@@ -160,7 +201,8 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
         company = (screen["companies"].get(p["company"]) or {}).get("name", "")
         summary["calls"] += 1
         try:
-            got = client.json(prompt(posting_text(p, company, texts.get(pid))), schema())
+            text = posting_text(p, company, texts.get(pid))
+            got = clean_domain(client.json(prompt(text), schema()), text)
         except Exception as e:  # 남은 건 다음 실행에서
             errors.append(str(e)[:200])
             continue
@@ -168,9 +210,9 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
                      "model": getattr(client, "model", None), "on": today, "body": has_body(pid)}
         summary["done"] += 1
         if summary["done"] % 25 == 0:
-            save(data_dir, rows)  # 중간에 멈춰도 한 일은 남긴다
+            save(data_dir, rows, file)  # 중간에 멈춰도 한 일은 남긴다
             log.info("공고 정리 %d/%d건", summary["done"], len(todo))
-    save(data_dir, rows)
+    save(data_dir, rows, file)
     summary["pending"] = len(todo) - summary["done"]
     if errors:
         summary["errors"] = errors[:3]

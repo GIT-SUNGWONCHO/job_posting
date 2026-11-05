@@ -15,7 +15,7 @@ import logging
 from itertools import combinations
 from typing import Any
 
-from . import config, facts, recommend
+from . import config, facts, recommend, taxonomy
 
 log = logging.getLogger(__name__)
 
@@ -29,10 +29,9 @@ def _f(fact: dict[str, Any] | None) -> dict[str, Any]:
 def frame_items(fact: dict[str, Any] | None) -> list[dict[str, Any]]:
     """C 고정 틀: 공고 정리로 만든 항목(종류, 이름, 공고 요구, 가중치). 공고에 없는 종류는 뺀다."""
     f = _f(fact)
-    names = {i["id"]: i["name"] for i in config.load("profile")["industries"]}
     years = ", ".join(f"{y.get('area', '')} {y.get('min', '')}년 이상" for y in f.get("years") or [])
     level = f.get("level") if f.get("level") not in (None, "적혀 있지 않음") else ""
-    domain = [names.get(d, d) for d in (f.get("domain_required") or [])]
+    domain = [taxonomy.industry_name(d) for d in (f.get("domain_required") or [])]
     degree = f.get("degree") if f.get("degree") not in (None, "적혀 있지 않음", "무관") else ""
     raw = [
         ("핵심 업무", "주요 업무", "; ".join(facts.duty_texts(f))),
@@ -54,9 +53,8 @@ def pool_items(fact: dict[str, Any] | None) -> list[dict[str, str]]:
     out += [{"kind": "경력 연수·직급", "posting": f"{y.get('area', '')} {y.get('min', '')}년 이상"} for y in f.get("years") or []]
     if f.get("level") not in (None, "적혀 있지 않음"):
         out.append({"kind": "경력 연수·직급", "posting": f"직급 {f['level']}"})
-    names = {i["id"]: i["name"] for i in config.load("profile")["industries"]}
-    out += [{"kind": "도메인·업종", "posting": f"{names.get(d, d)} 경험 필수"} for d in f.get("domain_required") or []]
-    out += [{"kind": "도메인·업종", "posting": f"{names.get(d, d)} 경험 우대"} for d in f.get("domain_preferred") or []]
+    out += [{"kind": "도메인·업종", "posting": f"{taxonomy.industry_name(d)} 경험 필수"} for d in f.get("domain_required") or []]
+    out += [{"kind": "도메인·업종", "posting": f"{taxonomy.industry_name(d)} 경험 우대"} for d in f.get("domain_preferred") or []]
     if f.get("degree") not in (None, "적혀 있지 않음", "무관"):
         out.append({"kind": "학력·전공", "posting": f"{f['degree']} {', '.join(f.get('majors') or [])}".strip()})
     out += [{"kind": "자격증", "posting": c} for c in f.get("certs") or []]

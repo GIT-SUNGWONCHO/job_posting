@@ -170,3 +170,17 @@ def test_funnel_and_ranking_for_private_report():
             {"user_id": "user-0001", "posting_id": "3", "score": 80, "rule": 90, "kind": "rule", "score_v": 1}]
     got = [json.loads(x.split("\t", 1)[1]) for x in feedback.ranking(screen, rows)]
     assert [(g["rule"], g["ai"]) for g in got] == [(90, None), (60, 70)]
+
+
+def test_clean_domain():
+    from jobpost import facts
+    text = "자격요건\n- 데이터 엔지니어링 5년\n우대사항\n- 보험, 금융 분야의  비즈니스 지식\n- 금융 또는 공공 프로젝트 수행 경험자"
+    got = facts.clean_domain({"domain_exp": [
+        {"code": "IN0104", "need": "우대", "quote": "보험, 금융 분야의 비즈니스 지식"},   # 공백이 달라도 본문에 있음
+        {"code": "IN01", "need": "우대", "quote": "보험, 금융 분야의 비즈니스 지식"},     # 대분류가 있으니 보험은 빠짐
+        {"code": "IN11", "need": "우대", "quote": "금융 또는 공공 프로젝트 수행 경험자"},
+        {"code": "IN0201", "need": "필수", "quote": "이커머스 경험 필수"},             # 본문에 없는 근거는 버림
+        {"code": "IN11", "need": "필수", "quote": "금융 또는 공공 프로젝트 수행 경험자"},  # 같은 코드는 필수만
+    ]}, text)
+    assert [(d["code"], d["need"]) for d in got["domain_exp"]] == [("IN01", "우대"), ("IN11", "필수")]
+    assert got["domain_required"] == ["IN11"] and got["domain_preferred"] == ["IN01"]

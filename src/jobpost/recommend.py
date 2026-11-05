@@ -20,7 +20,7 @@ from collections import Counter
 from datetime import date
 from typing import Any
 
-from . import ai, bodyread, config, filters, jobtypes, matching, profile
+from . import ai, bodyread, config, filters, jobtypes, matching, profile, taxonomy
 from .models import CompanyType
 
 log = logging.getLogger(__name__)
@@ -181,7 +181,9 @@ def posting_text(p: dict[str, Any], screen: dict[str, Any], body: str | None, fa
                 + f"직급: {f.get('level')} / 필수 스킬: {', '.join(f.get('required_skills') or []) or '-'} / "
                 f"우대 스킬: {', '.join(f.get('preferred_skills') or []) or '-'} / 연수 요건: {years or '-'} / "
                 f"학력: {f.get('degree') or '-'}"
-                f"{' (전공 ' + ', '.join(f.get('majors') or []) + ' ' + (f.get('major_need') or '') + ')' if f.get('majors') else ''}")
+                f"{' (전공 ' + ', '.join(f.get('majors') or []) + ' ' + (f.get('major_need') or '') + ')' if f.get('majors') else ''}"
+                + ("\n업종 경험: " + "; ".join(f"{taxonomy.industry_name(d.get('code'))} {d.get('need', '')}(근거: '{d.get('quote', '')}')"
+                                            for d in f["domain_exp"]) if f.get("domain_exp") else ""))
     return out
 
 

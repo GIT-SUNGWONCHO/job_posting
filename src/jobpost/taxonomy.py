@@ -155,6 +155,38 @@ def industry_from_ksic(ksic: str | None) -> tuple[str | None, str]:
     return None, "unmapped"
 
 
+# ---------- 업종 경험 판정 ----------
+
+def industry_code(x: str | None) -> str | None:
+    """업종 코드(대·중분류) 또는 지난 id → 코드."""
+    if not x:
+        return None
+    if CODE_RE["industry"].fullmatch(x) or CODE_RE["industry_group"].fullmatch(x):
+        return x
+    return code_of(x)
+
+
+def industry_name(x: str | None) -> str:
+    code = industry_code(x)
+    for it in [*industry_groups(), *industries()]:
+        if it["code"] == code:
+            return it["name"]
+    return x or ""
+
+
+def industry_fit(need: str | None, have: set[str]) -> float:
+    """공고가 요구한 업종(대분류 또는 중분류)과 지원자 경력 업종(중분류) → 1 충족 · 0.5 일부(같은 대분류) · 0."""
+    n = industry_code(need)
+    mine = {c for c in (industry_code(h) for h in have) if c}
+    if not n:
+        return 1.0
+    if len(n) == 4:  # 대분류 요구: 그 아래 아무거나
+        return 1.0 if any(c.startswith(n) for c in mine) else 0.0
+    if n in mine:
+        return 1.0
+    return 0.5 if any(c[:4] == n[:4] for c in mine) else 0.0
+
+
 # ---------- 지난 id ↔ 코드 ----------
 
 def code_of(legacy: str | None) -> str | None:

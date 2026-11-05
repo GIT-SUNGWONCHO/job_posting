@@ -15,6 +15,10 @@ on:
         description: 이 시간(분)이 지나면 멈춘다
         required: false
         default: "100"
+      only:
+        description: "시험: 이 공고 id들(쉼표)만 정리해 data 브랜치 trials/facts_trial.jsonl에 쓴다(facts.jsonl은 그대로)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -55,7 +59,13 @@ jobs:
           GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
           MAX_CALLS: ${{ inputs.max_calls }}
           MINUTES: ${{ inputs.minutes }}
-        run: uv run --no-dev jobpost facts --data-dir data --max-calls "${MAX_CALLS:-900}" --max-minutes "${MINUTES:-100}" | tee -a "$GITHUB_STEP_SUMMARY"
+          ONLY: ${{ inputs.only }}
+        run: |
+          if [ -n "$ONLY" ]; then
+            uv run --no-dev jobpost facts --data-dir data --only "$ONLY" --max-minutes "${MINUTES:-100}" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            uv run --no-dev jobpost facts --data-dir data --max-calls "${MAX_CALLS:-900}" --max-minutes "${MINUTES:-100}" | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: data 브랜치에 커밋
         if: always()
@@ -63,7 +73,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A facts.jsonl
+          git add -A facts.jsonl trials
           if git diff --cached --quiet; then
             echo "바뀐 데이터 없음"
             exit 0

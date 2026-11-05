@@ -26,7 +26,7 @@ from collections import Counter
 from datetime import date
 from typing import Any
 
-from . import config, matching, profile
+from . import config, matching, profile, taxonomy
 from . import facts as facts_mod
 
 log = logging.getLogger(__name__)
@@ -149,9 +149,10 @@ def rule_v3(data: dict[str, Any], posting: dict[str, Any], fact: dict[str, Any] 
     if f.get("manages") == "팀장(사람 관리)" and not lead:
         level = min(level, 0.3)
 
-    need = set(f.get("domain_required") or [])
-    mine_ind = {c.get("industry") for c in data.get("careers") or []}
-    domain = 1.0 if not need or need & mine_ind else 0.0
+    # 필수 업종 경험: 같은 중분류 또는 대분류 요구 아래면 충족, 같은 대분류면 일부(taxonomy.industry_fit). 여럿이면 하나만 맞아도
+    need = f.get("domain_required") or []
+    mine_ind = {c.get("industry") for c in data.get("careers") or [] if c.get("industry")}
+    domain = max((taxonomy.industry_fit(n, mine_ind) for n in need), default=1.0)
 
     want = DEGREE_RANK.get(f.get("degree") or "", -1)
     have = DEGREE_RANK.get(((data.get("education") or {}).get("degree")) or "", 2)
