@@ -66,7 +66,8 @@ src/jobpost/
   jobtypes.py      직무 유형 분류(목록은 config/taxonomy/jobs.yaml, AI가 고름)
   dart.py          회사 기본정보: 공고 회사를 DART와 잇고 기업개황·주요 계정·직원 현황·주요 공시를 data/dart/에(설정 config/dart.yaml). DART는 여기서만 부른다
   official.py      공식 목록: 공정위 기업집단 소속회사·공공기관(지정·지방공기업·지방출자출연)·국민연금 사업장을 data/official/에(매월 official.yml)
-  company_class.py 기업 구분: 공적 근거(공공기관 목록·공정위·DART 지배기업·매출·국민연금)를 순서대로 보고 구분과 근거를 정함
+  company_class.py 기업 구분: 공적 근거(공공기관 목록·공정위·DART 지배기업·매출·국민연금)를 순서대로 보고 구분과 근거를 정함. 회사 업종(예외 → 공공기관 → KSIC → 공고 정리 회사 도메인)
+  monthly.py       월간 점검(기업 구분·업종 점검 보고): 업종 분포·KSIC·업종 사전 밖 문장·예외 비교. 고치지 않음
   research.py      회사 심층분석: 가진 데이터로 만드는 경쟁사(같은 DART 업종 매출 상위)·직무 환경·도구(공고 본문의 도구). 설정 config/research.yaml
   notes.py         내 리서치 노트: data 브랜치 notes/*.json(정해진 블록)을 확인해 사람마다 Supabase research_notes에 넣는다
   career.py        커리어 지표(시장): 직무 유형 × 기업 구분별 날짜별 공고 수, 경력 요구, 요구 스킬(화면용 파일 career)

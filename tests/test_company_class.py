@@ -52,3 +52,17 @@ def test_manual_exception_comes_first():
     r = cc.classify("가나", corp=None, basics=None, group_keys={}, public_keys={}, nps={}, source_type="그 외",
                     manual={"type": "중견", "basis": "2025 감사보고서 매출 1,900억"})
     assert (r.type, r.basis) == ("중견", "직접 확인: 2025 감사보고서 매출 1,900억")
+
+
+def test_industry_order():
+    from jobpost.company_class import industry
+    # 예외가 먼저
+    assert industry(manual={"industry": "IN0201", "basis": "확인"}, public_label="x", ksic="64110", domains=[])[0] == "IN0201"
+    # 공공기관 목록 → 공공기관
+    assert industry(manual=None, public_label="공공기관 지정", ksic="64110", domains=[]) == ("IN1101", "공공기관 지정")
+    # KSIC 대응표
+    assert industry(manual=None, public_label=None, ksic="64110", domains=["IN0105"]) == ("IN0101", "DART 업종 코드 64110")
+    # 도메인을 모르는 KSIC(소프트웨어)·DART 없음 → 회사 도메인 다수결
+    code, basis = industry(manual=None, public_label=None, ksic="58221", domains=["IN0201", "IN0702", "IN0201"])
+    assert code == "IN0201" and "3개 중 2개" in basis
+    assert industry(manual=None, public_label=None, ksic=None, domains=[])[0] is None

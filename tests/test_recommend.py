@@ -168,6 +168,9 @@ def test_want_tags_show_preferences_without_scoring():
     assert recommend.want_tags({**FACTS, "level": "리더·관리자", "industry": "game"}, wants) == ["비선호 업종 게임", "리더·관리자 공고"]
     assert recommend.want_tags({**FACTS, "industry": "bank"}, wants) == ["선호 업종 은행·저축"]
     assert recommend.want_tags(FACTS, {}) == []
+    # 공고 업종(코드)을 주면 그것으로, 선호 업종은 지난 id로 저장돼 있어도 코드로 맞춘다
+    assert recommend.want_tags(FACTS, {"industriesLike": ["bank"]}, "IN0101") == ["선호 업종 은행·저축"]
+    assert recommend.want_tags({**FACTS, "industry": "bank"}, {"industriesLike": ["bank"]}, "IN0201") == []
 
 
 def test_changing_wants_reuses_ai_and_only_readjusts():

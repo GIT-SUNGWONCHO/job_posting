@@ -105,3 +105,28 @@ def classify(key: str, *, corp: dict[str, Any] | None, basics: dict[str, Any] | 
     if source_type in ("대기업", "공기업·공공기관"):
         return Result(source_type, "수집처 표시", listed)
     return Result("확인 안 됨", "근거 없음" if not cand else "직원 300명 이상인데 DART 실적 없음", listed)
+
+
+# ---------- 회사 업종(docs/taxonomy.md '업종') ----------
+
+def industry(*, manual: dict[str, Any] | None, public_label: str | None, ksic: str | None,
+             domains: list[str]) -> tuple[str | None, str]:
+    """회사 업종(중분류 코드 또는 None)과 근거. 순서: 예외 → 공공기관 목록 → KSIC 대응표 → 공고 정리의 회사 도메인
+    다수결(헤드헌팅 공고는 넣지 않고 부른다) → 확인 안 됨. KSIC가 도메인을 알려 주지 않는 코드면 회사 도메인으로 간다."""
+    from . import taxonomy
+
+    if manual and manual.get("industry"):
+        return manual["industry"], f"직접 확인: {manual.get('basis') or ''}".strip()
+    if public_label:
+        return "IN1101", public_label
+    code, why = taxonomy.industry_from_ksic(ksic)
+    if code:
+        return code, f"DART 업종 코드 {ksic}"
+    if domains:
+        counts: dict[str, int] = {}
+        for d in domains:
+            counts[d] = counts.get(d, 0) + 1
+        best = max(counts, key=lambda c: (counts[c], -domains.index(c)))
+        total = len(domains)
+        return best, f"공고 정리(AI) 회사 도메인 {total}개 중 {counts[best]}개"
+    return None, "근거 없음" if why == "none" else f"DART 업종 코드 {ksic}(도메인 모름)"

@@ -25,7 +25,8 @@ from .models import CompanyType
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 4  # 2: 항목별 판단 근거, 3: 이유 40자 안쪽, 4: 공고 사실을 따로, 판정은 코드가. 지침은 match_guide.yaml version
+PROMPT_VERSION = 4  # 2: 항목별 판단 근거, 3: 이유 40자 안쪽, 4: 공고 사실을 따로, 판정은 코드가.
+# 2026-11-05 공고 사실에서 업종을 뺐다(회사 업종을 씀). 빼기만 해서 버전은 그대로: 지난 결과를 다시 매기지 않는다(매칭 따라잡기 때 함께). 지침은 match_guide.yaml version
 
 
 # 매칭 대상(내 분야 공고): 직무 유형과 '절대 안 봄'(제외 키워드·회사)만으로 정한다. 기업 구분·경력·지역·고용 형태는
@@ -64,12 +65,10 @@ def schema() -> dict[str, Any]:
         "weight": {"type": "INTEGER"},
     }}
     pf = g["posting_facts"]
-    industries = [i["id"] for i in config.load("profile")["industries"]]
-    facts = {"type": "OBJECT", "required": ["level", "english", "employment", "industry"], "properties": {
+    facts = {"type": "OBJECT", "required": ["level", "english", "employment"], "properties": {
         "level": {"type": "STRING", "enum": pf["level"]},
         "english": {"type": "STRING", "enum": pf["english"]},
         "employment": {"type": "STRING", "enum": pf["employment"]},
-        "industry": {"type": "STRING", "enum": industries},
     }}
     return {"type": "OBJECT", "required": ["items", "posting", "reason", "gaps"], "properties": {
         "items": {"type": "ARRAY", "items": item},
@@ -87,8 +86,7 @@ def prompt(profile_text: str, posting_text: str) -> str:
         f"- 항목 종류(kind): {', '.join(g['item_kinds'])}\n"
         f"- 판정(fit): {', '.join(g['fit'])}\n"
         "- 항목마다 name은 짧은 이름, posting은 공고가 요구하는 것, me는 지원자 쪽 근거(각 40자 안쪽)\n"
-        "- posting: 공고 사실(level, english, employment, industry). 지원자와 상관없이 공고만 보고 적는다\n"
-        "- 업종(industry) id: " + ", ".join(f"{i['id']} {i['name']}" for i in config.load("profile")["industries"]) + "\n"
+        "- posting: 공고 사실(level, english, employment). 지원자와 상관없이 공고만 보고 적는다\n"
         "- reason: 이 지원자에게 맞는 이유 한 문장(40자 안쪽, 맞는 점 먼저, 크게 부족한 점이 있으면 뒤에 짧게)\n"
         "- gaps: 크게 부족한 점 최대 3개, 짧게\n\n"
         f"[지원자]\n{profile_text}\n\n[공고]\n{posting_text}"
@@ -127,29 +125,32 @@ def adjust(base: int, facts: dict[str, Any] | None, english: str | None,
     return score, notes
 
 
-def want_tags(facts: dict[str, Any] | None, wants: dict[str, Any] | None) -> list[str]:
-    """공고 사실이 원하는 조건에 걸리는지(점수는 그대로, 화면에 표시만)."""
+def want_tags(facts: dict[str, Any] | None, wants: dict[str, Any] | None, industry: str | None = None) -> list[str]:
+    """공고 사실이 원하는 조건에 걸리는지(점수는 그대로, 화면에 표시만). 업종은 공고 업종(회사 업종, 헤드헌팅은 의뢰 회사
+    도메인. screen.py). 없으면 예전 매칭 결과의 AI 업종(지난 id)."""
     facts, wants = facts or {}, wants or {}
-    names = {i["id"]: i["name"] for i in config.load("profile")["industries"]}
-    industry = facts.get("industry")
+    code = taxonomy.industry_code(industry or facts.get("industry"))
     out: list[str] = []
-    if industry and industry in (wants.get("industriesLike") or []):
-        out.append(f"선호 업종 {names.get(industry, industry)}")
-    if industry and industry in (wants.get("industriesAvoid") or []):
-        out.append(f"비선호 업종 {names.get(industry, industry)}")
+    if code:
+        name = taxonomy.industry_name(code)
+        if code in {taxonomy.industry_code(w) for w in wants.get("industriesLike") or []}:
+            out.append(f"선호 업종 {name}")
+        if code in {taxonomy.industry_code(w) for w in wants.get("industriesAvoid") or []}:
+            out.append(f"비선호 업종 {name}")
     if wants.get("level") == "실무자" and facts.get("level") == "리더·관리자":
         out.append("리더·관리자 공고")
     return out
 
 
-def finish(row: dict[str, Any], data: dict[str, Any], user_filters: dict[str, Any]) -> dict[str, Any]:
+def finish(row: dict[str, Any], data: dict[str, Any], user_filters: dict[str, Any],
+           industry: str | None = None) -> dict[str, Any]:
     """AI 결과(새로 매겼거나 다시 쓰는 것)에 상한·판정과 원하는 조건 표시를 지금 설정으로 다시 단다."""
     parts = row.get("parts") or {}
     if parts.get("kind") != "ai" or "base" not in parts:
         return row  # v1 결과(공고 사실 없음)는 그대로
     score, notes = adjust(parts["base"], parts.get("posting"), data.get("english"), user_filters.get("employment_types"),
                           has_body=parts.get("body", True))
-    tags = want_tags(parts.get("posting"), data.get("wants"))
+    tags = want_tags(parts.get("posting"), data.get("wants"), industry)
     return {**row, "score": score, "parts": {**parts, "adjust": notes, "wants": tags, "verdict": verdict(score)}}
 
 
@@ -261,7 +262,7 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                 src = o if same else twin
                 row = {k: src[k] for k in ("score", "parts", "matched", "missing", "reason", "reason_meta")}
                 row["parts"] = {**row["parts"], "rule": rule["score"]}
-                row = finish(row, data, user_filters)
+                row = finish(row, data, user_filters, p.get("industry"))
                 if phash:  # 예전 결과에는 해시가 없을 수 있어 여기서 붙여 둔다
                     row["reason_meta"] = {**(row["reason_meta"] or {}), "profile_hash": phash}
                     shared[(p["id"], phash)] = row
@@ -286,7 +287,7 @@ def run(screen: dict[str, Any], bodies: dict[str, Any], db: Any, client: Any | N
                            "reason_meta": {"model": model, "prompt": PROMPT_VERSION, "on": today.isoformat(),
                                            "profile_hash": phash}}
                     shared[(p["id"], phash)] = row
-                    row = finish(row, data, user_filters)
+                    row = finish(row, data, user_filters, p.get("industry"))
                     summary["ai_new"] += 1
                     if summary["ai_new"] % 25 == 0:
                         log.info("AI 매칭 %d건", summary["ai_new"])

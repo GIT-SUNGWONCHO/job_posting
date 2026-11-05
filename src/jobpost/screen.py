@@ -90,6 +90,19 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
         return {"source": r["source"], "name": SOURCE_NAMES.get(r["source"], r["source"]), "url": o.get("url")}
 
     companies: dict[str, dict[str, Any]] = {}
+    fx = facts.load(data_dir)
+
+    def domain_of(r: dict[str, Any]) -> list[str]:
+        return ((fx.get(r["uid"]) or {}).get("facts") or {}).get("company_domain") or []
+
+    def headhunting(r: dict[str, Any]) -> bool:
+        return bool(r.get("headhunter")) or is_search_firm(r.get("company", ""))
+
+    # 회사 업종의 마지막 근거: 그 회사 공고(헤드헌팅 제외)의 공고 정리 회사 도메인(docs/taxonomy.md '업종')
+    domains: dict[str, list[str]] = {}
+    for r in open_recs:
+        if not headhunting(r):
+            domains.setdefault(r.get("company_key") or r.get("company", ""), []).extend(domain_of(r))
 
     def item(r: dict[str, Any], same: list[dict[str, Any]]) -> dict[str, Any]:
         """화면의 공고 한 건(같은 공고 묶음은 대표 r과 나머지 same을 합친다). 회사와 본문도 함께 채운다."""
@@ -104,6 +117,9 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
                 "group": registry.group(key, r.get("company", "")),
                 **({"typeBasis": cls.basis} if cls else {}),  # 기업 구분 근거(docs/collection.md '새 기준')
             }
+            ind, ind_basis = registry.industry(key, domains.get(key) or [])
+            if ind:
+                companies[key].update({"industry": ind, "industryBasis": ind_basis})
         job_type = next(((x.get("job_type") or {}).get("id") for x in [r, *same] if x.get("job_type")), None)
         job_type2 = next((jobtypes.secondary_of(x) for x in [r, *same] if jobtypes.secondary_of(x)), None)
         client_type = next((x["client_type"] for x in [r, *same] if x.get("client_type")), None)
@@ -125,7 +141,10 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
             "deadline": r.get("deadline"),
             "regions": o.get("regions") or [],
             "employment": o.get("employment_types") or [],
-            "headhunter": bool(r.get("headhunter")) or is_search_firm(r.get("company", "")),
+            "headhunter": headhunting(r),
+            # 공고 업종: 회사 업종. 헤드헌팅은 회사(서치펌) 대신 본문의 의뢰 회사 설명으로 뽑은 회사 도메인
+            **({"industry": ind} if (ind := (next(iter(domain_of(r)), None) if headhunting(r)
+                                             else companies[key].get("industry"))) else {}),
             **({"clientType": client_type} if client_type else {}),
             "noise": r.get("noise"),
             "firstSeen": first_seen,
@@ -156,7 +175,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
                      for t in jobtypes.taxonomy()["types"]],
         # 프로필 화면에서 고르는 목록(config/profile.yaml)과 공고에서 나온 스킬
         "profileOptions": config.load("profile"),
-        "skills": facts.skill_catalog(texts, facts.load(data_dir)),
+        "skills": facts.skill_catalog(texts, fx),
         # 기준 샘플(config/match_sample.yaml): 화면의 "평가할 공고"
         "sample": [p["id"] for p in config.load("match_sample").get("postings") or []],
         # 커리어 탭 시장 지표(career.py): 날짜별 공고 수, 지금 열린 공고의 연차·스킬

@@ -156,11 +156,18 @@ class CompanyRegistry:
             self._official = ev
         return self._official
 
-    def classify(self, key: str, name: str = "") -> company_class.Result | None:
-        """새 기준 결과(구분·근거). 공식 목록이 없으면 None."""
+    def classify(self, key: str, name: str = "", use_manual: bool = True) -> company_class.Result | None:
+        """새 기준 결과(구분·근거). 공식 목록이 없으면 None. use_manual=False: 예외 없이 정하면(월간 점검 비교)."""
         ev = self._evidence()
         if not ev:
             return None
+        if not use_manual:
+            corp = dict(ev["corps"].get(key) or {})
+            if corp.get("corp_name"):
+                corp["dart_key"] = company_key(corp["corp_name"])
+            return company_class.classify(
+                key, corp=corp, basics=ev["basics"].get(corp.get("corp_code") or ""), group_keys=ev["groups"],
+                public_keys=ev["public"], nps=ev["nps"], source_type=self.source_type(key, name).value)
         if key not in self._results:
             corp = dict(ev["corps"].get(key) or {})
             if corp.get("corp_name"):
@@ -170,6 +177,18 @@ class CompanyRegistry:
                 public_keys=ev["public"], nps=ev["nps"], source_type=self.source_type(key, name).value,
                 manual=(config.load("company_class").get("overrides") or {}).get(key))
         return self._results[key]
+
+    def industry(self, key: str, domains: list[str], use_manual: bool = True) -> tuple[str | None, str]:
+        """회사 업종(코드, 근거). domains: 이 회사 공고(헤드헌팅 제외)의 공고 정리 회사 도메인."""
+        ev = self._evidence()
+        corp = (ev.get("corps") or {}).get(key) or {}
+        dart_key = company_key(corp["corp_name"]) if corp.get("corp_name") else None
+        public = ev.get("public") or {}
+        label = public.get(key) or (public.get(dart_key) if dart_key else None)
+        basics = (ev.get("basics") or {}).get(corp.get("corp_code") or "") or {}
+        return company_class.industry(
+            manual=(config.load("company_class").get("overrides") or {}).get(key) if use_manual else None, public_label=label,
+            ksic=(basics.get("company") or {}).get("industry_code"), domains=domains)
 
     def update(self, company_types: dict[str, set[str]], names: dict[str, str], today: str) -> None:
         for key, types in company_types.items():

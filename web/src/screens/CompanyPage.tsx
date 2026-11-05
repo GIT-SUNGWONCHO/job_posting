@@ -47,7 +47,8 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
   const stars = useStars()
   const on = isStarred(stars.state, companyKey)
   const name = c?.name ?? companyKey
-  const meta = [c?.type, c?.group && `${c.group} 계열`, listed].filter(Boolean) as string[]
+  const industry = c?.industry && screen.profileOptions?.industries.find((i) => i.code === c.industry)?.name
+  const meta = [c?.type, industry, c?.group && `${c.group} 계열`, listed].filter(Boolean) as string[]
   const srcBtn = (title: string, items: SourceItem[]) => items.length > 0 && (
     <button type="button" className="src-btn" onClick={() => setSheet({ title, items })}>{copy.common.source}</button>
   )
@@ -67,6 +68,7 @@ export function CompanyPage({ screen, companyKey, today, filters, panel = false 
         <h1>{name}</h1>
         {meta.length > 0 && <div className="intro-meta">{meta.map((m, i) => <Fragment key={m}>{i > 0 && <Sep />}<span>{m}</span></Fragment>)}</div>}
         {c?.typeBasis && <p className="note">{t.typeBasis(c.typeBasis)}</p>}
+        {industry && c?.industryBasis && <p className="note">{t.industryBasis(c.industryBasis)}</p>}
         {stars.state === 'missing' && <p className="note">{t.starsMissing}</p>}
       </header>
 

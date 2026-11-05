@@ -124,6 +124,7 @@ export const copy = {
   },
   company: {
     typeBasis: (basis: string) => `기업 구분 근거: ${basis}`,
+    industryBasis: (basis: string) => `업종 근거: ${basis}`,
     hiring: '채용',
     daily: '매일',
     star: '관심 회사에 넣기',

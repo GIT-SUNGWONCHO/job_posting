@@ -25,6 +25,8 @@ export interface Posting {
   headhunter: boolean
   /** 헤드헌팅 공고의 의뢰 회사 구분(수집처가 적어 준 것). 회사 자리는 서치펌이라 필터는 이걸 쓴다 */
   clientType?: CompanyType
+  /** 공고 업종(코드): 회사 업종, 헤드헌팅은 본문의 의뢰 회사 설명으로 정한 업종 */
+  industry?: string
   noise: string | null
   firstSeen: string
   /** 새로 붙인 수집처가 첫날 가져온 공고(원래 열려 있던 공고). 새 공고로 세지 않는다 */
@@ -59,6 +61,9 @@ export interface Company {
   group: string | null
   /** 기업 구분 근거(공정위 기업집단 ○○, DART 매출 ○억(기준 ○억), 수집처 표시 …). 옛 파일에는 없다 */
   typeBasis?: string
+  /** 회사 업종(중분류 코드 IN0101, config/taxonomy/industries.yaml)과 근거. 정하지 못하면 없다 */
+  industry?: string
+  industryBasis?: string
 }
 
 export interface Filters {
@@ -76,7 +81,7 @@ export interface Filters {
 /** 프로필에서 고르는 목록(config/profile.yaml) */
 export interface ProfileOptions {
   version: number
-  industries: { id: string; name: string }[]
+  industries: { id: string; name: string; code?: string }[]
   /** job_type: 공고에서는 이 직무 유형으로 본다(없으면 id가 같은 직무 유형) */
   roles: { id: string; name: string; job_type?: string }[]
   skill_levels: { level: number; name: string; desc: string }[]
