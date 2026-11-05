@@ -128,6 +128,10 @@ def validate() -> None:
     dup = {p for p in prefixes if prefixes.count(p) > 1}
     if dup:
         raise TaxonomyError(f"industries: KSIC 앞자리가 두 곳에 있음 {sorted(dup)}")
+    words = [w.rstrip("*").lower() for x in [*industry_groups(), *industries()] for w in x.get("words") or []]
+    dupw = {w for w in words if words.count(w) > 1}
+    if dupw:
+        raise TaxonomyError(f"industries: words가 두 곳에 있음 {sorted(dupw)}")
     legacy = [x["legacy"] for x in [*fields(), *job_types(), *industries()] if x.get("legacy")]
     if len(legacy) != len(set(legacy)):
         raise TaxonomyError("지난 id(직무·업종)가 겹침")
@@ -185,6 +189,38 @@ def industry_fit(need: str | None, have: set[str]) -> float:
     if n in mine:
         return 1.0
     return 0.5 if any(c[:4] == n[:4] for c in mine) else 0.0
+
+
+# ---------- 업종 경험 문장 → 업종 코드(맞출 사전 words) ----------
+
+CTX = r"\s*(?=산업|업계|업권|업|도메인|분야|기업|회사|사|펌|서비스|프로젝트|플랫폼)"  # *가 붙은 말 뒤에 와야 하는 말
+
+
+@cache
+def _word_patterns() -> list[tuple[re.Pattern[str], str, str]]:
+    out = []
+    for x in [*industry_groups(), *_active(industries())]:
+        for w in x.get("words") or []:
+            ctx = w.endswith("*")
+            word = w.rstrip("*")
+            body = r"\s*".join(re.escape(part) for part in word.split())
+            if word.isascii():  # 영문은 단어 단위로(WSI 안의 SI는 세지 않음)
+                body = r"(?<![A-Za-z])" + body + r"(?![A-Za-z])"
+            out.append((re.compile(body + (CTX if ctx else ""), re.I), x["code"], word))
+    return sorted(out, key=lambda p: -len(p[2]))
+
+
+def industries_in(text: str) -> list[str]:
+    """업종 경험 문장 속 업종 코드(긴 말부터, 찾은 말은 지워 겹쳐 세지 않음). 대분류가 있으면 그 아래 중분류는 뺀다."""
+    found: list[str] = []
+    rest = text or ""
+    for pat, code, _ in _word_patterns():
+        if pat.search(rest):
+            found.append(code)
+            rest = pat.sub(" ", rest)
+    found = list(dict.fromkeys(found))
+    groups = {c for c in found if len(c) == 4}
+    return [c for c in found if not (len(c) == 6 and c[:4] in groups)]
 
 
 # ---------- 지난 id ↔ 코드 ----------

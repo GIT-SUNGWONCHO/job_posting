@@ -18,7 +18,7 @@ from . import bodyread, config, jobtypes, matching, recommend, taxonomy
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = 4  # 3·4(2026-11-05): 업종을 코드로, 회사 도메인과 업종 경험(근거 문장 필수)을 나눔(4: 시험 40건 반영). 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
+PROMPT_VERSION = 5  # 3~5(2026-11-05): 회사 도메인(코드)과 업종 경험 문장을 나눔. 5: AI는 문장만, 업종·필수/우대는 코드(사전·제목). 2(2026-11-03): 업무마다 일의 종류(직무 유형)·책임 범위, 사람 관리, 연수 상한, 고용 형태·기간, 영어 쓰는 곳
 BODY_CHARS = 3500  # 자격요건·우대사항은 본문 뒤쪽에 있어서 넉넉히 보낸다
 FILE = "facts.jsonl"
 
@@ -38,20 +38,16 @@ def industries() -> dict[str, str]:
 
 
 def _industry_list() -> str:
-    """지시문의 업종 목록: 대분류(넓게) 다음 그 중분류."""
-    items = [x for x in taxonomy.industries() if not x.get("retired")]
-    return " / ".join(f"{g['code']} {g['name']}(넓게): " + ", ".join(f"{i['code']} {i['name']}" for i in items
-                                                                     if i["group"] == g["code"])
-                      for g in taxonomy.industry_groups())
+    """지시문의 회사 도메인 목록(중분류 코드)."""
+    return ", ".join(f"{i['code']} {i['name']}" for i in taxonomy.industries() if not i.get("retired"))
 
 
 def schema() -> dict[str, Any]:
     items = [x["code"] for x in taxonomy.industries() if not x.get("retired")]
-    codes = [g["code"] for g in taxonomy.industry_groups()] + items
     kinds = [t["id"] for t in jobtypes.taxonomy()["types"]]
     strings = {"type": "ARRAY", "items": {"type": "STRING"}}
     return {"type": "OBJECT", "required": ["level", "manages", "duties", "required_skills", "preferred_skills", "years",
-                                           "company_domain", "domain_exp", "degree", "majors", "certs",
+                                           "company_domain", "domain_quotes", "degree", "majors", "certs",
                                            "english", "employment", "work_mode"],
             "properties": {
                 "level": {"type": "STRING", "enum": LEVELS},
@@ -64,9 +60,7 @@ def schema() -> dict[str, Any]:
                 "years": {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["area", "min"], "properties": {
                     "area": {"type": "STRING"}, "min": {"type": "INTEGER"}, "max": {"type": "INTEGER"}}}},
                 "company_domain": {"type": "ARRAY", "items": {"type": "STRING", "enum": items}},
-                "domain_exp": {"type": "ARRAY", "items": {"type": "OBJECT", "required": ["code", "need", "quote"], "properties": {
-                    "code": {"type": "STRING", "enum": codes}, "need": {"type": "STRING", "enum": NEEDS[:2]},
-                    "quote": {"type": "STRING"}}}},
+                "domain_quotes": strings,
                 "degree": {"type": "STRING", "enum": DEGREES},
                 "majors": strings,
                 "major_need": {"type": "STRING", "enum": NEEDS},
@@ -97,11 +91,9 @@ def prompt(posting: str) -> str:
         "- company_domain: 이 공고로 사람을 뽑는 회사가 일하는 시장 1~2개(중분류 코드). 회사 소개·서비스 설명으로 정한다. "
         "헤드헌팅 공고는 서치펌이 아니라 본문의 의뢰 회사 설명('국내 핀테크 유니콘' 등)으로 정하고, 그런 설명이 없으면 비운다"
         "(서치펌 자신의 업종은 적지 않는다)\n"
-        "- domain_exp: 자격요건·우대사항에 지원자의 특정 업종 경험·이해를 요구하는 문장이 있을 때만. 회사가 그 업종이라는 것, "
-        "담당 업무·과정 설명은 넣지 않는다. 항목마다 code(quote에 나온 업종 말로 정한다. '금융', '제조'처럼 넓으면 대분류, "
-        "'보험업'처럼 구체적이면 중분류), "
-        "need(자격요건·필수에 있으면 필수, 그 밖은 우대), quote(그 문장을 본문에서 그대로 40자 안쪽). 맞는 업종이 없으면 넣지 않는다\n"
-        f"  업종 목록: {_industry_list()}\n"
+        f"  목록: {_industry_list()}\n"
+        "- domain_quotes: 지원자에게 특정 업종의 경험·이해를 요구하거나 우대하는 문장을 본문 그대로 한 문장씩. 없으면 빈 목록. "
+        "회사가 그 업종이라는 것, 담당 업무, 관심만 묻는 문장은 넣지 않는다\n"
         "- degree, majors, major_need: 학력, 전공 이름, 전공이 필수인지 우대인지\n"
         "- certs: 자격증 이름\n"
         "- english: need(영어가 필수인지 우대인지)와 uses(영어를 쓰는 곳: 회의·협업, 문서·보고, 고객 응대, 공고가 영어. 적힌 것만)\n"
@@ -115,23 +107,51 @@ def _squash(text: str) -> str:
     return re.sub(r"\s+", "", text or "")
 
 
+# 문장이 놓인 본문 제목: 업무 아래면 버리고, 자격·필수면 필수, 우대면 우대(못 찾으면 우대)
+_HEADS = [("업무", r"주요업무|담당업무|업무내용|하는일|직무영역|이런일|Responsibilities|Whatyou'lldo"),
+          ("필수", r"자격(?:요건|조건|사항)|지원자격|필수|이런분|주요확인사항|Requirements|Qualifications"),
+          ("우대", r"우대|Plus|Preferred|더좋아요|있으면좋")]
+
+
+def _section(body: str, at: int) -> str | None:
+    """squash한 본문에서 at 앞에 마지막으로 나온 제목의 종류."""
+    best, kind = -1, None
+    for k, pat in _HEADS:
+        for m in re.finditer(pat, body[:at], re.I):
+            if m.start() > best:
+                best, kind = m.start(), k
+    return kind
+
+
 def clean_domain(f: dict[str, Any], text: str) -> dict[str, Any]:
-    """업종 경험을 코드로 다듬는다(AI 다음, 호출 없음): 근거 문장이 본문에 없으면 버리고, 필수·우대에 같은 코드면 필수만,
-    대분류와 그 아래 중분류가 함께면 대분류만. 다른 모듈이 읽는 domain_required·domain_preferred(코드)도 만든다."""
+    """업종 경험(AI 다음, 호출 없음). AI는 문장(domain_quotes)만 뽑고, 코드가 정한다:
+    본문에 없는 문장·관심만 묻는 문장은 버리고, 업종 코드는 사전(industries.yaml words), 필수·우대는 문장이 놓인 제목.
+    같은 코드는 필수만, 대분류가 있으면 그 아래 중분류는 뺀다. 사전에 걸리지 않은 문장은 domain_unmatched(월간 점검).
+    다른 모듈이 읽는 domain_required·domain_preferred(코드)도 만든다. 회사 도메인은 앞 2개."""
     body = _squash(text)
     keep: dict[str, dict[str, Any]] = {}
-    for d in f.get("domain_exp") or []:
-        q = _squash(d.get("quote", "")).strip("\"'….")
-        code = d.get("code")
-        if not code or len(q) < 4 or q not in body:
+    unmatched: list[str] = []
+    for quote in f.get("domain_quotes") or []:
+        q = _squash(quote).strip("\"'….")
+        at = body.find(q)
+        if len(q) < 4 or at < 0 or ("관심" in q and not re.search(r"경험|이해|지식", q)):
             continue
-        if code not in keep or d.get("need") == "필수":
-            keep[code] = d
+        sec = "우대" if "우대" in q else "필수" if "필수" in q else _section(body, at)
+        if sec == "업무":
+            continue
+        codes = taxonomy.industries_in(quote)
+        if not codes:
+            unmatched.append(quote)
+        need = "필수" if sec == "필수" else "우대"
+        for c in codes:
+            if c not in keep or need == "필수":
+                keep[c] = {"code": c, "need": need, "quote": quote}
     groups = {c for c in keep if len(c) == 4}
     exp = [d for c, d in keep.items() if not (len(c) == 6 and c[:4] in groups)]
-    return {**f, "domain_exp": exp,
-            "domain_required": [d["code"] for d in exp if d.get("need") == "필수"],
-            "domain_preferred": [d["code"] for d in exp if d.get("need") != "필수"]}
+    return {**f, "company_domain": (f.get("company_domain") or [])[:2], "domain_exp": exp,
+            "domain_unmatched": unmatched,
+            "domain_required": [d["code"] for d in exp if d["need"] == "필수"],
+            "domain_preferred": [d["code"] for d in exp if d["need"] == "우대"]}
 
 
 def duty_texts(f: dict[str, Any]) -> list[str]:

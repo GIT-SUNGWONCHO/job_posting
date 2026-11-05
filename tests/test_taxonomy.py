@@ -106,3 +106,14 @@ def test_industry_fit():
     assert taxonomy.industry_fit("insurance", set()) == 0.0        # 지난 id도 읽는다
     assert taxonomy.industry_name("IN01") == "금융"
     assert taxonomy.industry_name("bank") == "은행·저축"
+
+
+def test_industries_in():
+    def names(q):
+        return [taxonomy.industry_name(c) for c in taxonomy.industries_in(q)]
+    assert names("금융권 보안 규정 이해") == ["금융"]                  # 보안*는 '규정' 앞이라 안 셈
+    assert names("보안 업계 경험") == ["보안"]
+    assert names("기계학습 모델, 엔터프라이즈 데이터, 제약 조건") == []  # 넓은 말 오탐 없음
+    assert names("병리 이미지(WSI) 분석 또는 의료 영상 처리 경험") == ["의료기기·디지털 헬스"]
+    assert names("증권·은행·카드사 등 금융 환경") == ["금융"]          # 대분류가 있으면 중분류는 뺌
+    assert names("물류 또는 이커머스 분야") == ["이커머스", "물류·운송"]

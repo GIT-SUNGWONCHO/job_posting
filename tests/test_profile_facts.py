@@ -174,13 +174,20 @@ def test_funnel_and_ranking_for_private_report():
 
 def test_clean_domain():
     from jobpost import facts
-    text = "자격요건\n- 데이터 엔지니어링 5년\n우대사항\n- 보험, 금융 분야의  비즈니스 지식\n- 금융 또는 공공 프로젝트 수행 경험자"
-    got = facts.clean_domain({"domain_exp": [
-        {"code": "IN0104", "need": "우대", "quote": "보험, 금융 분야의 비즈니스 지식"},   # 공백이 달라도 본문에 있음
-        {"code": "IN01", "need": "우대", "quote": "보험, 금융 분야의 비즈니스 지식"},     # 대분류가 있으니 보험은 빠짐
-        {"code": "IN11", "need": "우대", "quote": "금융 또는 공공 프로젝트 수행 경험자"},
-        {"code": "IN0201", "need": "필수", "quote": "이커머스 경험 필수"},             # 본문에 없는 근거는 버림
-        {"code": "IN11", "need": "필수", "quote": "금융 또는 공공 프로젝트 수행 경험자"},  # 같은 코드는 필수만
+    text = ("주요업무\n- 보험·금융 도메인 특화 파인튜닝 전략 수립\n자격요건\n- 데이터 엔지니어링 5년\n"
+            "- 금융업권 데이터 관련 법규에 대한 이해\n우대사항\n- 보험업 데이터  Domain 이해\n"
+            "- 스타트업, 소규모 성장조직 경험\n- 라이브 스트리밍 서비스에 대한 관심\n- 보험, 금융, 제조 분야의 비즈니스 지식")
+    got = facts.clean_domain({"company_domain": ["IN0104", "IN0101", "IN0103"], "domain_quotes": [
+        "보험·금융 도메인 특화 파인튜닝 전략 수립",       # 주요업무 아래 → 버림
+        "금융업권 데이터 관련 법규에 대한 이해",          # 자격요건 → 금융 필수
+        "보험업 데이터 Domain 이해",                     # 공백이 달라도 본문에 있음 → 보험 우대
+        "스타트업, 소규모 성장조직 경험",                 # 업종 말 없음 → unmatched
+        "라이브 스트리밍 서비스에 대한 관심",              # 관심만 → 버림
+        "이커머스 경험 필수",                            # 본문에 없음 → 버림
     ]}, text)
-    assert [(d["code"], d["need"]) for d in got["domain_exp"]] == [("IN01", "우대"), ("IN11", "필수")]
-    assert got["domain_required"] == ["IN11"] and got["domain_preferred"] == ["IN01"]
+    assert [(d["code"], d["need"]) for d in got["domain_exp"]] == [("IN01", "필수")]  # 보험은 금융(대분류) 아래라 빠짐
+    assert got["domain_required"] == ["IN01"] and got["domain_preferred"] == []
+    assert got["domain_unmatched"] == ["스타트업, 소규모 성장조직 경험"]
+    assert got["company_domain"] == ["IN0104", "IN0101"]
+    only_pref = facts.clean_domain({"domain_quotes": ["보험, 금융, 제조 분야의 비즈니스 지식"]}, text)
+    assert [(d["code"], d["need"]) for d in only_pref["domain_exp"]] == [("IN01", "우대"), ("IN04", "우대")]
