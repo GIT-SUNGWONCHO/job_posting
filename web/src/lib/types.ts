@@ -25,7 +25,7 @@ export interface Posting {
   headhunter: boolean
   /** 헤드헌팅 공고의 의뢰 회사 구분(수집처가 적어 준 것). 회사 자리는 서치펌이라 필터는 이걸 쓴다 */
   clientType?: CompanyType
-  /** 공고 업종(코드): 회사 업종, 헤드헌팅은 본문의 의뢰 회사 설명으로 정한 업종 */
+  /** 회사 업종(코드). 헤드헌팅은 본문의 의뢰 회사 설명으로 정한 업종 */
   industry?: string
   noise: string | null
   firstSeen: string

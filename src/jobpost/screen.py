@@ -142,7 +142,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
             "regions": o.get("regions") or [],
             "employment": o.get("employment_types") or [],
             "headhunter": headhunting(r),
-            # 공고 업종: 회사 업종. 헤드헌팅은 회사(서치펌) 대신 본문의 의뢰 회사 설명으로 뽑은 회사 도메인
+            # 회사 업종. 헤드헌팅은 서치펌 대신 본문의 의뢰 회사 설명으로 뽑은 회사 도메인
             **({"industry": ind} if (ind := (next(iter(domain_of(r)), None) if headhunting(r)
                                              else companies[key].get("industry"))) else {}),
             **({"clientType": client_type} if client_type else {}),

@@ -126,7 +126,7 @@ def adjust(base: int, facts: dict[str, Any] | None, english: str | None,
 
 
 def want_tags(facts: dict[str, Any] | None, wants: dict[str, Any] | None, industry: str | None = None) -> list[str]:
-    """공고 사실이 원하는 조건에 걸리는지(점수는 그대로, 화면에 표시만). 업종은 공고 업종(회사 업종, 헤드헌팅은 의뢰 회사
+    """공고 사실이 원하는 조건에 걸리는지(점수는 그대로, 화면에 표시만). 업종은 회사 업종(헤드헌팅은 의뢰 회사
     도메인. screen.py). 없으면 예전 매칭 결과의 AI 업종(지난 id)."""
     facts, wants = facts or {}, wants or {}
     code = taxonomy.industry_code(industry or facts.get("industry"))
