@@ -12,6 +12,8 @@
 #   DA 전체 설계, LLM 직접 개발, 끝까지 개발하는 FDE)를 못 갈랐고, 석사 요건을 빠뜨렸다. 핵심 업무는 요구하는 깊이와 비교하고,
 #   학력 요건이 있으면 항목으로 반드시 넣는다.
 
+# 2026-11-05: 공고 사실에서 업종 줄을 뺐다(회사 업종을 씀). 빼기만 해서 version은 그대로, 매칭 따라잡기 때 올린다.
+
 version: 6
 
 # 항목 종류(item_kinds)와 공고 사실 선택지(posting_facts)는 config/taxonomy/enums.yaml의 item_kinds(IK)와 match_levels·match_english·match_employment(PL·PE·PM)
@@ -56,4 +58,3 @@ guide: |
     메모에 걸리는 항목은 판정을 한 단계만 내린다(충족 → 일부). 메모 하나만으로 미충족으로 두지 않는다.
   - 공고 사실(posting): level은 이 포지션이 팀장·리더·관리자를 뽑는지(리더·관리자), 실무자인지, 주니어·인턴인지.
     english는 영어로 일하거나(회의·문서·고객) 공고 본문이 대부분 영어면 필요. employment는 고용 형태.
-    industry는 회사의 업종(아래 목록의 id). 헤드헌팅 공고는 의뢰 회사 기준.
