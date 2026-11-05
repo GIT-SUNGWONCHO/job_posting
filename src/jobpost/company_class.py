@@ -115,8 +115,10 @@ def industry(*, manual: dict[str, Any] | None, public_label: str | None, ksic: s
     다수결(헤드헌팅 공고는 넣지 않고 부른다) → 확인 안 됨. KSIC가 도메인을 알려 주지 않는 코드면 회사 도메인으로 간다."""
     from . import taxonomy
 
-    if manual and manual.get("industry"):
-        return manual["industry"], f"직접 확인: {manual.get('basis') or ''}".strip()
+    if manual and taxonomy.industry_code(manual.get("industry")):
+        # 업종 근거는 industry_basis(기업 구분 예외의 basis와 따로). 없으면 basis
+        why = manual.get("industry_basis") or manual.get("basis") or ""
+        return taxonomy.industry_code(manual["industry"]), f"직접 확인: {why}".strip()
     if public_label:
         return "IN1101", public_label
     code, why = taxonomy.industry_from_ksic(ksic)

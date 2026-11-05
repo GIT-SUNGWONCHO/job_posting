@@ -101,7 +101,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
     # 회사 업종의 마지막 근거: 그 회사 공고(헤드헌팅 제외)의 공고 정리 회사 도메인(docs/taxonomy.md '업종')
     domains: dict[str, list[str]] = {}
     for r in open_recs:
-        if not headhunting(r):
+        if not r.get("dup_of") and not headhunting(r):  # 같은 공고 묶음은 대표만(월간 점검과 같게)
             domains.setdefault(r.get("company_key") or r.get("company", ""), []).extend(domain_of(r))
 
     def item(r: dict[str, Any], same: list[dict[str, Any]]) -> dict[str, Any]:
@@ -197,6 +197,9 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
         majors = {}
     for key, m in majors.items():
         companies[key] = {"name": m["name"], "type": m["type"], "group": m["group"]}
+        ind, ind_basis = registry.industry(key, [])  # 공고가 없어 KSIC까지만
+        if ind:
+            companies[key].update({"industry": ind, "industryBasis": ind_basis})
     return screen, {"version": VERSION, "date": today.isoformat(), "bodies": bodies}
 
 

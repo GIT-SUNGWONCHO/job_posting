@@ -66,3 +66,14 @@ def test_industry_order():
     code, basis = industry(manual=None, public_label=None, ksic="58221", domains=["IN0201", "IN0702", "IN0201"])
     assert code == "IN0201" and "3개 중 2개" in basis
     assert industry(manual=None, public_label=None, ksic=None, domains=[])[0] is None
+
+
+def test_industry_exception_basis_and_check():
+    from jobpost.company_class import industry
+    m = {"type": "중견", "basis": "매출 근거", "industry": "IN0105", "industry_basis": "앱 결제 서비스"}
+    assert industry(manual=m, public_label=None, ksic=None, domains=[]) == ("IN0105", "직접 확인: 앱 결제 서비스")
+    # 기업 구분 예외만 있는 회사는 업종을 정하지 않고 다음 근거로
+    assert industry(manual={"type": "중견", "basis": "x"}, public_label=None, ksic="64110", domains=[])[0] == "IN0101"
+    # 지난 id로 적어도 코드로, 없는 값이면 무시
+    assert industry(manual={"industry": "bank"}, public_label=None, ksic=None, domains=[])[0] == "IN0101"
+    assert industry(manual={"industry": "없는값"}, public_label=None, ksic=None, domains=[])[0] is None

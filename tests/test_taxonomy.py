@@ -95,6 +95,8 @@ def test_industry_from_ksic():
     assert taxonomy.industry_from_ksic("66") == (None, "generic")
     assert taxonomy.industry_from_ksic("715") == (None, "generic")
     assert taxonomy.industry_from_ksic("6420") == ("IN0103", "ksic")
+    assert taxonomy.industry_from_ksic("25200") == ("IN0405", "ksic")      # 무기·총포탄 → 방산(25 금속가공보다 먼저)
+    assert taxonomy.industry_from_ksic("46510") == (None, "generic")       # 컴퓨터·SW 도매(IT 리셀러) → 회사 도메인
     assert taxonomy.industry_from_ksic(None) == (None, "none")
 
 
