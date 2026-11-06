@@ -103,9 +103,9 @@ function ProfileView({ profile, opts, panel, loading, onEdit }: {
   onEdit: (e: Editing) => void
 }) {
   const names = useMemo(() => Object.fromEntries(opts.roles.map((r) => [r.id, r.name])), [opts])
-  // 코드와 옮기기 전 값(legacy) 둘 다로 이름을 찾는다
+  // 코드와 옮기기 전 값(legacy) 둘 다로 이름을 찾는다(화면용 파일이 옮기기 전 것이어도: 그때는 id가 legacy, code가 코드)
   const industries = useMemo(() => Object.fromEntries(opts.industries.flatMap((r) =>
-    [[r.id, r.name], ...(r.legacy ? [[r.legacy, r.name]] : [])])), [opts])
+    [[r.id, r.name], ...(r.legacy ? [[r.legacy, r.name]] : []), ...(r.code ? [[r.code, r.name]] : [])])), [opts])
   const total = profile.careers.reduce((s, c) => s + months(c.start, c.end), 0)
   const [, dataYears] = careerTotals(profile)
   const careers = profile.careers.map((c, i) => ({ c, i })).sort((a, b) => byRecent(a.c, b.c))
