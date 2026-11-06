@@ -54,6 +54,11 @@ async function devRows(): Promise<Row[] | null> {
   return res?.ok ? res.json() : null
 }
 
+/** 정렬용 점수. AI 점수만 점수로 보고, AI가 아직 안 매긴 공고(매칭 전)는 그 뒤, 매칭 대상이 아닌 공고는 맨 뒤 */
+export function rankScore(m: Match | undefined): number {
+  return !m ? -2 : m.kind === 'ai' ? m.score : -1
+}
+
 export async function loadMatches(): Promise<Map<string, Match>> {
   const out = new Map<string, Match>()
   let data: Row[] | null = null

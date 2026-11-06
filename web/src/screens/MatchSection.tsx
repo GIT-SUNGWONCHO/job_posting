@@ -33,7 +33,7 @@ export function Basis({ detail, fit }: { detail: MatchDetail; fit?: Record<strin
   if (items.length === 0) return null
   return (
     <section className="section basis">
-      <SectionTitle info={<>{t.basisHelp}<br />{t.meta(detail.rule, detail.model, detail.scoreV)}</>}>{t.basis}</SectionTitle>
+      <SectionTitle info={<>{t.basisHelp}<br />{t.meta(detail.model, detail.scoreV)}</>}>{t.basis}</SectionTitle>
       <div className="basis-list">
         {items.map((it, i) => {
           const got = Math.round(it.weight * (ratio[it.fit] ?? 0.5))

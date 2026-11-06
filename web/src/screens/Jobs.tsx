@@ -6,7 +6,7 @@ import { Chip, DOWN_ICON, Empty, JobRow, SEARCH_ICON, SLIDERS_ICON } from '../co
 import { matchesQuery } from '../lib/filter'
 import { addDays, isNewSince } from '../lib/format'
 import { href } from '../lib/route'
-import type { Match } from '../lib/matches'
+import { rankScore, type Match } from '../lib/matches'
 import type { Filters, Posting, Screen } from '../lib/types'
 
 export const PAGE = 50
@@ -39,7 +39,7 @@ function regionChip(f: Filters): string {
 
 function sortPostings(list: Posting[], sort: Sort, matches: Map<string, Match>): Posting[] {
   if (sort === 'recommend') {
-    const score = (p: Posting) => matches.get(p.id)?.score ?? -1
+    const score = (p: Posting) => rankScore(matches.get(p.id))
     return [...list].sort((a, b) => score(b) - score(a))
   }
   if (sort === 'latest') return list // 화면용 파일이 이미 최신순

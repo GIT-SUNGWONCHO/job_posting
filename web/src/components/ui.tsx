@@ -11,13 +11,13 @@ export function Deadline({ p, today }: { p: Posting; today: string }) {
   return <span className={urgent ? 'dday urgent' : 'dday'}>{deadlineText(p, today)}</span>
 }
 
-/** 점수 상자. rule: AI가 아직 안 매긴 공고의 규칙 점수(회색 상자에 "규칙"과 숫자, AI 점수와 다르게 보이게) */
+/** 점수 상자. rule: AI가 아직 안 매긴 공고. 규칙 점수는 보이지 않고 회색 상자에 "매칭 전"(2026-11-06) */
 export function Score({ value, solid = false, rule = false }: { value: number; solid?: boolean; rule?: boolean }) {
   const size = solid ? 56 : 44
   if (rule) {
     return (
-      <span className="score rule" style={{ width: size, height: size }} aria-label={copy.match.ruleScore(value)}>
-        <small>{copy.match.ruleTag}</small>{value}
+      <span className="score rule" style={{ width: size, height: size }} aria-label={copy.match.pendingLabel}>
+        <small>{copy.match.pendingTag[0]}</small><small>{copy.match.pendingTag[1]}</small>
       </span>
     )
   }

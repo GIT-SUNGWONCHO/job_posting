@@ -97,9 +97,9 @@ export const copy = {
     bodyFailed: '공고 내용을 불러오지 못했어요',
   },
   match: {
-    ruleOnly: 'AI가 아직 매기지 않아 규칙 점수예요. 다음 매칭 때 AI가 매겨요',
-    ruleTag: '규칙',
-    ruleScore: (n: number) => `규칙 점수 ${n}, AI 매칭 전`,
+    ruleOnly: 'AI가 아직 매기지 않았어요. 다음 매칭 때 매겨요',
+    pendingTag: ['매칭', '전'] as const,
+    pendingLabel: '매칭 전',
     basis: '판단 근거',
     basisHelp: '항목마다 받은 점수 = 배점 × 판정(충족 1, 일부·정보 없음 0.5, 미충족 0). 배점 합은 100이에요',
     devTag: '개발용 · 매칭 기준을 만드는 내 평가',
@@ -110,8 +110,7 @@ export const copy = {
     adjustBase: (n: number) => `상한을 걸기 전 ${n}점`,
     wants: '원하는 조건',
     wantsHelp: '점수에는 넣지 않았어요',
-    meta: (rule: number | null, model: string | null, guide: number) =>
-      [rule !== null && `규칙 점수 ${rule}`, model, `지침 v${guide}`].filter(Boolean).join(' · '),
+    meta: (model: string | null, guide: number) => [model, `지침 v${guide}`].filter(Boolean).join(' · '),
     mine: '내 평가',
     labels: { good: '○ 지원할 만함', maybe: '△ 애매', bad: '× 아님' },
     marks: { good: '○', maybe: '△', bad: '×' },

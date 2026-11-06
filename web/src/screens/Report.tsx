@@ -3,7 +3,7 @@ import { copy } from '../copy'
 import { Deadline, Empty, JobRow, Score, SectionTitle, Sep } from '../components/ui'
 import { NOT_AGAIN, useApps } from '../lib/applications'
 import { addDays, companyLine, isNewSince, isUrgent, listTitle } from '../lib/format'
-import { loadMatchDetail, type Match, type MatchDetail } from '../lib/matches'
+import { loadMatchDetail, rankScore, type Match, type MatchDetail } from '../lib/matches'
 import { href } from '../lib/route'
 import { useStars } from '../lib/stars'
 import type { Posting, Screen } from '../lib/types'
@@ -36,7 +36,7 @@ export function Report({ screen, passed, today, matches }: {
     const stage = stageOf(p)
     return !(stage && NOT_AGAIN.includes(stage))
   }
-  const score = (p: Posting) => matches.get(p.id)?.score ?? -1
+  const score = (p: Posting) => rankScore(matches.get(p.id))
   // 점수 높은 순(점수 없는 공고는 뒤에), 같으면 최근에 올라온 공고 먼저
   const byScore = (a: Posting, b: Posting) => (score(b) - score(a)) || b.firstSeen.localeCompare(a.firstSeen)
   const byDeadline = (a: Posting, b: Posting) => (a.deadline ?? '').localeCompare(b.deadline ?? '')
@@ -45,8 +45,8 @@ export function Report({ screen, passed, today, matches }: {
   const week = passed.filter((p) => isNewSince(p, weekStart) && again(p)).sort(byScore)
   // "오늘"은 브라우저 날짜 기준(오늘 수집이 끝나기 전이면 어제 공고에 붙지 않게)
   const todayCount = week.filter((p) => p.firstSeen === today).length
-  // 1 오늘의 1등: 최근 7일 새 공고 중 점수 1등(점수가 있는 공고만)
-  const top = week[0] && matches.has(week[0].id) ? week[0] : undefined
+  // 1 오늘의 1등: 최근 7일 새 공고 중 점수 1등(AI 점수가 있는 공고만)
+  const top = week[0] && matches.get(week[0].id)?.kind === 'ai' ? week[0] : undefined
   // 2 이번 주 새 공고: 1등을 뺀 나머지
   const restAll = top ? week.slice(1) : week
   const rest = weekView === 'today' ? restAll.filter((p) => p.firstSeen === today) : restAll
