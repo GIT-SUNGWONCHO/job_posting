@@ -41,6 +41,12 @@ def test_scope_and_noise():
     assert noise_reason(_p("데이터센터 설비 엔지니어"))
     assert noise_reason(_p("AI 솔루션 영업 담당"))
     assert noise_reason(_p("데이터 엔지니어")) is None
+    # 교육생 모집은 잡음, 교육 회사의 강사·멘토 채용은 공고
+    assert noise_reason(_p("[취업연계] 핀테크 특화 생성형 AI 데이터분석 과정 3기"))
+    assert noise_reason(_p("[국비지원] 2027년 취업연계형 AI·SW 교육생모집"))
+    assert noise_reason(_p("KG ICT / AI 미래 배터리 캠퍼스 D.A.B 1기 모집"))
+    assert noise_reason(_p("데이터 분석가 부트캠프 강사")) is None
+    assert noise_reason(_p("[코드잇 스프린트] AI 엔지니어 부트캠프 멘토")) is None
     abroad = _p("Data Engineer", source=Source.ZIGHANG, categories=["AI_데이터"])
     abroad.regions = ["해외"]
     assert in_scope(abroad) and is_overseas(abroad)  # 저장은 하되 해외로 표시
