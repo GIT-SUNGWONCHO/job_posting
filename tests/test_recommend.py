@@ -139,7 +139,7 @@ def test_sample_run_scores_only_those_postings_regardless_of_filters():
 
 def test_sample_ids_come_from_config():
     ids = recommend.sample_ids()
-    assert len(ids) == 100 and len(set(ids)) == 100
+    assert len(ids) == 140 and len(set(ids)) == 140
 
 
 def test_candidates_use_client_type_for_headhunting():
