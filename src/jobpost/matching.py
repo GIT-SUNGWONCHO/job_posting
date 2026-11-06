@@ -23,17 +23,22 @@ def _skill_patterns() -> list[tuple[str, re.Pattern]]:
                     pat = re.compile(re.escape(alias))
                 else:
                     flags = 0 if len(alias) <= 3 else re.IGNORECASE
-                    pat = re.compile(rf"(?<![A-Za-z0-9]){re.escape(alias)}(?![A-Za-z0-9])", flags)
-                out.append((item["name"], pat))
-    return out
+                    # 한 글자 영문(R, C)은 R&D·C/C++·C-level처럼 기호가 붙으면 다른 말이라 세지 않는다
+                    edge = r"A-Za-z0-9&/+#\-" if len(alias) == 1 else r"A-Za-z0-9"
+                    pat = re.compile(rf"(?<![{edge}]){re.escape(alias)}(?![{edge}])", flags)
+                out.append((len(alias), item["name"], pat))
+    # 긴 표기부터 찾는다(Power BI를 찾으면 그 안의 BI는 다시 세지 않는다)
+    return [(name, pat) for _, name, pat in sorted(out, key=lambda x: -x[0])]
 
 
 def extract_skills(text: str) -> set[str]:
-    """글에서 사전에 있는 스킬을 찾아 대표 이름으로 돌려준다."""
+    """글에서 사전에 있는 스킬을 찾아 대표 이름으로 돌려준다. 찾은 자리는 지워 겹쳐 세지 않는다."""
     found: set[str] = set()
+    rest = text or ""
     for name, pat in _skill_patterns():
-        if name not in found and pat.search(text or ""):
+        if pat.search(rest):
             found.add(name)
+            rest = pat.sub("\x00", rest)
     return found
 
 

@@ -9,7 +9,7 @@
 | 직무 분야 | `jobs.yaml` fields | JF + 2자리 (JF01 AI·데이터) | – | 21개(AI·데이터 + 다른 분야 20). AI·데이터 밖은 공고 분류와 업무 꼬리표에 분야 그대로 쓴다 |
 | 직무 유형 | `jobs.yaml` types | JT + 3자리 (JT001 데이터 엔지니어) | 아니오. 분야는 `field` 칸 | AI·데이터만 13개. 다른 분야는 지인을 받기 전에 나눈다 |
 | 업종 | `industries.yaml` | 대분류 IN + 2자리, 중분류 IN + 대분류 2 + 2자리 (IN0101) | 예 | 시장(도메인) 기준 대분류 13(+기타) · 중분류 38, KSIC 대응표 포함(2026-11-04 확정) |
-| 스킬 | `skills.yaml` skills | SK + 4자리 (SK0001 Python) | 아니오. 묶음(SG)은 `groups` 칸, 여러 개 가능 | 사전 점검(D) 전 |
+| 스킬 | `skills.yaml` skills | SK + 4자리 (SK0001 Python) | 아니오. 묶음(SG)은 `groups` 칸, 여러 개 가능 | 125개(2026-11-06 D 점검: 공고 정리에서 5번 이상 나온 이름으로 53개 추가). 공고 정리 스킬 언급의 약 77%를 찾음 |
 | 스킬 묶음 · 바꿔 쓰는 묶음 | `skills.yaml` groups · interchangeable | SG + 2자리 · IS + 2자리 | – | |
 | 고정 선택지 | `enums.yaml` | 목록마다 2글자 + 2자리 (SC01 총괄·결정, EM01 정규직) | – | 기업 구분 CT, 예외 이유 EX, 공고 정리 LV·MG·SC·PD·NE·EM·EU·WM, 매칭 IK·FT·PL·PE·PM, 프로필 SL·PP·DG·MJ·EL·WL |
 | 프로필 직무 | `config/profile.yaml` roles | 해당 직무 유형·분야의 코드(`code` 칸) | – | 프로필에 보이는 이름은 따로 둔다(BI·애널리틱스 엔지니어 → JT002) |
@@ -45,7 +45,7 @@
 | 바꿔 쓰는 묶음 | `interchangeable` (IS) | PostgreSQL · MySQL · Oracle | 서로 충족 |
 | 넓은 개념 | `broader` | vLLM → LLM 서빙 | 공고가 넓은 개념이면 좁은 쪽이 충족, 반대는 일부 |
 
-스킬이 아닌 말(AI, 클라우드, 데이터 분석 등)은 `stopwords`에 둔다. 넓은 개념(`broader`)과 제외어는 D 점검에서 채운다(2026-11-03 지금은 비어 있음).
+스킬이 아닌 말(AI, 데이터 분석, PM 등)은 `stopwords`에 둔다. 넓은 개념(`broader`): 'BI 도구' 아래 Tableau·Power BI·Looker·Superset·QuickSight, '클라우드' 아래 AWS·GCP·Azure(2026-11-06). 찾을 때는 긴 표기부터 찾고 찾은 자리는 다시 세지 않는다(Power BI 안의 BI). 한 글자 영문(R, C)은 R&D·C/C++처럼 기호가 붙으면 세지 않는다. 1~2번만 나온 드문 이름은 사전에 넣지 않고, 월간 점검에서 5번 이상 나온 새 이름만 더한다.
 
 ## 예외(기업 구분 · 회사 업종)
 

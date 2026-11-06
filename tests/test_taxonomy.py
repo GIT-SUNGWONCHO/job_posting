@@ -30,11 +30,12 @@ def test_job_types_view_matches_old_file():
 
 def test_skills_view_matches_old_file():
     o, n = old("skills"), config.load("skills")
-    assert n["version"] == o["version"] and n["interchangeable"] == o["interchangeable"]
-    # 2026-11-03 리뷰: Databricks를 데이터 처리 묶음에도 넣었다(묶음은 보기용, 판정·찾기 결과는 같다)
-    got = {g: [(i["name"], i["aliases"]) for i in items if not (g == "데이터 처리" and i["name"] == "Databricks")]
-           for g, items in n["groups"].items()}
-    assert got == {g: [(i["name"], i.get("aliases") or []) for i in items] for g, items in o["groups"].items()}
+    assert n["interchangeable"] == o["interchangeable"]
+    # 2026-11-06 D 점검으로 스킬·별칭을 더했다(v2). 예전 스킬과 별칭은 모두 그대로 남아 있어야 한다
+    new = {i["name"]: set(i["aliases"]) for items in n["groups"].values() for i in items}
+    for items in o["groups"].values():
+        for i in items:
+            assert set(i.get("aliases") or []) <= new[i["name"]], i["name"]
 
 
 def test_profile_and_guide_views_match_old_files():
