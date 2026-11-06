@@ -77,9 +77,9 @@ def why_not(p: dict[str, Any], screen: dict[str, Any], filters: dict[str, Any]) 
                              company_type=CompanyType(p.get("clientType") or c.get("type", "그 외")),
                              career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
                              filters=filters, job_type=p.get("jobType"), employment=p.get("employment"),
-                             job_type2=p.get("jobType2"))
+                             job_type2=p.get("jobType2"), duty_jobs=p.get("dutyJobs"))
     text = {"keyword": lambda v: f"제외 키워드 {v}", "company": lambda v: f"제외 회사 {v}",
-            "job": lambda v: f"직무 {jobs.get(v, v)}", "company_type": lambda v: f"기업 구분 {v}",
+            "job": lambda v: f"직무 {jobs.get(v, v)}", "duty": lambda v: "업무가 다른 분야", "company_type": lambda v: f"기업 구분 {v}",
             "career": lambda v: p.get("career") or "경력", "region": lambda v: f"지역 {v}",
             "employment": lambda v: f"고용 형태 {v}"}
     return " · ".join(text[kind](value) for kind, value in found), len(found)

@@ -50,3 +50,11 @@ it('passes when only the secondary job type matches', () => {
   expect(passes({ ...base, jobType: 'f_marketing', jobType2: 'analyst' }, large, g)).toBe(true)
   expect(passes({ ...base, jobType: 'f_marketing', jobType2: null }, large, g)).toBe(false)
 })
+
+it('drops postings whose duties are all outside my job types', () => {
+  const g: Filters = { job_types: ['data_eng', 'analyst'] }
+  const ad = { ...base, jobType: 'f_marketing', jobType2: 'analyst' }
+  expect(passes(ad, large, g)).toBe(true) // 공고 정리 전
+  expect(passes({ ...ad, dutyJobs: ['f_marketing'] }, large, g)).toBe(false)
+  expect(passes({ ...ad, dutyJobs: ['analyst', 'data_sci', 'f_marketing'] }, large, g)).toBe(true)
+})

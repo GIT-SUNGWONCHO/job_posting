@@ -120,3 +120,17 @@ def test_secondary_only_for_other_family_and_used_by_filters():
               regions=[], filters={"job_types": ["analyst"]}, job_type="f_marketing")
     assert filters.reasons(**kw) == [("job", "f_marketing")]
     assert filters.reasons(**kw, job_type2="analyst") == []
+
+
+def test_filter_drops_postings_with_duties_all_outside_my_field():
+    from jobpost import filters, screen
+    from jobpost.models import CompanyType
+    kw = dict(title="콘텐츠 마케터", company="k", company_type=CompanyType("대기업"), career_min=None, career_max=None,
+              regions=[], filters={"job_types": ["data_eng", "analyst"]}, job_type="f_marketing", job_type2="analyst")
+    assert filters.reasons(**kw) == []  # 공고 정리 전에는 통과
+    off = screen.duty_jobs({"facts": {"duties": [{"kind": "f_marketing"}, {"kind": "f_marketing"}]}})
+    assert filters.reasons(**kw, duty_jobs=off) == [("duty", "")]
+    # 가까운 직무(data_sci의 related에 analyst)면 내 분야
+    near = screen.duty_jobs({"facts": {"duties": [{"kind": "data_sci"}]}})
+    assert "analyst" in near and filters.reasons(**kw, duty_jobs=near) == []
+    assert screen.duty_jobs(None) == []

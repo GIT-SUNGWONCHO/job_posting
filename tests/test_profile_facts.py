@@ -163,7 +163,7 @@ def test_funnel_and_ranking_for_private_report():
                    "regions": [], "employment": [], "noise": "잡음"}]}
     f = {"job_types": ["data_eng"], "company_types": ["대기업"], "employment_types": ["정규직"]}
     lines = feedback.funnel(screen, "user-0001", f)
-    assert lines[1] == ("FUNNEL\tuser-000\t열린 공고 5 → 잡음 빼고 4 → 제외 키워드 4 → 제외 회사 4 → 직무 유형 3 → "
+    assert lines[1] == ("FUNNEL\tuser-000\t열린 공고 5 → 잡음 빼고 4 → 제외 키워드 4 → 제외 회사 4 → 직무 유형 3 → 업무 분야 3 → "
                         "기업 구분 2 → 경력 2 → 지역 2 → 고용 형태 1")
     assert lines[2] == "JOBTYPES\tuser-000\t✔데이터 엔지니어 3, ·개발 1"
     rows = [{"user_id": "user-0001", "posting_id": "1", "score": 70, "rule": 60, "kind": "ai", "score_v": 2},

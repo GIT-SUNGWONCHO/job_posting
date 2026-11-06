@@ -20,9 +20,10 @@ def reasons(
     job_type: str | None = None,
     employment: list[str] | None = None,
     job_type2: str | None = None,
+    duty_jobs: list[str] | None = None,
 ) -> list[tuple[str, str]]:
     """걸린 이유(통과면 빈 목록). (종류, 값): keyword 제외 키워드, company 제외 회사, job 직무 유형 id,
-    company_type 기업 구분, career 경력, region 지역, employment 고용 형태. 제외 키워드·회사에 걸리면 그것만, 아니면 걸린 조건 전부.
+    duty 업무가 다른 분야, company_type 기업 구분, career 경력, region 지역, employment 고용 형태. 제외 키워드·회사에 걸리면 그것만, 아니면 걸린 조건 전부.
     제외에 안 걸리고 항상 보여줄 회사면 통과."""
     out = [("keyword", kw) for kw in filters.get("exclude_keywords") or [] if kw.replace(" ", "") in title.replace(" ", "")]
     out += [("company", c) for c in filters.get("exclude_companies") or [] if c and c in company]
@@ -36,6 +37,10 @@ def reasons(
     # 보조 직무 유형(job_type2, 데이터·AI 일이 큰 그 밖 공고)이 맞아도 통과
     if allowed_jobs and job_type and job_type not in allowed_jobs and job_type2 not in allowed_jobs:
         out.append(("job", job_type))
+    # 직무 유형은 맞아도 공고 정리의 업무가 모두 내 직무·가까운 직무 밖이면 내 분야가 아니다(2026-11-06).
+    # duty_jobs: 이 공고를 내 분야로 보는 직무 유형들(screen.duty_jobs). 공고 정리가 없으면 None이라 통과
+    elif allowed_jobs and duty_jobs and not set(duty_jobs) & set(allowed_jobs):
+        out.append(("duty", ""))
 
     allowed_types = filters.get("company_types")
     if allowed_types and company_type.value not in allowed_types:

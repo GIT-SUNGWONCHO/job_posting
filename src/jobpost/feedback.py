@@ -241,7 +241,7 @@ def memo_lines(comments: list[dict[str, Any]], current: list[str], client: Any) 
     return [" ".join(str(x).split())[:60] for x in got.get("lines") or [] if str(x).strip()][:MEMO_MAX]
 
 
-FUNNEL_STEPS = [("keyword", "제외 키워드"), ("company", "제외 회사"), ("job", "직무 유형"), ("company_type", "기업 구분"),
+FUNNEL_STEPS = [("keyword", "제외 키워드"), ("company", "제외 회사"), ("job", "직무 유형"), ("duty", "업무 분야"), ("company_type", "기업 구분"),
                 ("career", "경력"), ("region", "지역"), ("employment", "고용 형태")]
 
 
@@ -262,7 +262,7 @@ def funnel(screen: dict[str, Any], user: str, user_filters: dict[str, Any]) -> l
         found = filters.reasons(
             title=p["title"], company=c.get("name", ""), company_type=CompanyType(p.get("clientType") or c.get("type", "그 외")),
             career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
-            filters=user_filters, job_type=p.get("jobType"), employment=p.get("employment"), job_type2=p.get("jobType2"))
+            filters=user_filters, job_type=p.get("jobType"), employment=p.get("employment"), job_type2=p.get("jobType2"), duty_jobs=p.get("dutyJobs"))
         kinds[p["id"]] = {k for k, _ in found}
     out = [f"FILTER\t{user[:8]}\t" + json.dumps(user_filters, ensure_ascii=False)]
     left = real

@@ -47,7 +47,7 @@ def candidates(screen: dict[str, Any], user_filters: dict[str, Any]) -> list[dic
         ok, _ = filters.passes(
             title=p["title"], company=c.get("name", ""), company_type=CompanyType(p.get("clientType") or c.get("type", "그 외")),
             career_min=p.get("careerMin"), career_max=p.get("careerMax"), regions=p.get("regions") or [],
-            filters=user_filters, job_type=p.get("jobType"), employment=p.get("employment"), job_type2=p.get("jobType2"),
+            filters=user_filters, job_type=p.get("jobType"), employment=p.get("employment"), job_type2=p.get("jobType2"), duty_jobs=p.get("dutyJobs"),
         )
         if ok:
             out.append(p)

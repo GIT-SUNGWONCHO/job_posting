@@ -35,6 +35,8 @@ export interface Posting {
   jobType: string | null
   /** 보조 직무 유형: 주 유형이 일반 개발·데이터·AI 아님인데 데이터·AI 일이 큰 공고(필터는 둘 중 하나만 맞아도 통과) */
   jobType2?: string | null
+  // 이 공고를 내 분야로 볼 직무 유형들(공고 정리 업무 + 가까운 직무). 없으면 공고 정리 전
+  dutyJobs?: string[]
   /** 본문 파일(bodies/xx.json.gz)에 본문이 있나 */
   hasBody: boolean
   sources: SourceLink[]

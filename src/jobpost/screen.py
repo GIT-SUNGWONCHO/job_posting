@@ -32,6 +32,16 @@ BODY_PRIORITY = {"remember": 0, "wanted": 1, "zighang": 2, "saramin": 3, "jobkor
 BODY_SHARDS = 16
 
 
+
+def duty_jobs(fact: dict[str, Any] | None) -> list[str]:
+    """이 공고를 내 분야로 볼 직무 유형들: 공고 정리 업무의 일의 종류와, 그 종류를 가까운 직무로 둔 직무 유형
+    (config/matching.yaml related). 내 직무 유형이 하나도 없으면 업무가 다른 분야라 내 분야에서 뺀다(filters). 업무가 없으면 []."""
+    kinds = {d["kind"] for d in ((fact or {}).get("facts") or {}).get("duties") or [] if isinstance(d, dict) and d.get("kind")}
+    if not kinds:
+        return []
+    related = config.load("matching").get("related") or {}
+    return sorted(kinds | {j for j, near in related.items() if kinds & set(near or [])})
+
 def body_shard(posting_id: str) -> str:
     """FNV-1a 32비트(UTF-8). web/src/lib/load.ts의 bodyShard와 같아야 한다."""
     h = 0x811C9DC5
@@ -151,6 +161,7 @@ def build(data_dir: Path, today: date | None = None, with_career: bool = False,
             **({"backfill": True} if backfill else {}),
             "jobType": job_type,
             "jobType2": job_type2,
+            **({"dutyJobs": dj} if (dj := duty_jobs(fx.get(r["uid"]))) else {}),
             "hasBody": body is not None,
             "sources": [link(r)] + [link(d) for d in same],
         }
