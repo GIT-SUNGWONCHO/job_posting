@@ -33658,6 +33658,153 @@
 },
 "v": 3
 },
+"00226316": {
+"company": {
+"bizr_no": "1058164268",
+"ceo": "박용철 박진호",
+"founded": "1985-03-18",
+"homepage": "https://www.hojeon.com",
+"industry_code": "14199",
+"jurir_no": "1101110393457",
+"market": "유가증권",
+"name": "호전실업 주식회사",
+"stock_code": "111110"
+},
+"disclosures": [
+{
+"date": "2026-10-29",
+"rcept_no": "20261029800236",
+"title": "기업가치제고계획예고(안내공시)"
+},
+{
+"date": "2026-10-27",
+"rcept_no": "20261027800135",
+"title": "최대주주등소유주식변동신고서"
+},
+{
+"date": "2026-07-23",
+"rcept_no": "20260723000236",
+"title": "주요사항보고서(자기전환사채만기전취득결정)"
+},
+{
+"date": "2026-06-15",
+"rcept_no": "20260615800435",
+"title": "[기재정정]타법인주식및출자증권취득결정"
+},
+{
+"date": "2026-05-29",
+"rcept_no": "20260529801355",
+"title": "기업지배구조보고서공시"
+},
+{
+"date": "2026-05-18",
+"rcept_no": "20260518800571",
+"title": "타인에대한채무보증결정"
+},
+{
+"date": "2026-04-23",
+"rcept_no": "20260423800718",
+"title": "주식소각결정"
+},
+{
+"date": "2026-03-30",
+"rcept_no": "20260330801452",
+"title": "타인에대한채무보증결정"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327802677",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-24",
+"rcept_no": "20260324800940",
+"title": "타인에대한채무보증결정"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319801048",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-17",
+"rcept_no": "20260317000632",
+"title": "주요사항보고서(자기주식취득신탁계약해지결정)"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226801615",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226801501",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226801489",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226801474",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변경"
+},
+{
+"date": "2026-01-23",
+"rcept_no": "20260123000220",
+"title": "주요사항보고서(자기전환사채만기전취득결정)"
+},
+{
+"date": "2025-11-12",
+"rcept_no": "20251112800396",
+"title": "임시주주총회결과"
+}
+],
+"employees": {
+"count": 174,
+"date": "2025-12-31",
+"rcept_no": "20260330001610",
+"salary": 62896552,
+"tenure": 6.0
+},
+"fetched": "2026-11-07",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260330001610",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 17191428993,
+"operating": 35118432806,
+"revenue": 441548776508,
+"year": 2023
+},
+{
+"net": 23167875468,
+"operating": 29520188293,
+"revenue": 463972606649,
+"year": 2024
+},
+{
+"net": 11295797806,
+"operating": 25021864468,
+"revenue": 520877825230,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "박진호",
+"rate": 25.21,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
+},
 "00227333": {
 "company": {
 "bizr_no": "3038105198",
@@ -34471,6 +34618,44 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"00234759": {
+"company": {
+"bizr_no": "6038109769",
+"ceo": "지용훈",
+"founded": "1976-07-01",
+"homepage": "https://www.daewoopharm.com",
+"industry_code": "21212",
+"jurir_no": "1801110082759",
+"market": "기타",
+"name": "대우제약 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401003026",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 10103621505,
+"operating": 11789509130,
+"revenue": 111302836397,
+"year": 2024
+},
+{
+"net": 7718493262,
+"operating": 8395446307,
+"revenue": 115137019468,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "00238782": {
 "company": {
@@ -38504,9 +38689,29 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260410001558",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 11269513493,
+"operating": 4790202393,
+"revenue": 31173056066,
+"year": 2024
+},
+{
+"net": 16019944115,
+"operating": 5400334537,
+"revenue": 33747105197,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "00274933": {
 "company": {
@@ -57159,6 +57364,118 @@
 "finance": null,
 "v": 3
 },
+"00601988": {
+"company": {
+"bizr_no": "2298137316",
+"ceo": "김영섬",
+"founded": "1999-04-17",
+"homepage": "https://konantech.com",
+"industry_code": "58221",
+"jurir_no": "1101111682932",
+"market": "코스닥",
+"name": "주식회사 코난테크놀로지",
+"stock_code": "402030"
+},
+"disclosures": [
+{
+"date": "2026-11-02",
+"rcept_no": "20261102900570",
+"title": "거래처와의거래중단"
+},
+{
+"date": "2026-10-12",
+"rcept_no": "20261012900252",
+"title": "[기재정정]최대주주변경을수반하는주식담보제공계약체결"
+},
+{
+"date": "2026-09-29",
+"rcept_no": "20260929900399",
+"title": "임시주주총회결과"
+},
+{
+"date": "2026-08-31",
+"rcept_no": "20260831900834",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-08-12",
+"rcept_no": "20260812900970",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2026-08-12",
+"rcept_no": "20260812900848",
+"title": "주주총회소집결의 (임시주주총회)"
+},
+{
+"date": "2026-03-31",
+"rcept_no": "20260331902130",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-23",
+"rcept_no": "20260323900854",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-04",
+"rcept_no": "20260304901613",
+"title": "[기재정정]주주총회소집결의"
+},
+{
+"date": "2026-02-13",
+"rcept_no": "20260213901290",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216900394",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 201,
+"date": "2025-12-31",
+"rcept_no": "20260323000784",
+"salary": 66828493,
+"tenure": 5.9
+},
+"fetched": "2026-11-07",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260323000784",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -9836359727,
+"operating": -10994514501,
+"revenue": 24428255327,
+"year": 2023
+},
+{
+"net": -13603883382,
+"operating": -14106433041,
+"revenue": 26318506558,
+"year": 2024
+},
+{
+"net": -9684801987,
+"operating": -9865474602,
+"revenue": 33979970427,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "김영섬",
+"rate": 22.88,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
+},
 "00603278": {
 "company": {
 "bizr_no": "1078688975",
@@ -57846,6 +58163,49 @@
 },
 "v": 4
 },
+"00625401": {
+"company": {
+"bizr_no": "1258149145",
+"ceo": "김춘호",
+"founded": "2003-08-24",
+"homepage": "https://www.techest.com",
+"industry_code": "29271",
+"jurir_no": "1313110049449",
+"market": "기타",
+"name": "(주)테키스트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260408002876",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 11057399844,
+"operating": 5569014301,
+"revenue": 94165244886,
+"year": 2024
+},
+{
+"net": 6942676434,
+"operating": 3175976507,
+"revenue": 135388167133,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "00626464": {
 "company": {
 "bizr_no": "1078142450",
@@ -58526,6 +58886,49 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"00633570": {
+"company": {
+"bizr_no": "1358184038",
+"ceo": "노태우",
+"founded": "2006-02-14",
+"homepage": null,
+"industry_code": "29271",
+"jurir_no": "1345110098340",
+"market": "기타",
+"name": "도쿄일렉트론코리아",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260701000432",
+"revenue_name": "매출액",
+"year": 2026,
+"years": [
+{
+"net": 124718654169,
+"operating": 163987582901,
+"revenue": 1528807745562,
+"year": 2025
+},
+{
+"net": 323606681813,
+"operating": 377345124004,
+"revenue": 2228409848269,
+"year": 2026
+}
+]
+},
+"owner": {
+"foreign": "외국 회사 표기",
+"name": "Tokyo Electron Limited 기타의 특수관계자 Tokyo Electron Miyagi Ltd",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
 },
 "00635000": {
 "company": {
@@ -60390,6 +60793,44 @@
 "net": 41508119841,
 "operating": 1314819099,
 "revenue": 1006374491333,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"00670632": {
+"company": {
+"bizr_no": "2148627387",
+"ceo": "조풍연",
+"founded": "1998-11-23",
+"homepage": null,
+"industry_code": "62090",
+"jurir_no": "1101111611486",
+"market": "기타",
+"name": "메타빌드 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260331002255",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1920376104,
+"operating": 1662993093,
+"revenue": 47378732502,
+"year": 2024
+},
+{
+"net": 952311729,
+"operating": 1075899031,
+"revenue": 41572991238,
 "year": 2025
 }
 ]
@@ -69473,6 +69914,208 @@
 "employees": null,
 "fetched": "2026-11-02",
 "finance": null,
+"v": 4
+},
+"00991298": {
+"company": {
+"bizr_no": "1198631534",
+"ceo": "윤세혁, 채정환 (각자 대표이사)",
+"founded": "2010-07-27",
+"homepage": "https://www.xiilab.com",
+"industry_code": "582",
+"jurir_no": "1101114401438",
+"market": "코스닥",
+"name": "(주)씨이랩",
+"stock_code": "189330"
+},
+"disclosures": [
+{
+"date": "2026-11-06",
+"rcept_no": "20261106000150",
+"title": "주요사항보고서(전환사채권발행결정)"
+},
+{
+"date": "2026-10-27",
+"rcept_no": "20261027900266",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-10-16",
+"rcept_no": "20261016900510",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-10-08",
+"rcept_no": "20261008900346",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-10-02",
+"rcept_no": "20261002900340",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-09-03",
+"rcept_no": "20260903900422",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-09-03",
+"rcept_no": "20260903900417",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-08-26",
+"rcept_no": "20260826900307",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-08-20",
+"rcept_no": "20260820900220",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-08-13",
+"rcept_no": "20260813900922",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-08-04",
+"rcept_no": "20260804900315",
+"title": "주권매매거래정지 (단일판매공급계약)"
+},
+{
+"date": "2026-08-04",
+"rcept_no": "20260804900307",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-07-29",
+"rcept_no": "20260729901015",
+"title": "선급금지급결정"
+},
+{
+"date": "2026-07-29",
+"rcept_no": "20260729901009",
+"title": "선급금지급결정"
+},
+{
+"date": "2026-07-29",
+"rcept_no": "20260729901000",
+"title": "선급금지급결정"
+},
+{
+"date": "2026-07-29",
+"rcept_no": "20260729900999",
+"title": "선급금지급결정"
+},
+{
+"date": "2026-07-07",
+"rcept_no": "20260707900763",
+"title": "주권매매거래정지 (단일판매공급계약)"
+},
+{
+"date": "2026-07-07",
+"rcept_no": "20260707900754",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-06-09",
+"rcept_no": "20260609900423",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-05-29",
+"rcept_no": "20260529901455",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-05-14",
+"rcept_no": "20260514900474",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-03-30",
+"rcept_no": "20260330900867",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319900517",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226900839",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-02-12",
+"rcept_no": "20260212900523",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-12",
+"rcept_no": "20260212900501",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-10",
+"rcept_no": "20251210900660",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-11-20",
+"rcept_no": "20251120900238",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2025-11-19",
+"rcept_no": "20251119900489",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+}
+],
+"employees": {
+"count": 68,
+"date": "2025-12-31",
+"rcept_no": "20260319000587",
+"salary": 40400015,
+"tenure": 2.8
+},
+"fetched": "2026-11-07",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260319000587",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -6459128318,
+"operating": -6910776281,
+"revenue": 3663438456,
+"year": 2023
+},
+{
+"net": -5186782443,
+"operating": -5284958770,
+"revenue": 9093357973,
+"year": 2024
+},
+{
+"net": -3119267462,
+"operating": -3225075448,
+"revenue": 10272320511,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "이우영",
+"rate": 29.9,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
 "v": 4
 },
 "00992622": {
@@ -82719,6 +83362,49 @@
 "owner": null,
 "v": 4
 },
+"01279005": {
+"company": {
+"bizr_no": "1148620008",
+"ceo": "정연재",
+"founded": "2002-07-01",
+"homepage": "https://www.cocodor.co.kr",
+"industry_code": "20424",
+"jurir_no": "1101112557514",
+"market": "기타",
+"name": "코코도르(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260409000615",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 940194965,
+"operating": 1504896199,
+"revenue": 45508771523,
+"year": 2024
+},
+{
+"net": 83368229,
+"operating": 210894065,
+"revenue": 44599614253,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이 연결재무제표의 당기순손익 및 순자산에 대한 지배기업의 지분과 일치하도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01279698": {
 "company": {
 "bizr_no": "6708800336",
@@ -90762,6 +91448,49 @@
 },
 "v": 4
 },
+"01442124": {
+"company": {
+"bizr_no": "3158700581",
+"ceo": "박정하",
+"founded": "2017-03-31",
+"homepage": "https://www.adaptkorea.com",
+"industry_code": "22299",
+"jurir_no": "1101116362323",
+"market": "기타",
+"name": "주식회사 어댑트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260409000184",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 13387965401,
+"operating": 13008112341,
+"revenue": 186837050402,
+"year": 2024
+},
+{
+"net": 13788508654,
+"operating": 1520921386,
+"revenue": 192187956211,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01442346": {
 "company": {
 "bizr_no": "1068185951",
@@ -92639,6 +93368,44 @@
 "operating": -348793465,
 "revenue": 37711246418,
 "year": 2024
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01470464": {
+"company": {
+"bizr_no": "1318148215",
+"ceo": "박정호, 이주필",
+"founded": "1999-02-11",
+"homepage": "https://www.bnlnature.co.kr",
+"industry_code": "42500",
+"jurir_no": "1201110185779",
+"market": "기타",
+"name": "브니엘네이처(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260414000773",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 5934303173,
+"operating": 5742140433,
+"revenue": 69992321748,
+"year": 2024
+},
+{
+"net": 3122552044,
+"operating": 2438060073,
+"revenue": 85364311507,
+"year": 2025
 }
 ]
 },
@@ -99766,6 +100533,24 @@
 "owner": null,
 "v": 4
 },
+"01599857": {
+"company": {
+"bizr_no": "3148204099",
+"ceo": "김명준",
+"founded": "1995-04-06",
+"homepage": "https://www.etri.re.kr",
+"industry_code": "70121",
+"jurir_no": "1601710002177",
+"market": "기타",
+"name": "한국전자통신연구원",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": null,
+"v": 4
+},
 "01602124": {
 "company": {
 "bizr_no": "4598802246",
@@ -106742,6 +107527,49 @@
 "owner": null,
 "v": 4
 },
+"01784075": {
+"company": {
+"bizr_no": "1138643065",
+"ceo": "김기수",
+"founded": "2010-10-07",
+"homepage": "https://aidaroot.com",
+"industry_code": "58221",
+"jurir_no": "1101114445478",
+"market": "기타",
+"name": "주식회사 에이다루트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401005043",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -947819800,
+"operating": -2173632600,
+"revenue": 17215885397,
+"year": 2024
+},
+{
+"net": -268456623,
+"operating": 68715228,
+"revenue": 19153788207,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "없습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01784543": {
 "company": {
 "bizr_no": "1918100625",
@@ -111614,6 +112442,44 @@
 "owner": null,
 "v": 4
 },
+"01914551": {
+"company": {
+"bizr_no": "8928802405",
+"ceo": "양우정",
+"founded": "2021-10-01",
+"homepage": "https://thegreet.co.kr",
+"industry_code": "76299",
+"jurir_no": "1101118026282",
+"market": "기타",
+"name": "주식회사 더그리트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403002228",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 2765914830,
+"operating": 2722928217,
+"revenue": 11626432814,
+"year": 2024
+},
+{
+"net": 2341376564,
+"operating": 2526110775,
+"revenue": 13762287503,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01916045": {
 "company": {
 "bizr_no": "1138694225",
@@ -113137,6 +114003,44 @@
 },
 "v": 3
 },
+"01965616": {
+"company": {
+"bizr_no": "2998702098",
+"ceo": "이상훈",
+"founded": "2021-04-26",
+"homepage": "https://www.roboe.ai/ko",
+"industry_code": "62010",
+"jurir_no": "1101117865631",
+"market": "기타",
+"name": "주식회사 로보에테크놀로지",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403002062",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3456206059,
+"operating": 3585642152,
+"revenue": 973444365,
+"year": 2024
+},
+{
+"net": 4424363903,
+"operating": 4439586902,
+"revenue": 938612000,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01966679": {
 "company": {
 "bizr_no": "8528800656",
@@ -113670,9 +114574,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-07",
 "finance": null,
-"v": 3
+"v": 4
 },
 "02013725": {
 "company": {
@@ -114157,6 +115061,24 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-11-02",
+"finance": null,
+"v": 4
+},
+"02035523": {
+"company": {
+"bizr_no": "8078601888",
+"ceo": "김용성",
+"founded": "2021-03-26",
+"homepage": "https://meta-ad.com",
+"industry_code": "71310",
+"jurir_no": "1101117831286",
+"market": "기타",
+"name": "주식회사 메타애드",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-07",
 "finance": null,
 "v": 4
 },
