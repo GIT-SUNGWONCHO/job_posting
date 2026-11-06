@@ -33,9 +33,10 @@ def test_skills_view_matches_old_file():
     assert n["interchangeable"] == o["interchangeable"]
     # 2026-11-06 D 점검으로 스킬·별칭을 더했다(v2). 예전 스킬과 별칭은 모두 그대로 남아 있어야 한다
     new = {i["name"]: set(i["aliases"]) for items in n["groups"].values() for i in items}
+    dropped = {"랭킹"}  # 2026-11-06 정확도 시험: '인기 랭킹'이 검색으로 잡혀 뺐다(v4)
     for items in o["groups"].values():
         for i in items:
-            assert set(i.get("aliases") or []) <= new[i["name"]], i["name"]
+            assert set(i.get("aliases") or []) - dropped <= new[i["name"]], i["name"]
 
 
 def test_profile_and_guide_views_match_old_files():

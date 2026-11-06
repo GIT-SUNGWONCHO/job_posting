@@ -35,6 +35,8 @@ def extract_skills(text: str) -> set[str]:
     """글에서 사전에 있는 스킬을 찾아 대표 이름으로 돌려준다. 찾은 자리는 지워 겹쳐 세지 않는다."""
     found: set[str] = set()
     rest = text or ""
+    for phrase in config.load("skills").get("skip_phrases") or []:
+        rest = rest.replace(phrase, "\x00")
     for name, pat in _skill_patterns():
         if pat.search(rest):
             found.add(name)

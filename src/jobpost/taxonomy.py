@@ -268,7 +268,7 @@ def skills_view() -> dict[str, Any]:
             groups[gname[g]].append({"name": x["name"], "aliases": x.get("aliases") or [], "code": x["code"]})
     return {"version": s["version"], "groups": groups,
             "interchangeable": [[by_code[m]["name"] for m in i["members"]] for i in s.get("interchangeable") or []],
-            "stopwords": s.get("stopwords") or []}
+            "stopwords": s.get("stopwords") or [], "skip_phrases": s.get("skip_phrases") or []}
 
 
 def profile_extras() -> dict[str, Any]:

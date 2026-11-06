@@ -50,3 +50,9 @@ def test_skill_ratio_uses_all_posting_skills():
     many = {"SQL", "Python", "Databricks", "Power BI", "Spark", "Kafka", "Airflow", "dbt", "Kubernetes", "Docker"}
     s = matching.score(PROFILE, posting, many, TODAY)
     assert s["parts"]["skills"] == 16  # 10개 중 4개. 상한을 두지 않아 요구 스킬이 많으면 그만큼 덜 맞는다
+
+
+def test_extract_skills_skips_page_phrases():
+    # 잡코리아 화면 문구 '지원자 현황 통계'는 통계 분석이 아니다. '인기 랭킹'도 검색이 아니다
+    assert matching.extract_skills("지원자 현황 통계 보기 / 인기 랭킹") == set()
+    assert matching.extract_skills("통계 기반 분석 경험") == {"통계 분석"}

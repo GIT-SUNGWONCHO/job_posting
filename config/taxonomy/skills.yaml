@@ -3,7 +3,7 @@
 # aliases는 본문에서 찾는 표기: 영문은 단어 경계, 3글자 이하 영문은 대소문자까지 맞아야 한다. 한글은 그대로.
 # kind: 언어 / 도구·플랫폼 / 방법·개념. 바꾸면 version을 올린다(점수를 다시 계산).
 
-version: 3
+version: 4
 
 groups:
   - {code: SG01, name: 언어}
@@ -86,7 +86,7 @@ skills:
   - {code: SK0066, name: NLP, kind: 방법·개념, groups: [SG07], aliases: [자연어 처리, 자연어처리]}
   - {code: SK0067, name: 컴퓨터 비전, kind: 방법·개념, groups: [SG07], aliases: [Computer Vision, Vision AI, OpenCV, 비전 AI, 영상 처리, 이미지 처리]}
   - {code: SK0068, name: 추천 시스템, kind: 방법·개념, groups: [SG07], aliases: [Recommendation, Recommender, 추천 모델, 개인화 추천]}
-  - {code: SK0069, name: 검색, kind: 방법·개념, groups: [SG07], aliases: [Search, 검색 엔진, 랭킹]}
+  - {code: SK0069, name: 검색, kind: 방법·개념, groups: [SG07], aliases: [Search, 검색 엔진]}
   - {code: SK0070, name: 시계열, kind: 방법·개념, groups: [SG07], aliases: [Time Series, 시계열 예측, 수요 예측, "Prophet"]}
   - {code: SK0071, name: Git, kind: 도구·플랫폼, groups: [SG08], aliases: [GitHub, GitLab]}
   - {code: SK0072, name: Jira, kind: 도구·플랫폼, groups: [SG08], aliases: [Confluence]}
@@ -168,3 +168,6 @@ interchangeable:
 
 # 스킬이 아닌 말(공고 정리에서 나와도 스킬 목록에 넣지 않는다). D 점검에서 채운다
 stopwords: ["AI", "데이터 분석", "PM", "프로젝트 관리", "소프트웨어 개발", "백엔드", "데이터 엔지니어링", "아키텍처 설계", "네트워크", "AI 도구", "JSON", "HTML", "데이터 사이언스", "VOC", "품질 관리", "PL", "영어", "프론트엔드", "backend", "SaaS", "리서치", "인공지능", "데이터 플랫폼", "정보처리기사", "SQLD", "SQLP", "DAP", "ADsP", "ADP", "빅데이터분석기사"]
+
+# 본문에서 스킬을 찾기 전에 지우는 말(수집처 화면 문구 등). 정확도 시험(2026-11-06)에서 채움
+skip_phrases: ["지원자 현황 통계"]

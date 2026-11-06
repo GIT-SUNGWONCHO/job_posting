@@ -45,7 +45,7 @@
 | 바꿔 쓰는 묶음 | `interchangeable` (IS) | PostgreSQL · MySQL · Oracle | 서로 충족 |
 | 넓은 개념 | `broader` | vLLM → LLM 서빙 | 공고가 넓은 개념이면 좁은 쪽이 충족, 반대는 일부 |
 
-스킬이 아닌 말(AI, 데이터 분석, PM 등)은 `stopwords`에 둔다. 넓은 개념(`broader`): 'BI 도구' 아래 Tableau·Power BI·Looker·Superset·QuickSight, '클라우드' 아래 AWS·GCP·Azure(2026-11-06). 찾을 때는 긴 표기부터 찾고 찾은 자리는 다시 세지 않는다(Power BI 안의 BI). 한 글자 영문(R, C)은 R&D·C/C++처럼 기호가 붙으면 세지 않는다. 1~2번만 나온 드문 이름은 사전에 넣지 않고, 월간 점검에서 5번 이상 나온 새 이름만 더한다.
+스킬이 아닌 말(AI, 데이터 분석, PM 등)은 `stopwords`에 둔다. 넓은 개념(`broader`): 'BI 도구' 아래 Tableau·Power BI·Looker·Superset·QuickSight, '클라우드' 아래 AWS·GCP·Azure(2026-11-06). 찾을 때는 긴 표기부터 찾고 찾은 자리는 다시 세지 않는다(Power BI 안의 BI). 한 글자 영문(R, C)은 R&D·C/C++처럼 기호가 붙으면 세지 않는다. 수집처 화면 문구처럼 스킬이 아닌데 걸리는 말은 `skip_phrases`에 두고 찾기 전에 지운다(정확도 시험 2026-11-06: 공고 30건 400개 중 약 98~99% 맞음, '지원자 현황 통계'와 '인기 랭킹'만 틀려 v4에서 고침). 1~2번만 나온 드문 이름은 사전에 넣지 않고, 월간 점검에서 5번 이상 나온 새 이름만 더한다.
 
 ## 예외(기업 구분 · 회사 업종)
 
