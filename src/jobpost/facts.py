@@ -289,10 +289,12 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
     names = _domain_names()
 
     def work(c: Any) -> None:
-        """클라이언트 하나(키 하나)로 줄에서 공고를 꺼내 정리한다. 여러 개가 함께 돈다(clients)."""
+        """클라이언트 하나(키 하나)로 줄에서 공고를 꺼내 정리한다. 여러 개가 함께 돈다(clients).
+        Gemini 서버 오류(503)는 가끔 나서, 이 키로 5번 잇달아 실패할 때만 멈춘다(실패한 공고는 다음 실행에서)."""
+        fails = 0
         while True:
             with lock:
-                if not queue or summary["calls"] >= limit or time.monotonic() > deadline or len(errors) >= 5:
+                if not queue or summary["calls"] >= limit or time.monotonic() > deadline or fails >= 5:
                     return
                 pid = queue.pop(0)
                 summary["calls"] += 1
@@ -304,9 +306,11 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
                 raw["company_domain"] = [names[n] for n in raw.get("company_domain") or [] if n in names]
                 got = clean_domain(raw, text)
             except Exception as e:  # 남은 건 다음 실행에서
+                fails += 1
                 with lock:
                     errors.append(str(e)[:200])
                 continue
+            fails = 0
             with lock:
                 rows[pid] = {"uid": pid, "facts": got, "prompt": PROMPT_VERSION,
                              "industries_v": config.load("profile")["version"], "words": words_hash(),
@@ -330,6 +334,7 @@ def run(data_dir: Path, screen: dict[str, Any], bodies: dict[str, Any], wanted: 
     summary["pending"] = len(todo) - summary["done"]
     if errors:
         summary["errors"] = errors[:3]
+        summary["error_count"] = len(errors)
     return summary
 
 
