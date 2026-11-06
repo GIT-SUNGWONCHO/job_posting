@@ -6,8 +6,11 @@
 # v2(2026-11-02): 평가 전에 마감된 22건을 같은 묶음 후보(회차 리포트의 CAND)에서 바꿨다.
 # v3(2026-11-02): 지침 v4 전체 매칭 뒤 40건을 더했다. AI 점수 구간별로 80점 이상 15·60~79점 15(점수 고르게),
 #   60점 미만 무작위 10. 기존 샘플과 제목이 같은 공고, 한 회사 3건째는 뺐다. 평가는 할 만한 것만 한다.
+# v4(2026-11-06): 공고 정리 따라잡기 뒤 40건을 더했다(140건). AI 점수 대신 공고 정리 값으로 골랐다(내 분야의 많은 공고가 아직 매칭 전):
+#   핵심 업무 12(업무 절반 넘게 데이터 엔지니어·아키텍트, 기업 구분별), 다른 일 섞임 6, 주니어 자리 5, 필수 학위 4,
+#   필수 업종 경험 5, 분석·AI 8. ×가 나올 만한 공고를 일부러 넣었다. 11-14 전에 마감하는 공고, 한 회사 3건째는 뺐다.
 
-version: 3
+version: 4
 
 postings:
   - {id: "zighang:0ef8f980-4686-4367-bcec-b384bf61d8d6", group: 규칙 상위, company: "카카오뱅크", title: "데이터 엔지니어 - Data Warehouse", url: "https://zighang.com/recruitment/0ef8f980-4686-4367-bcec-b384bf61d8d6"}
@@ -110,3 +113,43 @@ postings:
   - {id: "zighang:be55c2d3-045b-4181-be47-82121eb38ce3", group: AI 60점 미만, company: "쿠팡", title: "Sr. Staff - AI Data Center Architect", url: "https://zighang.com/recruitment/be55c2d3-045b-4181-be47-82121eb38ce3"}
   - {id: "zighang:0481ef3a-f828-4cb7-99c5-3f2b0d16dd40", group: AI 60점 미만, company: "카카오뱅크", title: "[카카오뱅크] AI 엔지니어", url: "https://zighang.com/recruitment/0481ef3a-f828-4cb7-99c5-3f2b0d16dd40"}
   - {id: "jobkorea:50205524", group: AI 60점 미만, company: "헌터스그룹", title: "[강남][외국계IT기업] Data Architect(8년이상)", url: "https://www.jobkorea.co.kr/Recruit/GI_Read/50205524"}
+  - {id: "remember:347844", group: 핵심 업무, company: "토스뱅크", title: "[토스뱅크] Data Platform Engineer (Streaming)", url: "https://career.rememberapp.co.kr/job/posting/347844"}
+  - {id: "jobkorea:50162734", group: 핵심 업무, company: "리앤파트너", title: "[유명 금융 IT대기업] 데이터 엔지니어 (정규직)", url: "https://www.jobkorea.co.kr/Recruit/GI_Read/50162734"}
+  - {id: "remember:324889", group: 핵심 업무, company: "CJ대한통운", title: "[TES물류기술연구소] 데이터 엔지니어 경력", url: "https://career.rememberapp.co.kr/job/posting/324889"}
+  - {id: "remember:334299", group: 핵심 업무, company: "아이엠뱅크", title: "[iM뱅크] AI DevOps", url: "https://career.rememberapp.co.kr/job/posting/334299"}
+  - {id: "saramin:55000292", group: 핵심 업무, company: "메가존", title: "[메가존] [MZD] 제조AX센터 엔지니어 및 컨설턴트 인재 영입", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55000292"}
+  - {id: "remember:324086", group: 핵심 업무, company: "미리디", title: "[미리디] Data Engineer", url: "https://career.rememberapp.co.kr/job/posting/324086"}
+  - {id: "zighang:5b9fcd52-af69-4ee1-8e2f-85e29307032f", group: 핵심 업무, company: "한샘", title: "데이터 모델러", url: "https://zighang.com/recruitment/5b9fcd52-af69-4ee1-8e2f-85e29307032f"}
+  - {id: "zighang:4924010b-2759-4392-bc60-d7d5e99af729", group: 핵심 업무, company: "라이나생명보험", title: "Data Architect", url: "https://zighang.com/recruitment/4924010b-2759-4392-bc60-d7d5e99af729"}
+  - {id: "jobkorea:50237008", group: 핵심 업무, company: "HumanPartners", title: "데이터엔지니어 - 외국계", url: "https://www.jobkorea.co.kr/Recruit/GI_Read/50237008"}
+  - {id: "saramin:55483225", group: 핵심 업무, company: "이노트리", title: "Databricks Engineer 경력자 채용", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55483225"}
+  - {id: "remember:333154", group: 핵심 업무, company: "페어스퀘어랩", title: "[페어스퀘어랩/클로인트] Sr.데이터엔지니어", url: "https://career.rememberapp.co.kr/job/posting/333154"}
+  - {id: "saramin:55450687", group: 핵심 업무, company: "씨어스", title: "Data Engineer 경력 채용", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55450687"}
+  - {id: "zighang:b33905c5-dc0e-4d7e-b4f9-872df42fc027", group: 다른 일 섞임, company: "비바리퍼블리카", title: "Accounting Business Analyst", url: "https://zighang.com/recruitment/b33905c5-dc0e-4d7e-b4f9-872df42fc027"}
+  - {id: "zighang:87a92374-a226-4ea7-a499-108efe0e2a11", group: 다른 일 섞임, company: "Publicis Groupe", title: "Senior Associate Global Security Office", url: "https://zighang.com/recruitment/87a92374-a226-4ea7-a499-108efe0e2a11"}
+  - {id: "zighang:407ee328-d57e-4232-bbcf-f5307bef9ba3", group: 다른 일 섞임, company: "테이텀시큐리티", title: "AI Research Engineer", url: "https://zighang.com/recruitment/407ee328-d57e-4232-bbcf-f5307bef9ba3"}
+  - {id: "saramin:55418816", group: 다른 일 섞임, company: "알체라", title: "[경력] AI Agent Engineer 채용", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55418816"}
+  - {id: "zighang:5e5f13dd-2e9b-4765-8b1c-2f55bce4121e", group: 다른 일 섞임, company: "보다엠", title: "[신입]K-방산 무기체계 데이터분석 및 신뢰성(RAM)·IPS엔지니어", url: "https://zighang.com/recruitment/5e5f13dd-2e9b-4765-8b1c-2f55bce4121e"}
+  - {id: "zighang:cbc09c11-44c2-4914-8b62-baf2b9e1e82d", group: 다른 일 섞임, company: "tp", title: "TP AI 시스템 개발 (경력)", url: "https://zighang.com/recruitment/cbc09c11-44c2-4914-8b62-baf2b9e1e82d"}
+  - {id: "zighang:76a62d17-4643-497b-8651-d09a3c6295dc", group: 주니어 자리, company: "덧셈컴퍼니", title: "백엔드 개발자(3년 이상)", url: "https://zighang.com/recruitment/76a62d17-4643-497b-8651-d09a3c6295dc"}
+  - {id: "zighang:3d47d334-8e1d-443e-9cdc-992589f09dbf", group: 주니어 자리, company: "아정네트웍스", title: "[아정당] AI Engineer (서울)", url: "https://zighang.com/recruitment/3d47d334-8e1d-443e-9cdc-992589f09dbf"}
+  - {id: "zighang:a0d0aa9a-de96-4728-8749-e411f9f80883", group: 주니어 자리, company: "리빌더에이아이", title: "AI 개발자 모집 ", url: "https://zighang.com/recruitment/a0d0aa9a-de96-4728-8749-e411f9f80883"}
+  - {id: "saramin:55482041", group: 주니어 자리, company: "오토데이터베이스", title: "자동차 잔존가치 분석 및 데이터 관리 채용", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55482041"}
+  - {id: "saramin:55227094", group: 주니어 자리, company: "히츠", title: "AI Agent Engineer (전문연구요원 가능)", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55227094"}
+  - {id: "zighang:331c9b7e-c004-4934-b443-a27297a07b2f", group: 필수 학위, company: "이지케어텍", title: "연구소 AI Engineer(전문연구요원 가능)", url: "https://zighang.com/recruitment/331c9b7e-c004-4934-b443-a27297a07b2f"}
+  - {id: "zighang:effb35a7-d27e-49a2-9a92-4e020c13afd6", group: 필수 학위, company: "유비씨기술연구소", title: "(경기 안양시)전문연구요원 - AI 소프트웨어 개발", url: "https://zighang.com/recruitment/effb35a7-d27e-49a2-9a92-4e020c13afd6"}
+  - {id: "zighang:914dd8bb-de0d-4551-adf7-cd04ca205c24", group: 필수 학위, company: "세미에이아이", title: "[SemiAI] 석·박사급 연구개발 인재 채용 (Agentic AI)", url: "https://zighang.com/recruitment/914dd8bb-de0d-4551-adf7-cd04ca205c24"}
+  - {id: "saramin:55401198", group: 필수 학위, company: "디코드셀", title: "단일세포·공간전사체 데이터분석 및 파이프라인 개발 담당자", url: "https://www.saramin.co.kr/zf_user/jobs/relay/view?view_type=list&rec_idx=55401198"}
+  - {id: "remember:333269", group: 필수 업종 경험, company: "쿠팡로지스틱스서비스", title: "[쿠팡로지스틱스서비스] 물류 프로세스 디자인 및 운영 담당자 (Logistics Design)", url: "https://career.rememberapp.co.kr/job/posting/333269"}
+  - {id: "zighang:0caaf989-9036-4db9-8999-d338e14db701", group: 필수 업종 경험, company: "소프트온", title: "한국은행  DA (데이터 표준, 품질) 운영인력 모집 (금융권 DA 경험 필수)", url: "https://zighang.com/recruitment/0caaf989-9036-4db9-8999-d338e14db701"}
+  - {id: "remember:338920", group: 필수 업종 경험, company: "뉴로코어", title: "AI Engineer (LLM · Knowledge)", url: "https://career.rememberapp.co.kr/job/posting/338920"}
+  - {id: "zighang:9d27e6fe-6504-4e56-842b-02d26f265ee4", group: 필수 업종 경험, company: "컬리", title: "[켈시] 평택 물류센터 HUB 공정 데이터 담당자 채용", url: "https://zighang.com/recruitment/9d27e6fe-6504-4e56-842b-02d26f265ee4"}
+  - {id: "remember:332417", group: 필수 업종 경험, company: "에비드넷", title: "RWE 분석가 (Analyst)", url: "https://career.rememberapp.co.kr/job/posting/332417"}
+  - {id: "zighang:10b0aaba-cf89-418a-88aa-00420ae736c0", group: 분석·AI, company: "디엑스이", title: "[CJ그룹-디엑스이] AI/AX 플랫폼 개발 AI/LLM 엔지니어 경력채용", url: "https://zighang.com/recruitment/10b0aaba-cf89-418a-88aa-00420ae736c0"}
+  - {id: "remember:325654", group: 분석·AI, company: "유니코써치", title: "리테일 대기업 고객 데이터 분석 담당자", url: "https://career.rememberapp.co.kr/job/posting/325654"}
+  - {id: "remember:345031", group: 분석·AI, company: "빗썸", title: "[빗썸] 비즈니스 데이터 분석 실장", url: "https://career.rememberapp.co.kr/job/posting/345031"}
+  - {id: "zighang:5043fb2e-ca6c-43c6-a90f-bb0ed7161e2d", group: 분석·AI, company: "무신사", title: "Product Data Analyst (Data Intelligence)", url: "https://zighang.com/recruitment/5043fb2e-ca6c-43c6-a90f-bb0ed7161e2d"}
+  - {id: "zighang:acd7474f-822c-4054-bc72-e849ae6fcb9b", group: 분석·AI, company: "헥토이노베이션", title: "[헥토] 백엔드 개발자 (Python) (경력)", url: "https://zighang.com/recruitment/acd7474f-822c-4054-bc72-e849ae6fcb9b"}
+  - {id: "remember:334214", group: 분석·AI, company: "베스핀글로벌", title: "Senior AI Engineer", url: "https://career.rememberapp.co.kr/job/posting/334214"}
+  - {id: "zighang:55a1eb1c-b41f-4420-998d-7f07711f1a59", group: 분석·AI, company: "노타", title: "[NetsPresso] AI Engineer", url: "https://zighang.com/recruitment/55a1eb1c-b41f-4420-998d-7f07711f1a59"}
+  - {id: "remember:341837", group: 분석·AI, company: "스트라드비젼", title: "Data ML Team Lead", url: "https://career.rememberapp.co.kr/job/posting/341837"}
