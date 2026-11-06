@@ -38,10 +38,10 @@ groups:
     words: ["소비재", "FMCG"]
     items:
       - {code: IN0301, name: 패션·뷰티·생활, legacy: consumer, ksic: ["13", "14", "15", "2042", "32", "33"], words: ["패션", "뷰티", "화장품", "코스메틱", "생활용품"]}
-      - {code: IN0302, name: 식품·음료·외식, legacy: food, ksic: ["10", "11", "12", "56"], words: ["식품", "F&B", "외식", "음료", "향미", "프랜차이즈"]}
+      - {code: IN0302, name: 식품·음료·외식, legacy: food, ksic: ["10", "11", "12", "56"], words: ["식품", "식음료", "F&B", "외식", "음료", "향미", "프랜차이즈"]}
   - code: IN04
     name: 제조
-    words: ["제조", "스마트팩토리", "공장"]
+    words: ["제조", "스마트팩토리", "스마트공장", "공장"]
     items:
       - {code: IN0401, name: 자동차·부품, legacy: auto, ksic: ["30"], words: ["자동차", "완성차"]}
       - {code: IN0402, name: 전자·반도체·디스플레이, legacy: electronics, ksic: ["26", "273"], words: ["반도체", "디스플레이", "전자*"]}
@@ -51,13 +51,13 @@ groups:
   - code: IN05
     name: 에너지·건설
     items:
-      - {code: IN0501, name: 에너지·유틸리티, legacy: energy, ksic: ["05", "06", "07", "08", "35", "36", "37", "38", "39"], words: ["에너지", "전력", "발전*", "유틸리티*"]}
+      - {code: IN0501, name: 에너지·유틸리티, legacy: energy, ksic: ["05", "06", "07", "08", "35", "36", "37", "38", "39"], words: ["에너지", "재생에너지", "신재생", "전력", "발전*", "유틸리티*"]}
       - {code: IN0502, name: 건설·부동산, legacy: construction, ksic: ["41", "42", "68"], words: ["건설", "부동산", "프롭테크"]}
   - code: IN06
     name: IT·인터넷
     items:
       - {code: IN0601, name: 포털·인터넷 서비스, legacy: platform, ksic: [], words: ["포털*", "인터넷*"]}
-      - {code: IN0602, name: 게임, legacy: game, ksic: ["5821"], words: ["게임"]}
+      - {code: IN0602, name: 게임, legacy: game, ksic: ["5821"], words: ["게임", "MMORPG"]}
       - {code: IN0603, name: SI·IT 서비스·클라우드, legacy: it_service, ksic: [], words: ["SI", "MSP", "IT 아웃소싱"]}
       - {code: IN0604, name: SW·SaaS 솔루션, legacy: saas, ksic: [], words: ["SaaS", "B2B 솔루션"]}
       - {code: IN0605, name: 통신, legacy: telecom, ksic: ["612"], words: ["통신사", "텔코", "통신*"]}
@@ -72,7 +72,7 @@ groups:
     items:
       - {code: IN0801, name: 방송·영상·엔터, legacy: media, ksic: ["59", "60", "90"], words: ["방송", "엔터테인먼트", "OTT", "미디어*", "음악", "엔터*", "영상*"]}
       - {code: IN0802, name: 출판·웹툰·콘텐츠, legacy: publishing, ksic: ["581"], words: ["출판", "웹툰", "콘텐츠*"]}
-      - {code: IN0803, name: 광고·마케팅, legacy: advertising, ksic: ["713"], words: ["애드테크", "광고*"]}
+      - {code: IN0803, name: 광고·마케팅, legacy: advertising, ksic: ["713"], words: ["애드테크", "광고대행사", "광고*"]}
   - code: IN09
     name: 의료·바이오
     words: ["헬스케어", "의료", "보건의료", "healthcare"]
