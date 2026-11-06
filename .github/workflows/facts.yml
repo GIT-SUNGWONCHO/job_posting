@@ -1,6 +1,6 @@
 # 공고 정리 따라잡기: 매칭 대상(내 분야 공고)에서 아직 정리하지 않은 공고를 한 번에 많이 정리한다.
 # 매일 수집에서도 config/ai.yaml facts.max_calls만큼 하지만, 처음 쌓인 공고는 이걸로 나눠 돌린다.
-# Gemini 키는 GEMINI_API_KEY, _2 ~ _5를 차례로 쓴다(앞 키가 한도에 걸리면 다음 키). 키마다 다른 구글 클라우드 프로젝트여야 한도가 늘어난다.
+# Gemini 키는 GEMINI_API_KEY, _2 ~ _9를 차례로 쓴다(앞 키가 한도에 걸리면 다음 키). 키마다 다른 구글 클라우드 프로젝트여야 한도가 늘어난다.
 # 수동 실행: GitHub > Actions > facts > Run workflow
 name: facts
 
@@ -57,6 +57,10 @@ jobs:
           GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
           GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
           GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
+          GEMINI_API_KEY_6: ${{ secrets.GEMINI_API_KEY_6 }}
+          GEMINI_API_KEY_7: ${{ secrets.GEMINI_API_KEY_7 }}
+          GEMINI_API_KEY_8: ${{ secrets.GEMINI_API_KEY_8 }}
+          GEMINI_API_KEY_9: ${{ secrets.GEMINI_API_KEY_9 }}
           MAX_CALLS: ${{ inputs.max_calls }}
           MINUTES: ${{ inputs.minutes }}
           ONLY: ${{ inputs.only }}

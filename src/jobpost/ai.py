@@ -45,10 +45,10 @@ def configured() -> bool:
 
 
 def api_keys() -> list[str]:
-    """GEMINI_API_KEY, 그다음 GEMINI_API_KEY_2 ~ _5(있으면). 앞 키가 한도(429)에 걸리면 다음 키로 넘어간다.
+    """GEMINI_API_KEY, 그다음 GEMINI_API_KEY_2 ~ _9(있으면). 앞 키가 한도(429)에 걸리면 다음 키로 넘어간다.
     무료 한도는 키가 아니라 구글 클라우드 프로젝트마다라서, 키마다 다른 프로젝트여야 한도가 늘어난다.
     여러 키는 임시로 쓴다(2026-11-03 사용자 결정, docs/setup.md "Gemini 무료 한도")."""
-    names = ["GEMINI_API_KEY", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4", "GEMINI_API_KEY_5"]
+    names = ["GEMINI_API_KEY", *(f"GEMINI_API_KEY_{i}" for i in range(2, 10))]
     return [os.environ[n] for n in names if os.environ.get(n)]
 
 
