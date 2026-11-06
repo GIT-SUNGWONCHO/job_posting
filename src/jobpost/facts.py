@@ -149,7 +149,9 @@ def _section(heads: list[tuple[int, str]], at: int) -> str | None:
 
 # 경험을 묻는 말('근무'는 근무 형태 문장에 걸려서 경험·경력이 붙을 때만)
 _EXP = re.compile(r"경험|이해|지식|출신|해\s*보신|해\s*본|수행|근무\s*(?:경험|경력|이력)|근무하신")
-RULES_V = 4  # clean_domain·rule_quotes 규칙을 바꾸면 올린다(저장된 문장으로 AI 없이 다시 계산)
+# 업종 경험이 아닌 문장: '도메인 무관'처럼 업종을 묻지 않는다고 적은 것, 회사 소개
+_NOT_REQ = re.compile(r"무관|상관\s*없|관계\s*없|설립된|설립\s*\d|위치하고|회사입니다|기업입니다")
+RULES_V = 5  # clean_domain·rule_quotes 규칙을 바꾸면 올린다(저장된 문장으로 AI 없이 다시 계산)
 
 
 def rule_quotes(text: str) -> list[str]:
@@ -188,7 +190,7 @@ def clean_domain(f: dict[str, Any], text: str) -> dict[str, Any]:
     for quote, from_ai in quotes:
         q = _squash(quote).strip("\"'….")
         at = body.find(q)
-        if len(q) < 4 or at < 0 or ("관심" in q and not re.search(r"경험|이해|지식", q)):
+        if len(q) < 4 or at < 0 or _NOT_REQ.search(q) or ("관심" in q and not re.search(r"경험|이해|지식", q.replace("사용자경험", ""))):
             continue
         sec = _section(heads, at)
         if sec in ("업무", "버림") or (not from_ai and sec not in ("필수", "우대")):
@@ -197,6 +199,8 @@ def clean_domain(f: dict[str, Any], text: str) -> dict[str, Any]:
         if not codes:
             unmatched.append(quote)
         need = _inline_need(q) or ("필수" if sec == "필수" else "우대")
+        if "관심" in q:  # '관심 또는 경험'은 경력으로 채우는 조건이 아니라서 필수로 두지 않는다
+            need = "우대"
         for c in codes:
             if c not in keep or need == "필수":
                 keep[c] = {"code": c, "need": need, "quote": quote}

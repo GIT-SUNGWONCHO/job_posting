@@ -252,3 +252,13 @@ def test_facts_load_keeps_unicode_line_separator(tmp_path):
     rows = {"z:1": {"uid": "z:1", "facts": {"domain_quotes": ["금융\u2028데이터 경험"]}}, "z:2": {"uid": "z:2", "facts": {}}}
     facts.save(tmp_path, rows)
     assert facts.load(tmp_path) == rows
+
+
+def test_clean_domain_skips_any_domain_intro_and_interest():
+    from jobpost import facts
+    text = ("자격요건\n- 도메인 데이터 모델 경험 (금융, 물류, 커머스 등 도메인 무관)\n- (주)가나는 2014년에 설립된 회사로 금융 SI를 한다\n"
+            "- 의료 서비스와 사용자 경험에 관심이 있는 분\n- 보험사 상품 개발 경력")
+    got = facts.clean_domain({"domain_quotes": ["도메인 데이터 모델 경험 (금융, 물류, 커머스 등 도메인 무관)",
+                                                "(주)가나는 2014년에 설립된 회사로 금융 SI를 한다",
+                                                "의료 서비스와 사용자 경험에 관심이 있는 분", "보험사 상품 개발 경력"]}, text)
+    assert [(d["code"], d["need"]) for d in got["domain_exp"]] == [("IN0104", "필수")]
