@@ -275,7 +275,9 @@ def profile_extras() -> dict[str, Any]:
     """profile.yaml에 합치는 목록: 업종(id는 legacy), 숙련도·역할·학력·전공·영어·원하는 직급."""
     return {
         "version": raw("industries")["version"],
-        "industries": [{"id": x["legacy"], "name": x["name"], "code": x["code"]} for x in _active(industries())],
+        # 업종은 코드로 저장한다(2026-11-06 옮김). legacy는 옮기기 전 값을 읽을 때만
+        "industries": [{"id": x["code"], "name": x["name"], "code": x["code"], "legacy": x["legacy"]}
+                       for x in _active(industries())],
         "skill_levels": [{"level": x["level"], "name": x["name"], "desc": x["desc"]} for x in enum("skill_levels")],
         "project_parts": names("project_parts"),
         "degrees": names("degrees"),

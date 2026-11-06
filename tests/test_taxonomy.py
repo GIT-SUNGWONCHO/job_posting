@@ -43,8 +43,9 @@ def test_profile_and_guide_views_match_old_files():
     for k in ("skill_levels", "project_parts", "degrees", "major_groups", "english", "english_low", "want_levels", "roles"):
         got = n[k] if k != "roles" else [{x: v for x, v in r.items() if x != "code"} for r in n[k]]
         assert got == o[k], k
-    # 업종은 2026-11-04 B로 바뀌었다(시장 기준 38개). 지난 23개 id는 모두 남아 이어진다
-    assert {i["id"] for i in o["industries"]} <= {i["id"] for i in n["industries"]}
+    # 업종은 2026-11-04 B로 바뀌었다(시장 기준 38개). 2026-11-06부터 id는 코드, 지난 23개 id는 legacy로 남아 이어진다
+    assert {i["id"] for i in o["industries"]} <= {i["legacy"] for i in n["industries"]}
+    assert all(i["id"] == i["code"] for i in n["industries"])
     assert n["version"] == 2
     og, ng = old("match_guide"), config.load("match_guide")
     assert ng["item_kinds"] == og["item_kinds"] and ng["posting_facts"] == og["posting_facts"]
@@ -122,3 +123,26 @@ def test_industries_in():
     assert names("물류 또는 이커머스 분야") == ["이커머스", "물류·운송"]
     assert names("공공·금융·국방 분야 구축 경험") == ["금융", "공공", "중공업·조선·방산·항공"]  # 나열 뒤의 '분야'
     assert names("공공데이터 활용 분석 경험, 보안 업무 경험, 소셜 미디어 데이터") == []       # 넓은 말 오탐 없음
+
+
+def test_migrate_profile_industries():
+    from jobpost import migrate
+    data = {"careers": [{"industry": "bank"}, {"industry": "IN0201"}, {"industry": ""}, {"industry": "없는값"}],
+            "wants": {"industriesLike": ["health", "IN0602"], "industriesAvoid": ["construction"]}}
+    new, changed, unknown = migrate.industry_data(data)
+    assert [c["industry"] for c in new["careers"]] == ["IN0101", "IN0201", "", "없는값"]
+    assert new["wants"] == {"industriesLike": ["IN0903", "IN0602"], "industriesAvoid": ["IN0502"]}
+    assert (changed, unknown) == (3, 1) and data["careers"][0]["industry"] == "bank"  # 원본은 그대로
+
+    class DB:
+        def __init__(self):
+            self.updated = []
+
+        def select(self, table, query):
+            return [{"user_id": "u1", "data": data}]
+
+        def update(self, table, query, values):
+            self.updated.append(values)
+
+    db = DB()
+    assert migrate.industries(db)["values"] == 3 and not db.updated  # --apply 없이는 세기만

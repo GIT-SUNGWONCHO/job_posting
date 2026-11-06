@@ -81,7 +81,8 @@ export interface Filters {
 /** 프로필에서 고르는 목록(config/profile.yaml) */
 export interface ProfileOptions {
   version: number
-  industries: { id: string; name: string; code?: string }[]
+  /** 업종: id는 코드(IN0101, 2026-11-06부터). legacy는 옮기기 전에 저장된 값(bank 등)을 읽을 때만 */
+  industries: { id: string; name: string; code?: string; legacy?: string }[]
   /** job_type: 공고에서는 이 직무 유형으로 본다(없으면 id가 같은 직무 유형) */
   roles: { id: string; name: string; job_type?: string }[]
   skill_levels: { level: number; name: string; desc: string }[]

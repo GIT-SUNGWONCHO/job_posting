@@ -10,7 +10,7 @@ import re
 from datetime import date
 from typing import Any
 
-from . import config
+from . import config, taxonomy
 
 NON_DATA_ROLES = {"pi", "sales_md"}
 
@@ -93,7 +93,6 @@ def _period(x: dict[str, Any]) -> str:
 def text(data: dict[str, Any], today: date) -> str:
     """AI에 보내는 지원자 요약. 회사명까지 넣는다."""
     cfg = config.load("profile")
-    inds = {i["id"]: i["name"] for i in cfg["industries"]}
     levels = {lv["level"]: lv["name"] for lv in cfg["skill_levels"]}
     total, data_years = career_totals(data, today)
     lines = [f"총 경력 약 {total:.1f}년, 그중 데이터·AI 경력 약 {data_years:.1f}년"]
@@ -105,7 +104,7 @@ def text(data: dict[str, Any], today: date) -> str:
     lines.append("[경력]")
     for c in sorted(data.get("careers") or [], key=lambda c: c.get("start") or "", reverse=True):
         title = f", {c['title']}" if c.get("title") else ""
-        lines.append(f"- {c.get('company', '')} ({inds.get(c.get('industry', ''), '업종 미입력')}) {_period(c)}{title}")
+        lines.append(f"- {c.get('company', '')} ({taxonomy.industry_name(c.get('industry')) or '업종 미입력'}) {_period(c)}{title}")
         for r in sorted(c.get("roles") or [], key=lambda r: r.get("start") or "", reverse=True):
             summary = f" — {r['summary']}" if r.get("summary") else ""
             lines.append(f"  - 직무: {role_name(r)} {_period(r)}{summary}")

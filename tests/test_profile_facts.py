@@ -233,3 +233,14 @@ def test_facts_run_parallel_clients(tmp_path):
     assert s["done"] == 6 and s["calls"] == 6 and s["workers"] == 3
     assert sum(w.n for w in workers) == 6
     assert facts.load(tmp_path)["z:3"]["facts"]["company_domain"] == ["IN0201"]  # 이름으로 고르고 코드로 저장
+
+
+def test_profile_text_same_for_legacy_and_code_industry():
+    """업종을 지난 id에서 코드로 옮겨도 AI에 보내는 요약(해시)이 같아 매칭을 다시 하지 않는다."""
+    from datetime import date
+
+    from jobpost import profile
+    base = {"schema": 2, "careers": [{"company": "가나은행", "industry": "bank", "start": "2020-01", "end": "", "roles": []}]}
+    coded = {"schema": 2, "careers": [{"company": "가나은행", "industry": "IN0101", "start": "2020-01", "end": "", "roles": []}]}
+    assert profile.text(base, date(2026, 11, 6)) == profile.text(coded, date(2026, 11, 6))
+    assert "은행·저축" in profile.text(coded, date(2026, 11, 6))

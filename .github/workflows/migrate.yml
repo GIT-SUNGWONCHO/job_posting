@@ -1,0 +1,39 @@
+# 기준 목록을 코드로 옮기기(docs/taxonomy.md '코드로 옮기기'). 지금은 업종: 프로필의 지난 id → 코드.
+# apply가 false면 건수만 센다. true면 프로필 전체를 Supabase 비공개 저장소(backups/)에 먼저 올리고 바꾼다.
+# 로그에는 건수만 남는다(레포가 공개라 프로필 내용은 찍지 않는다).
+# 수동 실행: GitHub > Actions > migrate > Run workflow
+name: migrate
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "실제로 바꾼다(false면 건수만)"
+        required: true
+        default: "false"
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: 의존성 설치
+        run: uv sync --locked --no-dev
+      - name: 업종 옮기기
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          APPLY: ${{ inputs.apply }}
+        run: |
+          if [ "$APPLY" = "true" ]; then
+            uv run --no-dev jobpost migrate-industries --apply | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            uv run --no-dev jobpost migrate-industries | tee -a "$GITHUB_STEP_SUMMARY"
+          fi

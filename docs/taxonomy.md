@@ -70,6 +70,6 @@
 
 ## 코드로 옮기기(진행 중)
 
-지금 데이터(data 브랜치 `state.jsonl`·`facts.jsonl`, Supabase 설정·프로필·매칭)는 지난 id(`data_eng`, `bank`)로 저장돼 있다. 옮기기 전까지 다른 모듈은 `config.load("job_types"·"skills"·"profile"·"match_guide")`로 예전 모양의 보기를 받고, 보기는 `taxonomy.py`가 만든다. 항목마다 `legacy` 칸이 지난 id → 코드 대응표다(`taxonomy.code_of`).
+목록마다 나눠 옮긴다(2026-11-06 결정). **업종**: 회사 업종·공고 정리(v6)는 코드, 프로필(경력 업종·선호·비선호)은 `jobpost migrate-industries`(`migrate.yml`, 백업 먼저)로 코드로 옮긴다. 프로필 선택지의 id도 코드(`legacy`는 옮기기 전 값 읽기용). **직무 유형·분야**는 아직 지난 id(`data_eng`)로 저장돼 있고 매칭 따라잡기 전에 따로 옮긴다. **스킬·고정 선택지**는 이름으로 저장해 옮기지 않는다. 직무 유형을 옮기기 전까지 다른 모듈은 `config.load("job_types"·"skills"·"profile"·"match_guide")`로 예전 모양의 보기를 받고, 보기는 `taxonomy.py`가 만든다. 항목마다 `legacy` 칸이 지난 id → 코드 대응표다(`taxonomy.code_of`).
 
 순서(docs/decisions.md 2026-11-03): A 코드 체계 → B 업종 대조·확정 → C 업종 경험 지시문 → D 스킬 사전 점검 → 구현 → 데이터 옮기기(백업 먼저).

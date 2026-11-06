@@ -24,7 +24,7 @@ export interface Role {
 
 export interface Career {
   company: string
-  industry: string // config/taxonomy/industries.yaml의 legacy id
+  industry: string // 업종 코드(IN0101). 2026-11-06 전에 저장된 값은 legacy id였다
   start: string
   end: string
   title: string // 직급
@@ -39,7 +39,7 @@ export interface Skill {
 /** 원하는 조건: 필터로 빼지 않고 점수에만 반영한다(config/match_guide.yaml gates). 빈 값은 상관없음 */
 export interface Wants {
   level: string // 실무자 · 리더
-  industriesLike: string[] // config/taxonomy/industries.yaml의 legacy id
+  industriesLike: string[] // 업종 코드(IN0101)
   industriesAvoid: string[]
 }
 
