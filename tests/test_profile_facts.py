@@ -244,3 +244,11 @@ def test_profile_text_same_for_legacy_and_code_industry():
     coded = {"schema": 2, "careers": [{"company": "가나은행", "industry": "IN0101", "start": "2020-01", "end": "", "roles": []}]}
     assert profile.text(base, date(2026, 11, 6)) == profile.text(coded, date(2026, 11, 6))
     assert "은행·저축" in profile.text(coded, date(2026, 11, 6))
+
+
+def test_facts_load_keeps_unicode_line_separator(tmp_path):
+    """본문에서 온 U+2028(줄 구분 문자)이 문장에 있어도 한 줄로 읽는다(splitlines는 이것도 줄바꿈으로 본다)."""
+    from jobpost import facts
+    rows = {"z:1": {"uid": "z:1", "facts": {"domain_quotes": ["금융\u2028데이터 경험"]}}, "z:2": {"uid": "z:2", "facts": {}}}
+    facts.save(tmp_path, rows)
+    assert facts.load(tmp_path) == rows

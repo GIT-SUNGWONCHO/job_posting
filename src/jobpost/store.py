@@ -49,7 +49,7 @@ class Store:
         self.state: dict[str, dict[str, Any]] = {}
         path = base / "state.jsonl"
         if path.exists():
-            for line in path.read_text(encoding="utf-8").splitlines():
+            for line in path.read_text(encoding="utf-8").split("\n"):
                 if line.strip():
                     rec = json.loads(line)
                     self.state[rec["uid"]] = rec

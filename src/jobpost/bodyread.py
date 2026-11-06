@@ -70,7 +70,7 @@ def load(data_dir: Path) -> dict[str, dict[str, Any]]:
     path = data_dir / FILE
     if not path.exists():
         return {}
-    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").split("\n") if line.strip()]
     return {r["uid"]: r for r in rows}
 
 

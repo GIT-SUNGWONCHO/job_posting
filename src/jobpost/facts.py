@@ -224,7 +224,7 @@ def load(data_dir: Path, file: str = FILE) -> dict[str, dict[str, Any]]:
     if not path.exists():
         return {}
     out = {}
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8").split("\n"):
         if line.strip():
             r = json.loads(line)
             out[r["uid"]] = r
