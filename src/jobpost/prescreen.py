@@ -270,6 +270,20 @@ def trial(screen: dict[str, Any], bodies: dict[str, Any], facts: dict[str, Any],
         # 규칙 v3에서 낮게 나온 부분(×를 거른 근거가 무엇인지)
         whys = Counter(w for pid in truth_bad | truth_good for w in (v3.get(pid) or {}).get("why", []))
         out.append("규칙 v3 낮은 부분(정답 공고에서): " + ", ".join(f"{k} {v}" for k, v in whys.most_common()))
+        # 점수 분포(10점 구간)와 평가별 부분 평균: 어느 부분이 ○와 ×를 가르는지
+        scored = [r["score"] for r in v3.values() if r]
+        hist = Counter(min(s // 10 * 10, 90) for s in scored)
+        out.append("규칙 v3 분포: " + " · ".join(f"{b}~ {hist.get(b, 0)}" for b in range(0, 100, 10)))
+        for lab, name in (("good", "○"), ("maybe", "△"), ("bad", "×")):
+            rs = [v3[pid] for pid, la in rated.items() if la == lab and v3.get(pid)]
+            if rs:
+                avg = {k: sum(r["parts"][k] for r in rs) / len(rs) for k in WEIGHTS}
+                out.append(f"{name} {len(rs)}건 평균 {sum(r['score'] for r in rs) / len(rs):.0f}점 | "
+                           + ", ".join(f"{k} {v:.2f}" for k, v in avg.items()))
+        rec = [v3[pid] for pid in truth_rec if v3.get(pid)]
+        if rec:
+            out.append(f"AI 지원 추천 {len(rec)}건 평균 {sum(r['score'] for r in rec) / len(rec):.0f}점, "
+                       f"최저 {min(r['score'] for r in rec)}점")
 
         if client is not None:
             ptext = profile.text(data, today)
