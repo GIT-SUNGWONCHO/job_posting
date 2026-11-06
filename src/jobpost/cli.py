@@ -110,10 +110,12 @@ def main(argv: list[str] | None = None) -> int:
     ps = sub.add_parser("prescreen-trial", help="시험: 사전 거르기(조건·규칙 v2·규칙 v3·AI 묶음)가 줄이는 양과 잃는 정답 수(로그에는 건수만)")
     ps.add_argument("--data-dir", type=Path, default=Path("data"))
     ps.add_argument("--ai-sample", type=int, default=300, help="AI 묶음 거르기를 시험할 공고 수(30건에 1번 호출)")
-    mc = sub.add_parser("method-compare", help="시험: 매칭 방식 A(지금)·B(항목 풀)·C(고정 틀)·D(AI 점수)를 내 평가로 견준다(로그에는 지표만)")
+    mc = sub.add_parser("method-compare", help="시험: 매칭 방식 A(지금)·B(항목 풀)·C(고정 틀)·D(AI 점수)·E(임베딩)를 내 평가로 견준다(로그에는 지표만)")
     mc.add_argument("--data-dir", type=Path, default=Path("data"))
-    mc.add_argument("--methods", default="BCD", help="새로 매길 방식(A는 지금 매칭 결과를 씀)")
-    mc.add_argument("--limit", type=int, help="평가한 공고 중 앞에서 이만큼만(시험용)")
+    mc.add_argument("--mode", choices=["score", "evaluate"], default="evaluate",
+                    help="score: 기준 샘플 전부를 미리 매겨 비공개 저장소에 둔다(AI 부름), evaluate: 저장한 점수와 평가로 지표만(AI 없음)")
+    mc.add_argument("--methods", default="BCDE", help="score에서 새로 매길 방식(A는 지금 매칭 결과를 씀)")
+    mc.add_argument("--rounds", type=int, default=2, help="score에서 방식마다 몇 번 매길지(흔들림을 보려고 2)")
     da = sub.add_parser("dart-audit", help="시험: DART 고유번호마다 최근 감사보고서에서 실적을 읽어 본다(저장 없음)")
     da.add_argument("--codes", required=True, help="쉼표로 구분한 DART 고유번호")
     da.add_argument("--raw", type=int, default=3, help="못 읽은 회사 이만큼은 손익계산서 앞부분을 남긴다")
@@ -220,12 +222,27 @@ def main(argv: list[str] | None = None) -> int:
         json.dump(summary, sys.stdout, ensure_ascii=False)
         print()
     if args.cmd == "method-compare":
+        import gzip
+        import tempfile
+
         from . import methods
         store = db.DB()
-        rated = {r["posting_id"] for r in store.select("feedback", "select=posting_id")}
-        built, bodies = screen.build(args.data_dir, keep=rated)
-        print("\n".join(methods.compare(built, bodies, facts.load(args.data_dir), store, recommend.make_client(),
-                                        date.today(), methods=args.methods, limit=args.limit)))
+        keep = {r["posting_id"] for r in store.select("feedback", "select=posting_id")} | set(recommend.sample_ids())
+        built, bodies = screen.build(args.data_dir, keep=keep)
+        if args.mode == "score":
+            saved, lines = methods.score_sample(built, bodies, facts.load(args.data_dir), store, recommend.make_client(),
+                                                date.today(), methods=args.methods, rounds=args.rounds)
+            with tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / "methods.json.gz"
+                path.write_bytes(gzip.compress(json.dumps(saved, ensure_ascii=False).encode()))
+                publish.upload(path, name=methods.SAVE_NAME)
+            print("\n".join(lines + ["저장함(비공개 저장소)"]))
+            return 0
+        raw = publish.download(methods.SAVE_NAME)
+        if raw is None:
+            print("저장한 점수가 없다. 먼저 --mode score로 매긴다")
+            return 1
+        print("\n".join(methods.evaluate(built, store, json.loads(gzip.decompress(raw)))))
         return 0
     if args.cmd == "prescreen-trial":
         from . import prescreen

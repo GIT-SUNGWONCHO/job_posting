@@ -110,6 +110,38 @@ class Gemini:
                 attempt += 1
         raise AIError(last_error or "응답 없음")
 
+    def embed(self, texts: list[str], model: str = "gemini-embedding-001") -> list[list[float]]:
+        """글마다 임베딩(의미를 숫자 목록으로). 100개씩 묶어 부른다. 한도(429)면 다음 키로."""
+        out: list[list[float]] = []
+        for start in range(0, len(texts), 100):
+            chunk = texts[start:start + 100]
+            body = {"requests": [{"model": f"models/{model}", "content": {"parts": [{"text": t}]},
+                                  "taskType": "SEMANTIC_SIMILARITY"} for t in chunk]}
+            for attempt in range(4):
+                wait = self.min_interval - (time.monotonic() - self._last)
+                if wait > 0:
+                    time.sleep(wait)
+                self._last = time.monotonic()
+                self.calls += 1
+                resp = self.session.post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/{model}:batchEmbedContents",
+                    headers={"x-goog-api-key": self.keys[self.key_i], "Content-Type": "application/json"},
+                    json=body, timeout=120)
+                if resp.status_code == 429 and self.key_i + 1 < len(self.keys):
+                    self.key_i += 1
+                    log.warning("Gemini 임베딩 한도(429%s): %d번째 키로 넘어감", _quota(resp), self.key_i + 1)
+                    continue
+                if resp.status_code == 429 or resp.status_code >= 500:
+                    time.sleep(20 * (attempt + 1))
+                    continue
+                if resp.status_code != 200:
+                    raise AIError(f"{resp.status_code} {resp.text[:200]}")
+                out += [e["values"] for e in resp.json()["embeddings"]]
+                break
+            else:
+                raise AIError("임베딩 실패")
+        return out
+
     def grounded(self, prompt: str, retries: int = 2) -> dict[str, Any]:
         """구글 검색 근거(google_search 도구)로 답을 받는다. 문장마다 근거 웹 문서를 함께 돌려준다.
         {"text", "chunks": [{"uri", "title"}], "supports": [{"text", "chunks": [번호]}], "queries": [...]}.

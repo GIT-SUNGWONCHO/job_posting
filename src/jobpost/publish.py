@@ -21,6 +21,25 @@ def configured() -> bool:
     return bool(os.environ.get("SUPABASE_URL") and os.environ.get("SUPABASE_SECRET_KEY"))
 
 
+def _headers() -> dict[str, str]:
+    key = os.environ["SUPABASE_SECRET_KEY"]
+    h = {"apikey": key}
+    if key.count(".") == 2:
+        h["Authorization"] = f"Bearer {key}"
+    return h
+
+
+def download(name: str, session: requests.Session | None = None) -> bytes | None:
+    """비공개 저장소에서 파일을 받는다. 없으면 None."""
+    url = os.environ["SUPABASE_URL"].rstrip("/")
+    resp = (session or requests.Session()).get(f"{url}/storage/v1/object/{BUCKET}/{name}", headers=_headers(), timeout=60)
+    if resp.status_code in (400, 404):
+        return None
+    if resp.status_code >= 300:
+        raise RuntimeError(f"저장소 받기 실패: {resp.status_code} {resp.text[:200]}")
+    return resp.content
+
+
 def upload(path: Path, session: requests.Session | None = None, name: str = OBJECT) -> None:
     url = os.environ["SUPABASE_URL"].rstrip("/")
     key = os.environ["SUPABASE_SECRET_KEY"]

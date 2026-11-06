@@ -124,51 +124,136 @@ def concordance(labels: dict[str, str], score: dict[str, int]) -> float | None:
     return ok / pairs if pairs else None
 
 
-def compare(screen: dict[str, Any], bodies: dict[str, Any], facts: dict[str, Any], db: Any, client: Any,
-            today: Any, methods: str = "BCD", limit: int | None = None) -> list[str]:
-    """평가한 공고(내 분야)를 방식마다 매겨 지표를 낸다. 공고·회사는 로그에 쓰지 않는다."""
-    from . import feedback, profile
+def _ptext(data: dict[str, Any], memo: list[str] | None, today: Any) -> str:
+    from . import profile
+    ptext = profile.text(data, today)
+    if memo:
+        ptext += "\n[매칭 메모(평가하며 남긴 말에서 뽑음)]\n" + "\n".join(f"- {line}" for line in memo)
+    return ptext
 
+
+def _cos(a: list[float], b: list[float]) -> float:
+    dot = sum(x * y for x, y in zip(a, b, strict=False))
+    na = sum(x * x for x in a) ** 0.5
+    nb = sum(y * y for y in b) ** 0.5
+    return dot / (na * nb) if na and nb else 0.0
+
+
+def run_e(client: Any, ptext: str, ptxts: dict[str, str]) -> dict[str, int]:
+    """E 임베딩 유사도: 공고 글과 지원자 요약의 의미가 얼마나 가까운지. 판단 문장 없음.
+    유사도를 샘플 안 순위(0~100)로 바꿔 다른 방식과 같은 점수 구간으로 본다."""
+    ids = list(ptxts)
+    vecs = client.embed([ptext] + [ptxts[i] for i in ids])
+    sim = {pid: _cos(vecs[0], v) for pid, v in zip(ids, vecs[1:], strict=True)}
+    ranked = sorted(ids, key=lambda pid: sim[pid])
+    n = max(len(ranked) - 1, 1)
+    return {pid: round(100 * k / n) for k, pid in enumerate(ranked)}
+
+
+SAVE_NAME = "trials/methods.json.gz"  # 비공개 저장소(사람별 점수라 공개 레포·로그에 두지 않는다)
+
+
+def score_sample(screen: dict[str, Any], bodies: dict[str, Any], facts: dict[str, Any], db: Any, client: Any,
+                 today: Any, methods: str = "BCDE", rounds: int = 2) -> tuple[dict[str, Any], list[str]]:
+    """기준 샘플 공고 전부(평가 여부와 상관없이)를 방식마다 rounds번 매긴다. 평가 뒤에는 evaluate로 AI 없이 잰다.
+    돌려주는 값: ({user_id: {방식: [{공고 id: 점수}, …회차]}}, 건수만 담은 로그 줄)."""
     cfg = config.load("ai").get("match") or {}
     texts = {pid: b["text"] for pid, b in bodies["bodies"].items()}
     by_id = {p["id"]: p for p in screen["postings"]}
-    labels_all: dict[tuple[str, str], str] = {}
-    for r in db.select("feedback", "select=user_id,posting_id,label&order=updated_at"):
-        labels_all[(r["user_id"], r["posting_id"])] = r["label"]
+    ids = [pid for pid in recommend.sample_ids() if pid in by_id]
     memos = recommend.load_memos(db)
+    from . import profile
+
+    saved: dict[str, Any] = {}
     out: list[str] = []
     for prof in db.select("profiles", "select=user_id,data,version"):
         user, data = prof["user_id"], prof.get("data") or {}
-        if not profile.is_v2(data):
+        if not profile.is_v2(data) or not profile.has_content(data):
             continue
-        labels = {pid: lab for (u, pid), lab in labels_all.items() if u == user and pid in by_id}
-        rated = sorted(labels)[:limit] if limit else sorted(labels)
-        ptext = profile.text(data, today)
-        if memos.get(user):
-            ptext += "\n[매칭 메모(평가하며 남긴 말에서 뽑음)]\n" + "\n".join(f"- {line}" for line in memos[user])
+        ptext = _ptext(data, memos.get(user), today)
+        ptxts = {pid: recommend.posting_text(by_id[pid], screen, texts.get(pid), facts.get(pid), cfg.get("body_chars", 3000))
+                 for pid in ids}
+        mine: dict[str, list[dict[str, int | None]]] = {}
+        calls = errors = 0
+        for m in methods:
+            mine[m] = []
+            for _ in range(1 if m == "E" else rounds):  # 임베딩은 같은 글이면 같은 값이라 한 번
+                got: dict[str, int | None] = {}
+                if m == "E":
+                    try:
+                        got = dict(run_e(client, ptext, ptxts))
+                    except Exception as e:  # noqa: BLE001
+                        log.warning("방식 E 실패: %s", str(e)[:120])
+                        errors += 1
+                    mine[m].append(got)
+                    continue
+                for pid in ids:
+                    try:
+                        calls += 1
+                        got[pid] = (run_b(client, ptext, ptxts[pid], facts.get(pid)) if m == "B"
+                                    else run_c(client, ptext, ptxts[pid], facts.get(pid)) if m == "C"
+                                    else run_d(client, ptext, ptxts[pid]))
+                    except Exception as e:  # noqa: BLE001 - 한 건 실패는 점수 없음으로
+                        log.warning("방식 %s 실패: %s", m, str(e)[:120])
+                        errors += 1
+                        got[pid] = None
+                mine[m].append(got)
+        saved[user] = mine
+        out.append(f"기준 샘플 {len(ids)}건 · 방식 {methods} · 회차 {rounds} · AI 호출 {calls}번 · 실패 {errors}건")
+    return {"date": str(today), "methods": methods, "rounds": rounds, "users": saved}, out
+
+
+def _stability(runs: list[dict[str, int | None]]) -> str:
+    """같은 공고를 두 번 매긴 점수 차이(평균, 10점 넘게 다른 비율, 판정 구간이 바뀐 비율)."""
+    if len(runs) < 2:
+        return "    흔들림 -(한 번만 매김)"
+    from . import feedback
+    hi, lo = feedback._bands()
+    both = [(runs[0][p], runs[1].get(p)) for p in runs[0] if runs[0][p] is not None and runs[1].get(p) is not None]
+    if not both:
+        return "    흔들림 -"
+    band = lambda s: 2 if s >= hi else 1 if s >= lo else 0  # noqa: E731
+    diff = [abs(a - b) for a, b in both]
+    return (f"    흔들림: 평균 {sum(diff) / len(diff):.1f}점, 10점 넘게 다름 {sum(d > 10 for d in diff) * 100 // len(diff)}%, "
+            f"구간 바뀜 {sum(band(a) != band(b) for a, b in both) * 100 // len(both)}% ({len(both)}건)")
+
+
+def evaluate(screen: dict[str, Any], db: Any, saved: dict[str, Any]) -> list[str]:
+    """저장된 점수(score_sample)와 내 평가를 맞대 지표만 낸다. AI를 부르지 않는다.
+    A(지금 매칭)는 matches의 상한 전 점수. 내 분야에서 빠진 평가 공고(업무가 다른 분야 등)도 센다."""
+    from . import feedback
+
+    labels_all: dict[tuple[str, str], str] = {}
+    for r in db.select("feedback", "select=user_id,posting_id,label&order=updated_at"):
+        labels_all[(r["user_id"], r["posting_id"])] = r["label"]
+    sample = set(recommend.sample_ids())
+    defaults = config.load("filters")
+    settings = {r["user_id"]: r.get("filters") or {} for r in db.select("settings", "select=user_id,filters")}
+    out: list[str] = [f"저장한 점수: {saved.get('date')} · 방식 {saved.get('methods')} · 회차 {saved.get('rounds')}"]
+    for user, mine in (saved.get("users") or {}).items():
+        labels = {pid: lab for (u, pid), lab in labels_all.items() if u == user and pid in sample}
+        rated = sorted(labels)
+        n = {k: sum(1 for p in rated if labels[p] == k) for k in feedback.LABELS}
+        out.append(f"평가한 기준 샘플 {len(rated)}건(○ {n['good']} △ {n['maybe']} × {n['bad']})")
+        scope = recommend.match_scope({**defaults, **settings.get(user, {})})
+        inside = {p["id"] for p in recommend.candidates(screen, scope)}
+        open_ids = {p["id"] for p in screen["postings"]}
+        gone = [p for p in rated if p in open_ids and p not in inside]
+        out.append("  내 분야에서 빠진 평가 공고: " + " ".join(f"{mark} {sum(1 for p in gone if labels[p] == k)}"
+                                                    for k, mark in feedback.LABELS.items()))
         a = {r["posting_id"]: (r.get("parts") or {}).get("base")
              for r in db.select("matches", f"select=posting_id,parts&user_id=eq.{user}")
              if (r.get("parts") or {}).get("kind") == "ai"}
-        scores: dict[str, dict[str, int | None]] = {"A": {p: a.get(p) for p in rated}}
-        calls = 0
-        for m in methods:
-            scores[m] = {}
-            for pid in rated:
-                p = by_id[pid]
-                ptxt = recommend.posting_text(p, screen, texts.get(pid), facts.get(pid), cfg.get("body_chars", 3000))
-                try:
-                    calls += 1
-                    scores[m][pid] = (run_b(client, ptext, ptxt, facts.get(pid)) if m == "B"
-                                      else run_c(client, ptext, ptxt, facts.get(pid)) if m == "C"
-                                      else run_d(client, ptext, ptxt))
-                except Exception as e:  # noqa: BLE001 - 한 건 실패는 점수 없음으로
-                    log.warning("방식 %s 실패: %s", m, str(e)[:120])
-                    scores[m][pid] = None
-        n = {k: sum(1 for p in rated if labels[p] == k) for k in feedback.LABELS}
-        out.append(f"평가한 내 분야 공고 {len(rated)}건(○ {n['good']} △ {n['maybe']} × {n['bad']}), AI 호출 {calls}번")
-        for m, sc in scores.items():
-            got = {p: s for p, s in sc.items() if s is not None}
-            conc = concordance({p: labels[p] for p in got}, got)
-            out.append(feedback._metric_line(f"{m} 방식", feedback.metrics(list(got), labels, lambda pid, sc=got: sc.get(pid))))
-            out.append(f"    순서 맞음 {conc:.0%}" if conc is not None else "    순서 맞음 -")
+        table = {"A": [{p: a.get(p) for p in rated}], **mine}
+        for m, runs in table.items():
+            for k, run in enumerate(runs):
+                got = {p: s for p, s in run.items() if s is not None and p in labels}
+                conc = concordance({p: labels[p] for p in got}, got)
+                top = sorted(got, key=lambda p: -got[p])[:10]
+                name = f"{m} 방식" + (f" {k + 1}회" if len(runs) > 1 else "")
+                out.append(feedback._metric_line(name, feedback.metrics(list(got), labels, lambda pid, sc=got: sc.get(pid))))
+                out.append(f"    순서 맞음 {conc:.0%} · 상위 10 중 ○ {sum(labels[p] == 'good' for p in top)}"
+                           if conc is not None else "    순서 맞음 -")
+            if m != "A":
+                out.append(_stability(runs))
     return out
