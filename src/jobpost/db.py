@@ -59,8 +59,24 @@ class DB:
                 time.sleep(2 * (attempt + 1))
         raise AssertionError("unreachable")
 
+    PAGE = 1000  # Supabase(PostgREST)는 한 번에 1,000줄까지만 준다
+    # 나눠 받을 때 순서가 바뀌지 않게 쓰는 열(사람별 표의 기본 키)
+    ORDER = {"matches": "user_id,posting_id", "feedback": "user_id,posting_id", "applications": "user_id,posting_id"}
+
     def select(self, table: str, query: str = "select=*") -> list[dict[str, Any]]:
-        return self._send("GET", f"{self.url}/{table}?{query}", headers=self.headers).json()
+        """줄을 모두 읽는다. 1,000줄이 넘으면 나눠 받는다(2026-11-06: 매칭 결과가 1,000줄을 넘어 일부만 읽혔다).
+        query에 limit이 있으면 그대로 한 번만 부른다."""
+        if "limit=" in query:
+            return self._send("GET", f"{self.url}/{table}?{query}", headers=self.headers).json()
+        if "order=" not in query and table in self.ORDER:
+            query += f"&order={self.ORDER[table]}"
+        out: list[dict[str, Any]] = []
+        while True:
+            page = self._send("GET", f"{self.url}/{table}?{query}&limit={self.PAGE}&offset={len(out)}",
+                              headers=self.headers).json()
+            out += page
+            if len(page) < self.PAGE:
+                return out
 
     def delete(self, table: str, query: str) -> None:
         self._send("DELETE", f"{self.url}/{table}?{query}", headers=self.headers)
