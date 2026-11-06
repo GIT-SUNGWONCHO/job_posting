@@ -3,7 +3,7 @@
 # aliases는 본문에서 찾는 표기: 영문은 단어 경계, 3글자 이하 영문은 대소문자까지 맞아야 한다. 한글은 그대로.
 # kind: 언어 / 도구·플랫폼 / 방법·개념. 바꾸면 version을 올린다(점수를 다시 계산).
 
-version: 2
+version: 3
 
 groups:
   - {code: SG01, name: 언어}
@@ -23,7 +23,7 @@ skills:
   - {code: SK0003, name: Java, kind: 언어, groups: [SG01], aliases: [자바]}
   - {code: SK0004, name: Scala, kind: 언어, groups: [SG01], aliases: [스칼라]}
   - {code: SK0005, name: Golang, kind: 언어, groups: [SG01], aliases: [Go 언어, Go]}
-  - {code: SK0006, name: TypeScript, kind: 언어, groups: [SG01], aliases: [JavaScript, Node.js]}
+  - {code: SK0006, name: TypeScript, kind: 언어, groups: [SG01], aliases: [JavaScript, Node.js, "NestJS"]}
   - {code: SK0007, name: C++, kind: 언어, groups: [SG01], aliases: [C/C++]}
   - {code: SK0008, name: Spark, kind: 도구·플랫폼, groups: [SG02], aliases: [PySpark, 스파크]}
   - {code: SK0009, name: Kafka, kind: 도구·플랫폼, groups: [SG02], aliases: [카프카]}
@@ -31,7 +31,7 @@ skills:
   - {code: SK0011, name: Airflow, kind: 도구·플랫폼, groups: [SG02], aliases: [에어플로우]}
   - {code: SK0012, name: dbt, kind: 도구·플랫폼, groups: [SG02], aliases: []}
   - {code: SK0013, name: Hadoop, kind: 도구·플랫폼, groups: [SG02], aliases: [하둡, Hive, HDFS]}
-  - {code: SK0014, name: ETL, kind: 방법·개념, groups: [SG02], aliases: [ELT, 데이터 파이프라인, Data Pipeline]}
+  - {code: SK0014, name: ETL, kind: 방법·개념, groups: [SG02], aliases: [ELT, 데이터 파이프라인, Data Pipeline, "DataStage", "Informatica"]}
   - {code: SK0015, name: 실시간 처리, kind: 방법·개념, groups: [SG02], aliases: [스트리밍, Streaming, 실시간 데이터]}
   - {code: SK0016, name: Pandas, kind: 도구·플랫폼, groups: [SG02], aliases: []}
   - {code: SK0017, name: Databricks, kind: 도구·플랫폼, groups: [SG02, SG03], aliases: [데이터브릭스, Unity Catalog, Delta Lake]}
@@ -44,7 +44,7 @@ skills:
   - {code: SK0024, name: MySQL, kind: 도구·플랫폼, groups: [SG03], aliases: [MariaDB]}
   - {code: SK0025, name: Oracle, kind: 도구·플랫폼, groups: [SG03], aliases: [오라클]}
   - {code: SK0026, name: NoSQL, kind: 방법·개념, groups: [SG03], aliases: [MongoDB, Cassandra, DynamoDB]}
-  - {code: SK0027, name: Elasticsearch, kind: 도구·플랫폼, groups: [SG03], aliases: [OpenSearch, 엘라스틱서치]}
+  - {code: SK0027, name: Elasticsearch, kind: 도구·플랫폼, groups: [SG03], aliases: [OpenSearch, 엘라스틱서치, "ELK", "Kibana", "Logstash"]}
   - {code: SK0028, name: Trino, kind: 도구·플랫폼, groups: [SG03], aliases: [Presto]}
   - {code: SK0029, name: ClickHouse, kind: 도구·플랫폼, groups: [SG03], aliases: []}
   - {code: SK0030, name: 벡터 DB, kind: 방법·개념, groups: [SG03], aliases: [Vector DB, Vector Database, 벡터 데이터베이스, Milvus, Pinecone, Qdrant, pgvector, Chroma, ChromaDB, 벡터DB, Embedding DB, FAISS, VectorDB]}
@@ -52,10 +52,10 @@ skills:
   - {code: SK0032, name: GCP, kind: 도구·플랫폼, groups: [SG04], aliases: [Google Cloud, Cloud Dataflow, Dataproc, Vertex AI], broader: SK0125}
   - {code: SK0033, name: Azure, kind: 도구·플랫폼, groups: [SG04], aliases: [Azure Synapse, Microsoft Fabric, ADF, Azure Data Factory], broader: SK0125}
   - {code: SK0034, name: Kubernetes, kind: 도구·플랫폼, groups: [SG04], aliases: [K8s, 쿠버네티스]}
-  - {code: SK0035, name: Docker, kind: 도구·플랫폼, groups: [SG04], aliases: [도커, 컨테이너, Containerization, 컨테이너화]}
-  - {code: SK0036, name: Terraform, kind: 도구·플랫폼, groups: [SG04], aliases: [IaC]}
-  - {code: SK0037, name: CI/CD, kind: 방법·개념, groups: [SG04], aliases: [GitHub Actions, Jenkins, ArgoCD, DevOps]}
-  - {code: SK0038, name: Linux, kind: 도구·플랫폼, groups: [SG04], aliases: [리눅스]}
+  - {code: SK0035, name: Docker, kind: 도구·플랫폼, groups: [SG04], aliases: [도커, 컨테이너, Containerization, 컨테이너화, "Container"]}
+  - {code: SK0036, name: Terraform, kind: 도구·플랫폼, groups: [SG04], aliases: [IaC, "Ansible"]}
+  - {code: SK0037, name: CI/CD, kind: 방법·개념, groups: [SG04], aliases: [GitHub Actions, Jenkins, ArgoCD, DevOps, "GitOps"]}
+  - {code: SK0038, name: Linux, kind: 도구·플랫폼, groups: [SG04], aliases: [리눅스, "Shell Script", "Bash", "쉘 스크립트"]}
   - {code: SK0039, name: GPU, kind: 도구·플랫폼, groups: [SG04], aliases: [CUDA, TensorRT, NVIDIA, Slurm]}
   - {code: SK0040, name: Tableau, kind: 도구·플랫폼, groups: [SG05], aliases: [태블로], broader: SK0124}
   - {code: SK0041, name: Power BI, kind: 도구·플랫폼, groups: [SG05], aliases: [PowerBI, 파워BI], broader: SK0124}
@@ -65,7 +65,7 @@ skills:
   - {code: SK0045, name: 통계 분석, kind: 방법·개념, groups: [SG05], aliases: [통계, Statistics, 회귀분석]}
   - {code: SK0046, name: A/B 테스트, kind: 방법·개념, groups: [SG05], aliases: [A/B Test, AB 테스트, 실험 설계]}
   - {code: SK0047, name: 데이터 시각화, kind: 방법·개념, groups: [SG05], aliases: [대시보드, Dashboard, 시각화]}
-  - {code: SK0048, name: 로그 분석, kind: 방법·개념, groups: [SG05], aliases: [GA4, Google Analytics, Amplitude, Mixpanel, 퍼널 분석, Funnel, LTV, 코호트 분석, Braze]}
+  - {code: SK0048, name: 로그 분석, kind: 방법·개념, groups: [SG05], aliases: [GA4, Google Analytics, Amplitude, Mixpanel, 퍼널 분석, Funnel, LTV, 코호트 분석, Braze, "GA", "GTM", "Google Tag Manager"]}
   - {code: SK0049, name: 데이터 모델링, kind: 방법·개념, groups: [SG06], aliases: [Data Modeling, 데이터모델링, ERD, 논리 모델, 물리 모델]}
   - {code: SK0050, name: 데이터 거버넌스, kind: 방법·개념, groups: [SG06], aliases: [Data Governance, 데이터거버넌스]}
   - {code: SK0051, name: 메타데이터, kind: 방법·개념, groups: [SG06], aliases: [Metadata, 데이터 카탈로그, Data Catalog, DataHub, OpenMetadata, Collibra]}
@@ -77,17 +77,17 @@ skills:
   - {code: SK0057, name: PyTorch, kind: 도구·플랫폼, groups: [SG07], aliases: [파이토치]}
   - {code: SK0058, name: TensorFlow, kind: 도구·플랫폼, groups: [SG07], aliases: [텐서플로우, Keras]}
   - {code: SK0059, name: MLOps, kind: 방법·개념, groups: [SG07], aliases: [MLflow, Kubeflow, 모델 서빙, Model Serving, Triton]}
-  - {code: SK0060, name: LLM, kind: 방법·개념, groups: [SG07], aliases: [대규모 언어 모델, 거대 언어 모델, GPT, Claude, Gemini, ChatGPT, 생성형 AI, GenAI, Generative AI, sLLM]}
+  - {code: SK0060, name: LLM, kind: 방법·개념, groups: [SG07], aliases: [대규모 언어 모델, 거대 언어 모델, GPT, Claude, Gemini, ChatGPT, 생성형 AI, GenAI, Generative AI, sLLM, "Llama", "Mistral", "Qwen"]}
   - {code: SK0061, name: RAG, kind: 방법·개념, groups: [SG07], aliases: [검색 증강]}
   - {code: SK0062, name: AI 에이전트, kind: 방법·개념, groups: [SG07], aliases: [Agent, Agentic, 에이전트, MCP, Multi-Agent, CrewAI, AutoGen]}
   - {code: SK0063, name: LangChain, kind: 도구·플랫폼, groups: [SG07], aliases: [LangGraph, LlamaIndex]}
-  - {code: SK0064, name: 파인튜닝, kind: 방법·개념, groups: [SG07], aliases: [Fine-tuning, Fine tuning, LoRA, SFT, RLHF]}
+  - {code: SK0064, name: 파인튜닝, kind: 방법·개념, groups: [SG07], aliases: [Fine-tuning, Fine tuning, LoRA, SFT, RLHF, "PEFT", "DeepSpeed"]}
   - {code: SK0065, name: 프롬프트 엔지니어링, kind: 방법·개념, groups: [SG07], aliases: [Prompt Engineering, 프롬프트, Prompt, Context Engineering, 컨텍스트 엔지니어링]}
   - {code: SK0066, name: NLP, kind: 방법·개념, groups: [SG07], aliases: [자연어 처리, 자연어처리]}
   - {code: SK0067, name: 컴퓨터 비전, kind: 방법·개념, groups: [SG07], aliases: [Computer Vision, Vision AI, OpenCV, 비전 AI, 영상 처리, 이미지 처리]}
   - {code: SK0068, name: 추천 시스템, kind: 방법·개념, groups: [SG07], aliases: [Recommendation, Recommender, 추천 모델, 개인화 추천]}
   - {code: SK0069, name: 검색, kind: 방법·개념, groups: [SG07], aliases: [Search, 검색 엔진, 랭킹]}
-  - {code: SK0070, name: 시계열, kind: 방법·개념, groups: [SG07], aliases: [Time Series, 시계열 예측, 수요 예측]}
+  - {code: SK0070, name: 시계열, kind: 방법·개념, groups: [SG07], aliases: [Time Series, 시계열 예측, 수요 예측, "Prophet"]}
   - {code: SK0071, name: Git, kind: 도구·플랫폼, groups: [SG08], aliases: [GitHub, GitLab]}
   - {code: SK0072, name: Jira, kind: 도구·플랫폼, groups: [SG08], aliases: [Confluence]}
 
@@ -96,15 +96,15 @@ skills:
   - {code: SK0074, name: "Kotlin", kind: 언어, groups: [SG01], aliases: ["코틀린"]}
   - {code: SK0075, name: "C#", kind: 언어, groups: [SG01], aliases: [".NET"]}
   - {code: SK0076, name: "FastAPI", kind: 도구·플랫폼, groups: [SG09], aliases: []}
-  - {code: SK0077, name: "Spring", kind: 도구·플랫폼, groups: [SG09], aliases: ["Spring Boot", "스프링", "JPA", "Spring Framework"]}
+  - {code: SK0077, name: "Spring", kind: 도구·플랫폼, groups: [SG09], aliases: ["Spring Boot", "스프링", "JPA", "Spring Framework", "SpringBoot"]}
   - {code: SK0078, name: "Django", kind: 도구·플랫폼, groups: [SG09], aliases: ["Flask"]}
-  - {code: SK0079, name: "React", kind: 도구·플랫폼, groups: [SG09], aliases: ["Next.js", "Vue", "Vue.js"]}
+  - {code: SK0079, name: "React", kind: 도구·플랫폼, groups: [SG09], aliases: ["Next.js", "Vue", "Vue.js", "CSS"]}
   - {code: SK0080, name: "API 개발", kind: 방법·개념, groups: [SG09], aliases: ["REST API", "RESTful API", "RESTful", "gRPC", "WebSocket"]}
   - {code: SK0081, name: "MSA", kind: 방법·개념, groups: [SG09], aliases: ["마이크로서비스", "Microservices"]}
   - {code: SK0082, name: "비동기 처리", kind: 방법·개념, groups: [SG09], aliases: ["asyncio", "Celery"]}
   - {code: SK0083, name: "Redis", kind: 도구·플랫폼, groups: [SG03], aliases: ["레디스"]}
   - {code: SK0084, name: "MSSQL", kind: 도구·플랫폼, groups: [SG03], aliases: ["SQL Server", "MS SQL"]}
-  - {code: SK0085, name: "그래프 DB", kind: 방법·개념, groups: [SG03], aliases: ["Neo4j", "Graph DB", "GraphDB", "SPARQL", "RDF", "OWL"]}
+  - {code: SK0085, name: "그래프 DB", kind: 방법·개념, groups: [SG03], aliases: ["Neo4j", "Graph DB", "GraphDB", "SPARQL", "RDF", "OWL", "Cypher", "Gremlin"]}
   - {code: SK0086, name: "RDBMS", kind: 방법·개념, groups: [SG03], aliases: ["RDB", "관계형 데이터베이스", "Database", "데이터베이스", "DBMS"]}
   - {code: SK0087, name: "CDC", kind: 방법·개념, groups: [SG02], aliases: ["Debezium", "Change Data Capture"]}
   - {code: SK0088, name: "Dagster", kind: 도구·플랫폼, groups: [SG02], aliases: ["Prefect"]}
@@ -113,38 +113,51 @@ skills:
   - {code: SK0091, name: "데이터 메시·패브릭", kind: 방법·개념, groups: [SG06], aliases: ["Data Mesh", "Data Fabric", "데이터 메시", "데이터 패브릭"]}
   - {code: SK0092, name: "데이터 아키텍처", kind: 방법·개념, groups: [SG06], aliases: ["Data Architecture", "DA", "데이터 아키텍트"]}
   - {code: SK0093, name: "모델링 도구", kind: 도구·플랫폼, groups: [SG06], aliases: ["ERwin", "ER/Studio", "DA#"]}
-  - {code: SK0094, name: "Prometheus·Grafana", kind: 도구·플랫폼, groups: [SG04], aliases: ["Prometheus", "Grafana", "OpenTelemetry"]}
+  - {code: SK0094, name: "Prometheus·Grafana", kind: 도구·플랫폼, groups: [SG04], aliases: ["Prometheus", "Grafana", "OpenTelemetry", "Datadog"]}
   - {code: SK0095, name: "Helm", kind: 도구·플랫폼, groups: [SG04], aliases: []}
   - {code: SK0096, name: "온프레미스", kind: 방법·개념, groups: [SG04], aliases: ["On-premise", "On-prem", "폐쇄망"]}
   - {code: SK0097, name: "SAS", kind: 도구·플랫폼, groups: [SG05], aliases: ["SPSS"]}
   - {code: SK0098, name: "QuickSight", kind: 도구·플랫폼, groups: [SG05], aliases: ["Amazon QuickSight"], broader: SK0124}
   - {code: SK0099, name: "Adobe Analytics", kind: 도구·플랫폼, groups: [SG05], aliases: []}
   - {code: SK0100, name: "vLLM", kind: 도구·플랫폼, groups: [SG07], aliases: ["SGLang", "Ollama", "TGI", "LLM 서빙", "KServe"]}
-  - {code: SK0101, name: "LLMOps", kind: 방법·개념, groups: [SG07], aliases: ["Langfuse", "LangSmith", "LLM 평가", "LLM Evaluation"]}
-  - {code: SK0102, name: "Hugging Face", kind: 도구·플랫폼, groups: [SG07], aliases: ["Hugging Face Transformers", "Transformers"]}
-  - {code: SK0103, name: "OpenAI API", kind: 도구·플랫폼, groups: [SG07], aliases: ["OpenAI", "Anthropic API", "Claude API"]}
-  - {code: SK0104, name: "Function Calling", kind: 방법·개념, groups: [SG07], aliases: ["Tool Calling", "Tool Use"]}
+  - {code: SK0101, name: "LLMOps", kind: 방법·개념, groups: [SG07], aliases: ["Langfuse", "LangSmith", "LLM 평가", "LLM Evaluation", "Ragas", "Dify"]}
+  - {code: SK0102, name: "Hugging Face", kind: 도구·플랫폼, groups: [SG07], aliases: ["Hugging Face Transformers", "Transformers", "HuggingFace"]}
+  - {code: SK0103, name: "OpenAI API", kind: 도구·플랫폼, groups: [SG07], aliases: ["OpenAI", "Anthropic API", "Claude API", "Anthropic"]}
+  - {code: SK0104, name: "Function Calling", kind: 방법·개념, groups: [SG07], aliases: ["Tool Calling", "Tool Use", "Structured Output"]}
   - {code: SK0105, name: "GraphRAG", kind: 방법·개념, groups: [SG07], aliases: []}
   - {code: SK0106, name: "임베딩", kind: 방법·개념, groups: [SG07], aliases: ["Embedding", "Embedding Model", "임베딩 모델"]}
   - {code: SK0107, name: "멀티모달", kind: 방법·개념, groups: [SG07], aliases: ["VLM", "VLA", "Vision Language Model", "멀티모달 모델"]}
   - {code: SK0108, name: "OCR", kind: 방법·개념, groups: [SG07], aliases: ["문서 인식", "Document AI"]}
   - {code: SK0109, name: "음성 AI", kind: 방법·개념, groups: [SG07], aliases: ["TTS", "STT", "ASR", "음성 인식", "음성 합성"]}
-  - {code: SK0110, name: "생성 이미지·영상", kind: 방법·개념, groups: [SG07], aliases: ["ComfyUI", "Stable Diffusion", "Diffusion", "Veo", "Midjourney", "Runway"]}
+  - {code: SK0110, name: "생성 이미지·영상", kind: 방법·개념, groups: [SG07], aliases: ["ComfyUI", "Stable Diffusion", "Diffusion", "Veo", "Midjourney", "Runway", "Kling", "Sora"]}
   - {code: SK0111, name: "Transformer", kind: 방법·개념, groups: [SG07], aliases: ["트랜스포머"]}
   - {code: SK0112, name: "양자화·경량화", kind: 방법·개념, groups: [SG07], aliases: ["QLoRA", "Quantization", "양자화", "경량화", "ONNX"]}
   - {code: SK0113, name: "로보틱스", kind: 방법·개념, groups: [SG07], aliases: ["ROS", "ROS2", "Isaac Sim", "MuJoCo", "Jetson", "LeRobot"]}
   - {code: SK0114, name: "AI 코딩 도구", kind: 도구·플랫폼, groups: [SG08], aliases: ["Cursor", "Codex", "Copilot", "GitHub Copilot", "Claude Code"]}
-  - {code: SK0115, name: "RPA", kind: 도구·플랫폼, groups: [SG08], aliases: ["Power Automate", "UiPath", "Copilot Studio", "Power Platform", "Zapier"]}
+  - {code: SK0115, name: "RPA", kind: 도구·플랫폼, groups: [SG08], aliases: ["Power Automate", "UiPath", "Copilot Studio", "Power Platform", "Zapier", "n8n", "Make.com"]}
   - {code: SK0116, name: "사무 도구", kind: 도구·플랫폼, groups: [SG08], aliases: ["MS Office", "PowerPoint", "Microsoft 365", "Google Sheets", "컴퓨터활용능력", "Notion", "Slack", "PPT", "Figma", "문서작성"]}
-  - {code: SK0117, name: "ERP·CRM", kind: 도구·플랫폼, groups: [SG10], aliases: ["ERP", "SAP", "SAP ERP", "CRM", "Salesforce", "MES"]}
+  - {code: SK0117, name: "ERP·CRM", kind: 도구·플랫폼, groups: [SG10], aliases: ["ERP", "SAP", "SAP ERP", "CRM", "Salesforce", "MES", "PLM", "SCM 시스템"]}
   - {code: SK0118, name: "보안·인증", kind: 방법·개념, groups: [SG04], aliases: ["ISMS-P", "OAuth", "IAM", "개인정보보호", "SSO"]}
   - {code: SK0119, name: "JAX", kind: 도구·플랫폼, groups: [SG07], aliases: []}
   - {code: SK0120, name: "Polars", kind: 도구·플랫폼, groups: [SG02], aliases: []}
   - {code: SK0121, name: "SRE", kind: 방법·개념, groups: [SG04], aliases: ["AIOps", "장애 대응", "Observability", "관측성"]}
-  - {code: SK0122, name: "산업 IoT", kind: 방법·개념, groups: [SG09], aliases: ["PLC", "MQTT", "OPC-UA", "SCADA"]}
+  - {code: SK0122, name: "산업 IoT", kind: 방법·개념, groups: [SG09], aliases: ["PLC", "MQTT", "OPC-UA", "SCADA", "IoT", "Modbus"]}
   - {code: SK0123, name: "C", kind: 언어, groups: [SG01], aliases: ["C 언어"]}
   - {code: SK0124, name: "BI 도구", kind: 방법·개념, groups: [SG05], aliases: ["BI", "BI 툴", "BI Tool"]}
   - {code: SK0125, name: "클라우드", kind: 방법·개념, groups: [SG04], aliases: ["Cloud", "Public Cloud", "퍼블릭 클라우드", "클라우드 플랫폼"]}
+  # 2026-11-06 D 2차(공고 정리 따라잡기 뒤 5번 이상 나온 이름)
+  - {code: SK0126, name: "scikit-learn", kind: 도구·플랫폼, groups: [SG07], aliases: ["sklearn"]}
+  - {code: SK0127, name: "Rust", kind: 언어, groups: [SG01], aliases: []}
+  - {code: SK0128, name: "디자인 도구", kind: 도구·플랫폼, groups: [SG08], aliases: ["Photoshop", "After Effects", "Premiere Pro", "Blender", "Illustrator"]}
+  - {code: SK0129, name: "분산 시스템", kind: 방법·개념, groups: [SG04], aliases: ["Distributed System", "분산 처리"]}
+  - {code: SK0130, name: "네트워크 프로토콜", kind: 방법·개념, groups: [SG04], aliases: ["TCP/IP", "HTTP", "REST"]}
+  - {code: SK0131, name: "메시지 큐", kind: 도구·플랫폼, groups: [SG02], aliases: ["RabbitMQ", "Redis Streams", "SQS", "Pub/Sub"]}
+  - {code: SK0132, name: "테스트 자동화", kind: 도구·플랫폼, groups: [SG09], aliases: ["Playwright", "Selenium", "pytest"]}
+  - {code: SK0133, name: "Streamlit", kind: 도구·플랫폼, groups: [SG05], aliases: ["Gradio"]}
+  - {code: SK0134, name: "StarRocks", kind: 도구·플랫폼, groups: [SG03], aliases: ["Apache Doris"]}
+  - {code: SK0135, name: "알고리즘", kind: 방법·개념, groups: [SG01], aliases: ["자료구조", "Algorithm"]}
+  - {code: SK0136, name: "마케팅 분석", kind: 방법·개념, groups: [SG05], aliases: ["퍼포먼스 마케팅", "SEO", "CRM 마케팅", "마케팅 데이터"]}
+  - {code: SK0137, name: "챗봇", kind: 방법·개념, groups: [SG07], aliases: ["Chatbot", "대화형 AI"]}
 interchangeable:
   - {code: IS01, members: [SK0031, SK0032, SK0033]}  # AWS · GCP · Azure
   - {code: IS02, members: [SK0040, SK0041, SK0042, SK0043]}  # Tableau · Power BI · Looker · Superset
@@ -154,4 +167,4 @@ interchangeable:
   - {code: IS06, members: [SK0003, SK0004, SK0005, SK0006]}  # Java · Scala · Golang · TypeScript
 
 # 스킬이 아닌 말(공고 정리에서 나와도 스킬 목록에 넣지 않는다). D 점검에서 채운다
-stopwords: ["AI", "데이터 분석", "PM", "프로젝트 관리", "소프트웨어 개발", "백엔드", "데이터 엔지니어링", "아키텍처 설계", "네트워크", "AI 도구", "JSON", "HTML", "데이터 사이언스", "VOC", "품질 관리", "PL"]
+stopwords: ["AI", "데이터 분석", "PM", "프로젝트 관리", "소프트웨어 개발", "백엔드", "데이터 엔지니어링", "아키텍처 설계", "네트워크", "AI 도구", "JSON", "HTML", "데이터 사이언스", "VOC", "품질 관리", "PL", "영어", "프론트엔드", "backend", "SaaS", "리서치", "인공지능", "데이터 플랫폼", "정보처리기사", "SQLD", "SQLP", "DAP", "ADsP", "ADP", "빅데이터분석기사"]
