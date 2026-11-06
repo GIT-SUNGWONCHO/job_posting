@@ -90,7 +90,7 @@ Vercel과 같은 역할이다. GitHub 레포를 연결해 두면 main에 올릴 
 - 하루 한도는 미국 태평양 시간 자정에 다시 찬다고 알려져 있다(한국 16~17시, 공식 확인 전).
 - 공고 정리 따라잡기(`facts.yml`)는 `--parallel`로 키마다 하나씩 함께 돈다(2026-11-06). 키 하나로 차례로 부르면 2시간에 약 400건이라, 키 수만큼 빨라진다. 매일 실행(collect.yml)은 지금처럼 한 키씩 차례로 쓴다.
 - 2026-11-03부터 429가 나면 로그에 한도 종류와 값이 함께 찍힌다(`ai._quota`, 예: `GenerateRequestsPerDayPerProjectPerModel-FreeTier=…`). 다음 429 때 정확한 값을 여기에 옮긴다.
-- 임시로 무료 키를 더 쓸 수 있다(2026-11-03 사용자 결정): GitHub Secrets에 `GEMINI_API_KEY_2` ~ `GEMINI_API_KEY_5`(키마다 다른 구글 클라우드 프로젝트에서 만든 키. 무료 한도는 프로젝트마다라 같은 프로젝트 키는 한도가 늘지 않는다)를 넣으면, 앞 키가 한도(429)에 걸릴 때 다음 키로 넘어간다(`ai.api_keys`). 약관상 한도 우회로 볼 수 있어 계정 제재 위험은 사용자가 안다. 오래 쓸 방법은 유료 등급(월 사용 한도 설정)이다.
+- 임시로 무료 키를 더 쓸 수 있다(2026-11-03 사용자 결정): GitHub Secrets에 `GEMINI_API_KEY_2` ~ `GEMINI_API_KEY_9`(키마다 다른 구글 클라우드 프로젝트에서 만든 키. 무료 한도는 프로젝트마다라 같은 프로젝트 키는 한도가 늘지 않는다)를 넣으면, 앞 키가 한도(429)에 걸릴 때 다음 키로 넘어간다(`ai.api_keys`). 약관상 한도 우회로 볼 수 있어 계정 제재 위험은 사용자가 안다. 오래 쓸 방법은 유료 등급(월 사용 한도 설정)이다.
 - 키 만드는 법: aistudio.google.com > Get API key > Create API key > "Create API key in new project"(새 프로젝트로). GitHub > Settings > Secrets and variables > Actions > New repository secret에 이름 `GEMINI_API_KEY_2`처럼 넣는다.
 - 처음 쌓인 공고 정리는 Actions > facts > Run workflow(max_calls 900)로 따라잡는다. 키가 셋이면 하루 약 1,500번.
 
