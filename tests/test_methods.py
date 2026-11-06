@@ -62,3 +62,29 @@ def test_evaluate_reads_saved_scores_without_ai(monkeypatch):
     assert "평가한 기준 샘플 3건(○ 1 △ 0 × 2)" in out
     assert "내 분야에서 빠진 평가 공고: ○ 0 △ 0 × 1" in out
     assert "A 방식" in out and "D 방식 1회" in out and "D 방식 2회" in out and "흔들림" in out
+
+
+def test_embed_batches_by_size(monkeypatch):
+    from jobpost import ai
+
+    class Resp:
+        status_code = 200
+
+        def __init__(self, n):
+            self.n = n
+
+        def json(self):
+            return {"embeddings": [{"values": [1.0]}] * self.n}
+
+    sent = []
+
+    class Session:
+        def post(self, url, headers, json, timeout):
+            sent.append(len(json["requests"]))
+            return Resp(len(json["requests"]))
+
+    monkeypatch.setenv("GEMINI_API_KEY", "x")
+    g = ai.Gemini(session=Session())
+    g.min_interval = 0
+    got = g.embed(["가" * 3000] * 25, batch_chars=20000)
+    assert len(got) == 25 and sent == [10, 10, 5]  # 글은 2000자로 잘려 10개씩

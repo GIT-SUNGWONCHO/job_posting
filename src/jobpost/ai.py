@@ -110,14 +110,21 @@ class Gemini:
                 attempt += 1
         raise AIError(last_error or "응답 없음")
 
-    def embed(self, texts: list[str], model: str = "gemini-embedding-001") -> list[list[float]]:
-        """글마다 임베딩(의미를 숫자 목록으로). 100개씩 묶어 부른다. 한도(429)면 다음 키로."""
+    def embed(self, texts: list[str], model: str = "gemini-embedding-001", max_chars: int = 2000,
+              batch_chars: int = 20000) -> list[list[float]]:
+        """글마다 임베딩(의미를 숫자 목록으로). 무료 한도가 분당 30,000토큰이라 글을 max_chars로 자르고
+        한 번에 batch_chars 글자까지 묶어 보낸다. 분당 한도(429)면 1분 기다렸다 다시."""
+        texts = [t[:max_chars] for t in texts]
+        batches: list[list[str]] = [[]]
+        for t in texts:
+            if batches[-1] and sum(map(len, batches[-1])) + len(t) > batch_chars:
+                batches.append([])
+            batches[-1].append(t)
         out: list[list[float]] = []
-        for start in range(0, len(texts), 100):
-            chunk = texts[start:start + 100]
+        for chunk in batches:
             body = {"requests": [{"model": f"models/{model}", "content": {"parts": [{"text": t}]},
                                   "taskType": "SEMANTIC_SIMILARITY"} for t in chunk]}
-            for attempt in range(4):
+            for _attempt in range(5):
                 wait = self.min_interval - (time.monotonic() - self._last)
                 if wait > 0:
                     time.sleep(wait)
@@ -127,12 +134,13 @@ class Gemini:
                     f"https://generativelanguage.googleapis.com/v1beta/models/{model}:batchEmbedContents",
                     headers={"x-goog-api-key": self.keys[self.key_i], "Content-Type": "application/json"},
                     json=body, timeout=120)
-                if resp.status_code == 429 and self.key_i + 1 < len(self.keys):
+                if resp.status_code == 429 and "PerDay" in _quota(resp) and self.key_i + 1 < len(self.keys):
                     self.key_i += 1
-                    log.warning("Gemini 임베딩 한도(429%s): %d번째 키로 넘어감", _quota(resp), self.key_i + 1)
+                    log.warning("Gemini 임베딩 하루 한도(429%s): %d번째 키로 넘어감", _quota(resp), self.key_i + 1)
                     continue
                 if resp.status_code == 429 or resp.status_code >= 500:
-                    time.sleep(20 * (attempt + 1))
+                    log.warning("Gemini 임베딩 %s%s: 1분 기다림", resp.status_code, _quota(resp))
+                    time.sleep(61)
                     continue
                 if resp.status_code != 200:
                     raise AIError(f"{resp.status_code} {resp.text[:200]}")
