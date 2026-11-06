@@ -43,10 +43,10 @@ MATCHES = {"z:1": {"score": 70, "verdict": "고려", "kind": "ai"}, "z:2": {"sco
 def test_digest_has_three_sections_all_passed_others_and_closing_soon():
     d = notify.digest(SCREEN, FILTERS, MATCHES, TODAY)
     assert d["head"] == "10/17(토) 새 공고 5건 · 필터 통과 4건 · 마감 임박 1건"
-    assert [it["id"] for it in d["passed"]] == ["z:2", "z:4", "z:1", "z:3"]  # 전부, 점수 높은 순
+    assert [it["id"] for it in d["passed"]] == ["z:2", "z:1", "z:3", "z:4"]  # 전부, 점수 높은 순(매칭 전은 AI 점수 뒤)
     assert [it["id"] for it in d["others"]] == ["z:5"]  # 필터 밖(기업 구분)
     assert [it["id"] for it in d["soon"]] == ["z:6"]
-    assert [it["info"] for it in d["passed"][:2]] == ["92점 지원 추천 · D-12", "규칙 88점 · 상시"]
+    assert [it["info"] for it in d["passed"][:2]] == ["92점 지원 추천 · D-12", "70점 고려 · 상시"]
     assert d["passed"][0]["url"] == "https://careermap-web.oroloov.workers.dev/#/job/z%3A2" and d["passed"][0]["companyUrl"] == "https://careermap-web.oroloov.workers.dev/#/company/a"
 
 
@@ -89,7 +89,7 @@ def test_plain_messages_fold_every_section_and_send_the_others_separately():
     a = '<a href="https://careermap-web.oroloov.workers.dev/#/company/a">가나다</a>'
     assert text.startswith("<b>10/17(토) 오늘의 공고</b>\n새 공고 5 · 필터 통과 4 · 마감 임박 1\n\n<b>필터 통과 새 공고</b> 4건\n"
                            f"<blockquote expandable>🟢 <b>{a}</b>  92점 · D-12\n<a href=\"https://careermap-web.oroloov.workers.dev/#/job/z%3A2\">Data Engineer</a>")
-    assert "▫️ <b>" + a + "</b>  88점 · 상시" in text  # 규칙 점수
+    assert "▫️ <b>" + a + "</b>  매칭 전 · 상시" in text  # 규칙 점수는 보여주지 않는다
     assert "A&amp;B &lt;ML&gt;" in text  # 태그가 아닌 <, >, &는 바꾼다
     assert "<b>마감 임박 · ★ 관심 공고와 70점 이상</b> 1건\n<blockquote expandable>🟢 <b>" + a + "</b>  81점 · D-2" in text
     assert text.endswith("🟢 지원 추천 · 🟡 고려 · ⚪ 비추천")

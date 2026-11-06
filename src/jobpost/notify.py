@@ -32,7 +32,7 @@ KAKAO_TEXT_MAX = 200
 # 다시 추천하지 않는 지원 단계: 이미 지원했거나 관심 없음(web/src/lib/applications.ts NOT_AGAIN과 같게)
 NOT_AGAIN = {"applied", "passed", "interview", "result", "dismissed"}
 
-MARKS = {"지원 추천": "🟢", "고려": "🟡", "비추천": "⚪"}  # 판정을 한눈에(규칙 점수·점수 없음은 ▫️)
+MARKS = {"지원 추천": "🟢", "고려": "🟡", "비추천": "⚪"}  # 판정을 한눈에(매칭 전·점수 없음은 ▫️)
 
 
 def days_left(p: dict[str, Any], today: date) -> int | None:
@@ -52,8 +52,8 @@ def deadline_text(p: dict[str, Any], today: date) -> str:
 def _score_text(m: dict[str, Any] | None) -> str:
     if not m:
         return "점수 없음"
-    if m.get("kind") == "rule":
-        return f"규칙 {m['score']}점"
+    if m.get("kind") != "ai":
+        return "매칭 전"  # 규칙 점수는 보여주지 않는다(2026-11-06)
     return f"{m['score']}점 {m['verdict']}" if m.get("verdict") else f"{m['score']}점"
 
 
@@ -95,8 +95,9 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
     start = (since + timedelta(days=1)).isoformat() if since else today.isoformat()
 
     def score(p: dict[str, Any]) -> float:
+        # AI 점수만 점수로 본다. AI가 아직 안 매긴 공고(규칙 점수)는 매칭 전이라 AI 점수 공고 뒤, 점수 없는 공고 앞
         m = matches.get(p["id"])
-        return m["score"] if m else -1
+        return -1 if not m else m["score"] if m.get("kind") == "ai" else -0.5
 
     def by_score(ps: Any) -> list[dict[str, Any]]:
         return sorted(ps, key=lambda p: (score(p), p["firstSeen"]), reverse=True)
@@ -108,7 +109,8 @@ def digest(screen: dict[str, Any], filters: dict[str, Any], matches: dict[str, d
         title = p.get("listTitle") or p["title"]  # 목록 제목(회사 이름·'채용' 같은 말을 뺀 제목), 없으면 원문
         return {"id": p["id"], "title": html.unescape(f"{name} · {title}"),
                 "company": html.unescape(name), "name": html.unescape(title), "score": score(p),
-                "verdict": m.get("verdict") if m.get("kind") == "ai" else ("규칙 점수" if m else None),
+                "verdict": m.get("verdict") if m.get("kind") == "ai" else None,
+                "pending": bool(m) and m.get("kind") != "ai",
                 "deadline": deadline_text(p, today),
                 "info": f"{_score_text(matches.get(p['id']))} · {deadline_text(p, today)}",
                 "url": base + "#/job/" + quote(p["id"], safe=""),
@@ -196,7 +198,7 @@ def telegram_message(d: dict[str, Any]) -> list[tuple[str, list[list[dict[str, s
     첫 통은 머리 두 줄 + 필터 통과 새 공고 + 마감 임박(접힌 인용) + 판정 설명, 둘째 통은 필터 밖 새 공고."""
 
     def entry(it: dict[str, Any], link_company: bool = True) -> str:
-        score = "점수 없음" if it["score"] < 0 else f"{it['score']:g}점"
+        score = f"{it['score']:g}점" if it["score"] >= 0 else "매칭 전" if it.get("pending") else "점수 없음"
         star = "★ " if it["interest"] else ""
         why = f"\n<i>필터 밖: {_esc(it['why'])}</i>" if it.get("why") else ""
         company = f'<a href="{html.escape(it["companyUrl"])}">{_esc(it["company"])}</a>' if link_company else _esc(it["company"])
@@ -241,7 +243,7 @@ def telegram_rich(d: dict[str, Any]) -> list[str]:
     def table(items: list[dict[str, Any]], link_company: bool = True) -> str:
         rows = ['<tr><th></th><th align="left">회사 · 공고</th><th align="right">점수</th><th>마감</th></tr>']
         for it in items:
-            score = "-" if it["score"] < 0 else f"{it['score']:g}"
+            score = f"{it['score']:g}" if it["score"] >= 0 else "매칭 전" if it.get("pending") else "-"
             company = f'<a href="{html.escape(it["companyUrl"])}">{_esc(it["company"])}</a>' if link_company else _esc(it["company"])
             rows.append(f'<tr><td>{MARKS.get(it["verdict"] or "", "▫️")}</td>'
                         f'<td align="left"><b>{"★ " if it["interest"] else ""}{company}</b><br>'
