@@ -8662,6 +8662,12 @@
 "mv": 6,
 "why": "none"
 },
+"삼성외장하드복구센터": {
+"checked": "2026-11-08",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "삼양식품": {
 "checked": "2026-10-23",
 "corp_code": "00126955",
@@ -10315,6 +10321,12 @@
 "mv": 6,
 "why": "none"
 },
+"식품의약품안전평가원": {
+"checked": "2026-11-08",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "신라공업": {
 "checked": "2026-10-23",
 "corp_code": "00482277",
@@ -11041,6 +11053,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": "127710"
+},
+"아우라웍스": {
+"checked": "2026-11-08",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "아워콤": {
 "checked": "2026-10-23",
@@ -13242,6 +13260,12 @@
 "mv": 6,
 "why": "none"
 },
+"에이치알타운": {
+"checked": "2026-11-08",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "에이치알포유": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -14951,6 +14975,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": "095720"
+},
+"워크랩스": {
+"checked": "2026-11-08",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "워크맨그룹": {
 "checked": "2026-11-07",
@@ -18642,6 +18672,12 @@
 },
 "코멘토": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"코비엔": {
+"checked": "2026-11-08",
 "corp_code": null,
 "mv": 6,
 "why": "none"
