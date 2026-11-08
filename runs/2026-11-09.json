@@ -1,0 +1,116 @@
+{
+ "date": "2026-11-09",
+ "started": "2026-11-09T06:11:52",
+ "sources": {
+  "zighang": {
+   "fetched": 8621,
+   "in_scope": 8619,
+   "complete": true,
+   "requests": 216,
+   "seconds": 87.1,
+   "errors": [],
+   "error_count": 0,
+   "new": 33,
+   "closed": 159
+  },
+  "remember": {
+   "fetched": 1493,
+   "in_scope": 1240,
+   "complete": true,
+   "requests": 57,
+   "seconds": 168.4,
+   "errors": [],
+   "error_count": 0,
+   "new": 3,
+   "closed": 14
+  },
+  "saramin": {
+   "fetched": 3716,
+   "in_scope": 1394,
+   "complete": true,
+   "requests": 43,
+   "seconds": 58.2,
+   "errors": [],
+   "error_count": 0,
+   "new": 11,
+   "closed": 38
+  },
+  "jobkorea": {
+   "fetched": 0,
+   "in_scope": 0,
+   "complete": false,
+   "requests": 9,
+   "seconds": 417.3,
+   "errors": [
+    "DBA: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99b5d7290>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "데이터엔지니어: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99b5cd070>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "데이터사이언티스트: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe999e2e4e0>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "AI/ML엔지니어: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99b5cc980>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "AI/ML연구원: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99b5d7290>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "데이터분석가: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe999e2e7e0>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "MLOps엔지니어: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe999f29940>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "AI서비스개발자: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe999f2e180>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "AI기획자: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/Home/_HH_GI_List/ (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe999e2e7e0>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))"
+   ],
+   "error_count": 9,
+   "new": 0,
+   "closed": 0
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 22,
+   "fetched": 22,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 8.7
+  },
+  "saramin": {
+   "requested": 9,
+   "fetched": 9,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 8.2
+  },
+  "jobkorea": {
+   "requested": 5,
+   "fetched": 0,
+   "remaining": 5,
+   "errors": [
+    "상세 50286707: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/GI_Read_Comt_Ifrm?Gno=50286707&PageGbn=HH (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99830f620>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 50290494: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/GI_Read_Comt_Ifrm?Gno=50290494&PageGbn=HH (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99830e0f0>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 50290551: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/GI_Read_Comt_Ifrm?Gno=50290551&PageGbn=HH (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99830d010>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 50237242: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/GI_Read_Comt_Ifrm?Gno=50237242&PageGbn=HH (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99830c4d0>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))",
+    "상세 50288634: HTTPSConnectionPool(host='www.jobkorea.co.kr', port=443): Max retries exceeded with url: /Recruit/GI_Read_Comt_Ifrm?Gno=50288634&PageGbn=HH (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jobkorea.co.kr', port=443) at 0x7fe99830c4d0>, 'Connection to www.jobkorea.co.kr timed out. (connect timeout=10.0)'))"
+   ],
+   "seconds": 232.3
+  }
+ },
+ "job_types": {
+  "pending": 0,
+  "classified": 45,
+  "calls": 1,
+  "secondary": {
+   "pending": 0,
+   "found": 0,
+   "calls": 1
+  }
+ },
+ "open": 6857,
+ "overseas_open": 4681,
+ "open_unique": 5738,
+ "duplicates": 1119,
+ "noise": 259,
+ "company_types": {
+  "대기업": 761,
+  "중소·스타트업": 3495,
+  "확인 안 됨": 697,
+  "중견": 555,
+  "외국계": 197,
+  "공기업·공공기관": 33
+ },
+ "personal_filter_pass": 1601,
+ "new": 47,
+ "closed": 211,
+ "finished": "2026-11-09T06:28:23"
+}

@@ -2718,6 +2718,14 @@
 "mv": 6,
 "why": "ambiguous"
 },
+"다우기술": {
+"checked": "2026-11-09",
+"corp_code": "00176914",
+"corp_name": "다우기술",
+"how": "name",
+"mv": 6,
+"stock_code": "023590"
+},
 "다원아이텍": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -5651,6 +5659,18 @@
 },
 "마이크로픽스": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"마인드로직": {
+"checked": "2026-11-09",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"마인드로직기업부설연구소": {
+"checked": "2026-11-09",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -17002,6 +17022,12 @@
 "mv": 6,
 "why": "ambiguous"
 },
+"제이앤씨에이치알": {
+"checked": "2026-11-09",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "제이앤파트너즈코리아": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -23238,6 +23264,12 @@
 "how": "listed",
 "mv": 6,
 "stock_code": "093370"
+},
+"훙크테크놀로지스": {
+"checked": "2026-11-09",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "휴네시온": {
 "checked": "2026-10-23",
