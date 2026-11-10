@@ -34089,6 +34089,98 @@
 },
 "v": 3
 },
+"00229030": {
+"company": {
+"bizr_no": "6098150607",
+"ceo": "신상호, 박준표",
+"founded": "2001-11-01",
+"homepage": "https://www.almac.co.kr",
+"industry_code": "24222",
+"jurir_no": "1942110050823",
+"market": "코스닥",
+"name": "(주)알멕",
+"stock_code": "354320"
+},
+"disclosures": [
+{
+"date": "2026-03-26",
+"rcept_no": "20260326900964",
+"title": "대표이사변경"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326900706",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-18",
+"rcept_no": "20260318901035",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-11",
+"rcept_no": "20260311900555",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-25",
+"rcept_no": "20260225901003",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216900163",
+"title": "주주명부폐쇄기간또는기준일설정"
+},
+{
+"date": "2025-11-11",
+"rcept_no": "20251111900184",
+"title": "[기재정정]타인에대한채무보증결정"
+}
+],
+"employees": {
+"count": 161,
+"date": "2025-12-31",
+"rcept_no": "20260318001072",
+"salary": 59524857,
+"tenure": 7.2
+},
+"fetched": "2026-11-11",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318001072",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -6631364894,
+"operating": 15852555850,
+"revenue": 216024728022,
+"year": 2023
+},
+{
+"net": -2388378630,
+"operating": -2742893790,
+"revenue": 156864765066,
+"year": 2024
+},
+{
+"net": -6127157078,
+"operating": 6220742324,
+"revenue": 187825356603,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "㈜다이엑스",
+"rate": 27.38,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
+},
 "00229058": {
 "company": {
 "bizr_no": "2028152893",
@@ -39071,6 +39163,49 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"00276117": {
+"company": {
+"bizr_no": "5128106559",
+"ceo": "박종화",
+"founded": "1999-09-01",
+"homepage": "https://www.novelis.co.kr",
+"industry_code": "24222",
+"jurir_no": "1756110003950",
+"market": "기타",
+"name": "노벨리스코리아 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260703000645",
+"revenue_name": "매출액",
+"year": 2026,
+"years": [
+{
+"net": 207407136261,
+"operating": 259516067429,
+"revenue": 3694034171308,
+"year": 2025
+},
+{
+"net": 71659576670,
+"operating": 260468624872,
+"revenue": 4364920434673,
+"year": 2026
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": ")는 일정한 자격을 갖춘 회사의",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
 },
 "00279929": {
 "company": {
@@ -51616,6 +51751,49 @@
 "owner": null,
 "v": 4
 },
+"00489942": {
+"company": {
+"bizr_no": "2208664126",
+"ceo": "고사무열",
+"founded": "2003-05-27",
+"homepage": "https://www.imath.tv",
+"industry_code": "5811",
+"jurir_no": "1101112788408",
+"market": "기타",
+"name": "(주)개념원리",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403003036",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 14279751246,
+"operating": 12066273392,
+"revenue": 23648877273,
+"year": 2024
+},
+{
+"net": 10921977724,
+"operating": 13738637587,
+"revenue": 25561258357,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "㈜케이오홀딩스 지배기업 ㈜케이오인베스트먼트 기타특수관계 ㈜혜재 17-2",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "00490090": {
 "company": {
 "bizr_no": "1018167322",
@@ -52757,6 +52935,49 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 EQT AB와 그 종속기업 (*1) 당기 중 에스케이쉴더스 주식회사가 최상위지배기업이었던 코리아시큐리티홀딩스 주식회사를 흡수합병하였습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
+"00514105": {
+"company": {
+"bizr_no": "2018189723",
+"ceo": "신호상",
+"founded": "2004-12-28",
+"homepage": null,
+"industry_code": "56162",
+"jurir_no": "1101113139733",
+"market": "기타",
+"name": "주식회사 케이에프씨코리아",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260331000791",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 9910139135,
+"operating": 16378664845,
+"revenue": 292260954178,
+"year": 2024
+},
+{
+"net": 14367251985,
+"operating": 24710636928,
+"revenue": 377970413257,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "다음과 같습니다",
 "rule": 2,
 "source": "감사보고서 지배기업"
 },
@@ -65068,6 +65289,158 @@
 ]
 },
 "owner": null,
+"v": 4
+},
+"00868705": {
+"company": {
+"bizr_no": "1298655101",
+"ceo": "김보연",
+"founded": "2011-01-05",
+"homepage": "https://www.wins21.co.kr",
+"industry_code": "62021",
+"jurir_no": "1311110272002",
+"market": "코스닥",
+"name": "(주)윈스테크넷",
+"stock_code": "136540"
+},
+"disclosures": [
+{
+"date": "2026-11-02",
+"rcept_no": "20261102900748",
+"title": "영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-11-02",
+"rcept_no": "20261102900745",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-07-30",
+"rcept_no": "20260730900557",
+"title": "영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-07-30",
+"rcept_no": "20260730900549",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-04-30",
+"rcept_no": "20260430901344",
+"title": "영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-04-30",
+"rcept_no": "20260430901333",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-03-20",
+"rcept_no": "20260320901074",
+"title": "기업가치제고계획(자율공시)"
+},
+{
+"date": "2026-03-20",
+"rcept_no": "20260320900737",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312900994",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-03",
+"rcept_no": "20260303900379",
+"title": "영업실적등에대한전망(공정공시)"
+},
+{
+"date": "2026-03-03",
+"rcept_no": "20260303900377",
+"title": "연결재무제표기준영업실적등에대한전망(공정공시)"
+},
+{
+"date": "2026-02-20",
+"rcept_no": "20260220900275",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-20",
+"rcept_no": "20260220900274",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-02",
+"rcept_no": "20260202901181",
+"title": "영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-02-02",
+"rcept_no": "20260202901163",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-01-21",
+"rcept_no": "20260121000129",
+"title": "주요사항보고서(자기주식취득신탁계약체결결정)"
+},
+{
+"date": "2026-01-20",
+"rcept_no": "20260120000025",
+"title": "주요사항보고서(자기주식취득신탁계약해지결정)"
+},
+{
+"date": "2025-12-12",
+"rcept_no": "20251212900101",
+"title": "현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정"
+},
+{
+"date": "2025-12-12",
+"rcept_no": "20251212900096",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 497,
+"date": "2025-12-31",
+"rcept_no": "20260312000862",
+"salary": 51909457,
+"tenure": 4.7
+},
+"fetched": "2026-11-11",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260312000862",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 21083973197,
+"operating": 23089927104,
+"revenue": 106854537551,
+"year": 2023
+},
+{
+"net": 19871622345,
+"operating": 20344203559,
+"revenue": 96479482331,
+"year": 2024
+},
+{
+"net": 18409531397,
+"operating": 21158874065,
+"revenue": 98597670521,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "㈜금양통신",
+"rate": 34.39,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
 "v": 4
 },
 "00869388": {
@@ -88565,9 +88938,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-22",
+"fetched": "2026-11-11",
 "finance": null,
-"v": 3
+"v": 4
 },
 "01369548": {
 "company": {
@@ -90133,9 +90506,29 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260330000681",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 3874965094,
+"operating": 2671037567,
+"revenue": 42597551825,
+"year": 2024
+},
+{
+"net": 4310145714,
+"operating": 4629426861,
+"revenue": 49122590640,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "01390344": {
 "company": {
@@ -91736,9 +92129,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-11",
 "finance": null,
-"v": 3
+"v": 4
 },
 "01412725": {
 "company": {
@@ -91996,6 +92389,44 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"01413034": {
+"company": {
+"bizr_no": "2018191684",
+"ceo": "김시출",
+"founded": "2005-03-24",
+"homepage": "https://www.mjplex.co.kr",
+"industry_code": "75",
+"jurir_no": "1101113194646",
+"market": "기타",
+"name": "(주)엠제이플렉스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401001362",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 463948733,
+"operating": 533924411,
+"revenue": 42515309318,
+"year": 2024
+},
+{
+"net": 535755356,
+"operating": 606051926,
+"revenue": 39312841782,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "01419834": {
 "company": {
@@ -93704,7 +94135,7 @@
 "bizr_no": "1248717297",
 "ceo": "이종로",
 "founded": "2011-08-01",
-"homepage": "https://akcco.com/",
+"homepage": "https://akcco.com",
 "industry_code": "46109",
 "jurir_no": "1348110222828",
 "market": "기타",
@@ -93713,9 +94144,29 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260406001397",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3061081274,
+"operating": 2691166323,
+"revenue": 19351793454,
+"year": 2024
+},
+{
+"net": 2096012424,
+"operating": 1964350516,
+"revenue": 20316634350,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "01458073": {
 "company": {
@@ -94666,6 +95117,44 @@
 "net": 3122552044,
 "operating": 2438060073,
 "revenue": 85364311507,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01471223": {
+"company": {
+"bizr_no": "1058703472",
+"ceo": "최영은",
+"founded": "2006-11-28",
+"homepage": null,
+"industry_code": "7512",
+"jurir_no": "1101113569906",
+"market": "기타",
+"name": "(주)맨토스파워",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260402002710",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1261421336,
+"operating": 1107379287,
+"revenue": 40689974750,
+"year": 2024
+},
+{
+"net": 1954072693,
+"operating": 1610433026,
+"revenue": 50759282300,
 "year": 2025
 }
 ]
@@ -103682,6 +104171,24 @@
 },
 "v": 4
 },
+"01643316": {
+"company": {
+"bizr_no": "2148880047",
+"ceo": "임형철",
+"founded": "2011-06-28",
+"homepage": "https://www.aimed.xyz",
+"industry_code": "73909",
+"jurir_no": "1101114629246",
+"market": "기타",
+"name": "주식회사 에임드",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-11",
+"finance": null,
+"v": 4
+},
 "01644184": {
 "company": {
 "bizr_no": "1418142329",
@@ -107832,6 +108339,44 @@
 "operating": -3634640224,
 "revenue": 15817533793,
 "year": 2024
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01751129": {
+"company": {
+"bizr_no": "2158186782",
+"ceo": "김길섭",
+"founded": "2000-02-01",
+"homepage": null,
+"industry_code": "42412",
+"jurir_no": "1101111867857",
+"market": "기타",
+"name": "우노텍",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260413001866",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 852012924,
+"operating": 695376956,
+"revenue": 109677103080,
+"year": 2024
+},
+{
+"net": 678402289,
+"operating": 700596295,
+"revenue": 75078105185,
+"year": 2025
 }
 ]
 },
@@ -113053,6 +113598,44 @@
 },
 "v": 3
 },
+"01885286": {
+"company": {
+"bizr_no": "1548100795",
+"ceo": "김종화",
+"founded": "2017-11-21",
+"homepage": null,
+"industry_code": "62010",
+"jurir_no": "1101116574960",
+"market": "기타",
+"name": "주식회사 케이엘큐브",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-11",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260413002214",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 868723681,
+"operating": 43088136,
+"revenue": 13152473466,
+"year": 2024
+},
+{
+"net": 6257719902,
+"operating": 5060606416,
+"revenue": 9627845171,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01885578": {
 "company": {
 "bizr_no": "7928101918",
@@ -116531,9 +117114,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-11",
 "finance": null,
-"v": 3
+"v": 4
 },
 "02041180": {
 "company": {
