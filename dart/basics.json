@@ -23409,6 +23409,49 @@
 },
 "v": 3
 },
+"00158398": {
+"company": {
+"bizr_no": "1168106399",
+"ceo": "정병국",
+"founded": "1977-09-17",
+"homepage": "https://www.mmm.co.kr",
+"industry_code": "46452",
+"jurir_no": "1101110219356",
+"market": "기타",
+"name": "한국쓰리엠주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-13",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401000232",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 122625400307,
+"operating": 109111448229,
+"revenue": 1492978035816,
+"year": 2024
+},
+{
+"net": 124610440362,
+"operating": 127995202653,
+"revenue": 1407460957693,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "인 3M Company는",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "00158501": {
 "company": {
 "bizr_no": "2088113302",
@@ -56708,6 +56751,60 @@
 "owner": null,
 "v": 4
 },
+"00568744": {
+"company": {
+"bizr_no": "2298100046",
+"ceo": "박웅석",
+"founded": "1995-01-21",
+"homepage": null,
+"industry_code": "7599",
+"jurir_no": "1101111122392",
+"market": "기타",
+"name": "넥슨네트웍스",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2025-12-22",
+"rcept_no": "20251222000286",
+"title": "비유동자산취득결정"
+},
+{
+"date": "2025-12-22",
+"rcept_no": "20251222000285",
+"title": "비유동자산처분결정"
+}
+],
+"employees": null,
+"fetched": "2026-11-13",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260410001049",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3195404323,
+"operating": 4299640253,
+"revenue": 64919019660,
+"year": 2024
+},
+{
+"net": -515296977,
+"operating": -125017669,
+"revenue": 66392420680,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "주식회사 엔엑스씨",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "00570846": {
 "company": {
 "bizr_no": "1058675080",
@@ -58615,6 +58712,128 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"00613318": {
+"company": {
+"bizr_no": "1058191810",
+"ceo": "양민석 (단독대표이사)",
+"founded": "1998-02-24",
+"homepage": "https://www.ygfamily.com",
+"industry_code": "59201",
+"jurir_no": "1101111516397",
+"market": "코스닥",
+"name": "(주)와이지엔터테인먼트",
+"stock_code": "122870"
+},
+"disclosures": [
+{
+"date": "2026-11-09",
+"rcept_no": "20261109900271",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-11-09",
+"rcept_no": "20261109900258",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-08-31",
+"rcept_no": "20260831900852",
+"title": "[첨부정정]지속가능경영보고서등관련사항(자율공시)"
+},
+{
+"date": "2026-08-07",
+"rcept_no": "20260807900186",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-05-08",
+"rcept_no": "20260508900242",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327901650",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319901816",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226900442",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226900378",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226900374",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-02-26",
+"rcept_no": "20260226900288",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-11",
+"rcept_no": "20251211900090",
+"title": "현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정"
+},
+{
+"date": "2025-12-11",
+"rcept_no": "20251211900088",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 438,
+"date": "2025-12-31",
+"rcept_no": "20260323001610",
+"salary": 60958904,
+"tenure": 3.9
+},
+"fetched": "2026-11-13",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260323001610",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 76984258248,
+"operating": 86932081062,
+"revenue": 569195078742,
+"year": 2023
+},
+{
+"net": 20029618338,
+"operating": -20558087283,
+"revenue": 364948984163,
+"year": 2024
+},
+{
+"net": 53744637813,
+"operating": 71341515441,
+"revenue": 545404261988,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "양현석",
+"rate": 19.33,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
 },
 "00614478": {
 "company": {
@@ -60656,6 +60875,49 @@
 "owner": {
 "foreign": "외국 회사 표기",
 "name": "인 Infineon Technologies Asia Pacific Pte",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
+"00650957": {
+"company": {
+"bizr_no": "133-81-29359",
+"ceo": "저스틴크리스찬리",
+"founded": "1996-08-08",
+"homepage": "https://www.rittal.co.kr",
+"industry_code": "29171",
+"jurir_no": "1350110074266",
+"market": "기타",
+"name": "(주)리탈",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-13",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260406001470",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3016756092,
+"operating": 3322462356,
+"revenue": 45205007042,
+"year": 2024
+},
+{
+"net": 190421290,
+"operating": -333745356,
+"revenue": 33051531498,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "지급수수료 69",
 "rule": 2,
 "source": "감사보고서 지배기업"
 },
@@ -63304,6 +63566,24 @@
 "fetched": "2026-10-21",
 "finance": null,
 "v": 3
+},
+"00784184": {
+"company": {
+"bizr_no": "1138143717",
+"ceo": "조덕형",
+"founded": "1997-05-30",
+"homepage": "https://www.dwparts.net",
+"industry_code": "29271",
+"jurir_no": "1101111420746",
+"market": "코스닥",
+"name": "(주)동원파츠",
+"stock_code": "0162D0"
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-13",
+"finance": null,
+"v": 4
 },
 "00786553": {
 "company": {
@@ -67983,6 +68263,113 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"00911955": {
+"company": {
+"bizr_no": "2208723971",
+"ceo": "임진성",
+"founded": "2006-02-07",
+"homepage": "https://www.itshanbul.com",
+"industry_code": "20423",
+"jurir_no": "1101113394048",
+"market": "유가증권",
+"name": "(주)잇츠한불",
+"stock_code": "226320"
+},
+"disclosures": [
+{
+"date": "2026-05-29",
+"rcept_no": "20260529801214",
+"title": "기업지배구조보고서공시"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327800276",
+"title": "기업가치제고계획(자율공시)"
+},
+{
+"date": "2026-03-27",
+"rcept_no": "20260327800243",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-19",
+"rcept_no": "20260319800949",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312800976",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312800967",
+"title": "현금ㆍ현물배당결정"
+},
+{
+"date": "2026-03-12",
+"rcept_no": "20260312800956",
+"title": "주주총회소집결의"
+},
+{
+"date": "2026-02-03",
+"rcept_no": "20260203800727",
+"title": "연결재무제표기준영업(잠정)실적(공정공시)"
+},
+{
+"date": "2026-01-28",
+"rcept_no": "20260128800880",
+"title": "결산실적공시예고(안내공시)"
+},
+{
+"date": "2025-12-15",
+"rcept_no": "20251215801082",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 81,
+"date": "2025-12-31",
+"rcept_no": "20260814002486",
+"salary": 53135802,
+"tenure": 7.3
+},
+"fetched": "2026-11-13",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260814002486",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 17392145177,
+"operating": 11207117847,
+"revenue": 135449723674,
+"year": 2023
+},
+{
+"net": 29732576714,
+"operating": 17884231708,
+"revenue": 142430717571,
+"year": 2024
+},
+{
+"net": 32603463204,
+"operating": 19214878133,
+"revenue": 153387097887,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "임병철",
+"rate": 35.25,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
 },
 "00914679": {
 "company": {
@@ -85125,6 +85512,49 @@
 },
 "v": 3
 },
+"01267471": {
+"company": {
+"bizr_no": "7568600029",
+"ceo": "서상원, 이제욱",
+"founded": "2015-04-02",
+"homepage": null,
+"industry_code": "582",
+"jurir_no": "1101115685411",
+"market": "기타",
+"name": "(주)스테이지파이브",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-13",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401003742",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 70718590213,
+"operating": -5408246021,
+"revenue": 29131886405,
+"year": 2024
+},
+{
+"net": -12090620277,
+"operating": -1593733315,
+"revenue": 23328054918,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "없으며 회사의 특수관계자는 다음과 같습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01267602": {
 "company": {
 "bizr_no": "4248700852",
@@ -93967,6 +94397,44 @@
 "owner": null,
 "v": 4
 },
+"01448571": {
+"company": {
+"bizr_no": "1168137757",
+"ceo": "전영하",
+"founded": "1995-11-06",
+"homepage": "https://www.casit.co.kr",
+"industry_code": "6399",
+"jurir_no": "1101111209413",
+"market": "기타",
+"name": "(주)씨에이에스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-13",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260402000299",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 2962806472,
+"operating": 2392439473,
+"revenue": 36878876786,
+"year": 2024
+},
+{
+"net": 4176037031,
+"operating": 1459594053,
+"revenue": 36943371082,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01450141": {
 "company": {
 "bizr_no": "1058648583",
@@ -95835,6 +96303,44 @@
 "net": 1954072693,
 "operating": 1610433026,
 "revenue": 50759282300,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01471357": {
+"company": {
+"bizr_no": "2108172906",
+"ceo": "유원",
+"founded": "2013-07-13",
+"homepage": null,
+"industry_code": "71310",
+"jurir_no": "1101115184124",
+"market": "기타",
+"name": "주식회사 레페리",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-13",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260331001253",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 1824818763,
+"operating": 5033345262,
+"revenue": 45575820610,
+"year": 2024
+},
+{
+"net": 4625957938,
+"operating": 972367958,
+"revenue": 38030239796,
 "year": 2025
 }
 ]
@@ -103242,6 +103748,108 @@
 "finance": null,
 "v": 4
 },
+"01605529": {
+"company": {
+"bizr_no": "1948100551",
+"ceo": "하태진",
+"founded": "2016-10-04",
+"homepage": "https://www.virnect.com",
+"industry_code": "58222",
+"jurir_no": "2055110049363",
+"market": "코스닥",
+"name": "(주)버넥트",
+"stock_code": "438700"
+},
+"disclosures": [
+{
+"date": "2026-10-30",
+"rcept_no": "20261030900300",
+"title": "[기재정정]단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-09-23",
+"rcept_no": "20260923900252",
+"title": "기타경영사항(자율공시) ([국책 연구과제 선정] K-MRO 함정장비 디지털 트윈 기반 정비지원 통합체계 연구)"
+},
+{
+"date": "2026-08-31",
+"rcept_no": "20260831900209",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-03-30",
+"rcept_no": "20260330900686",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-20",
+"rcept_no": "20260320900509",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-13",
+"rcept_no": "20260313901160",
+"title": "[기재정정]매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2026-03-13",
+"rcept_no": "20260313901075",
+"title": "주주총회집중일개최사유신고"
+},
+{
+"date": "2026-03-13",
+"rcept_no": "20260313901045",
+"title": "주주총회소집결의"
+},
+{
+"date": "2025-12-12",
+"rcept_no": "20251212900395",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 89,
+"date": "2025-12-31",
+"rcept_no": "20260320001235",
+"salary": 65123596,
+"tenure": 3.7
+},
+"fetched": "2026-11-13",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260320001235",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -10357495873,
+"operating": -11308437688,
+"revenue": 6501962372,
+"year": 2023
+},
+{
+"net": -12641224125,
+"operating": -12697077036,
+"revenue": 4599199409,
+"year": 2024
+},
+{
+"net": -5033857599,
+"operating": -8490874140,
+"revenue": 3097045412,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "하태진",
+"rate": 34.99,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
+},
 "01608447": {
 "company": {
 "bizr_no": "8808801247",
@@ -110153,6 +110761,49 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"01783155": {
+"company": {
+"bizr_no": "8928600567",
+"ceo": "정동현,장철민",
+"founded": "2016-05-03",
+"homepage": "https://www.winbit.kr",
+"industry_code": "6201",
+"jurir_no": "1101116051257",
+"market": "기타",
+"name": "주식회사 윈비트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-13",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260702000106",
+"revenue_name": "영업수익",
+"year": 2026,
+"years": [
+{
+"net": -345268608,
+"operating": 108697933,
+"revenue": 5315613179,
+"year": 2025
+},
+{
+"net": 33479673,
+"operating": 411274869,
+"revenue": 5425201205,
+"year": 2026
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "관계기업 및 공동지배기업에 대하여는 지분법을 적용하지 않고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
 },
 "01783979": {
 "company": {
@@ -117189,9 +117840,9 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
+"fetched": "2026-11-13",
 "finance": null,
-"v": 3
+"v": 4
 },
 "02003968": {
 "company": {
@@ -118111,6 +118762,24 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-11-02",
+"finance": null,
+"v": 4
+},
+"02048712": {
+"company": {
+"bizr_no": "8518602225",
+"ceo": "허남홍,김만섭",
+"founded": "2021-08-08",
+"homepage": null,
+"industry_code": "75122",
+"jurir_no": "1101117973351",
+"market": "기타",
+"name": "주식회사 밸류에이치알",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-13",
 "finance": null,
 "v": 4
 },
