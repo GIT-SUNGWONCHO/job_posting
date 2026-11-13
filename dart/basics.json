@@ -563,6 +563,70 @@
 },
 "v": 3
 },
+"00104069": {
+"company": {
+"bizr_no": "4088107958",
+"ceo": "김병철",
+"founded": "1988-04-01",
+"homepage": "https://www.kdblife.co.kr",
+"industry_code": "65110",
+"jurir_no": "2001110014608",
+"market": "기타",
+"name": "케이디비생명보험(주)",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-09-22",
+"rcept_no": "20260922000421",
+"title": "주요사항보고서(감자결정)"
+},
+{
+"date": "2025-11-28",
+"rcept_no": "20251128001784",
+"title": "[기재정정]주요사항보고서(유상증자결정)"
+}
+],
+"employees": {
+"count": 551,
+"date": "2025-12-31",
+"rcept_no": "20260331004180",
+"salary": 78145191,
+"tenure": 12.5
+},
+"fetched": "2026-11-14",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260331004180",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 23949587393,
+"operating": 46820261060,
+"year": 2023
+},
+{
+"net": 20418189218,
+"operating": 39161199079,
+"year": 2024
+},
+{
+"net": -111936765275,
+"operating": -95025060629,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "한국산업은행",
+"rate": 99.66,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
+},
 "00104467": {
 "company": {
 "bizr_no": "1018168693",
@@ -73797,6 +73861,59 @@
 },
 "v": 3
 },
+"01028164": {
+"company": {
+"bizr_no": "4088608817",
+"ceo": "정일선",
+"founded": "2014-05-08",
+"homepage": "https://www.kjbank.com",
+"industry_code": "64121",
+"jurir_no": "2001110396882",
+"market": "기타",
+"name": "(주)광주은행",
+"stock_code": "192530"
+},
+"disclosures": [],
+"employees": {
+"count": 1759,
+"date": "2025-12-31",
+"rcept_no": "20260318000996",
+"salary": 106517339,
+"tenure": 12.6
+},
+"fetched": "2026-11-14",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260318000996",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 240715357485,
+"operating": 311843207709,
+"year": 2023
+},
+{
+"net": 288342519052,
+"operating": 377634863535,
+"year": 2024
+},
+{
+"net": 272580143790,
+"operating": 358137377051,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "(주)JB금융지주",
+"rate": 100.0,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
+},
 "01029394": {
 "company": {
 "bizr_no": "2208660192",
@@ -85777,6 +85894,24 @@
 "finance": null,
 "v": 3
 },
+"01287174": {
+"company": {
+"bizr_no": "1148667167",
+"ceo": "채승배",
+"founded": "2008-05-29",
+"homepage": "https://www.hrasset.co.kr",
+"industry_code": "64201",
+"jurir_no": "1101113905738",
+"market": "기타",
+"name": "에이치알자산운용 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-14",
+"finance": null,
+"v": 4
+},
 "01287800": {
 "company": {
 "bizr_no": "1148694266",
@@ -95354,6 +95489,118 @@
 "owner": null,
 "v": 4
 },
+"01458161": {
+"company": {
+"bizr_no": "6118800754",
+"ceo": "엄인섭",
+"founded": "2017-07-11",
+"homepage": "https://www.txr.kr",
+"industry_code": "291",
+"jurir_no": "1211110330000",
+"market": "코스닥",
+"name": "주식회사 티엑스알로보틱스",
+"stock_code": "484810"
+},
+"disclosures": [
+{
+"date": "2026-10-20",
+"rcept_no": "20261020900671",
+"title": "증권발행결과(자율공시) (제1회차 CB)"
+},
+{
+"date": "2026-10-12",
+"rcept_no": "20261012000285",
+"title": "주요사항보고서(전환사채권발행결정)"
+},
+{
+"date": "2026-09-02",
+"rcept_no": "20260902900337",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-07-02",
+"rcept_no": "20260702900442",
+"title": "단일판매ㆍ공급계약체결"
+},
+{
+"date": "2026-04-30",
+"rcept_no": "20260430902017",
+"title": "소속부변경"
+},
+{
+"date": "2026-03-26",
+"rcept_no": "20260326903195",
+"title": "정기주주총회결과"
+},
+{
+"date": "2026-03-18",
+"rcept_no": "20260318901231",
+"title": "감사보고서제출"
+},
+{
+"date": "2026-03-11",
+"rcept_no": "20260311901553",
+"title": "[기재정정]주주총회소집결의"
+},
+{
+"date": "2026-02-11",
+"rcept_no": "20260211901655",
+"title": "매출액또는손익구조30%(대규모법인은15%)이상변동"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216901193",
+"title": "현금ㆍ현물배당을위한주주명부폐쇄(기준일)결정"
+},
+{
+"date": "2025-12-16",
+"rcept_no": "20251216901157",
+"title": "주주명부폐쇄기간또는기준일설정"
+}
+],
+"employees": {
+"count": 130,
+"date": "2025-12-31",
+"rcept_no": "20260319000270",
+"salary": 61023077,
+"tenure": 2.3
+},
+"fetched": "2026-11-14",
+"finance": {
+"basis": "별도",
+"rcept_no": "20260319000270",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 2169977989,
+"operating": 3554804972,
+"revenue": 33193262358,
+"year": 2023
+},
+{
+"net": 3836401497,
+"operating": 5268076346,
+"revenue": 57227363835,
+"year": 2024
+},
+{
+"net": -15307717743,
+"operating": -771918665,
+"revenue": 56632898384,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "㈜유진로지스틱스",
+"rate": 40.1,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
+},
 "01458949": {
 "company": {
 "bizr_no": "1168170775",
@@ -100096,6 +100343,24 @@
 ]
 },
 "owner": null,
+"v": 4
+},
+"01539226": {
+"company": {
+"bizr_no": "4768601836",
+"ceo": "이동환",
+"founded": "2020-04-16",
+"homepage": null,
+"industry_code": "64919",
+"jurir_no": "1955110244015",
+"market": "기타",
+"name": "엔스퀘어 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-14",
+"finance": null,
 "v": 4
 },
 "01539891": {
@@ -112525,7 +112790,7 @@
 "bizr_no": "6938800061",
 "ceo": "김정헌",
 "founded": "2015-04-14",
-"homepage": "https://underdogs.co.kr/",
+"homepage": "https://underdogs.co.kr",
 "industry_code": "85699",
 "jurir_no": "1101115695501",
 "market": "기타",
@@ -112534,9 +112799,34 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-14",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260414002536",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 1853090586,
+"operating": 2490967180,
+"revenue": 16864258472,
+"year": 2024
+},
+{
+"net": -2983159065,
+"operating": -1522798064,
+"revenue": 18740986396,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "(주)뉴블랙 (주)뉴블랙 종속기업 (주)한국사회가치평가(*1)(주)에프랩앤컴퍼니(*2)ud Japan Inc",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
 },
 "01823967": {
 "company": {
