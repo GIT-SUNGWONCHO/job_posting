@@ -256,4 +256,29 @@ def evaluate(screen: dict[str, Any], db: Any, saved: dict[str, Any]) -> list[str
                            if conc is not None else "    순서 맞음 -")
             if m != "A":
                 out.append(_stability(runs))
+        out += by_group(table, labels)
+    return out
+
+
+def _group_of() -> dict[str, str]:
+    """기준 샘플 공고 id → 묶음 이름(직무별:data_eng는 직무별로 모은다)."""
+    return {p["id"]: (p.get("group") or "-").split(":")[0] for p in config.load("match_sample").get("postings") or []}
+
+
+def by_group(table: dict[str, list[dict[str, int | None]]], labels: dict[str, str]) -> list[str]:
+    """묶음(공고 유형)별로 방식마다 평가별 평균 점수(첫 회차). ○ 평균이 × 평균보다 높을수록 그 유형을 잘 가른다."""
+    group = _group_of()
+    names = sorted({group.get(p, "-") for p in labels})
+    out = ["[묶음별] 방식마다 ○ 평균 / △ 평균 / × 평균 점수(첫 회차, 괄호는 건수). ○−× 차이가 클수록 잘 가름"]
+    for g in names:
+        ids = [p for p in labels if group.get(p, "-") == g]
+        n = {k: sum(labels[p] == k for p in ids) for k in ("good", "maybe", "bad")}
+        out.append(f"  {g} {len(ids)}건(○ {n['good']} △ {n['maybe']} × {n['bad']})")
+        for m, runs in table.items():
+            run = runs[0] if runs else {}
+            cells = []
+            for k in ("good", "maybe", "bad"):
+                sc = [run[p] for p in ids if labels[p] == k and run.get(p) is not None]
+                cells.append(f"{sum(sc) / len(sc):.0f}({len(sc)})" if sc else "-")
+            out.append(f"    {m}: " + " / ".join(cells))
     return out

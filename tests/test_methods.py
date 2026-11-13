@@ -88,3 +88,14 @@ def test_embed_batches_by_size(monkeypatch):
     g.min_interval = 0
     got = g.embed(["가" * 3000] * 25, batch_chars=20000)
     assert len(got) == 25 and sent == [10, 10, 5]  # 글은 2000자로 잘려 10개씩
+
+
+def test_by_group_averages_per_label(monkeypatch):
+    from jobpost import config
+    real = config.load
+    monkeypatch.setattr(config, "load", lambda name: {"postings": [
+        {"id": "a", "group": "주니어 자리"}, {"id": "b", "group": "주니어 자리"}, {"id": "c", "group": "직무별:data_eng"}]}
+        if name == "match_sample" else real(name))
+    out = methods.by_group({"A": [{"a": 90, "b": 30, "c": 70}]}, {"a": "good", "b": "bad", "c": "maybe"})
+    assert "  주니어 자리 2건(○ 1 △ 0 × 1)" in out and "    A: 90(1) / - / 30(1)" in out
+    assert "  직무별 1건(○ 0 △ 1 × 0)" in out
