@@ -12968,6 +12968,12 @@
 "mv": 6,
 "why": "none"
 },
+"업사이드": {
+"checked": "2026-11-15",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "업스테이지": {
 "checked": "2026-10-23",
 "corp_code": "01786541",
@@ -14814,6 +14820,12 @@
 },
 "엘리튜드": {
 "checked": "2026-11-10",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"엘리펀트바이오비전": {
+"checked": "2026-11-15",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -17036,6 +17048,14 @@
 "mv": 6,
 "why": "none"
 },
+"이스턴네트웍스": {
+"checked": "2026-11-15",
+"corp_code": "00960225",
+"corp_name": "이스턴네트웍스",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "이스트": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -17710,6 +17730,12 @@
 },
 "일레븐": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"일렉테리어": {
+"checked": "2026-11-15",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -18659,6 +18685,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"지커인텔리전트테크놀로지코리아": {
+"checked": "2026-11-15",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "지텍에이치": {
 "checked": "2026-11-05",
@@ -20311,6 +20343,12 @@
 },
 "크레스콤": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"크레아시스": {
+"checked": "2026-11-15",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -23884,6 +23922,14 @@
 "mv": 5,
 "stock_code": null
 },
+"한국코로나": {
+"checked": "2026-11-15",
+"corp_code": "01173330",
+"corp_name": "한국코로나",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "한국퀀텀컴퓨팅": {
 "checked": "2026-10-23",
 "corp_code": "02027597",
@@ -24757,6 +24803,12 @@
 },
 "휴앤바이옴": {
 "checked": "2026-10-28",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"휴온아이티": {
+"checked": "2026-11-15",
 "corp_code": null,
 "mv": 6,
 "why": "none"

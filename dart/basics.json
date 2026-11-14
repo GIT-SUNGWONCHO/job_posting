@@ -70052,6 +70052,49 @@
 "finance": null,
 "v": 3
 },
+"00960225": {
+"company": {
+"bizr_no": "1068185437",
+"ceo": "유세권",
+"founded": "2000-01-19",
+"homepage": "https://www.east21.co.kr",
+"industry_code": "75999",
+"jurir_no": "1101111857204",
+"market": "기타",
+"name": "(주)이스턴네트웍스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-15",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20261007000047",
+"revenue_name": "매출액",
+"year": 2026,
+"years": [
+{
+"net": 1899761085,
+"operating": 3437237927,
+"revenue": 38801539058,
+"year": 2025
+},
+{
+"net": 30727762,
+"operating": 3205600093,
+"revenue": 27604783280,
+"year": 2026
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "00962782": {
 "company": {
 "bizr_no": "6048140104",
@@ -80096,6 +80139,44 @@
 "net": -507749786,
 "operating": -171686508,
 "revenue": 28539919734,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01173330": {
+"company": {
+"bizr_no": "1348107436",
+"ceo": "최재용",
+"founded": "1987-03-27",
+"homepage": "https://www.icorona.net",
+"industry_code": "291",
+"jurir_no": "1301110027060",
+"market": "기타",
+"name": "한국코로나(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-15",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260407001896",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 195321280,
+"operating": 484495100,
+"revenue": 11870019537,
+"year": 2024
+},
+{
+"net": 200589358,
+"operating": 343948857,
+"revenue": 12641828042,
 "year": 2025
 }
 ]
