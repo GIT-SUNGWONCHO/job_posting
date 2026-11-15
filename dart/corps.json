@@ -322,6 +322,12 @@
 "mv": 6,
 "why": "ambiguous"
 },
+"haeai": {
+"checked": "2026-11-16",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "hdc랩스": {
 "checked": "2026-10-23",
 "corp_code": "00350312",
@@ -553,6 +559,14 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"ktcs": {
+"checked": "2026-11-16",
+"corp_code": "00372882",
+"corp_name": "KTcs",
+"how": "name",
+"mv": 6,
+"stock_code": "058850"
 },
 "ktds": {
 "checked": "2026-10-22",
@@ -3920,6 +3934,14 @@
 "corp_code": null,
 "mv": 6,
 "why": "ambiguous"
+},
+"동양이엠에스": {
+"checked": "2026-11-16",
+"corp_code": "00941840",
+"corp_name": "동양이엠에스",
+"how": "name",
+"mv": 6,
+"stock_code": null
 },
 "동양이화": {
 "checked": "2026-10-23",
@@ -7416,6 +7438,12 @@
 "mv": 6,
 "why": "none"
 },
+"바이엇": {
+"checked": "2026-11-16",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "바이오ai": {
 "checked": "2026-11-03",
 "corp_code": null,
@@ -10545,6 +10573,12 @@
 "mv": 6,
 "why": "none"
 },
+"스타트업코드": {
+"checked": "2026-11-16",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "스탠다드에너지": {
 "checked": "2026-10-23",
 "corp_code": "01613582",
@@ -10615,6 +10649,12 @@
 },
 "스튜디오얌얌": {
 "checked": "2026-11-05",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"스튜디오에임": {
+"checked": "2026-11-16",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -14242,6 +14282,14 @@
 "mv": 6,
 "why": "none"
 },
+"에이플러스에셋": {
+"checked": "2026-11-16",
+"corp_code": "00684802",
+"corp_name": "에이플러스에셋",
+"how": "name",
+"mv": 6,
+"stock_code": "244920"
+},
 "에이피써치": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -15824,6 +15872,12 @@
 },
 "우리엔시스템": {
 "checked": "2026-11-03",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"우리웍스": {
+"checked": "2026-11-16",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -19056,6 +19110,12 @@
 },
 "캐롯아이": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"캐치잇플레이": {
+"checked": "2026-11-16",
 "corp_code": null,
 "mv": 6,
 "why": "none"
