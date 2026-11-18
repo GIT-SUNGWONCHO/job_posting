@@ -3263,9 +3263,8 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-11-02",
+"fetched": "2026-11-18",
 "finance": null,
-"unlisted": true,
 "v": 4
 },
 "00110918": {
@@ -50577,6 +50576,44 @@
 },
 "v": 3
 },
+"00443463": {
+"company": {
+"bizr_no": "3058146536",
+"ceo": "이한담,이한성,김태율",
+"founded": "2001-06-12",
+"homepage": "https://www.icmb.tv",
+"industry_code": "60222",
+"jurir_no": "1601110118780",
+"market": "기타",
+"name": "주식회사 씨엠비",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403003284",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 8360462021,
+"operating": 6502448686,
+"revenue": 133805811575,
+"year": 2024
+},
+{
+"net": 10175239574,
+"operating": 9998570574,
+"revenue": 129047388632,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "00444019": {
 "company": {
 "bizr_no": "2018156197",
@@ -51705,6 +51742,44 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"00478867": {
+"company": {
+"bizr_no": "1178130043",
+"ceo": "이 형 배",
+"founded": "2000-07-21",
+"homepage": "https://www.inzent.com",
+"industry_code": "62021",
+"jurir_no": "1101112031732",
+"market": "기타",
+"name": "(주)인젠트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403002766",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 2965203720,
+"operating": 2204497948,
+"revenue": 37804285626,
+"year": 2024
+},
+{
+"net": 2287600709,
+"operating": 1548360365,
+"revenue": 42039585409,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "00479042": {
 "company": {
@@ -59478,6 +59553,62 @@
 "fetched": "2026-10-21",
 "finance": null,
 "v": 3
+},
+"00619941": {
+"company": {
+"bizr_no": "1348179736",
+"ceo": "최은정",
+"founded": "2002-02-04",
+"homepage": null,
+"industry_code": "291",
+"jurir_no": "1350110122700",
+"market": "기타",
+"name": "주식회사 유토",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": null,
+"v": 4
+},
+"00620406": {
+"company": {
+"bizr_no": "6038129289",
+"ceo": "이수태",
+"founded": "1996-07-22",
+"homepage": null,
+"industry_code": "31114",
+"jurir_no": "1801110211051",
+"market": "기타",
+"name": "(주)파나시아",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401003196",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 12217639449,
+"operating": 7375686778,
+"revenue": 263445082185,
+"year": 2024
+},
+{
+"net": 16162885183,
+"operating": 16148352697,
+"revenue": 195250981521,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "00623555": {
 "company": {
@@ -68868,6 +68999,24 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"00908049": {
+"company": {
+"bizr_no": "1048630663",
+"ceo": "조홍연",
+"founded": "2010-09-15",
+"homepage": null,
+"industry_code": "68",
+"jurir_no": "1101114433176",
+"market": "기타",
+"name": "(주)에스에이컨설팅",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": null,
+"v": 4
 },
 "00908155": {
 "company": {
@@ -95716,6 +95865,49 @@
 },
 "v": 4
 },
+"01451964": {
+"company": {
+"bizr_no": "1208681354",
+"ceo": "오태훈",
+"founded": "2005-05-10",
+"homepage": "https://www.unmesys.co.kr",
+"industry_code": "75122",
+"jurir_no": "1101113224641",
+"market": "기타",
+"name": "(주)유앤미시스템",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260406001164",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 406228486,
+"operating": 431334200,
+"revenue": 49434998394,
+"year": 2024
+},
+{
+"net": -443288842,
+"operating": -521365766,
+"revenue": 46687820379,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01452875": {
 "company": {
 "bizr_no": "2208829991",
@@ -99104,6 +99296,44 @@
 "operating": 136921894,
 "revenue": 10828711857,
 "year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01500589": {
+"company": {
+"bizr_no": "1088199034",
+"ceo": "최광훈",
+"founded": "2011-12-01",
+"homepage": "https://www.akiaka.co.kr",
+"industry_code": "62010",
+"jurir_no": "1101114738534",
+"market": "기타",
+"name": "주식회사 아키아카",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260507000731",
+"revenue_name": "매출액",
+"year": 2026,
+"years": [
+{
+"net": -5727413211,
+"operating": -1821035032,
+"revenue": 21929971227,
+"year": 2025
+},
+{
+"net": -6276192449,
+"operating": -6311885775,
+"revenue": 14219229263,
+"year": 2026
 }
 ]
 },
@@ -106760,6 +106990,44 @@
 },
 "v": 3
 },
+"01637713": {
+"company": {
+"bizr_no": "7568701156",
+"ceo": "한명석",
+"founded": "2018-10-08",
+"homepage": null,
+"industry_code": "68122",
+"jurir_no": "2849110191202",
+"market": "기타",
+"name": "주식회사 그라운드케이",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260331004836",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3885472046,
+"operating": 160803641,
+"revenue": 14868100867,
+"year": 2024
+},
+{
+"net": -3933699998,
+"operating": -3506716249,
+"revenue": 3728240000,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01638590": {
 "company": {
 "bizr_no": "1058783592",
@@ -110277,6 +110545,49 @@
 },
 "v": 4
 },
+"01727511": {
+"company": {
+"bizr_no": "7328603054",
+"ceo": "박유복",
+"founded": "2023-03-03",
+"homepage": "https://www.tranixcorp.com",
+"industry_code": "30331",
+"jurir_no": "1614110058947",
+"market": "기타",
+"name": "트라닉스 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260331001846",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1504888957,
+"operating": 4144777366,
+"revenue": 221845933291,
+"year": 2024
+},
+{
+"net": -2160666214,
+"operating": 3584994454,
+"revenue": 268937939508,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "또는 피투자자에 대하여 공동지배력이나 유의적인 영향력이 있는 투자자가 투자자산에 대해 원가법을 적용하여 표시한 재무제표",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01727520": {
 "company": {
 "bizr_no": "5998702703",
@@ -110630,6 +110941,24 @@
 ]
 },
 "owner": null,
+"v": 4
+},
+"01737059": {
+"company": {
+"bizr_no": "6808700845",
+"ceo": "손병철",
+"founded": "2019-09-04",
+"homepage": "https://www.vinecompany.co.kr",
+"industry_code": "11201",
+"jurir_no": "1201110894726",
+"market": "기타",
+"name": "주식회사 바인컴퍼니",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": null,
 "v": 4
 },
 "01737192": {
@@ -111918,6 +112247,44 @@
 "fetched": "2026-10-25",
 "finance": null,
 "v": 3
+},
+"01758007": {
+"company": {
+"bizr_no": "1308640189",
+"ceo": "김기환",
+"founded": "2009-02-16",
+"homepage": null,
+"industry_code": "27213",
+"jurir_no": "1211110182683",
+"market": "기타",
+"name": "(주)스타랩",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260407001944",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 4456292872,
+"operating": 4573692036,
+"revenue": 10760931225,
+"year": 2024
+},
+{
+"net": 4813327729,
+"operating": 5763243742,
+"revenue": 12429759121,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "01759981": {
 "company": {
@@ -115899,6 +116266,49 @@
 "owner": null,
 "v": 4
 },
+"01855717": {
+"company": {
+"bizr_no": "3078152714",
+"ceo": "유현식",
+"founded": "2024-06-03",
+"homepage": "https://www.kbfps.com",
+"industry_code": "64999",
+"jurir_no": "1101118965456",
+"market": "기타",
+"name": "케이비펀드파트너스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260331001982",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 1933871255,
+"operating": 2186638711,
+"revenue": 14845599791,
+"year": 2024
+},
+{
+"net": 6368816520,
+"operating": 8222284445,
+"revenue": 28452535741,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "(주)KB금융지주 지배회사 (주)국민은행 기타 특수관계자 (주)KB손해보험",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01857593": {
 "company": {
 "bizr_no": "4358802880",
@@ -117738,6 +118148,44 @@
 "net": -22013497907,
 "operating": -3887747369,
 "revenue": 17383561612,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01912085": {
+"company": {
+"bizr_no": "1208810246",
+"ceo": "방치일",
+"founded": "2014-03-14",
+"homepage": null,
+"industry_code": "58222",
+"jurir_no": "1101115361839",
+"market": "기타",
+"name": "메리티움(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260406000925",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 543258313,
+"operating": 614655922,
+"revenue": 10689132073,
+"year": 2024
+},
+{
+"net": 869619523,
+"operating": 993794166,
+"revenue": 11624616175,
 "year": 2025
 }
 ]
@@ -120386,6 +120834,24 @@
 "fetched": "2026-10-21",
 "finance": null,
 "v": 3
+},
+"02027302": {
+"company": {
+"bizr_no": "1218624069",
+"ceo": "양봉열",
+"founded": "2013-03-14",
+"homepage": "https://logpresso.com",
+"industry_code": "58221",
+"jurir_no": "1201110650269",
+"market": "기타",
+"name": "주식회사 로그프레소",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-18",
+"finance": null,
+"v": 4
 },
 "02027597": {
 "company": {
