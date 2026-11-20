@@ -1,0 +1,100 @@
+{
+ "date": "2026-11-20",
+ "started": "2026-11-20T08:35:51",
+ "sources": {
+  "zighang": {
+   "fetched": 7593,
+   "in_scope": 7591,
+   "complete": true,
+   "requests": 197,
+   "seconds": 79.5,
+   "errors": [],
+   "error_count": 0,
+   "new": 278,
+   "closed": 332
+  },
+  "remember": {
+   "fetched": 1514,
+   "in_scope": 1254,
+   "complete": true,
+   "requests": 59,
+   "seconds": 174.4,
+   "errors": [],
+   "error_count": 0,
+   "new": 24,
+   "closed": 16
+  },
+  "saramin": {
+   "fetched": 3788,
+   "in_scope": 1429,
+   "complete": true,
+   "requests": 43,
+   "seconds": 57.1,
+   "errors": [],
+   "error_count": 0,
+   "new": 59,
+   "closed": 64
+  },
+  "jobkorea": {
+   "fetched": 352,
+   "in_scope": 265,
+   "complete": true,
+   "requests": 55,
+   "seconds": 108.2,
+   "errors": [],
+   "error_count": 0,
+   "new": 11,
+   "closed": 15
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 149,
+   "fetched": 149,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 59.7
+  },
+  "saramin": {
+   "requested": 38,
+   "fetched": 38,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 37.3
+  },
+  "jobkorea": {
+   "requested": 11,
+   "fetched": 11,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 20.2
+  }
+ },
+ "job_types": {
+  "pending": 0,
+  "classified": 268,
+  "calls": 4,
+  "secondary": {
+   "pending": 0,
+   "found": 30,
+   "calls": 2
+  }
+ },
+ "open": 6865,
+ "overseas_open": 3674,
+ "open_unique": 5761,
+ "duplicates": 1104,
+ "noise": 262,
+ "company_types": {
+  "중소·스타트업": 3511,
+  "대기업": 780,
+  "중견": 546,
+  "외국계": 212,
+  "확인 안 됨": 684,
+  "공기업·공공기관": 28
+ },
+ "personal_filter_pass": 1776,
+ "new": 372,
+ "closed": 427,
+ "finished": "2026-11-20T08:45:14"
+}
