@@ -2274,7 +2274,7 @@
 "stock_code": "420770"
 },
 "기거코리아": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -4860,7 +4860,7 @@
 "why": "none"
 },
 "디자인그룹나인": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -6202,7 +6202,7 @@
 "stock_code": null
 },
 "리코": {
-"checked": "2026-10-23",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -6321,6 +6321,12 @@
 },
 "링크앤스카우트": {
 "checked": "2026-11-22",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"링크캠퍼스": {
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -7412,6 +7418,14 @@
 "mv": 6,
 "why": "none"
 },
+"모아저축은행": {
+"checked": "2026-11-23",
+"corp_code": "00161727",
+"corp_name": "모아저축은행",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "모요": {
 "checked": "2026-11-22",
 "corp_code": null,
@@ -7869,7 +7883,7 @@
 "why": "none"
 },
 "바이브온코퍼레이션": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -8031,7 +8045,7 @@
 "stock_code": null
 },
 "반디에스앤씨": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -8133,7 +8147,7 @@
 "why": "none"
 },
 "버블탭": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -9582,6 +9596,12 @@
 },
 "사카드코리아": {
 "checked": "2026-11-22",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"사파이어스트림테크놀로지": {
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -11430,7 +11450,7 @@
 "why": "none"
 },
 "시니어앤파트너즈": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -11891,7 +11911,7 @@
 "why": "none"
 },
 "씨더블유피": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -11955,7 +11975,7 @@
 "why": "none"
 },
 "씨아이지네트웍스": {
-"checked": "2026-10-23",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -13419,6 +13439,12 @@
 },
 "애드스퀘어": {
 "checked": "2026-11-19",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"애드인에듀": {
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -15099,7 +15125,7 @@
 "why": "none"
 },
 "에이티커니코리아": {
-"checked": "2026-10-23",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "ambiguous"
@@ -15158,6 +15184,12 @@
 },
 "에임인텔리전스": {
 "checked": "2026-11-22",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"에임즈미디어": {
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -16507,7 +16539,7 @@
 "why": "none"
 },
 "온라인바다": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -17509,7 +17541,7 @@
 "why": "none"
 },
 "유니스캔": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -18414,6 +18446,12 @@
 "mv": 6,
 "why": "none"
 },
+"이화여자대학교": {
+"checked": "2026-11-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "이화여자대학교산학협력단": {
 "checked": "2026-11-10",
 "corp_code": null,
@@ -19227,7 +19265,7 @@
 "stock_code": null
 },
 "제이알인더스트리": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -20298,7 +20336,7 @@
 "why": "none"
 },
 "캡클로": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -20600,7 +20638,7 @@
 "why": "none"
 },
 "케이씨엠에스": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -22982,7 +23020,7 @@
 "why": "none"
 },
 "파워피플컨설팅": {
-"checked": "2026-10-23",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -23902,7 +23940,7 @@
 "why": "none"
 },
 "퓨처컨설팅": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -24218,7 +24256,7 @@
 "why": "none"
 },
 "피델리티파트너스": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -24392,7 +24430,7 @@
 "why": "none"
 },
 "피플뱅크코리아": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -24448,7 +24486,7 @@
 "why": "none"
 },
 "픽셀랩성형외과의원": {
-"checked": "2026-10-23",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -25059,7 +25097,7 @@
 "stock_code": null
 },
 "한국섬유기계융합연구원": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -25663,7 +25701,7 @@
 "stock_code": "272210"
 },
 "한화시스템ict": {
-"checked": "2026-10-24",
+"checked": "2026-11-23",
 "corp_code": null,
 "mv": 6,
 "why": "none"
