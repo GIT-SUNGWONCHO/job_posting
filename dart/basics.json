@@ -17325,7 +17325,7 @@
 "bizr_no": "1058111908",
 "ceo": "박정주",
 "founded": "1973-09-26",
-"homepage": "https://www.sw.co.kr",
+"homepage": "https://www.shinwon.com/kor/",
 "industry_code": "14112",
 "jurir_no": "1101110152770",
 "market": "유가증권",
@@ -17333,6 +17333,11 @@
 "stock_code": "009270"
 },
 "disclosures": [
+{
+"date": "2026-10-28",
+"rcept_no": "20261028000248",
+"title": "주요사항보고서(자기주식취득결정)"
+},
 {
 "date": "2026-07-09",
 "rcept_no": "20260709000306",
@@ -17342,6 +17347,11 @@
 "date": "2026-06-01",
 "rcept_no": "20260601801331",
 "title": "기업지배구조보고서공시"
+},
+{
+"date": "2026-05-28",
+"rcept_no": "20260528000480",
+"title": "주요사항보고서(자기주식취득결정)"
 },
 {
 "date": "2026-03-27",
@@ -17391,7 +17401,7 @@
 "salary": 61862441,
 "tenure": 4.3
 },
-"fetched": "2026-10-21",
+"fetched": "2026-11-24",
 "finance": {
 "basis": "연결",
 "rcept_no": "20260814002718",
@@ -17425,7 +17435,7 @@
 "rule": 2,
 "source": "사업보고서 최대주주"
 },
-"v": 3
+"v": 4
 },
 "00137456": {
 "company": {
@@ -34988,6 +34998,62 @@
 },
 "v": 4
 },
+"00207737": {
+"company": {
+"bizr_no": "3128113969",
+"ceo": "심상필",
+"founded": "1993-01-04",
+"homepage": "https://www.semes.co.kr",
+"industry_code": "29271",
+"jurir_no": "1615110011795",
+"market": "기타",
+"name": "세메스 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": {
+"count": 2660,
+"date": "2025-12-31",
+"rcept_no": "20260331003653",
+"salary": 116066316,
+"tenure": 11.0
+},
+"fetched": "2026-11-24",
+"finance": {
+"basis": "연결",
+"rcept_no": "20260331003653",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 60543966119,
+"operating": 66787932237,
+"revenue": 2515549253168,
+"year": 2023
+},
+{
+"net": 145169267807,
+"operating": 121284456655,
+"revenue": 2445030857247,
+"year": 2024
+},
+{
+"net": 212016792073,
+"operating": 215781172329,
+"revenue": 2471334739133,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "삼성전자(주)",
+"rate": 91.54,
+"rule": 2,
+"source": "사업보고서 최대주주"
+},
+"v": 4
+},
 "00207755": {
 "company": {
 "bizr_no": "1178113253",
@@ -35217,6 +35283,49 @@
 "source": "사업보고서 최대주주"
 },
 "v": 3
+},
+"00218618": {
+"company": {
+"bizr_no": "2208104521",
+"ceo": "정하중",
+"founded": "1989-10-01",
+"homepage": null,
+"industry_code": "4659",
+"jurir_no": "1101110645725",
+"market": "기타",
+"name": "지멘스 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260127000107",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 31366516673,
+"operating": 29130494870,
+"revenue": 492888977314,
+"year": 2024
+},
+{
+"net": 29157857188,
+"operating": 23855343149,
+"revenue": 430355760433,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "Siemens A",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
 },
 "00219051": {
 "company": {
@@ -60678,6 +60787,44 @@
 },
 "v": 4
 },
+"00540377": {
+"company": {
+"bizr_no": "1058602802",
+"ceo": "이형칠",
+"founded": "1999-08-26",
+"homepage": "https://www.wips.co.kr",
+"industry_code": "63991",
+"jurir_no": "1101111761140",
+"market": "기타",
+"name": "(주)윕스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403002820",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": -3051613415,
+"operating": -2746138056,
+"revenue": 28133741351,
+"year": 2024
+},
+{
+"net": -422617420,
+"operating": -638917328,
+"revenue": 28906154778,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "00541349": {
 "company": {
 "bizr_no": "2148671641",
@@ -64161,9 +64308,34 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260403002779",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 2225885463,
+"operating": 993309583,
+"revenue": 73990037786,
+"year": 2024
+},
+{
+"net": 689938637,
+"operating": 117759116,
+"revenue": 51881788466,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
 },
 "00603393": {
 "company": {
@@ -72779,6 +72951,49 @@
 ]
 },
 "owner": null,
+"v": 4
+},
+"00867867": {
+"company": {
+"bizr_no": "1078644093",
+"ceo": "박천오",
+"founded": "2003-12-18",
+"homepage": "https://www.pnpsecure.com",
+"industry_code": "62010",
+"jurir_no": "1101112925612",
+"market": "기타",
+"name": "(주)피앤피시큐어",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260414000565",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 24154861631,
+"operating": 30003776229,
+"revenue": 62370437866,
+"year": 2024
+},
+{
+"net": 28658833338,
+"operating": 27790613615,
+"revenue": 61192794036,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "인 주식회사 브리즈랩을 통해서 연결납세를 하기 때문에 직접적인 법인세 신고의무는 없으나",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
 "v": 4
 },
 "00868194": {
@@ -84992,6 +85207,44 @@
 },
 "v": 4
 },
+"01087389": {
+"company": {
+"bizr_no": "1248175301",
+"ceo": "민상기",
+"founded": "2000-08-01",
+"homepage": "https://www.e-snh.co.kr",
+"industry_code": "26429",
+"jurir_no": "1301110062777",
+"market": "기타",
+"name": "(주)에스엔에이치",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260410000444",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 259857003,
+"operating": 94028985,
+"revenue": 15527425791,
+"year": 2024
+},
+{
+"net": 926956155,
+"operating": 647477916,
+"revenue": 20225282719,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01087477": {
 "company": {
 "bizr_no": "2208741741",
@@ -91674,6 +91927,65 @@
 "rate": 64.77,
 "rule": 2,
 "source": "사업보고서 최대주주"
+},
+"v": 4
+},
+"01217245": {
+"company": {
+"bizr_no": "8278100291",
+"ceo": "김원종",
+"founded": "2016-03-11",
+"homepage": "https://www.dn-solutions.com",
+"industry_code": "29221",
+"jurir_no": "1942110254136",
+"market": "기타",
+"name": "주식회사 디엔솔루션즈",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-03-31",
+"rcept_no": "20260331004163",
+"title": "[기재정정]타인을위한채무보증결정"
+},
+{
+"date": "2026-01-28",
+"rcept_no": "20260128000002",
+"title": "[기재정정]비유동자산취득결정"
+},
+{
+"date": "2026-01-28",
+"rcept_no": "20260128000001",
+"title": "[기재정정]타법인주식및출자증권취득결정"
+}
+],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260320000092",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 299121833485,
+"operating": 371016968763,
+"revenue": 1786721169705,
+"year": 2024
+},
+{
+"net": 300991776352,
+"operating": 346649397361,
+"revenue": 1803232983317,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "(주)디엔오토모티브 3 1 - 4",
+"rule": 2,
+"source": "감사보고서 지배기업"
 },
 "v": 4
 },
@@ -105842,9 +106154,29 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-24",
-"finance": null,
-"v": 3
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260409000881",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 226670583,
+"operating": -448878258,
+"revenue": 28119033973,
+"year": 2024
+},
+{
+"net": 450901385,
+"operating": -26002170,
+"revenue": 29094927160,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "01463419": {
 "company": {
@@ -110516,6 +110848,44 @@
 },
 "v": 4
 },
+"01537565": {
+"company": {
+"bizr_no": "5028198620",
+"ceo": "박윤하",
+"founded": "2008-12-10",
+"homepage": "https://www.wkit.co.kr",
+"industry_code": "58221",
+"jurir_no": "1701110367814",
+"market": "기타",
+"name": "주식회사 스피어에이엑스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401003940",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -14468401146,
+"operating": -10566368867,
+"revenue": 18311513595,
+"year": 2024
+},
+{
+"net": -4406744189,
+"operating": -2567809330,
+"revenue": 20324001787,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01538980": {
 "company": {
 "bizr_no": "4028158274",
@@ -114380,6 +114750,24 @@
 "finance": null,
 "v": 4
 },
+"01600737": {
+"company": {
+"bizr_no": "2648136227",
+"ceo": "정재훈",
+"founded": "2014-06-05",
+"homepage": "https://aidot.ai",
+"industry_code": "58222",
+"jurir_no": "1101115432177",
+"market": "기타",
+"name": "주식회사 아이도트",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": null,
+"v": 4
+},
 "01602124": {
 "company": {
 "bizr_no": "4598802246",
@@ -115628,6 +116016,44 @@
 "rule": 2,
 "source": "감사보고서 지배기업"
 },
+"v": 4
+},
+"01629875": {
+"company": {
+"bizr_no": "2068191016",
+"ceo": "김정희",
+"founded": "2004-05-22",
+"homepage": "https://www.epapyrus.com",
+"industry_code": "58221",
+"jurir_no": "1101113017385",
+"market": "기타",
+"name": "주식회사 이파피루스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260326000060",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 2291812712,
+"operating": 2423080199,
+"revenue": 12664517601,
+"year": 2024
+},
+{
+"net": 2387510268,
+"operating": 2474097444,
+"revenue": 12076277171,
+"year": 2025
+}
+]
+},
+"owner": null,
 "v": 4
 },
 "01629936": {
@@ -117761,6 +118187,44 @@
 "finance": null,
 "v": 4
 },
+"01683721": {
+"company": {
+"bizr_no": "2148690032",
+"ceo": "배진성",
+"founded": "2001-09-10",
+"homepage": null,
+"industry_code": "42412",
+"jurir_no": "1101112329195",
+"market": "기타",
+"name": "청노건설(주)",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260330000573",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 3697434998,
+"operating": 4469409748,
+"revenue": 46511236989,
+"year": 2024
+},
+{
+"net": 3446855087,
+"operating": 4235335231,
+"revenue": 43431956602,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01684951": {
 "company": {
 "bizr_no": "1048145706",
@@ -117962,6 +118426,24 @@
 "rule": 2,
 "source": "사업보고서 최대주주"
 },
+"v": 4
+},
+"01687198": {
+"company": {
+"bizr_no": "1018658153",
+"ceo": "제레미마일즈샘슨",
+"founded": "2010-09-01",
+"homepage": null,
+"industry_code": "75110",
+"jurir_no": "1101114424498",
+"market": "기타",
+"name": "로버트월터스코리아 주식회사",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": null,
 "v": 4
 },
 "01688045": {
@@ -118857,6 +119339,44 @@
 "fetched": "2026-10-21",
 "finance": null,
 "v": 3
+},
+"01720934": {
+"company": {
+"bizr_no": "7388101888",
+"ceo": "현영진",
+"founded": "2020-09-04",
+"homepage": "https://smobi.ai",
+"industry_code": "62",
+"jurir_no": "1101117612842",
+"market": "기타",
+"name": "(주)에스유엠",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401004762",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": -690404090,
+"operating": -528138039,
+"revenue": 3400501165,
+"year": 2024
+},
+{
+"net": -2222133094,
+"operating": -1659363851,
+"revenue": 3381025749,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "01721793": {
 "company": {
@@ -124771,7 +125291,7 @@
 "bizr_no": "6138157730",
 "ceo": "서영진",
 "founded": "2010-08-23",
-"homepage": "https://songwooint.co.kr/",
+"homepage": "https://songwooint.co.kr",
 "industry_code": "582",
 "jurir_no": "1911110049285",
 "market": "코넥스",
@@ -124782,7 +125302,7 @@
 {
 "date": "2026-10-16",
 "rcept_no": "20261016600621",
-"title": "단일판매ㆍ공급계약체결(자율공시)"
+"title": "[기재정정]단일판매ㆍ공급계약체결(자율공시)"
 },
 {
 "date": "2026-10-07",
@@ -124797,7 +125317,7 @@
 {
 "date": "2026-09-09",
 "rcept_no": "20260909000424",
-"title": "주요사항보고서(유형자산양수결정)"
+"title": "[기재정정]주요사항보고서(유형자산양수결정)"
 }
 ],
 "employees": {
@@ -124807,7 +125327,7 @@
 "salary": 53696432,
 "tenure": 3.7
 },
-"fetched": "2026-10-21",
+"fetched": "2026-11-24",
 "finance": {
 "basis": "연결",
 "rcept_no": "20260727000043",
@@ -124835,7 +125355,7 @@
 "rule": 2,
 "source": "사업보고서 최대주주"
 },
-"v": 3
+"v": 4
 },
 "01832008": {
 "company": {
@@ -129650,6 +130170,24 @@
 "disclosures": [],
 "employees": null,
 "fetched": "2026-11-02",
+"finance": null,
+"v": 4
+},
+"01996014": {
+"company": {
+"bizr_no": "4528601771",
+"ceo": "이명한(각자대표) 외 2명 (신흥주(각자대표), 박주한(각자대표))",
+"founded": "2020-05-08",
+"homepage": "https://xpanner.com",
+"industry_code": "58222",
+"jurir_no": "1101117479333",
+"market": "기타",
+"name": "주식회사 스패너",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-24",
 "finance": null,
 "v": 4
 },

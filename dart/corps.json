@@ -134,7 +134,7 @@
 "why": "ambiguous"
 },
 "cckorea": {
-"checked": "2026-10-24",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -265,6 +265,14 @@
 "checked": "2026-10-23",
 "corp_code": "01524817",
 "corp_name": "DL케미칼",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
+"dn솔루션즈": {
+"checked": "2026-11-24",
+"corp_code": "01217245",
+"corp_name": "디엔솔루션즈",
 "how": "name",
 "mv": 6,
 "stock_code": null
@@ -415,6 +423,14 @@
 "corp_code": null,
 "mv": 6,
 "why": "none"
+},
+"hd한국조선해양": {
+"checked": "2026-11-24",
+"corp_code": "00164830",
+"corp_name": "HD한국조선해양",
+"how": "name",
+"mv": 6,
+"stock_code": "009540"
 },
 "hl더블유": {
 "checked": "2026-11-06",
@@ -1092,7 +1108,7 @@
 "why": "none"
 },
 "skax애커튼파트너스": {
-"checked": "2026-10-25",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -1214,6 +1230,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": "005850"
+},
+"smi": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "weak"
 },
 "smtai": {
 "checked": "2026-11-22",
@@ -1580,6 +1602,12 @@
 },
 "경기테크노파크": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"경남테크노파크": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -1979,6 +2007,12 @@
 "mv": 6,
 "why": "none"
 },
+"국립재난안전연구원": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "국립중앙의료원": {
 "checked": "2026-11-06",
 "corp_code": null,
@@ -2222,7 +2256,7 @@
 "why": "none"
 },
 "글로벌스카우트": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -2264,6 +2298,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"금솔커뮤니케이션": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "기가비스": {
 "checked": "2026-10-22",
@@ -2365,6 +2405,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"나모웹비즈": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "나상권공인중개사사무소": {
 "checked": "2026-11-04",
@@ -4493,6 +4539,14 @@
 "mv": 6,
 "why": "none"
 },
+"디ai": {
+"checked": "2026-11-24",
+"corp_code": "01989069",
+"corp_name": "디에이아이",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "디노위즈": {
 "checked": "2026-11-20",
 "corp_code": null,
@@ -5316,7 +5370,7 @@
 "why": "none"
 },
 "라인서치": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -5636,7 +5690,7 @@
 "stock_code": null
 },
 "로드코어시스템": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -5681,6 +5735,14 @@
 "checked": "2026-11-12",
 "corp_code": "01443956",
 "corp_name": "로버트보쉬코리아",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
+"로버트월터스코리아": {
+"checked": "2026-11-24",
+"corp_code": "01687198",
+"corp_name": "로버트월터스코리아",
 "how": "name",
 "mv": 6,
 "stock_code": null
@@ -7228,6 +7290,12 @@
 "mv": 6,
 "why": "none"
 },
+"명신": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "ambiguous"
+},
 "명정보기술": {
 "checked": "2026-10-23",
 "corp_code": "00617819",
@@ -7463,7 +7531,7 @@
 "why": "none"
 },
 "모핑아이": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -7519,7 +7587,7 @@
 "why": "none"
 },
 "몽키소프트": {
-"checked": "2026-10-25",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -7994,6 +8062,12 @@
 },
 "바이플": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"바인드": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -8522,6 +8596,18 @@
 "mv": 6,
 "why": "none"
 },
+"볼라": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"볼라와이스": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "볼보": {
 "checked": "2026-10-21",
 "corp_code": null,
@@ -8615,7 +8701,7 @@
 "stock_code": null
 },
 "분당서울대학교병원": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -8941,7 +9027,7 @@
 "why": "none"
 },
 "블루파이테크": {
-"checked": "2026-10-24",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -10192,6 +10278,14 @@
 "mv": 6,
 "why": "none"
 },
+"세메스": {
+"checked": "2026-11-24",
+"corp_code": "00207737",
+"corp_name": "세메스",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "세미ai": {
 "checked": "2026-11-03",
 "corp_code": null,
@@ -11295,6 +11389,14 @@
 "mv": 6,
 "stock_code": "475040"
 },
+"스패너": {
+"checked": "2026-11-24",
+"corp_code": "01996014",
+"corp_name": "스패너",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "스페이스ai": {
 "checked": "2026-11-03",
 "corp_code": null,
@@ -11391,6 +11493,14 @@
 "mv": 6,
 "why": "none"
 },
+"스피어에이엑스": {
+"checked": "2026-11-24",
+"corp_code": "01537565",
+"corp_name": "스피어에이엑스",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "스피치로그": {
 "checked": "2026-10-29",
 "corp_code": null,
@@ -11405,6 +11515,12 @@
 },
 "시그니처프로젝트": {
 "checked": "2026-11-19",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"시냅스코어": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -11566,7 +11682,7 @@
 "why": "none"
 },
 "시큐어포인트": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -11778,6 +11894,12 @@
 },
 "심비즈코리아": {
 "checked": "2026-11-05",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"심소프트": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -12458,6 +12580,12 @@
 "mv": 6,
 "why": "none"
 },
+"아워컴즈": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "아워콤": {
 "checked": "2026-11-22",
 "corp_code": null,
@@ -12495,6 +12623,14 @@
 "corp_code": null,
 "mv": 6,
 "why": "none"
+},
+"아이도트": {
+"checked": "2026-11-24",
+"corp_code": "01600737",
+"corp_name": "아이도트",
+"how": "name",
+"mv": 6,
+"stock_code": null
 },
 "아이디에스앤트러스트": {
 "checked": "2026-10-23",
@@ -12585,7 +12721,7 @@
 "stock_code": "099190"
 },
 "아이쉴드": {
-"checked": "2026-10-24",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -13019,7 +13155,7 @@
 "why": "none"
 },
 "아이피엘엠에스": {
-"checked": "2026-10-25",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -13091,6 +13227,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"아크포인트": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "아키브소프트": {
 "checked": "2026-10-23",
@@ -13681,7 +13823,7 @@
 "stock_code": null
 },
 "어반데이터랩": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -13944,6 +14086,12 @@
 "mv": 6,
 "why": "none"
 },
+"에버트레져": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "에브리웨이": {
 "checked": "2026-11-13",
 "corp_code": null,
@@ -14174,6 +14322,14 @@
 "mv": 6,
 "why": "none"
 },
+"에스엔에이치": {
+"checked": "2026-11-24",
+"corp_code": "01087389",
+"corp_name": "에스엔에이치",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "에스엘": {
 "checked": "2026-10-29",
 "corp_code": "00125521",
@@ -14231,6 +14387,14 @@
 "corp_code": null,
 "mv": 6,
 "why": "none"
+},
+"에스유엠": {
+"checked": "2026-11-24",
+"corp_code": "01720934",
+"corp_name": "에스유엠",
+"how": "name",
+"mv": 6,
+"stock_code": null
 },
 "에스이에스": {
 "checked": "2026-10-27",
@@ -14746,6 +14910,12 @@
 },
 "에이에이씨": {
 "checked": "2026-11-22",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"에이엑스솔루션즈": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -15991,7 +16161,7 @@
 "stock_code": "179290"
 },
 "엠앤앤에이치": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -16143,6 +16313,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"여누솔루션": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "여수광양항만공사": {
 "checked": "2026-10-23",
@@ -16381,6 +16557,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": "048260"
+},
+"오아비스솔루션": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "오아시스스토리": {
 "checked": "2026-10-23",
@@ -16796,6 +16978,12 @@
 },
 "와이폴라리스": {
 "checked": "2026-11-22",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"와이피": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -17349,7 +17537,7 @@
 "stock_code": "065370"
 },
 "위쉬정보기술": {
-"checked": "2026-10-25",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -17505,6 +17693,14 @@
 "corp_code": null,
 "mv": 6,
 "why": "none"
+},
+"윕스": {
+"checked": "2026-11-24",
+"corp_code": "00540377",
+"corp_name": "윕스",
+"how": "name",
+"mv": 6,
+"stock_code": null
 },
 "윗유": {
 "checked": "2026-10-23",
@@ -17780,6 +17976,12 @@
 "mv": 6,
 "stock_code": null
 },
+"유엠브이기술": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "유원": {
 "checked": "2026-11-06",
 "corp_code": null,
@@ -17839,7 +18041,7 @@
 "why": "none"
 },
 "유클리드소프트": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -18125,7 +18327,7 @@
 "why": "none"
 },
 "이비즈앤컴": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -18234,6 +18436,12 @@
 },
 "이안아이티컨설팅": {
 "checked": "2026-11-22",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"이암허브": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -18432,6 +18640,14 @@
 "mv": 6,
 "stock_code": null
 },
+"이파피루스": {
+"checked": "2026-11-24",
+"corp_code": "01629875",
+"corp_name": "이파피루스",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "이피엠네트워크": {
 "checked": "2026-10-23",
 "corp_code": "01838349",
@@ -18543,7 +18759,7 @@
 "stock_code": null
 },
 "인력개발사업단": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -18826,6 +19042,12 @@
 },
 "인포유앤컴퍼니": {
 "checked": "2026-11-22",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"인퓨전프로젝": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -19588,6 +19810,12 @@
 "mv": 6,
 "stock_code": null
 },
+"주택집도사디자인": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "줌": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -19650,6 +19878,14 @@
 "checked": "2026-10-30",
 "corp_code": "00591177",
 "corp_name": "지마린서비스",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
+"지멘스": {
+"checked": "2026-11-24",
+"corp_code": "00218618",
+"corp_name": "지멘스",
 "how": "name",
 "mv": 6,
 "stock_code": null
@@ -20030,6 +20266,14 @@
 "mv": 6,
 "why": "none"
 },
+"청노건설": {
+"checked": "2026-11-24",
+"corp_code": "01683721",
+"corp_name": "청노건설",
+"how": "name",
+"mv": 6,
+"stock_code": null
+},
 "청송씨앤유": {
 "checked": "2026-10-23",
 "corp_code": "01548598",
@@ -20061,7 +20305,7 @@
 "stock_code": null
 },
 "체스트넛": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -21159,7 +21403,7 @@
 "why": "none"
 },
 "코어테크넷": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -21540,7 +21784,7 @@
 "stock_code": null
 },
 "큐팁": {
-"checked": "2026-10-25",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -22460,6 +22704,12 @@
 "how": "name",
 "mv": 6,
 "stock_code": null
+},
+"트라이업": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
 },
 "트랜스코스모스코리아": {
 "checked": "2026-10-23",
@@ -23838,6 +24088,12 @@
 "mv": 6,
 "why": "none"
 },
+"푸른it": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "푸본현대생명": {
 "checked": "2026-10-23",
 "corp_code": "00459844",
@@ -24249,6 +24505,12 @@
 "mv": 6,
 "why": "none"
 },
+"피노디엑스홀딩스": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "피닉스랩서울지점": {
 "checked": "2026-10-23",
 "corp_code": null,
@@ -24306,6 +24568,14 @@
 "corp_code": null,
 "mv": 6,
 "why": "none"
+},
+"피앤피시큐어": {
+"checked": "2026-11-24",
+"corp_code": "00867867",
+"corp_name": "피앤피시큐어",
+"how": "name",
+"mv": 6,
+"stock_code": null
 },
 "피에이아이리서치": {
 "checked": "2026-11-22",
@@ -24394,7 +24664,7 @@
 "why": "none"
 },
 "피치덱": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -24805,7 +25075,7 @@
 "stock_code": null
 },
 "하임덱스": {
-"checked": "2026-10-23",
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -25364,6 +25634,12 @@
 },
 "한국청소년상담복지개발원": {
 "checked": "2026-10-23",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"한국치매협회": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
@@ -26141,6 +26417,12 @@
 "mv": 6,
 "stock_code": null
 },
+"화이트폭스": {
+"checked": "2026-11-24",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
 "화해": {
 "checked": "2026-11-22",
 "corp_code": null,
@@ -26293,6 +26575,12 @@
 },
 "휴먼웍스": {
 "checked": "2026-10-27",
+"corp_code": null,
+"mv": 6,
+"why": "none"
+},
+"휴먼인써치": {
+"checked": "2026-11-24",
 "corp_code": null,
 "mv": 6,
 "why": "none"
