@@ -1,0 +1,102 @@
+{
+ "date": "2026-11-25",
+ "started": "2026-11-25T10:26:29",
+ "sources": {
+  "zighang": {
+   "fetched": 7518,
+   "in_scope": 7516,
+   "complete": true,
+   "requests": 194,
+   "seconds": 78.0,
+   "errors": [],
+   "error_count": 0,
+   "new": 228,
+   "closed": 217
+  },
+  "remember": {
+   "fetched": 1514,
+   "in_scope": 1254,
+   "complete": true,
+   "requests": 58,
+   "seconds": 171.3,
+   "errors": [],
+   "error_count": 0,
+   "new": 14,
+   "closed": 22
+  },
+  "saramin": {
+   "fetched": 3744,
+   "in_scope": 1371,
+   "complete": true,
+   "requests": 43,
+   "seconds": 84.2,
+   "errors": [],
+   "error_count": 0,
+   "new": 48,
+   "closed": 54
+  },
+  "jobkorea": {
+   "fetched": 343,
+   "in_scope": 258,
+   "complete": true,
+   "requests": 54,
+   "seconds": 106.2,
+   "errors": [],
+   "error_count": 0,
+   "new": 15,
+   "closed": 16
+  }
+ },
+ "details": {
+  "zighang": {
+   "requested": 123,
+   "fetched": 123,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 49.0
+  },
+  "saramin": {
+   "requested": 34,
+   "fetched": 33,
+   "remaining": 1,
+   "errors": [
+    "상세 55630823: HTTPSConnectionPool(host='www.saramin.co.kr', port=443): Max retries exceeded with url: /zf_user/recruit/inspection-view (Caused by ResponseError('too many 503 error responses'))"
+   ],
+   "seconds": 40.3
+  },
+  "jobkorea": {
+   "requested": 12,
+   "fetched": 12,
+   "remaining": 0,
+   "errors": [],
+   "seconds": 22.2
+  }
+ },
+ "job_types": {
+  "pending": 0,
+  "classified": 220,
+  "calls": 3,
+  "secondary": {
+   "pending": 0,
+   "found": 13,
+   "calls": 1
+  }
+ },
+ "open": 6775,
+ "overseas_open": 3624,
+ "open_unique": 5695,
+ "duplicates": 1080,
+ "noise": 278,
+ "company_types": {
+  "중소·스타트업": 3470,
+  "대기업": 774,
+  "중견": 548,
+  "외국계": 210,
+  "확인 안 됨": 654,
+  "공기업·공공기관": 39
+ },
+ "personal_filter_pass": 1765,
+ "new": 305,
+ "closed": 309,
+ "finished": "2026-11-25T10:36:01"
+}
