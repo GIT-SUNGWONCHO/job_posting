@@ -72,7 +72,9 @@ def report(data_dir: Path) -> list[str]:
         if auto:
             from_dart = auto.basis.startswith("DART")
             line += f" / 예외 없이 {auto.type}({auto.basis})"
-            if auto.type == m.get("type"):
+            if not m.get("type"):
+                pass  # 구분 예외가 없다(업종 예외만): 비교할 것이 없다
+            elif auto.type == m["type"]:
                 line += " → 같음: 예외를 지워도 됨"
             elif from_dart:
                 line += " → DART 값이 예외와 다름: 어느 쪽을 쓸지 묻기(답 전에는 예외)"
