@@ -33600,6 +33600,49 @@
 },
 "v": 4
 },
+"00181660": {
+"company": {
+"bizr_no": "2118633430",
+"ceo": "조덕현",
+"founded": "1981-12-31",
+"homepage": "https://www.intechn.com",
+"industry_code": "467",
+"jurir_no": "1101110309610",
+"market": "기타",
+"name": "주식회사 인텍앤컴퍼니",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260408001231",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 806160100,
+"operating": 423585241,
+"revenue": 372955505002,
+"year": 2024
+},
+{
+"net": 4621737152,
+"operating": 372848803,
+"revenue": 415515375045,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "00181712": {
 "company": {
 "bizr_no": "2208116503",
@@ -38307,6 +38350,44 @@
 },
 "v": 4
 },
+"00234050": {
+"company": {
+"bizr_no": "3068112757",
+"ceo": "박종태",
+"founded": "1985-03-11",
+"homepage": "https://www.hanwhaeagles.co.kr",
+"industry_code": "91191",
+"jurir_no": "1601110007214",
+"market": "기타",
+"name": "(주)한화이글스",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401000778",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 76394345,
+"operating": -188541425,
+"revenue": 59425975070,
+"year": 2024
+},
+{
+"net": -77019321,
+"operating": -158225376,
+"revenue": 74643002853,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "00234412": {
 "company": {
 "bizr_no": "2018153657",
@@ -41873,14 +41954,39 @@
 },
 "disclosures": [
 {
-"date": "2026-10-06",
-"rcept_no": "20261006900765",
-"title": "주주명부폐쇄기간또는기준일설정"
+"date": "2026-11-26",
+"rcept_no": "20261126900003",
+"title": "소송등의판결ㆍ결정"
+},
+{
+"date": "2026-11-24",
+"rcept_no": "20261124900987",
+"title": "소송등의판결ㆍ결정"
+},
+{
+"date": "2026-11-16",
+"rcept_no": "20261116902519",
+"title": "기업설명회(IR)개최"
+},
+{
+"date": "2026-11-16",
+"rcept_no": "20261116902516",
+"title": "소송등의제기ㆍ신청(경영권분쟁소송) (검사인 선임)"
+},
+{
+"date": "2026-11-16",
+"rcept_no": "20261116902065",
+"title": "[기재정정]주주총회소집결의 (임시주주총회)"
+},
+{
+"date": "2026-11-05",
+"rcept_no": "20261105900316",
+"title": "기업가치제고계획(자율공시) (2025년 이행현황)"
 },
 {
 "date": "2026-10-06",
-"rcept_no": "20261006900750",
-"title": "주주총회소집결의 (임시주주총회)"
+"rcept_no": "20261006900765",
+"title": "주주명부폐쇄기간또는기준일설정"
 },
 {
 "date": "2026-09-23",
@@ -42036,41 +42142,6 @@
 "date": "2025-12-03",
 "rcept_no": "20251203900569",
 "title": "소송등의판결ㆍ결정"
-},
-{
-"date": "2025-11-19",
-"rcept_no": "20251119900368",
-"title": "기업설명회(IR)개최"
-},
-{
-"date": "2025-11-18",
-"rcept_no": "20251118900478",
-"title": "투자판단관련주요경영사항(임상시험계획승인신청등결정) (진행성 고형암 치료 후보물질 OCT598 임상1상 한국 식품의약품안전처 임상시험계획(IND) 승인)"
-},
-{
-"date": "2025-11-18",
-"rcept_no": "20251118900366",
-"title": "기업설명회(IR)개최"
-},
-{
-"date": "2025-11-17",
-"rcept_no": "20251117900338",
-"title": "기업설명회(IR)개최"
-},
-{
-"date": "2025-11-13",
-"rcept_no": "20251113900599",
-"title": "[기재정정]주주총회소집결의 (임시주주총회)"
-},
-{
-"date": "2025-10-31",
-"rcept_no": "20251031900836",
-"title": "투자판단관련주요경영사항 (유한양행의 얀센바이오테크 기술이전 마일스톤 분배)"
-},
-{
-"date": "2025-10-22",
-"rcept_no": "20251022900502",
-"title": "주주명부폐쇄기간또는기준일설정"
 }
 ],
 "employees": {
@@ -42080,7 +42151,7 @@
 "salary": 61614035,
 "tenure": 6.0
 },
-"fetched": "2026-10-22",
+"fetched": "2026-11-27",
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319001005",
@@ -42114,7 +42185,7 @@
 "rule": 2,
 "source": "사업보고서 최대주주"
 },
-"v": 3
+"v": 4
 },
 "00264255": {
 "company": {
@@ -45306,6 +45377,65 @@
 "rate": 100.0,
 "rule": 2,
 "source": "사업보고서 최대주주"
+},
+"v": 4
+},
+"00310280": {
+"company": {
+"bizr_no": "2208183676",
+"ceo": "장승환",
+"founded": "2000-04-07",
+"homepage": "https://corp.gmarket.com",
+"industry_code": "4791",
+"jurir_no": "1101118344262",
+"market": "기타",
+"name": "주식회사 지마켓",
+"stock_code": null
+},
+"disclosures": [
+{
+"date": "2026-11-11",
+"rcept_no": "20261111000293",
+"title": "유상증자결정"
+},
+{
+"date": "2026-03-10",
+"rcept_no": "20260310002703",
+"title": "유상증자결정"
+},
+{
+"date": "2025-12-15",
+"rcept_no": "20251215000450",
+"title": "유상증자결정"
+}
+],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260710000483",
+"revenue_name": "매출액",
+"year": 2026,
+"years": [
+{
+"net": -113791453453,
+"operating": -121748986986,
+"revenue": 740509300460,
+"year": 2025
+},
+{
+"net": -68129421920,
+"operating": -69518434829,
+"revenue": 169752546472,
+"year": 2026
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "인 회사는 별도재무제표에서 종속기업에 대한 투자를 기업회계기준서 제1027호 '별도재무제표'에 따라 원가법으로 처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
 },
 "v": 4
 },
@@ -54615,7 +54745,7 @@
 "salary": 40742393,
 "tenure": null
 },
-"fetched": "2026-10-28",
+"fetched": "2026-11-27",
 "finance": {
 "basis": "연결",
 "rcept_no": "20260319000742",
@@ -54649,7 +54779,7 @@
 "rule": 2,
 "source": "사업보고서 최대주주"
 },
-"v": 3
+"v": 4
 },
 "00426873": {
 "company": {
@@ -81935,6 +82065,24 @@
 "finance": null,
 "v": 4
 },
+"01025617": {
+"company": {
+"bizr_no": "6138142839",
+"ceo": "손창환",
+"founded": "2007-01-12",
+"homepage": "https://www.hanaaero.com",
+"industry_code": "31322",
+"jurir_no": "1954110013446",
+"market": "코스닥",
+"name": "(주)하나에어로다이내믹스",
+"stock_code": "271160"
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": null,
+"v": 4
+},
 "01026111": {
 "company": {
 "bizr_no": "2128179813",
@@ -89095,6 +89243,49 @@
 },
 "v": 4
 },
+"01158571": {
+"company": {
+"bizr_no": "2208769074",
+"ceo": "홍원의",
+"founded": "2008-07-03",
+"homepage": "https://www.spotv.net",
+"industry_code": "60221",
+"jurir_no": "1101113927998",
+"market": "기타",
+"name": "(주) 스포티비",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260331000646",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 7546047230,
+"operating": 7636925627,
+"revenue": 111038827685,
+"year": 2024
+},
+{
+"net": 2532325490,
+"operating": 3115777565,
+"revenue": 136177905551,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "개별재무제표의 당기순손익 및 순자산이연결재무제표의 당기순손익 및 순자산에 대한 지배회사의 지분과 일치되도록 회계처리하고 있습니다",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01159233": {
 "company": {
 "bizr_no": "4908100105",
@@ -90253,6 +90444,11 @@
 },
 "disclosures": [
 {
+"date": "2026-11-18",
+"rcept_no": "20261118900558",
+"title": "기타시장안내(관리종목지정우려종목) (시가총액 200억원 미달)"
+},
+{
 "date": "2026-10-12",
 "rcept_no": "20261012900758",
 "title": "기타시장안내(관리종목지정우려종목) (시가총액 200억원 미달)"
@@ -90320,7 +90516,7 @@
 "salary": 56905882,
 "tenure": 5.1
 },
-"fetched": "2026-10-28",
+"fetched": "2026-11-27",
 "finance": {
 "basis": "별도",
 "rcept_no": "20260320000218",
@@ -90354,7 +90550,7 @@
 "rule": 2,
 "source": "사업보고서 최대주주"
 },
-"v": 3
+"v": 4
 },
 "01194689": {
 "company": {
@@ -96548,6 +96744,24 @@
 },
 "v": 3
 },
+"01292608": {
+"company": {
+"bizr_no": "1058811926",
+"ceo": "김창은",
+"founded": "2014-12-01",
+"homepage": "https://www.eugeneits.com",
+"industry_code": "58221",
+"jurir_no": "1101115577725",
+"market": "기타",
+"name": "유진아이티서비스 주식회사 ",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": null,
+"v": 4
+},
 "01295322": {
 "company": {
 "bizr_no": "1308663159",
@@ -97940,9 +98154,29 @@
 },
 "disclosures": [],
 "employees": null,
-"fetched": "2026-10-21",
-"finance": null,
-"v": 3
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260407001102",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 491711977,
+"operating": 686066885,
+"revenue": 15019064297,
+"year": 2024
+},
+{
+"net": 1889061697,
+"operating": 2169919931,
+"revenue": 21735699675,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
 },
 "01314566": {
 "company": {
@@ -103371,6 +103605,24 @@
 ]
 },
 "owner": null,
+"v": 4
+},
+"01403356": {
+"company": {
+"bizr_no": "1898100660",
+"ceo": "김영동",
+"founded": "2016-12-16",
+"homepage": null,
+"industry_code": "25922",
+"jurir_no": "1201110860496",
+"market": "기타",
+"name": "주식회사 일호기업",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": null,
 "v": 4
 },
 "01405451": {
@@ -110100,6 +110352,44 @@
 "rule": 2,
 "source": "감사보고서 지배기업"
 },
+"v": 4
+},
+"01509331": {
+"company": {
+"bizr_no": "4088150187",
+"ceo": "김정수, 강창욱, 곽선호",
+"founded": "2001-10-10",
+"homepage": null,
+"industry_code": "85650",
+"jurir_no": "2001110143291",
+"market": "기타",
+"name": "주식회사 국제",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260402003763",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 104715171,
+"operating": 417546681,
+"revenue": 9220935665,
+"year": 2024
+},
+{
+"net": 478541840,
+"operating": 1086274592,
+"revenue": 10445916041,
+"year": 2025
+}
+]
+},
+"owner": null,
 "v": 4
 },
 "01511521": {
@@ -117300,6 +117590,44 @@
 },
 "v": 4
 },
+"01629963": {
+"company": {
+"bizr_no": "1208824134",
+"ceo": "김재면",
+"founded": "2015-01-14",
+"homepage": "https://www.makestar.com",
+"industry_code": "58222",
+"jurir_no": "1101115615111",
+"market": "기타",
+"name": "주식회사 메이크스타",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260409000544",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 1568016598,
+"operating": 1519127081,
+"revenue": 120343046823,
+"year": 2024
+},
+{
+"net": 5961497988,
+"operating": 6266050543,
+"revenue": 129759984560,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01630701": {
 "company": {
 "bizr_no": "8838600976",
@@ -119898,6 +120226,44 @@
 },
 "v": 4
 },
+"01695717": {
+"company": {
+"bizr_no": "1488701864",
+"ceo": "임관우",
+"founded": "2020-06-22",
+"homepage": null,
+"industry_code": "68121",
+"jurir_no": "1412110113070",
+"market": "기타",
+"name": "주식회사 엘앤비",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260402002259",
+"revenue_name": null,
+"year": 2025,
+"years": [
+{
+"net": 5942805983,
+"operating": 4595110030,
+"revenue": null,
+"year": 2024
+},
+{
+"net": 2464279257,
+"operating": 1178850128,
+"revenue": null,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01701443": {
 "company": {
 "bizr_no": "2828101099",
@@ -122142,6 +122508,44 @@
 "net": -125768933,
 "operating": -157383917,
 "revenue": 52382795729,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01741821": {
+"company": {
+"bizr_no": "1078688709",
+"ceo": "정낙현",
+"founded": "2007-03-16",
+"homepage": "https://www.cywellsystem.com",
+"industry_code": "58221",
+"jurir_no": "1101113638339",
+"market": "기타",
+"name": "주식회사 싸이웰시스템",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260408001224",
+"revenue_name": "매출액",
+"year": 2025,
+"years": [
+{
+"net": 2167249598,
+"operating": 1668295613,
+"revenue": 17534644299,
+"year": 2024
+},
+{
+"net": 2654590777,
+"operating": 2141945200,
+"revenue": 15357906247,
 "year": 2025
 }
 ]
@@ -126753,6 +127157,49 @@
 "owner": null,
 "v": 4
 },
+"01833964": {
+"company": {
+"bizr_no": "1218640924",
+"ceo": "장세영",
+"founded": "2016-06-29",
+"homepage": "https://www.deepbrain.io/ko/home",
+"industry_code": "63991",
+"jurir_no": "1101116107167",
+"market": "기타",
+"name": "주식회사 딥브레인에이아이",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260401003612",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 17990404839,
+"operating": -8422811491,
+"revenue": 7163617395,
+"year": 2024
+},
+{
+"net": -2889731687,
+"operating": -6771185306,
+"revenue": 4813752765,
+"year": 2025
+}
+]
+},
+"owner": {
+"foreign": null,
+"name": "또는 피투자자에 대하여 공동지배력이나 유의적인 영향력이 있는 투자자가 투자자산을 원가법 또는 기업회계기준서 제1109호 '금융상품'에 따른 방법",
+"rule": 2,
+"source": "감사보고서 지배기업"
+},
+"v": 4
+},
 "01833991": {
 "company": {
 "bizr_no": "1348638104",
@@ -130373,6 +130820,44 @@
 "owner": null,
 "v": 4
 },
+"01931789": {
+"company": {
+"bizr_no": "5038801369",
+"ceo": "김영혁",
+"founded": "2019-05-22",
+"homepage": null,
+"industry_code": "76110",
+"jurir_no": "1358110367798",
+"market": "기타",
+"name": "주식회사 아이카",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260409003086",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": 1391502417,
+"operating": 1559698130,
+"revenue": 6946696949,
+"year": 2024
+},
+{
+"net": -255035979,
+"operating": 199653971,
+"revenue": 8090895142,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
 "01944792": {
 "company": {
 "bizr_no": "1078180129",
@@ -130872,6 +131357,44 @@
 "net": -41570399632,
 "operating": -17370508986,
 "revenue": 3376354544,
+"year": 2025
+}
+]
+},
+"owner": null,
+"v": 4
+},
+"01962901": {
+"company": {
+"bizr_no": "8998800811",
+"ceo": "강병탁",
+"founded": "2017-10-31",
+"homepage": "https://aispera.com",
+"industry_code": "58222",
+"jurir_no": "1101116554243",
+"market": "기타",
+"name": "주식회사 에이아이스페라",
+"stock_code": null
+},
+"disclosures": [],
+"employees": null,
+"fetched": "2026-11-27",
+"finance": {
+"basis": "감사보고서",
+"rcept_no": "20260410000417",
+"revenue_name": "영업수익",
+"year": 2025,
+"years": [
+{
+"net": -3546550312,
+"operating": -3563964981,
+"revenue": 2061017118,
+"year": 2024
+},
+{
+"net": -1575925155,
+"operating": -1479176140,
+"revenue": 5607366963,
 "year": 2025
 }
 ]
